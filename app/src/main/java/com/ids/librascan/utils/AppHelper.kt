@@ -3,6 +3,7 @@ package com.ids.librascan.utils
 
 import android.content.Context
 import android.content.res.Configuration
+import android.graphics.Typeface
 import android.os.Build
 import android.view.View
 import android.view.ViewGroup
@@ -126,6 +127,30 @@ class AppHelper {
                 return con.resources.getString(resId)
             }
 
+
+        }
+        fun getTypeFace(context: Context): Typeface {
+            /* return if (Locale.getDefault().language == "ar")
+                Typeface.createFromAsset(
+                    context.applicationContext.assets,
+                    "fonts/Inter-Medium.ttf"
+                )*/
+            // else
+           return Typeface.createFromAsset(context.applicationContext.assets, "fonts/Inter-Medium.ttf")
+
+        }
+        fun getTypeFaceBold(context: Context): Typeface {
+           /* return if (Locale.getDefault().language == "ar")
+                Typeface.createFromAsset(
+                    context.applicationContext.assets,
+                    "fonts/Inter-Bold.ttf"
+                )*/
+
+           // else
+              return  Typeface.createFromAsset(
+                    context.applicationContext.assets,
+                    "fonts/Inter-Bold.ttf"
+                )
 
         }
 

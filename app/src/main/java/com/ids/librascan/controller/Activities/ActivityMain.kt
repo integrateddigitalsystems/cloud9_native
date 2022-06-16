@@ -22,10 +22,10 @@ class ActivityMain : AppCompatActivity() {
     }
 
    fun init() {
-       activityMainBinding.cVScan.setOnClickListener {
+       activityMainBinding.llScan.setOnClickListener {
            startActivity(Intent(this, ActivityScan::class.java))
        }
-       activityMainBinding.cVData.setOnClickListener {
+       activityMainBinding.llData.setOnClickListener {
            startActivity(Intent(this, ActivityQrData::class.java))
        }
 

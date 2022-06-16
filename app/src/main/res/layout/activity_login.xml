@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/rootLogin"
-    android:background="@color/teal_700"
+    android:background="@drawable/background"
     android:orientation="vertical">
 
 
@@ -23,10 +23,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/btLogin"
             android:text="@string/login"
-            android:background="@drawable/blue_fill__rounded_color"
+            android:background="@drawable/rounded_button_layout"
             android:layout_marginTop="@dimen/with_200"
             android:layout_gravity="center"
-            android:textAllCaps="true"/>
+           android:textAllCaps="true"/>
 
 
 
