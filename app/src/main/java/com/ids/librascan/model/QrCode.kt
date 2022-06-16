@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "urlScan_table")
-data class Url(
+data class QrCode(
     var title: String
 
 ){

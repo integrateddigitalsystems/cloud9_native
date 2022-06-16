@@ -1,24 +1,23 @@
 package com.ids.librascan.controller.Activities
 
+import Base.ActivityCompactBase
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.AsyncTask
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.room.Room
 import com.google.zxing.Result
 import com.ids.librascan.R
-import com.ids.librascan.model.Url
-import com.ids.librascan.model.UrlDatabase
+import com.ids.librascan.model.QrCode
+import com.ids.librascan.model.QrCodeDatabase
 import kotlinx.android.synthetic.main.pop_dialog.view.*
+import kotlinx.coroutines.launch
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 import utils.toast
 
-class ActivityScan : AppCompatActivity(), ZXingScannerView.ResultHandler {
+class ActivityScan : ActivityCompactBase(), ZXingScannerView.ResultHandler {
   //  private lateinit var urlDao: UrlDao
     private var scannerView: ZXingScannerView? = null
 
@@ -43,7 +42,7 @@ class ActivityScan : AppCompatActivity(), ZXingScannerView.ResultHandler {
       //  UrlDatabase(this).getUrlDao()
         showDialog(title.toString())
        // intent.putExtra("Data", p0.toString())
-        toast(title.toString())
+      //  toast(title.toString())
 
     }
 
@@ -56,8 +55,16 @@ class ActivityScan : AppCompatActivity(), ZXingScannerView.ResultHandler {
         val mAlertDialog = mBuilder.show()
         mDialogView.tVTitle.text = title.toString()
         mDialogView.btSave.setOnClickListener {
-            val url = Url(title.toString())
-            saveUrl(url)
+
+            launch {
+                val qrCode = QrCode(title.toString())
+                application?.let {
+                    QrCodeDatabase(it).getUrlDao().addUrl(qrCode)
+                    toast(getString(R.string.qr_code))
+                }
+            }
+
+           // saveUrl(url)
             startActivity(Intent(this, ActivityScan::class.java))
             mAlertDialog.dismiss()
 
@@ -69,24 +76,6 @@ class ActivityScan : AppCompatActivity(), ZXingScannerView.ResultHandler {
         }
     }
 
-    private fun saveUrl(url: Url){
-        class SaveUrl : AsyncTask<Void, Void, Void>() {
-            @Deprecated("Deprecated in Java")
-            override fun doInBackground(vararg params: Void?): Void? {
-                UrlDatabase(this@ActivityScan).getUrlDao().addUrl(url)
-                return null
-            }
-
-            @Deprecated("Deprecated in Java")
-            override fun onPostExecute(result: Void?) {
-                super.onPostExecute(result)
-                toast("Url Saved")
-
-            }
-
-        }
-        SaveUrl().execute()
-    }
     override fun onResume() {
         super.onResume()
 
