@@ -6,11 +6,14 @@ import android.os.Bundle
 import android.os.Handler
 import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
+import com.ids.librascan.databinding.ActivitySplashBinding
 
 class ActivitySplash : AppCompatActivity() {
+    lateinit var activitySplashBinding: ActivitySplashBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+         activitySplashBinding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(activitySplashBinding.root)
 
 
        goLogin()

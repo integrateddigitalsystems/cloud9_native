@@ -1,4 +1,4 @@
-package com.ids.librascan.model
+package com.ids.librascan.db
 
 
 import androidx.room.*
@@ -12,8 +12,11 @@ interface QrCodeDao {
     @Query("SELECT * FROM urlScan_table")
     suspend fun getAllUrl(): List<QrCode>
 
-    @Insert
-    suspend fun addUrl (vararg url: QrCode)
+   /* @Insert
+    suspend fun insertUnit (unit: Unit)*/
+
+   // @Query("SELECT * FROM unit_table")
+   // suspend fun getUnit(): List<Unit>
 
     @Update
     suspend fun updateUrl(url: QrCode)

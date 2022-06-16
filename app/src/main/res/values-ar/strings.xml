@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">LibraScan</string>
-    <string name="default_web_client_id_auth">971196707267-a0cn7k5klsf18d0d8n81d4ipjb8njmvs.apps.googleusercontent.com</string>
-    <string name="login">دخول</string>
+      <string name="login">دخول</string>
     <string name="scan">بحث</string>
     <string name="my_data">معلومات</string>
     <string name="libra_scan">Libra Scan</string>
     <string name="permission_message">تحتاج إلى إذن الكاميرا</string>
     <string name="logout">خروج</string>
-    <string name="success_login">Successful Login</string>
-    <string name="login_faild">Login Faild</string>
-    <string name="save">Save</string>
-    <string name="cancel">Cancel</string>
-    <string name="save_data">Save Data</string>
+    <string name="success_login">دخول صحيح</string>
+    <string name="login_faild">خناك خطا ما</string>
+    <string name="save">حفظ</string>
+    <string name="title">العنوان</string>
+    <string name="cancel">الغاء</string>
+    <string name="save_data">حفظ المعلومات</string>
+    <string name="qr_code">تم الحفظ</string>
 </resources>

@@ -4,9 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
-import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -15,23 +12,24 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
-import kotlinx.android.synthetic.main.activity_login.*
+import com.ids.librascan.databinding.ActivityLoginBinding
 import utils.toast
 import utils.wtf
 
 class ActivityLogin : AppCompatActivity() {
+    lateinit var activityLoginBinding: ActivityLoginBinding
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var getContent: ActivityResultLauncher<Intent>
     override fun onCreate(savedInstanceState: Bundle?) {
         setUpContent()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        activityLoginBinding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(activityLoginBinding.root)
         init()
 
     }
@@ -45,7 +43,7 @@ class ActivityLogin : AppCompatActivity() {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
         firebaseAuth = FirebaseAuth.getInstance()
 
-        btLogin.setOnClickListener {
+        activityLoginBinding.btLogin.setOnClickListener {
             signInGoogle()
         }
     }

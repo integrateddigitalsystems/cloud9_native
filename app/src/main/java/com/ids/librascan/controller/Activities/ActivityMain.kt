@@ -8,20 +8,25 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
-import kotlinx.android.synthetic.main.activity_main.*
+import com.ids.librascan.databinding.ActivityMainBinding
 import utils.toast
 
 class ActivityMain : AppCompatActivity() {
+    lateinit var activityMainBinding: ActivityMainBinding
     lateinit var mGoogleSignInClient: GoogleSignInClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(activityMainBinding.root)
         init()
     }
 
    fun init() {
-       cVScan.setOnClickListener {
+       activityMainBinding.cVScan.setOnClickListener {
            startActivity(Intent(this, ActivityScan::class.java))
+       }
+       activityMainBinding.cVData.setOnClickListener {
+           startActivity(Intent(this, ActivityQrData::class.java))
        }
 
        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -31,7 +36,7 @@ class ActivityMain : AppCompatActivity() {
        mGoogleSignInClient= GoogleSignIn.getClient(this,gso)
 
 
-       iVLogout.setOnClickListener {
+       activityMainBinding.iVLogout.setOnClickListener {
            mGoogleSignInClient.signOut().addOnCompleteListener {
                MyApplication.isLogin = false
                val intent= Intent(this, ActivityLogin::class.java)

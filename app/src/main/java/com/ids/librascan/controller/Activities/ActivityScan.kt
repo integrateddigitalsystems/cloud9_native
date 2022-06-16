@@ -5,71 +5,58 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.LayoutInflater
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.zxing.Result
 import com.ids.librascan.R
-import com.ids.librascan.model.QrCode
-import com.ids.librascan.model.QrCodeDatabase
-import kotlinx.android.synthetic.main.pop_dialog.view.*
+import com.ids.librascan.databinding.ActivityScanBinding
+import com.ids.librascan.databinding.PopDialogBinding
+import com.ids.librascan.db.QrCode
+import com.ids.librascan.db.QrCodeDatabase
 import kotlinx.coroutines.launch
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 import utils.toast
 
 class ActivityScan : ActivityCompactBase(), ZXingScannerView.ResultHandler {
-  //  private lateinit var urlDao: UrlDao
+    lateinit var activityScanBinding: ActivityScanBinding
     private var scannerView: ZXingScannerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         scannerView = ZXingScannerView(this)
         setContentView(scannerView)
-
+      //  activityScanBinding = ActivityScanBinding.inflate(layoutInflater)
+      //  setContentView(activityScanBinding.root)
         setPermission()
-        init()
+
     }
-
-
-    fun init() {
-       // val db = Room.databaseBuilder(this,UrlDatabase::class.java, "urlScan_table").build()
-       // urlDao = db.urlDao()
-    }
-
 
     override fun handleResult(title: Result?) {
-
-      //  UrlDatabase(this).getUrlDao()
         showDialog(title.toString())
-       // intent.putExtra("Data", p0.toString())
-      //  toast(title.toString())
-
     }
 
-    private fun showDialog(title: String?){
-        val mDialogView =
-            LayoutInflater.from(this).inflate(R.layout.pop_dialog, null)
+   private fun showDialog(title: String?){
+       val popDialogBinding = PopDialogBinding.inflate(layoutInflater)
+        val mDialogView = popDialogBinding.root
         val mBuilder = AlertDialog.Builder(this)
             .setView(mDialogView)
             .setTitle(getString(R.string.save_data))
         val mAlertDialog = mBuilder.show()
-        mDialogView.tVTitle.text = title.toString()
-        mDialogView.btSave.setOnClickListener {
+       popDialogBinding.tVTitle.text = title.toString()
+       popDialogBinding.btSave.setOnClickListener {
 
             launch {
                 val qrCode = QrCode(title.toString())
                 application?.let {
-                    QrCodeDatabase(it).getUrlDao().addUrl(qrCode)
+                    QrCodeDatabase(it).getUrlDao().insertUrl(qrCode)
                     toast(getString(R.string.qr_code))
                 }
             }
-
-           // saveUrl(url)
             startActivity(Intent(this, ActivityScan::class.java))
             mAlertDialog.dismiss()
 
         }
-        mDialogView.btCancel.setOnClickListener {
+       popDialogBinding.btCancel.setOnClickListener {
             startActivity(Intent(this, ActivityScan::class.java))
             mAlertDialog.dismiss()
 
