@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rootLayout"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/teal_700"
+    tools:context=".controller.Activities.ActivitySplash">
+
+
+
+        <ImageView
+            android:layout_width="@dimen/with_200"
+            android:layout_height="@dimen/with_200"
+            android:id="@+id/image"
+            android:background="@drawable/ic_baseline_qr_code_24"/>
+
+
+    </LinearLayout>
+
