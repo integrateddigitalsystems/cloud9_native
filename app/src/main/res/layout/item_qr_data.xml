@@ -1,44 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-<androidx.cardview.widget.CardView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    app:cardCornerRadius="6dp"
-    android:layout_marginStart="@dimen/normal_margin"
-    android:layout_marginEnd="@dimen/normal_margin"
-    app:cardElevation="4dp"
-    android:layout_marginTop="@dimen/small_margin"
-    android:paddingStart="@dimen/small_margin"
-    android:paddingEnd="@dimen/small_margin">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
+        android:orientation="horizontal"
+        android:weightSum="5"
+        android:id="@+id/llItem"
+        android:paddingBottom="@dimen/small_margin_padding"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:orientation="vertical"
-        android:padding="4dp">
+        android:minHeight="60dp"
+        android:layout_height="wrap_content">
 
-        <TextView
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvIdQrCode"
-            android:textSize="@dimen/small_text_size"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tVTitleQrCode"
-            android:textAllCaps="true"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="@dimen/small_text_size"/>
+            android:background="@color/white"
+            android:layout_height="60dp">
 
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.ids.librascan.custom.CustomTextViewBold
+                        android:id="@+id/tvTitleQrCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center_vertical"
+                        android:ellipsize="start"
+                        android:layout_marginStart="@dimen/small_margin"
+                        android:gravity="start|center_vertical"
+                        android:maxLines="2"
+                        android:paddingStart="1dp"
+                        android:paddingTop="@dimen/normal_margin_padding"
+                        android:paddingEnd="1dp"
+                        android:text="1"
+                        android:paddingBottom="@dimen/normal_margin_padding"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/small_font" />
+
+
+                    <com.ids.librascan.custom.CustomTextViewMedium
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start|center_vertical"
+                        android:gravity="start"
+                        android:text="1
+"
+                        android:layout_marginStart="@dimen/small_margin"
+                        android:padding="@dimen/small_margin_padding"
+                        android:id="@+id/tvIdQrCode"
+                        android:textSize="@dimen/small_font"
+                        android:textColor="@color/colorAccent" />
+
+
+                </LinearLayout>
+
+
+                <com.ids.librascan.custom.CustomTextViewMedium
+                    android:id="@+id/tvQuantityCode"
+                    android:padding="@dimen/normal_margin_padding"
+                    android:layout_width="0dp"
+                    android:background="@color/white"
+                    android:layout_weight="1"
+                    android:text="1"
+                    android:layout_height="match_parent"
+                     android:gravity="center_vertical|center"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/small_font"/>
+
+                <com.ids.librascan.custom.CustomTextViewMedium
+                    android:id="@+id/tvUnitCode"
+                    android:background="@color/white"
+                    android:padding="@dimen/normal_margin_padding"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="1"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|center"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/small_font"/>
+
+                <ImageView
+                    android:id="@+id/iVDelete"
+                    android:src="@drawable/icon_delete"
+                    android:layout_gravity="center"
+                    android:layout_width="@dimen/size_20"
+                    android:layout_height="@dimen/size_20"
+                    app:tint="@color/red" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</androidx.cardview.widget.CardView>
 </layout>

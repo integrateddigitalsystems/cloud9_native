@@ -24,10 +24,15 @@ class MyApplication : Application() {
         var force_update=false
         var last_version=""
         var UNIQUE_REQUEST_CODE = 0
+        var firstLaunch: Boolean = true
         var localizeArray: FirebaseLocalizeArray?= null
 
         internal lateinit var instance: MyApplication
         var showLogs: Boolean = true
+
+        var isFirst : Boolean
+            get() = sharedPreferences.getBoolean(AppConstants.IS_FIRST, AppConstants.FIRST)
+            set(value) { sharedPreferencesEditor.putBoolean(AppConstants.IS_FIRST, value).apply() }
         var languageCode : String
             get() = sharedPreferences.getString(AppConstants.SELECTED_LANGUAGE, AppConstants.LANG_ENGLISH)!!
             set(value) { sharedPreferencesEditor.putString(AppConstants.SELECTED_LANGUAGE, value).apply() }

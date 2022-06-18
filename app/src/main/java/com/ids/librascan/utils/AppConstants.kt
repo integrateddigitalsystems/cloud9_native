@@ -15,7 +15,7 @@ object AppConstants {
     const val SELECTED_MESSAGE = "key_message"
     const val SELECTED_FRAGMENT = "key_fragment"
     const val IS_LOGIN = "is_login"
-
+    const val IS_FIRST = "is_first"
     const val HOME = 0
     const val PROFILE = 1
     const val SWIPE =2
@@ -26,6 +26,7 @@ object AppConstants {
     const val MESSAGE =""
     const val FRAGMENT =""
     const val CHECK_LOGIN = false
+    const val FIRST = true
 
 
 }

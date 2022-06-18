@@ -9,5 +9,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="homepage_color">#4D02b2a5</color>
     <color name="colorPrimary">#009C94</color>
-
+    <color name="colorPrimaryDark">#017f7d</color>
+    <color name="card_bg">#e6e6e6</color>
+    <color name="colorAccent">#1C232D</color>
+    <color name="hint_search">#B35a5f66</color>
+    <color name="gray_bg">#009688</color>
+    <color name="gray_bg1">#33999999</color>
+    <color name="red">#e26969</color>
 </resources>

@@ -5,9 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [QrCode::class], version = 1)
+@Database(entities = [QrCode::class,Unit::class], version = 2)
 abstract class QrCodeDatabase : RoomDatabase() {
     abstract fun getUrlDao(): QrCodeDao
+    abstract fun getUnit(): UnitDao
     companion object{
        @Volatile private var instance  : QrCodeDatabase? = null
         private  var LOCK = Any()

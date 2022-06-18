@@ -7,20 +7,15 @@ import androidx.room.*
 @Dao
 interface QrCodeDao {
     @Insert
-    suspend fun insertUrl(url: QrCode)
+    suspend fun insertUrl(qrCode: QrCode)
 
     @Query("SELECT * FROM urlScan_table")
     suspend fun getAllUrl(): List<QrCode>
-
-   /* @Insert
-    suspend fun insertUnit (unit: Unit)*/
-
-   // @Query("SELECT * FROM unit_table")
-   // suspend fun getUnit(): List<Unit>
-
+    
     @Update
-    suspend fun updateUrl(url: QrCode)
+    suspend fun updateUrl(qrCode:QrCode)
 
+   // @Query("DELETE FROM urlScan_table WHERE id = :id ")
     @Delete
-    suspend fun deleteUrl(url: QrCode)
+    suspend fun deleteUrl(qrCode: QrCode)
 }

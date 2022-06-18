@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
+              android:orientation="vertical"
+              android:id="@+id/llItem"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <TextView
+            android:id="@+id/tvItem"
+            android:layout_width="match_parent"
+            android:minHeight="@dimen/button_height"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:textSize="@dimen/small_font"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/colorPrimaryDark"  />
+</LinearLayout>
+</layout>
