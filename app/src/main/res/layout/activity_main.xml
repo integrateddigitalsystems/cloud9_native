@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    tools:context=".controller.Activities.ActivityMain">
+
+    <ImageView
+        android:id="@+id/iVLogout"
+        android:layout_width="@dimen/height_50"
+        android:layout_height="@dimen/height_50"
+        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/small_margin"
+        app:tint="@color/white"
+        android:src="@drawable/icon_logout"
+        android:layout_marginEnd="@dimen/small_margin"
+        tools:ignore="ContentDescription" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/big_margin"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/libra_scan"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_30"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/llScan"
+            android:layout_width="@dimen/section_size"
+            android:layout_height="@dimen/section_size"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/big_margin"
+            android:layout_marginBottom="@dimen/big_margin"
+            android:background="@drawable/rounded_home_layout"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/size_image_60"
+                android:layout_height="@dimen/size_image_60"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/icon_qr_home"
+                app:tint="@color/white" />
+
+
+
+            <com.ids.librascan.custom.CustomTextViewMedium
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/scan"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/llData"
+            android:layout_width="@dimen/section_size"
+            android:layout_height="@dimen/section_size"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/rounded_home_layout"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/size_image_60"
+                android:layout_height="@dimen/size_image_60"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/icon_data"
+                app:tint="@color/white" />
+
+
+            <com.ids.librascan.custom.CustomTextViewMedium
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:text="@string/my_data"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>
+
+
+</layout>
