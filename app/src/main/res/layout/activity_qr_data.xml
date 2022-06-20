@@ -11,9 +11,63 @@
     <include layout="@layout/loading_trans"/>
 
     <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginStart="@dimen/big_margin_padding"
+        android:layout_marginEnd="@dimen/big_margin_padding"
+        android:layout_marginTop="@dimen/small_margin"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+
+        <com.ids.librascan.custom.CustomTextViewMedium
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/small_margin_padding"
+            android:text="@string/search"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/font"/>
+
+        <RelativeLayout android:layout_width="0dp"
+            android:layout_weight="4"
+            android:background="@drawable/rounded_gray_edit_text"
+            android:minHeight="@dimen/edit_text_height"
+            android:layout_height="wrap_content">
+
+            <AutoCompleteTextView
+                android:id="@+id/tvBarcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/ivScan"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:hint="@string/name_code"
+                android:importantForAutofill="no"
+                android:maxLines="1"
+                android:minHeight="@dimen/edit_text_height"
+                android:minLines="1"
+                android:padding="@dimen/big_margin_padding"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/small_font" />
+
+            <ImageView
+                android:id="@+id/ivScan"
+                android:layout_width="@dimen/edit_text_height"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/small_margin_padding"
+                android:layout_marginTop="@dimen/small_margin_padding"
+                android:layout_marginEnd="@dimen/small_margin_padding"
+                android:layout_marginBottom="@dimen/small_margin_padding"
+                android:src="@drawable/scan"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_marginStart="@dimen/small_margin_padding"
         android:layout_marginEnd="@dimen/small_margin_padding"
-        android:layout_marginTop="@dimen/big_margin"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

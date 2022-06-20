@@ -1,7 +1,6 @@
 package com.ids.librascan.controller.Activities
 
 import Base.ActivityCompactBase
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,7 +18,6 @@ import utils.show
 
 class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener {
     lateinit var activityQrDataBinding: ActivityQrDataBinding
-    val qrCode : QrCode? = null
     private lateinit var adapterQrCode: AdapterQrCode
     private var arrQrCode = ArrayList<QrCode>()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +36,10 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener {
              loadingTransBinding.loading.hide()
              setData()
          }
+
+
+         activityQrDataBinding
+
      }
 
     private fun setData() {
@@ -59,4 +61,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener {
                  adapterQrCode.notifyItemChanged(position)
         }
     }
+
+
+
 }

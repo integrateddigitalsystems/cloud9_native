@@ -12,6 +12,10 @@ data class QrCode(
 ){
     @PrimaryKey(autoGenerate = true)
     var id: Int =0
+
+    override fun toString(): String {
+        return title!!
+    }
 }
 
 

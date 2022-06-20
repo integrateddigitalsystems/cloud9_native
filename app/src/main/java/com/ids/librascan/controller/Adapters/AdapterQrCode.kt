@@ -1,18 +1,24 @@
 package com.ids.librascan.controller.Adapters
 
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ids.librascan.R
 import com.ids.librascan.controller.Adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.librascan.db.QrCode
+import java.util.*
+import kotlin.collections.ArrayList
 
-class AdapterQrCode( private val items:List<QrCode> ,private val itemClickListener: RVOnItemClickListener) : RecyclerView.Adapter<AdapterQrCode.MyViewHolder>() {
-
+class AdapterQrCode( private val items:ArrayList<QrCode> ,private val itemClickListener: RVOnItemClickListener) : RecyclerView.Adapter<AdapterQrCode.MyViewHolder>(),
+    Filterable {
+    var FilterList = ArrayList<QrCode>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_qr_data, parent,false)
         return MyViewHolder(itemView)
@@ -54,4 +60,32 @@ class AdapterQrCode( private val items:List<QrCode> ,private val itemClickListen
 
     }
 
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val charSearch = constraint.toString()
+                if (charSearch.isEmpty()) {
+                    FilterList = items
+                } else {
+                    val resultList = ArrayList<QrCode>()
+                    for (row in items) {
+                        resultList.add(row)
+
+                    }
+                    FilterList = resultList
+                }
+                val filterResults = FilterResults()
+                filterResults.values = FilterList
+                return filterResults
+            }
+
+            @SuppressLint("NotifyDataSetChanged")
+            @Suppress("UNCHECKED_CAST")
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                FilterList = results?.values as ArrayList<QrCode>
+                notifyDataSetChanged()
+            }
+
+        }
+    }
 }

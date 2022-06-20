@@ -2,18 +2,21 @@ package com.ids.librascan.controller.Activities
 
 
 import Base.ActivityCompactBase
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.ids.librascan.R
-import com.ids.librascan.controller.Adapters.UnitsSpinnerAdapter
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityMainBinding
 import com.ids.librascan.databinding.PopupBarcodeBinding
@@ -28,7 +31,8 @@ class ActivityMain : ActivityCompactBase() {
     lateinit var activityMainBinding: ActivityMainBinding
     lateinit var mGoogleSignInClient: GoogleSignInClient
     private var spinnerUnits: ArrayList<String> = arrayListOf()
-    private lateinit var spinnerAdapter: UnitsSpinnerAdapter
+    var FromSearchRecycleAdapter = false
+    private var allSearchProducts: java.util.ArrayList<QrCode> = arrayListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
@@ -57,7 +61,7 @@ class ActivityMain : ActivityCompactBase() {
    fun init() {
        addUnit()
        activityMainBinding.llScan.setOnClickListener {
-           showAddQrCodeAlertDialog()
+           showAddQrCodeAlertDialog("")
        }
        activityMainBinding.llData.setOnClickListener {
            startActivity(Intent(this, ActivityQrData::class.java))
@@ -80,13 +84,13 @@ class ActivityMain : ActivityCompactBase() {
        }
 
     }
-    private fun showAddQrCodeAlertDialog() {
+    private fun showAddQrCodeAlertDialog(barcode : String) {
         var quantity = 1
         var selectedUnit = ""
         val popupBarcodeBinding = PopupBarcodeBinding.inflate(layoutInflater)
         val dialogLayout = popupBarcodeBinding.root
         val mBuilder = AlertDialog.Builder(this)
-            .setView(dialogLayout)
+        mBuilder.setView(dialogLayout)
         val mAlertDialog = mBuilder.show()
 
         val btClose = dialogLayout.findViewById(R.id.btClose) as Button
@@ -100,6 +104,43 @@ class ActivityMain : ActivityCompactBase() {
         val tvInsert = dialogLayout.findViewById(R.id.tvInsert) as TextView
         val tvInsertClose = dialogLayout.findViewById(R.id.tvInsertClose) as TextView
 
+        val llRvSearchProduct = dialogLayout.findViewById(R.id.llRvSearchProduct) as LinearLayout
+
+
+        tvTitleCode.addTextChangedListener(object : TextWatcher {
+
+            override fun onTextChanged(arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int) {
+                if (FromSearchRecycleAdapter) {
+                    FromSearchRecycleAdapter = false
+                } else if (!tvTitleCode.isPerformingCompletion) {
+
+                    if (arg0.isEmpty()) {
+
+                        try {
+                            AppHelper.closeKeyboard(this@ActivityMain)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+
+                        spinnerUnits.clear()
+                        allSearchProducts.clear()
+
+                    }
+                }
+            }
+
+            override fun beforeTextChanged(
+                arg0: CharSequence, arg1: Int, arg2: Int,
+                arg3: Int
+            ) {
+            }
+
+            override fun afterTextChanged(arg0: Editable) {
+            }
+        })
+
+
+        spinnerUnits.clear()
         launch {
             application?.let {
                 spinnerUnits.addAll(QrCodeDatabase(it).getUnit().getUnitData())
@@ -125,12 +166,6 @@ class ActivityMain : ActivityCompactBase() {
         }
 
         ivScan.setOnClickListener {
-            try {
-                AppHelper.closeKeyboard(this@ActivityMain)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            startActivity(Intent(this, ActivityScan::class.java))
             mAlertDialog.dismiss()
         }
         ivBarcode.setOnClickListener {
@@ -138,7 +173,6 @@ class ActivityMain : ActivityCompactBase() {
         }
 
         etQty.addTextChangedListener(object : TextWatcher {
-
             override fun onTextChanged(arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int) {
 
                 if (arg0.isEmpty()) {
@@ -161,21 +195,16 @@ class ActivityMain : ActivityCompactBase() {
         })
         etQty.setOnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) {
-
                 when {
                     etQty.text.isEmpty() -> {
-
                         quantity = 1
                         etQty.setText(quantity.toString())
-
                     }
                     etQty.text.toString() == "0" -> {
-
                         quantity = 1
                         etQty.setText(quantity.toString())
                     }
                     else -> {
-
                         quantity = etQty.text.toString().toInt()
                         etQty.setText(etQty.text.toString())
                     }
@@ -184,9 +213,7 @@ class ActivityMain : ActivityCompactBase() {
         }
 
         tvDecrement.setOnClickListener {
-
             if (quantity > 1) {
-
                 quantity -= 1
                 try {
                     etQty.setText(quantity.toString())
@@ -196,7 +223,6 @@ class ActivityMain : ActivityCompactBase() {
             }
         }
         tvIncrement.setOnClickListener {
-
             quantity += 1
             try {
                 etQty.setText(quantity.toString())
@@ -204,9 +230,17 @@ class ActivityMain : ActivityCompactBase() {
                 e.printStackTrace()
             }
         }
-
+        tvTitleCode.setText(barcode)
         tvInsertClose.setOnClickListener {
-
+            launch {
+                val qrCode = QrCode(tvTitleCode.text.toString(),quantity.toString(),selectedUnit)
+                application?.let {
+                    QrCodeDatabase(it).getUrlDao().insertUrl(qrCode)
+                    toast(getString(R.string.qr_code))
+                }
+            }
+            startActivity(Intent(this, ActivityMain::class.java))
+            finish()
         }
         tvInsert.setOnClickListener {
             launch {
@@ -216,14 +250,55 @@ class ActivityMain : ActivityCompactBase() {
                     toast(getString(R.string.qr_code))
                 }
             }
-
+           /* tvTitleCode.setText("")
+            etQty.setText("")
+            spinnerUnits.clear()*/
         }
 
         btClose.setOnClickListener {
-
             startActivity(Intent(this, ActivityMain::class.java))
             finish()
         }
     }
 
+   /* override fun handleResult(p0: Result?) {
+        toast(getString(R.string.barcode) + ":" +p0.toString())
+        showAddQrCodeAlertDialog(p0.toString())
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            1 -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    toast(getString(R.string.permission_message))
+                }
+            }
+        }
+
+    }*/
+
+   /* private fun checkCameraPermissions() {
+        if (ContextCompat.checkSelfPermission(
+                this@ActivityMain,
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this@ActivityMain,
+                arrayOf(Manifest.permission.CAMERA),
+                1
+            )
+        } else { //permissions granted
+            scannerView = ZXingScannerView(this)
+            scannerView?.setResultHandler(this)
+            scannerView?.startCamera()
+            setContentView(scannerView)
+        }
+    }*/
 }

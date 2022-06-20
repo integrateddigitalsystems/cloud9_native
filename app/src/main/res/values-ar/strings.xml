@@ -13,12 +13,14 @@
     <string name="cancel">الغاء</string>
     <string name="save_data">حفظ المعلومات</string>
     <string name="qr_code">تم الحفظ</string>
-    <string name="add_new">Add Item</string>
-    <string name="search">Search</string>
-    <string name="name_code">Name - code</string>
-    <string name="units">Units</string>
-    <string name="insert">Insert</string>
-    <string name="quantity">Quantity</string>
+    <string name="add_new">ادخال رمز</string>
+    <string name="search">بحث</string>
+    <string name="name_code">الاسم - الرمز</string>
+    <string name="units">وحدات</string>
+    <string name="insert">ادخال</string>
+    <string name="quantity">عدد</string>
     <string name="insert_and_save"><![CDATA[Insert & Close]]></string>
     <string name="item">Item</string>
+    <string name="unit">وحدة</string>
+    <string name="barcode">الرمز</string>
 </resources>
