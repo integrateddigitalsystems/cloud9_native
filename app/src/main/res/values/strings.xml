@@ -24,4 +24,9 @@
     <string name="item">Item</string>
     <string name="unit">Unit</string>
     <string name="barcode">Barcode</string>
+    <string name="camera_error">Camera permission denied</string>
+    <string name="error_filled_title">Please enter a barcode</string>
+    <string name="error_filled_unit">Please choose a unit</string>
+    <string name="error_filled_qty">Please enter a quantity</string>
+    <string name="update">Update</string>
 </resources>

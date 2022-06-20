@@ -23,4 +23,9 @@
     <string name="item">Item</string>
     <string name="unit">وحدة</string>
     <string name="barcode">الرمز</string>
+    <string name="error_filled_title">يرجى ادخال الرمز</string>
+    <string name="error_filled_unit">يرجى اختيار الوحدة</string>
+    <string name="error_filled_qty">يرجى ادخال العدد</string>
+    <string name="update">تعديل</string>
+    <string name="camera_error">Camera permission denied</string>
 </resources>

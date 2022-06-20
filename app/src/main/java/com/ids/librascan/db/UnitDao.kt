@@ -6,7 +6,7 @@ import androidx.room.*
 interface UnitDao {
     @Insert
     suspend fun insertUnit (unit: Unit)
-    @Query("SELECT title FROM unit_table")
-    suspend fun getUnitData(): List<String>
+    @Query("SELECT * FROM unit_table")
+    suspend fun getUnitData(): List<Unit>
 
 }

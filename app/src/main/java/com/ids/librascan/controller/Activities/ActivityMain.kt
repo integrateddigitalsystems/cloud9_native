@@ -5,9 +5,12 @@ import Base.ActivityCompactBase
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.SparseArray
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -16,7 +19,9 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.vision.barcode.Barcode
 import com.ids.librascan.R
+import com.ids.librascan.controller.Adapters.UnitsSpinnerAdapter
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityMainBinding
 import com.ids.librascan.databinding.PopupBarcodeBinding
@@ -24,15 +29,20 @@ import com.ids.librascan.db.QrCode
 import com.ids.librascan.db.QrCodeDatabase
 import com.ids.librascan.db.Unit
 import com.ids.librascan.utils.AppHelper
+import info.bideens.barcode.BarcodeReader
 import kotlinx.coroutines.launch
+import utils.hide
 import utils.toast
 
-class ActivityMain : ActivityCompactBase() {
+class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener {
     lateinit var activityMainBinding: ActivityMainBinding
     lateinit var mGoogleSignInClient: GoogleSignInClient
-    private var spinnerUnits: ArrayList<String> = arrayListOf()
+    private var spinnerUnits: ArrayList<Unit> = arrayListOf()
+    private lateinit var spinnerAdapter: UnitsSpinnerAdapter
+    lateinit var barcodeReader: BarcodeReader
+    private lateinit var barcodeAlertDialog: AlertDialog
     var FromSearchRecycleAdapter = false
-    private var allSearchProducts: java.util.ArrayList<QrCode> = arrayListOf()
+    private var arrQrCode: ArrayList<QrCode> = arrayListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
@@ -45,23 +55,19 @@ class ActivityMain : ActivityCompactBase() {
         if (MyApplication.isFirst){
             launch {
                 application?.let {
-
                     QrCodeDatabase(it).getUnit().insertUnit(Unit("Kg"))
                     QrCodeDatabase(it).getUnit().insertUnit(Unit("box"))
                     QrCodeDatabase(it).getUnit().insertUnit(Unit("item"))
                 }
-
             }
             MyApplication.isFirst = false
         }
-
-
     }
 
    fun init() {
        addUnit()
        activityMainBinding.llScan.setOnClickListener {
-           showAddQrCodeAlertDialog("")
+           showAddBarcodeAlertDialog("")
        }
        activityMainBinding.llData.setOnClickListener {
            startActivity(Intent(this, ActivityQrData::class.java))
@@ -75,6 +81,7 @@ class ActivityMain : ActivityCompactBase() {
 
        activityMainBinding.iVLogout.setOnClickListener {
            mGoogleSignInClient.signOut().addOnCompleteListener {
+             //  AppHelper.createDialog(this@ActivityMain,"Do you logout")
                MyApplication.isLogin = false
                val intent= Intent(this, ActivityLogin::class.java)
                toast(getString(R.string.logout))
@@ -83,76 +90,30 @@ class ActivityMain : ActivityCompactBase() {
            }
        }
 
+       barcodeReader = supportFragmentManager.findFragmentById(R.id.barcodeReader) as BarcodeReader
+       spinnerAdapter = UnitsSpinnerAdapter(this, spinnerUnits)
+
     }
-    private fun showAddQrCodeAlertDialog(barcode : String) {
+
+    private fun showAddBarcodeAlertDialog(barcode:String) {
         var quantity = 1
-        var selectedUnit = ""
+        var selectedUnit = Unit()
+        spinnerUnits.clear()
+        var selected = QrCode()
+
+        val builder = AlertDialog.Builder(this)
         val popupBarcodeBinding = PopupBarcodeBinding.inflate(layoutInflater)
         val dialogLayout = popupBarcodeBinding.root
-        val mBuilder = AlertDialog.Builder(this)
-        mBuilder.setView(dialogLayout)
-        val mAlertDialog = mBuilder.show()
-
-        val btClose = dialogLayout.findViewById(R.id.btClose) as Button
-        val ivScan = dialogLayout.findViewById(R.id.ivScan) as ImageView
-        val spUnits = dialogLayout.findViewById(R.id.spUnits) as Spinner
-        val ivBarcode = dialogLayout.findViewById(R.id.ivBarcode) as ImageView
-        val tvTitleCode = dialogLayout.findViewById(R.id.tvTitleCode) as AutoCompleteTextView
-        val tvDecrement = dialogLayout.findViewById(R.id.tvDecrement) as TextView
-        val tvIncrement = dialogLayout.findViewById(R.id.tvIncrement) as TextView
-        val etQty = dialogLayout.findViewById(R.id.etQty) as EditText
-        val tvInsert = dialogLayout.findViewById(R.id.tvInsert) as TextView
-        val tvInsertClose = dialogLayout.findViewById(R.id.tvInsertClose) as TextView
-
-        val llRvSearchProduct = dialogLayout.findViewById(R.id.llRvSearchProduct) as LinearLayout
 
 
-        tvTitleCode.addTextChangedListener(object : TextWatcher {
 
-            override fun onTextChanged(arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int) {
-                if (FromSearchRecycleAdapter) {
-                    FromSearchRecycleAdapter = false
-                } else if (!tvTitleCode.isPerformingCompletion) {
-
-                    if (arg0.isEmpty()) {
-
-                        try {
-                            AppHelper.closeKeyboard(this@ActivityMain)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-
-                        spinnerUnits.clear()
-                        allSearchProducts.clear()
-
-                    }
-                }
-            }
-
-            override fun beforeTextChanged(
-                arg0: CharSequence, arg1: Int, arg2: Int,
-                arg3: Int
-            ) {
-            }
-
-            override fun afterTextChanged(arg0: Editable) {
-            }
-        })
-
-
-        spinnerUnits.clear()
         launch {
             application?.let {
                 spinnerUnits.addAll(QrCodeDatabase(it).getUnit().getUnitData())
-                val arrayAdapter = ArrayAdapter(
-                    this@ActivityMain,
-                    android.R.layout.simple_spinner_dropdown_item,
-                    spinnerUnits
-                )
-                spUnits.adapter = arrayAdapter
+                popupBarcodeBinding.spUnits.adapter = spinnerAdapter
             }
         }
-        spUnits.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        popupBarcodeBinding.spUnits.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
             override fun onItemSelected(
@@ -161,29 +122,33 @@ class ActivityMain : ActivityCompactBase() {
                 position: Int,
                 id: Long
             ) {
-                selectedUnit = spinnerUnits[position]
+                selectedUnit = parent?.getItemAtPosition(position) as Unit
             }
         }
 
-        ivScan.setOnClickListener {
-            mAlertDialog.dismiss()
+        popupBarcodeBinding.ivScan.setOnClickListener {
+            try {
+                AppHelper.closeKeyboard(this@ActivityMain)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            checkCameraPermissions()
+            barcodeAlertDialog.cancel()
         }
-        ivBarcode.setOnClickListener {
-            ivScan.performClick()
+        popupBarcodeBinding.ivBarcode.setOnClickListener {
+            popupBarcodeBinding.ivScan.performClick()
         }
 
-        etQty.addTextChangedListener(object : TextWatcher {
+        popupBarcodeBinding.etQty.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int) {
 
                 if (arg0.isEmpty()) {
                     quantity = 1
-                    etQty.setText(quantity.toString())
+                    popupBarcodeBinding.etQty.setText(quantity.toString())
                 } else {
-
-                    quantity = etQty.text.toString().toInt()
+                    quantity = popupBarcodeBinding.etQty.text.toString().toInt()
                 }
             }
-
             override fun beforeTextChanged(
                 arg0: CharSequence, arg1: Int, arg2: Int,
                 arg3: Int
@@ -193,112 +158,237 @@ class ActivityMain : ActivityCompactBase() {
             override fun afterTextChanged(arg0: Editable) {
             }
         })
-        etQty.setOnFocusChangeListener { v, hasFocus ->
+        popupBarcodeBinding.etQty.setOnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) {
                 when {
-                    etQty.text.isEmpty() -> {
+                    popupBarcodeBinding.etQty.text.isEmpty() -> {
                         quantity = 1
-                        etQty.setText(quantity.toString())
+                        popupBarcodeBinding.etQty.setText(quantity.toString())
                     }
-                    etQty.text.toString() == "0" -> {
+                    popupBarcodeBinding.etQty.text.toString() == "0" -> {
                         quantity = 1
-                        etQty.setText(quantity.toString())
+                        popupBarcodeBinding.etQty.setText(quantity.toString())
                     }
                     else -> {
-                        quantity = etQty.text.toString().toInt()
-                        etQty.setText(etQty.text.toString())
+                        quantity = popupBarcodeBinding.etQty.text.toString().toInt()
+                        popupBarcodeBinding.etQty.setText(popupBarcodeBinding.etQty.text.toString())
                     }
                 }
             }
         }
 
-        tvDecrement.setOnClickListener {
+        popupBarcodeBinding.tvDecrement.setOnClickListener {
             if (quantity > 1) {
                 quantity -= 1
                 try {
-                    etQty.setText(quantity.toString())
+                    popupBarcodeBinding.etQty.setText(quantity.toString())
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
         }
-        tvIncrement.setOnClickListener {
+        popupBarcodeBinding.tvIncrement.setOnClickListener {
             quantity += 1
             try {
-                etQty.setText(quantity.toString())
+                popupBarcodeBinding.etQty.setText(quantity.toString())
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
-        tvTitleCode.setText(barcode)
-        tvInsertClose.setOnClickListener {
+        popupBarcodeBinding.tvTitleCode.setText(barcode)
+        popupBarcodeBinding.tvInsertClose.setOnClickListener {
             launch {
-                val qrCode = QrCode(tvTitleCode.text.toString(),quantity.toString(),selectedUnit)
+                val qrCode = QrCode(popupBarcodeBinding.tvTitleCode.text.toString(),quantity.toString(),selectedUnit.title)
                 application?.let {
                     QrCodeDatabase(it).getUrlDao().insertUrl(qrCode)
                     toast(getString(R.string.qr_code))
                 }
             }
-            startActivity(Intent(this, ActivityMain::class.java))
-            finish()
+            barcodeAlertDialog.cancel()
         }
-        tvInsert.setOnClickListener {
-            launch {
-                val qrCode = QrCode(tvTitleCode.text.toString(),quantity.toString(),selectedUnit)
-                application?.let {
-                    QrCodeDatabase(it).getUrlDao().insertUrl(qrCode)
-                    toast(getString(R.string.qr_code))
+
+        launch {
+            arrQrCode.addAll(QrCodeDatabase(application).getUrlDao().getAllUrl())
+
+        }
+        popupBarcodeBinding.tvInsert.setOnClickListener {
+            for (item in arrQrCode){
+                if (popupBarcodeBinding.tvTitleCode.text.toString() == item.title && selectedUnit.title == item.unitId){
+                    AppHelper.createDialog(
+                        this@ActivityMain,
+                        "item is exist" + "\n" + "\n" + "Do you want update this record!"
+                    )
+                    popupBarcodeBinding.tvInsert.visibility= View.INVISIBLE
+                    popupBarcodeBinding.tvInsertClose.visibility= View.INVISIBLE
+                    popupBarcodeBinding.tvUpdate.visibility= View.VISIBLE
+                    popupBarcodeBinding.etQty.setText(item.quantity)
                 }
-            }
-           /* tvTitleCode.setText("")
-            etQty.setText("")
-            spinnerUnits.clear()*/
-        }
-
-        btClose.setOnClickListener {
-            startActivity(Intent(this, ActivityMain::class.java))
-            finish()
-        }
-    }
-
-   /* override fun handleResult(p0: Result?) {
-        toast(getString(R.string.barcode) + ":" +p0.toString())
-        showAddQrCodeAlertDialog(p0.toString())
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        when (requestCode) {
-            1 -> {
-                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    toast(getString(R.string.permission_message))
+                else{
+                    if (!popupBarcodeBinding.tvTitleCode.equals("") && !selectedUnit.equals("") && quantity != 0){
+                        /* launch {
+                             val qrCode = QrCode(popupBarcodeBinding.tvTitleCode.text.toString(),popupBarcodeBinding.etQty.text.toString(),selectedUnit.title)
+                             application?.let {
+                                 QrCodeDatabase(it).getUrlDao().insertUrl(qrCode)
+                                 toast(getString(R.string.qr_code))
+                             }
+                         }*/
+                        /* quantity = 1
+                         tvTitleCode.setText("")
+                         etQty.setText(quantity.toString())
+                         spinnerUnits.clear()*/
+                        //  spinnerAdapter.notifyDataSetChanged()
+                    }
+                    else{
+                        when {
+                            popupBarcodeBinding.tvTitleCode.equals("") -> AppHelper.createDialog(
+                                this@ActivityMain,
+                                resources.getString(R.string.error_filled_title)
+                            )
+                            selectedUnit.equals("")-> AppHelper.createDialog(
+                                this@ActivityMain,
+                                resources.getString(R.string.error_filled_unit)
+                            )
+                            quantity == 0 -> AppHelper.createDialog(
+                                this@ActivityMain,
+                                resources.getString(R.string.error_filled_qty)
+                            )
+                        }
+                    }
                 }
+
             }
+
+
+
+        }
+        popupBarcodeBinding.btClose.setOnClickListener {
+            barcodeAlertDialog.cancel()
         }
 
-    }*/
+        AppHelper.overrideFonts(this@ActivityMain, popupBarcodeBinding.llPagerItem)
+        builder.setView(dialogLayout)
+        barcodeAlertDialog = builder.create()
+        try {
+            barcodeAlertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        barcodeAlertDialog.show()
 
-   /* private fun checkCameraPermissions() {
+    }
+    private fun checkCameraPermissions() {
         if (ContextCompat.checkSelfPermission(
                 this@ActivityMain,
                 Manifest.permission.CAMERA
             ) != PackageManager.PERMISSION_GRANTED
         ) {
+
             ActivityCompat.requestPermissions(
                 this@ActivityMain,
                 arrayOf(Manifest.permission.CAMERA),
                 1
             )
         } else { //permissions granted
-            scannerView = ZXingScannerView(this)
-            scannerView?.setResultHandler(this)
-            scannerView?.startCamera()
-            setContentView(scannerView)
+
+            //show barcode
+            activityMainBinding.rlBarcode.visibility = View.VISIBLE
+            barcodeReader.resumeScanning()
         }
-    }*/
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == 1) {
+
+            if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) { //GRANTED
+
+                activityMainBinding.rlBarcode.visibility = View.VISIBLE
+                barcodeReader.resumeScanning()
+            } else {
+                toast(getString(R.string.camera_error))
+            }
+        }
+    }
+
+    override fun onScanned(barcode: Barcode?) {
+        val value = barcode.let { it!!.displayValue }
+        barcodeReader.playBeep()
+        barcodeReader.pauseScanning()
+
+        this.runOnUiThread {
+            toast("Barcode: $value")
+            activityMainBinding.rlBarcode.visibility = View.GONE
+            showAddBarcodeAlertDialog(value)
+//            tvTitleCode.setText(value)
+        }
+    }
+
+    override fun onScannedMultiple(barcodes: MutableList<Barcode>?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onBitmapScanned(sparseArray: SparseArray<Barcode>?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onScanError(errorMessage: String?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onCameraPermissionDenied() {
+        toast(getString(R.string.camera_error))
+    }
+
+    override fun onBackPressed() {
+        if (activityMainBinding.rlBarcode.visibility == View.VISIBLE) {
+
+            barcodeReader.pauseScanning()
+
+            activityMainBinding.rlBarcode.visibility = View.GONE
+           // showAddQrCodeAlertDialog()
+
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    fun back(v: View) {
+        onBackPressed()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        try {
+            activityMainBinding.rlBarcode.let {
+
+                if (it.visibility == View.VISIBLE) {
+                    barcodeReader.resumeScanning()
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        try {
+            activityMainBinding.rlBarcode.let {
+
+                if (it.visibility == View.VISIBLE) {
+                    barcodeReader.pauseScanning()
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
 }

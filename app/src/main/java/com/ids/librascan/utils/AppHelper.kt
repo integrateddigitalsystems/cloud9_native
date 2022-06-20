@@ -57,6 +57,34 @@ class AppHelper {
         }
 
 
+        fun overrideFonts(context: Context, v: View) {
+
+            val typeface: Typeface
+
+            try {
+                if (v is ViewGroup) {
+                    for (i in 0 until v.childCount) {
+                        val child = v.getChildAt(i)
+                        overrideFonts(context, child)
+                    }
+                } else if (v is TextView) {
+
+                    when (MyApplication) {
+
+                        //MyApplication.ENGLISH -> typeface = MyApplication.gilroy
+
+                        // else -> typeface = MyApplication.droidRegular
+                    }
+
+                    //  v.typeface = typeface
+                }
+            } catch (e: Exception) {
+                // Crashlytics.logException(e)
+                e.printStackTrace()
+            }
+
+        }
+
         fun setLocal(context: Context) {
 
             if (MyApplication.languageCode == AppConstants.LANG_ENGLISH) {
@@ -172,7 +200,15 @@ class AppHelper {
             builder
                 .setMessage(message)
                 .setCancelable(true)
-                .setNegativeButton(c.getString(android.R.string.ok)) { dialog, _ -> dialog.cancel() }
+                .setPositiveButton(c.getString(android.R.string.ok))
+                { dialog, _ ->
+                    dialog.cancel()
+                }
+                .setNegativeButton(c.getString(android.R.string.cancel))
+                { dialog, _ ->
+                    dialog.cancel()
+                }
+
             val alert = builder.create()
             alert.show()
         }
@@ -204,4 +240,6 @@ class AppHelper {
         }*/
 
     }
+
+
 }

@@ -4,7 +4,7 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        android:weightSum="5"
+        android:weightSum="3"
         android:id="@+id/llItem"
         android:paddingBottom="@dimen/small_margin_padding"
         android:layout_width="match_parent"
@@ -26,38 +26,27 @@
                 android:layout_weight="1">
 
                 <LinearLayout
-                    android:layout_width="150dp"
+                    android:layout_width="@dimen/width_150"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <com.ids.librascan.custom.CustomTextViewBold
                         android:id="@+id/tvTitleQrCode"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|center_vertical"
+                        android:layout_height="match_parent"
                         android:ellipsize="start"
                         android:layout_marginStart="@dimen/small_margin"
-                        android:gravity="start|center_vertical"
+                        android:layout_marginEnd="@dimen/small_margin"
                         android:maxLines="2"
+                        android:gravity="start|center"
+                        android:layout_gravity="start"
                         android:paddingStart="1dp"
                         android:paddingTop="@dimen/normal_margin_padding"
                         android:paddingEnd="1dp"
                         android:paddingBottom="@dimen/normal_margin_padding"
-                        android:textAlignment="viewStart"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/small_font" />
 
-
-                    <com.ids.librascan.custom.CustomTextViewMedium
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="start|center_vertical"
-                        android:gravity="start"
-                        android:layout_marginStart="@dimen/small_margin"
-                        android:padding="@dimen/small_margin_padding"
-                        android:id="@+id/tvIdQrCode"
-                        android:textSize="@dimen/small_font"
-                        android:textColor="@color/colorAccent" />
 
 
                 </LinearLayout>

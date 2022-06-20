@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-<LinearLayout
+<FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
@@ -11,8 +11,8 @@
 
     <ImageView
         android:id="@+id/iVLogout"
-        android:layout_width="@dimen/height_50"
-        android:layout_height="@dimen/height_50"
+        android:layout_width="@dimen/size_30"
+        android:layout_height="@dimen/size_30"
         android:layout_gravity="end"
         android:layout_marginTop="@dimen/small_margin"
         app:tint="@color/white"
@@ -103,7 +103,33 @@
 
     </LinearLayout>
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/rlBarcode"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <fragment
+        android:id="@+id/barcodeReader"
+        android:name="info.bideens.barcode.BarcodeReader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:auto_focus="true"
+        app:use_flash="false" />
+
+    <info.bideens.barcode.ScannerOverlay
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#44000000"
+        app:line_color="#7323DC"
+        app:line_speed="6"
+        app:line_width="4"
+        app:square_height="200"
+        app:square_width="200"/>
+
+</RelativeLayout>
+
+</FrameLayout>
 
 
 </layout>
