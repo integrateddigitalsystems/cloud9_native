@@ -16,11 +16,6 @@ object AppConstants {
     const val SELECTED_FRAGMENT = "key_fragment"
     const val IS_LOGIN = "is_login"
     const val IS_FIRST = "is_first"
-    const val HOME = 0
-    const val PROFILE = 1
-    const val SWIPE =2
-    const val NOTIFICATION =3
-    const val ADD =4
 
     const val TITLE =""
     const val MESSAGE =""

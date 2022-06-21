@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
 import utils.AppConstants
 import utils.LocaleUtils
@@ -195,7 +196,6 @@ class AppHelper {
         }
 
         fun createDialog(c: Activity, message: String) {
-
             val builder = AlertDialog.Builder(c)
             builder
                 .setMessage(message)
@@ -209,6 +209,16 @@ class AppHelper {
                     dialog.cancel()
                 }
 
+            val alert = builder.create()
+            alert.show()
+        }
+
+        fun createDialogPositive(c: Activity, message: String) {
+            val builder = AlertDialog.Builder(c)
+            builder
+                .setMessage(message)
+                .setCancelable(true)
+                .setNegativeButton(c.getString(R.string.ok)){ dialog, _ -> dialog.cancel() }
             val alert = builder.create()
             alert.show()
         }

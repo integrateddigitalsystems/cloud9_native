@@ -1,5 +1,6 @@
 package com.ids.librascan.controller.Activities
 
+import Base.ActivityCompactBase
 import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -17,10 +18,13 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityLoginBinding
+import utils.AppConstants
+import utils.LocaleUtils
 import utils.toast
 import utils.wtf
+import java.util.*
 
-class ActivityLogin : AppCompatActivity() {
+class ActivityLogin : ActivityCompactBase() {
     lateinit var activityLoginBinding: ActivityLoginBinding
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var firebaseAuth: FirebaseAuth
@@ -45,6 +49,14 @@ class ActivityLogin : AppCompatActivity() {
 
         activityLoginBinding.btLogin.setOnClickListener {
             signInGoogle()
+        }
+
+       activityLoginBinding.btChangeLanguage.setOnClickListener {
+            if (MyApplication.languageCode.equals(AppConstants.LANG_ENGLISH)) {
+                changeToArabic()
+            } else {
+                changeToEnglish()
+            }
         }
     }
 
@@ -86,6 +98,26 @@ class ActivityLogin : AppCompatActivity() {
                    toast(getString(R.string.login_faild))
                 }
             }
+    }
+
+    fun changeToEnglish() {
+        MyApplication.languageCode = AppConstants.LANG_ENGLISH
+        LocaleUtils.setLocale(Locale("en"))
+        try {
+            startActivity(Intent(this@ActivityLogin, ActivityLogin::class.java))
+            finish()
+        } catch (e: Exception) {
+        }
+    }
+
+    fun changeToArabic() {
+        MyApplication.languageCode = AppConstants.LANG_ARABIC
+        LocaleUtils.setLocale(Locale("ar"))
+        try {
+            startActivity(Intent(this@ActivityLogin, ActivityLogin::class.java))
+            finish()
+        } catch (e: Exception) {
+        }
     }
 
 }

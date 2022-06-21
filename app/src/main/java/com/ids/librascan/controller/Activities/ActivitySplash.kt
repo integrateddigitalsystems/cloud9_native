@@ -1,5 +1,6 @@
 package com.ids.librascan.controller.Activities
 
+import Base.ActivityCompactBase
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,7 +9,7 @@ import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivitySplashBinding
 
-class ActivitySplash : AppCompatActivity() {
+class ActivitySplash : ActivityCompactBase() {
     lateinit var activitySplashBinding: ActivitySplashBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

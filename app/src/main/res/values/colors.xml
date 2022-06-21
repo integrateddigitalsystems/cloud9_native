@@ -16,4 +16,5 @@
     <color name="gray_bg">#009688</color>
     <color name="gray_bg1">#33999999</color>
     <color name="red">#e26969</color>
+    <color name="gray_border">#757579</color>
 </resources>

@@ -2,24 +2,24 @@ package com.ids.librascan.db
 
 
 import androidx.room.*
-import java.util.concurrent.Flow
 
 
 @Dao
 interface QrCodeDao {
-    @Insert
-    suspend fun insertUrl(qrCode: QrCode)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCode(qrCode: QrCode)
 
-    @Query("SELECT * FROM urlScan_table")
-    suspend fun getAllUrl(): List<QrCode>
-    
+    @Query("SELECT * FROM codeScan_table")
+    suspend fun getAllCode(): List<QrCode>
+
+    @Query("SELECT * FROM codeScan_table WHERE code=:code AND unitId=:unitId")
+    suspend fun  getCode(code : String?,unitId : Int?): QrCode
+
     @Update
     suspend fun updateUrl(qrCode:QrCode)
 
-   // @Query("DELETE FROM urlScan_table WHERE id = :id ")
-    @Delete
-    suspend fun deleteUrl(qrCode: QrCode)
 
-   /* @Query("SELECT * FROM urlScan_table WHERE title LIKE :title")
-    suspend fun searchDatabase(title: String)*/
+    @Delete
+    suspend fun deleteCode(qrCode: QrCode)
+
 }

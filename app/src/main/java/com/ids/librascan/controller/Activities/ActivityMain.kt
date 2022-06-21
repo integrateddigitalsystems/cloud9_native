@@ -3,6 +3,7 @@ package com.ids.librascan.controller.Activities
 
 import Base.ActivityCompactBase
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -19,6 +20,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.vision.barcode.Barcode
 import com.ids.librascan.R
 import com.ids.librascan.controller.Adapters.UnitsSpinnerAdapter
@@ -28,11 +30,14 @@ import com.ids.librascan.databinding.PopupBarcodeBinding
 import com.ids.librascan.db.QrCode
 import com.ids.librascan.db.QrCodeDatabase
 import com.ids.librascan.db.Unit
+import com.ids.librascan.model.SearchProductModel
 import com.ids.librascan.utils.AppHelper
 import info.bideens.barcode.BarcodeReader
 import kotlinx.coroutines.launch
 import utils.hide
+import utils.show
 import utils.toast
+import utils.wtf
 
 class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener {
     lateinit var activityMainBinding: ActivityMainBinding
@@ -41,17 +46,16 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener 
     private lateinit var spinnerAdapter: UnitsSpinnerAdapter
     lateinit var barcodeReader: BarcodeReader
     private lateinit var barcodeAlertDialog: AlertDialog
-    var FromSearchRecycleAdapter = false
     private var arrQrCode: ArrayList<QrCode> = arrayListOf()
+    private lateinit var qrCode : QrCode
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
         init()
-
     }
 
-    fun addUnit(){
+    private fun addUnit(){
         if (MyApplication.isFirst){
             launch {
                 application?.let {
@@ -64,7 +68,29 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener 
         }
     }
 
-   fun init() {
+    fun createDialogLogout() {
+        val builder = android.app.AlertDialog.Builder(this)
+            .setMessage(getString(R.string.logout_message))
+            .setCancelable(true)
+            .setPositiveButton(getString(R.string.yes))
+            { dialog, _ ->
+                mGoogleSignInClient.signOut().addOnCompleteListener {
+                    MyApplication.isLogin = false
+                    val intent= Intent(this, ActivityLogin::class.java)
+                    toast(getString(R.string.logout))
+                    startActivity(intent)
+                    finish()
+                }
+                dialog.cancel()
+            }
+            .setNegativeButton(getString(R.string.no))
+            { dialog, _ ->
+                dialog.cancel()
+            }
+        val alert = builder.create()
+        alert.show()
+    }
+    fun init() {
        addUnit()
        activityMainBinding.llScan.setOnClickListener {
            showAddBarcodeAlertDialog("")
@@ -80,14 +106,7 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener 
        mGoogleSignInClient= GoogleSignIn.getClient(this,gso)
 
        activityMainBinding.iVLogout.setOnClickListener {
-           mGoogleSignInClient.signOut().addOnCompleteListener {
-             //  AppHelper.createDialog(this@ActivityMain,"Do you logout")
-               MyApplication.isLogin = false
-               val intent= Intent(this, ActivityLogin::class.java)
-               toast(getString(R.string.logout))
-               startActivity(intent)
-               finish()
-           }
+           createDialogLogout()
        }
 
        barcodeReader = supportFragmentManager.findFragmentById(R.id.barcodeReader) as BarcodeReader
@@ -99,13 +118,10 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener 
         var quantity = 1
         var selectedUnit = Unit()
         spinnerUnits.clear()
-        var selected = QrCode()
 
         val builder = AlertDialog.Builder(this)
         val popupBarcodeBinding = PopupBarcodeBinding.inflate(layoutInflater)
         val dialogLayout = popupBarcodeBinding.root
-
-
 
         launch {
             application?.let {
@@ -195,70 +211,118 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener 
                 e.printStackTrace()
             }
         }
+
+        fun createDialog(message: String) {
+            val builder = AlertDialog.Builder(this)
+                .setMessage(message)
+                .setCancelable(true)
+                .setPositiveButton(getString(R.string.yes))
+                { dialog, _ ->
+                    popupBarcodeBinding.tvInsert.hide()
+                    popupBarcodeBinding.tvInsertClose.show()
+                    popupBarcodeBinding.tvInsertClose.setText(getString(R.string.update))
+
+                    dialog.cancel()
+                }
+                .setNegativeButton(getString(R.string.no))
+                { dialog, _ ->
+                   dialog.cancel()
+
+                }
+            val alert = builder.create()
+            alert.show()
+        }
+
+
+
         popupBarcodeBinding.tvTitleCode.setText(barcode)
         popupBarcodeBinding.tvInsertClose.setOnClickListener {
-            launch {
-                val qrCode = QrCode(popupBarcodeBinding.tvTitleCode.text.toString(),quantity.toString(),selectedUnit.title)
-                application?.let {
-                    QrCodeDatabase(it).getUrlDao().insertUrl(qrCode)
-                    toast(getString(R.string.qr_code))
+            if (popupBarcodeBinding.tvTitleCode.text.toString() != ""  && selectedUnit.toString() != " " && quantity != 0) {
+                launch {
+                    if(popupBarcodeBinding.tvInsertClose.text == (getString(R.string.insert_and_save))){
+                        qrCode = QrCode(popupBarcodeBinding.tvTitleCode.text.toString().trim(),selectedUnit.id,quantity.toString().trim())
+                        var qrCodeQuery = QrCodeDatabase(application).getCodeDao().getCode(popupBarcodeBinding.tvTitleCode.text.toString().trim(),selectedUnit.id)
+                        if (qrCodeQuery !=null ) {
+                            createDialog(getString(R.string.item_exist) + "\n" + "\n" + getString(R.string.item_update))
+
+                            popupBarcodeBinding.tvUpdate.setOnClickListener {
+                                launch {
+                                    QrCodeDatabase(application).getCodeDao().insertCode(qrCodeQuery)
+                                    toast(qrCodeQuery.id.toString())
+                                    popupBarcodeBinding.etQty.setText(qrCodeQuery.quantity)
+                                    barcodeAlertDialog.cancel()
+                                }
+                            }
+
+                        } else {
+                            QrCodeDatabase(application).getCodeDao().insertCode(qrCode)
+                            toast(getString(R.string.qr_code))
+                            barcodeAlertDialog.cancel()
+                        }
+                    }
+                    else{
+                        var qrCodeQuery = QrCodeDatabase(application).getCodeDao().getCode(popupBarcodeBinding.tvTitleCode.text.toString().trim(),selectedUnit.id)
+                        QrCodeDatabase(application).getCodeDao().insertCode(qrCodeQuery)
+                        toast(getString(R.string.message_update))
+                        barcodeAlertDialog.cancel()
+                    }
+
+
+                }
+
+            }
+            else{
+                when {
+                    popupBarcodeBinding.tvTitleCode.text.toString() == "" -> AppHelper.createDialogPositive(
+                        this@ActivityMain,
+                        resources.getString(R.string.error_filled_title)
+                    )
+                    selectedUnit.toString() == " "-> AppHelper.createDialogPositive(
+                        this@ActivityMain,
+                        resources.getString(R.string.error_filled_unit)
+                    )
+                    quantity == 0 -> AppHelper.createDialogPositive(
+                        this@ActivityMain,
+                        resources.getString(R.string.error_filled_qty)
+                    )
                 }
             }
-            barcodeAlertDialog.cancel()
-        }
-
-        launch {
-            arrQrCode.addAll(QrCodeDatabase(application).getUrlDao().getAllUrl())
 
         }
+
         popupBarcodeBinding.tvInsert.setOnClickListener {
-            for (item in arrQrCode){
-                if (popupBarcodeBinding.tvTitleCode.text.toString() == item.title && selectedUnit.title == item.unitId){
-                    AppHelper.createDialog(
-                        this@ActivityMain,
-                        "item is exist" + "\n" + "\n" + "Do you want update this record!"
-                    )
-                    popupBarcodeBinding.tvInsert.visibility= View.INVISIBLE
-                    popupBarcodeBinding.tvInsertClose.visibility= View.INVISIBLE
-                    popupBarcodeBinding.tvUpdate.visibility= View.VISIBLE
-                    popupBarcodeBinding.etQty.setText(item.quantity)
-                }
-                else{
-                    if (!popupBarcodeBinding.tvTitleCode.equals("") && !selectedUnit.equals("") && quantity != 0){
-                        /* launch {
-                             val qrCode = QrCode(popupBarcodeBinding.tvTitleCode.text.toString(),popupBarcodeBinding.etQty.text.toString(),selectedUnit.title)
+                    if (popupBarcodeBinding.tvTitleCode.text.toString() != ""  && selectedUnit.toString() != " " && quantity != 0){
+                         launch {
+                             val qrCode = QrCode(popupBarcodeBinding.tvTitleCode.text.toString().trim(),selectedUnit.id,quantity.toString().trim())
                              application?.let {
-                                 QrCodeDatabase(it).getUrlDao().insertUrl(qrCode)
+                                 QrCodeDatabase(it).getCodeDao().insertCode(qrCode)
                                  toast(getString(R.string.qr_code))
                              }
-                         }*/
-                        /* quantity = 1
-                         tvTitleCode.setText("")
-                         etQty.setText(quantity.toString())
-                         spinnerUnits.clear()*/
-                        //  spinnerAdapter.notifyDataSetChanged()
+                         }
+                       //  quantity = 1
+                      //   popupBarcodeBinding.tvTitleCode.setText("")
+                      //   popupBarcodeBinding.etQty.setText(quantity.toString())
+                       //    spinnerUnits.clear()
+                        //   spinnerUnits.addAll(selected.units)
+                        //    spinnerAdapter.notifyDataSetChanged()
                     }
                     else{
                         when {
-                            popupBarcodeBinding.tvTitleCode.equals("") -> AppHelper.createDialog(
+                            popupBarcodeBinding.tvTitleCode.text.toString() == "" -> AppHelper.createDialogPositive(
                                 this@ActivityMain,
                                 resources.getString(R.string.error_filled_title)
                             )
-                            selectedUnit.equals("")-> AppHelper.createDialog(
+                            selectedUnit.toString() == " "-> AppHelper.createDialogPositive(
                                 this@ActivityMain,
                                 resources.getString(R.string.error_filled_unit)
                             )
-                            quantity == 0 -> AppHelper.createDialog(
+                            quantity == 0 -> AppHelper.createDialogPositive(
                                 this@ActivityMain,
                                 resources.getString(R.string.error_filled_qty)
                             )
                         }
-                    }
-                }
 
             }
-
-
 
         }
         popupBarcodeBinding.btClose.setOnClickListener {
@@ -296,17 +360,10 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener 
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
         if (requestCode == 1) {
-
             if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) { //GRANTED
-
                 activityMainBinding.rlBarcode.visibility = View.VISIBLE
                 barcodeReader.resumeScanning()
             } else {
@@ -356,14 +413,8 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener 
             super.onBackPressed()
         }
     }
-
-    fun back(v: View) {
-        onBackPressed()
-    }
-
     override fun onResume() {
         super.onResume()
-
         try {
             activityMainBinding.rlBarcode.let {
 
@@ -375,7 +426,6 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener 
             e.printStackTrace()
         }
     }
-
     override fun onPause() {
         super.onPause()
 

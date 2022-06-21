@@ -4,11 +4,11 @@ import com.ids.librascan.db.QrCode
 
 class SearchProductModel {
 
-    var product = QrCode()
+    var qrCode = QrCode("",1,"")
     var units = arrayListOf<Unit>()
     var isByBarcode = false
 
     override fun toString(): String {
-        return product.toString()
+        return qrCode.toString()
     }
 }

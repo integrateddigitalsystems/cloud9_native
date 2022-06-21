@@ -53,7 +53,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
          val loadingTransBinding = LoadingTransBinding.inflate(layoutInflater)
          loadingTransBinding.loading.show()
          launch {
-             arrQrCode.addAll(QrCodeDatabase(application).getUrlDao().getAllUrl())
+             arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
              loadingTransBinding.loading.hide()
              setData()
          }
@@ -76,7 +76,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     private fun filter(text: String) {
         val filteredNames = ArrayList<QrCode>()
         arrQrCode.filterTo(filteredNames) {
-            it.title.toLowerCase().contains(text.toLowerCase())
+            it.code.toLowerCase().contains(text.toLowerCase())
         }
         adapterQrCode.filterList(filteredNames)
     }
@@ -90,15 +90,32 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
 
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.iVDelete)
-            deleteQrData(position)
+            createDialogDelete(position)
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteQrData(position: Int){
         launch {
-                 QrCodeDatabase(application).getUrlDao().deleteUrl(arrQrCode.removeAt(position))
+                 QrCodeDatabase(application).getCodeDao().deleteCode(arrQrCode.removeAt(position))
                  adapterQrCode.notifyDataSetChanged()
         }
+    }
+
+    fun createDialogDelete(position: Int) {
+        val builder = android.app.AlertDialog.Builder(this)
+            .setMessage(getString(R.string.delete_message))
+            .setCancelable(true)
+            .setPositiveButton(getString(R.string.yes))
+            { dialog, _ ->
+                deleteQrData(position)
+                dialog.cancel()
+            }
+            .setNegativeButton(getString(R.string.no))
+            { dialog, _ ->
+                dialog.cancel()
+            }
+        val alert = builder.create()
+        alert.show()
     }
 
     private fun checkCameraPermissions() {

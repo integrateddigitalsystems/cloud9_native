@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 
+
 android {
     compileSdk 32
 
@@ -65,6 +66,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx:24.1.2'
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.5'
     implementation 'com.google.firebase:firebase-firestore-ktx:24.1.2'
+    implementation 'com.google.firebase:firebase-crashlytics-gradle:2.9.0'
 
 
     // barcode reader
