@@ -103,7 +103,6 @@ class ActivitySplash : ActivityCompactBase() {
         }
     }
 
-
     private fun showDialogForceUpdate(activity: Activity) {
         val builder = AlertDialog.Builder(activity)
         val itemDialogBinding = ItemDialogBinding.inflate(layoutInflater)

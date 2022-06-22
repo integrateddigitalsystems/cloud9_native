@@ -27,10 +27,8 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         AppHelper.setLocal(this)
         job =Job()
-      //  AppHelper.setAllTexts(rootLayout,this)
     }
 
     override fun attachBaseContext(newBase: Context) {

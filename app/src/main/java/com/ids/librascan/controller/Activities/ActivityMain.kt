@@ -66,6 +66,7 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener 
     }
 
     private fun init() {
+        AppHelper.setAllTexts(activityMainBinding.rootMain, this)
        addUnit()
        activityMainBinding.llScan.setOnClickListener {
            showAddBarcodeAlertDialog("")
