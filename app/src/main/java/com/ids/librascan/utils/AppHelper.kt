@@ -3,21 +3,33 @@ package com.ids.librascan.utils
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
+import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
+import android.provider.Settings.Global.getString
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
 import com.ids.librascan.R
+import com.ids.librascan.controller.Activities.ActivityMain
+import com.ids.librascan.controller.Adapters.UnitsSpinnerAdapter
 import com.ids.librascan.controller.MyApplication
-import utils.AppConstants
-import utils.LocaleUtils
-import utils.textRemote
+import com.ids.librascan.databinding.ItemDropDownBinding
+import com.ids.librascan.databinding.PopupBarcodeBinding
+import com.ids.librascan.db.QrCode
+import com.ids.librascan.db.QrCodeDatabase
+import com.ids.librascan.db.Unit
+import info.bideens.barcode.BarcodeReader
+import kotlinx.coroutines.launch
+import utils.*
 import java.util.*
 
 
@@ -223,31 +235,6 @@ class AppHelper {
             alert.show()
         }
 
-        /*fun AddFragment(
-            fragmentManager: FragmentManager,
-            selectedFragment: Int,
-            myFragment: Fragment,
-            myTag: String
-        ) {
-            fragmentAvailable = selectedFragment
-            fragmentManager.beginTransaction()
-                .add(com.ids.logindesign.R.id.viewPager, myFragment, myTag)
-                .addToBackStack(null)
-                .commit()
-        }*/
-
-
-       /* fun ReplaceFragment(
-            fragmentManager: FragmentManager,
-            selectedFragment: Int,
-            myFragment: Fragment
-        ) {
-            fragmentAvailable = selectedFragment
-            fragmentManager.beginTransaction()
-                .replace(R.id.viewPager, myFragment)
-                .commit()
-
-        }*/
 
     }
 

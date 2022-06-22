@@ -11,6 +11,8 @@ import android.util.SparseArray
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.vision.barcode.Barcode
@@ -29,6 +31,7 @@ import utils.show
 import utils.toast
 
 class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeReader.BarcodeReaderListener {
+    var activityMain: ActivityMain? = null
     lateinit var activityQrDataBinding: ActivityQrDataBinding
     private lateinit var adapterQrCode: AdapterQrCode
     private var arrQrCode = ArrayList<QrCode>()
@@ -37,11 +40,12 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         super.onCreate(savedInstanceState)
         activityQrDataBinding = ActivityQrDataBinding.inflate(layoutInflater)
         setContentView(activityQrDataBinding.root)
-
         init()
     }
 
      fun init() {
+
+         AppHelper.setAllTexts(activityQrDataBinding.rootData, this)
          activityQrDataBinding.ivScan.setOnClickListener {
              try {
                  AppHelper.closeKeyboard(this@ActivityQrData)
@@ -71,12 +75,18 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
              }
          })
 
+
+         activityQrDataBinding.rVQrData.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+         activityQrDataBinding.rVQrData.layoutManager = LinearLayoutManager(this)
+
      }
+
+
 
     private fun filter(text: String) {
         val filteredNames = ArrayList<QrCode>()
         arrQrCode.filterTo(filteredNames) {
-            it.code.toLowerCase().contains(text.toLowerCase())
+            it.code.lowercase().replaceFirstChar(Char::lowercase).contains(text.lowercase().replaceFirstChar(Char::lowercase))
         }
         adapterQrCode.filterList(filteredNames)
     }
@@ -89,8 +99,12 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     }
 
     override fun onItemClicked(view: View, position: Int) {
-        if (view.id == R.id.iVDelete)
+        if (view.id == R.id.tVDelete)
             createDialogDelete(position)
+       else if (view.id == R.id.tVUpdate){
+            createDialogDelete(position)
+        }
+
     }
 
     @SuppressLint("NotifyDataSetChanged")

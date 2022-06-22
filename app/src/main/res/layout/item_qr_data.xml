@@ -2,6 +2,43 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <com.daimajia.swipe.SwipeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/swipe">
+
+        <LinearLayout
+            android:tag="Bottom"
+            android:id="@+id/bottom_wrapper"
+            android:layout_width="@dimen/width_150"
+            android:weightSum="1"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tVUpdate"
+                android:textColor="#fff"
+                android:text="Update"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:clickable="true"
+                android:background="@color/gray_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+
+            <TextView
+                android:id="@+id/tVDelete"
+                android:text="Delete"
+                android:textColor="@color/white"
+                android:background="@color/red"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+
+
     <LinearLayout
         android:orientation="horizontal"
         android:weightSum="3"
@@ -81,6 +118,7 @@
                     android:src="@drawable/icon_delete"
                     android:layout_gravity="center"
                     android:layout_width="@dimen/size_20"
+                    android:visibility="gone"
                     android:layout_height="@dimen/size_20"
                     app:tint="@color/red" />
 
@@ -91,4 +129,5 @@
         </LinearLayout>
 
     </LinearLayout>
+    </com.daimajia.swipe.SwipeLayout>
 </layout>

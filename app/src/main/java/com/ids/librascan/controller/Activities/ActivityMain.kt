@@ -3,7 +3,6 @@ package com.ids.librascan.controller.Activities
 
 import Base.ActivityCompactBase
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -20,7 +19,6 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.vision.barcode.Barcode
 import com.ids.librascan.R
 import com.ids.librascan.controller.Adapters.UnitsSpinnerAdapter
@@ -31,16 +29,15 @@ import com.ids.librascan.databinding.PopupBarcodeBinding
 import com.ids.librascan.db.QrCode
 import com.ids.librascan.db.QrCodeDatabase
 import com.ids.librascan.db.Unit
-import com.ids.librascan.model.SearchProductModel
 import com.ids.librascan.utils.AppHelper
 import info.bideens.barcode.BarcodeReader
 import kotlinx.coroutines.launch
 import utils.hide
 import utils.show
 import utils.toast
-import utils.wtf
 
 class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener {
+
     lateinit var activityMainBinding: ActivityMainBinding
     lateinit var mGoogleSignInClient: GoogleSignInClient
     private var spinnerUnits: ArrayList<Unit> = arrayListOf()
@@ -54,7 +51,7 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener 
         init()
     }
 
-    private fun addUnit(){
+   /* private fun addUnit(){
         if (MyApplication.isFirst){
             launch {
                     QrCodeDatabase(application).getUnit().insertUnit(Unit("Kg"))
@@ -63,13 +60,13 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener 
             }
             MyApplication.isFirst = false
         }
-    }
+    }*/
 
     private fun init() {
         AppHelper.setAllTexts(activityMainBinding.rootMain, this)
-       addUnit()
+      // addUnit()
        activityMainBinding.llScan.setOnClickListener {
-           showAddBarcodeAlertDialog("")
+           showAddBarcodeAlertDialog("",this)
        }
        activityMainBinding.llData.setOnClickListener {
            startActivity(Intent(this, ActivityQrData::class.java))
@@ -112,7 +109,7 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener 
         alert.show()
     }
 
-    private fun showAddBarcodeAlertDialog(barcode:String) {
+    fun showAddBarcodeAlertDialog(barcode:String) {
         var quantity = 1
         var selectedUnit = Unit()
         spinnerUnits.clear()
@@ -152,7 +149,6 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener 
 
         popupBarcodeBinding.etQty.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int) {
-
                 if (arg0.isEmpty()) {
                     quantity = 1
                     popupBarcodeBinding.etQty.setText(quantity.toString())
@@ -212,13 +208,12 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener 
                 .setCancelable(true)
                 .setPositiveButton(getString(R.string.yes))
                 { dialog, _ ->
+                    val itemDropDownBinding = ItemDropDownBinding.inflate(layoutInflater)
                     popupBarcodeBinding.tvInsert.hide()
                     popupBarcodeBinding.tvCode.isFocusable = false
-                    popupBarcodeBinding.spUnits.isFocusable = false
-                    popupBarcodeBinding.spUnits.isClickable = false
+                    itemDropDownBinding.tvItem.isFocusable = true
                     popupBarcodeBinding.spUnits.adapter = spinnerAdapter
                     popupBarcodeBinding.tvInsertClose.setText(AppHelper.getRemoteString("update",this))
-
                     dialog.cancel()
                 }
                 .setNegativeButton(getString(R.string.no))
@@ -376,7 +371,7 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener 
         this.runOnUiThread {
             toast("Barcode: $value")
             activityMainBinding.rlBarcode.hide()
-            showAddBarcodeAlertDialog(value)
+            showAddBarcodeAlertDialog(value,this)
         }
     }
 

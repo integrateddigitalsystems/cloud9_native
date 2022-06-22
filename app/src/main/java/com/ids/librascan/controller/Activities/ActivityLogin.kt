@@ -18,6 +18,8 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityLoginBinding
+import com.ids.librascan.utils.AppHelper
+import kotlinx.coroutines.launch
 import utils.AppConstants
 import utils.LocaleUtils
 import utils.toast
@@ -36,9 +38,11 @@ class ActivityLogin : ActivityCompactBase() {
         setContentView(activityLoginBinding.root)
         init()
 
+
     }
 
     private fun init() {
+        AppHelper.setAllTexts(activityLoginBinding.rootLogin, this)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id_auth))
             .requestEmail()
