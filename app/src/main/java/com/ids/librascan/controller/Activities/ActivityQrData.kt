@@ -103,14 +103,14 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
 
     fun createDialogDelete(position: Int) {
         val builder = android.app.AlertDialog.Builder(this)
-            .setMessage(getString(R.string.delete_message))
+            .setMessage(AppHelper.getRemoteString("delete_message",this))
             .setCancelable(true)
-            .setPositiveButton(getString(R.string.yes))
+            .setPositiveButton(AppHelper.getRemoteString("yes",this))
             { dialog, _ ->
                 deleteQrData(position)
                 dialog.cancel()
             }
-            .setNegativeButton(getString(R.string.no))
+            .setNegativeButton(AppHelper.getRemoteString("no",this))
             { dialog, _ ->
                 dialog.cancel()
             }
@@ -146,7 +146,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
                 activityQrDataBinding.rlBarcode.visibility = View.VISIBLE
                 barcodeReader.resumeScanning()
             } else {
-                toast(getString(R.string.camera_error))
+                toast(AppHelper.getRemoteString("camera_error",this))
             }
         }
     }
@@ -173,7 +173,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     }
 
     override fun onCameraPermissionDenied() {
-        toast(getString(R.string.camera_error))
+        toast(AppHelper.getRemoteString("camera_error",this))
     }
 
     override fun onBackPressed() {

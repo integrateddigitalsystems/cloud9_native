@@ -11,15 +11,10 @@ object AppConstants {
     const val FIREBASE_FORCE_UPDATE = "force_update_flag"
     const val FIREBASE_ANDROID_VERSION = "last_version"
     const val FIREBASE_LOCALIZE = "localize_msg"
-    const val SELECTED_TITLE = "key_title"
-    const val SELECTED_MESSAGE = "key_message"
-    const val SELECTED_FRAGMENT = "key_fragment"
+    const val FIREBASE_URL_LIST = "configuration"
     const val IS_LOGIN = "is_login"
     const val IS_FIRST = "is_first"
 
-    const val TITLE =""
-    const val MESSAGE =""
-    const val FRAGMENT =""
     const val CHECK_LOGIN = false
     const val FIRST = true
 

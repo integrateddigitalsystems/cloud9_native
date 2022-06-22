@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-      <string name="login">دخول</string>
+      <string name="signIn">دخول</string>
     <string name="scan">بحث</string>
-    <string name="my_data">معلومات</string>
+    <string name="my_data">البيانات</string>
     <string name="libra_scan">Libra Scan</string>
     <string name="permission_message">تحتاج إلى إذن الكاميرا</string>
     <string name="logout">خروج</string>
@@ -12,29 +12,31 @@
     <string name="title">العنوان</string>
     <string name="cancel">الغاء</string>
     <string name="save_data">حفظ المعلومات</string>
-    <string name="qr_code">تم الحفظ</string>
-    <string name="add_new">ادخال الرمز</string>
+    <string name="item_save">تم الحفظ</string>
+    <string name="add_item">ادخال الرمز</string>
     <string name="search">بحث</string>
     <string name="name_code">الاسم - الرمز</string>
     <string name="units">وحدات</string>
     <string name="insert">ادخال</string>
     <string name="quantity">عدد</string>
-    <string name="insert_and_save">ادخال والخروج</string>
+    <string name="insert_and_close">ادخال والخروج</string>
     <string name="item">الكود</string>
     <string name="unit">وحدة</string>
     <string name="barcode">الرمز</string>
-    <string name="error_filled_title">يرجى ادخال الرمز</string>
+    <string name="error_filled_barcode">يرجى ادخال الرمز</string>
     <string name="error_filled_unit">يرجى اختيار الوحدة</string>
     <string name="error_filled_qty">يرجى ادخال العدد</string>
     <string name="update">تعديل</string>
     <string name="camera_error">تم رفض إذن الكاميرا</string>
-    <string name="ok">نعم</string>
+    <string name="ok">موافق</string>
     <string name="yes">نعم</string>
     <string name="no">كلا</string>
     <string name="delete_message">هل تريد ازالة هذا الكود؟</string>
-    <string name="logout_message">هل تريد الخروج</string>
-    <string name="toggle_language">English</string>
+    <string name="logout_message">هل تريد الخروج؟</string>
+    <string name="lang">English</string>
     <string name="item_update">هل تريد التعديل عليه</string>
     <string name="item_exist">الرمز موجود سابقا</string>
     <string name="message_update">تم تحديث الرمز</string>
+    <string name="update_message">هناك تحديث جاهز الرجاء التحديث</string>
+    <string name="update_title">التحديث جاهز</string>
 </resources>

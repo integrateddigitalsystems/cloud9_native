@@ -66,7 +66,7 @@
                             android:layout_gravity="center_horizontal"
                             android:gravity="center_horizontal"
                             android:padding="@dimen/normal_margin_padding"
-                            android:text="@string/add_new"
+                            android:text="@string/add_item"
                             android:textColor="@color/colorAccent"
                             android:textSize="@dimen/font"/>
 
@@ -83,7 +83,8 @@
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/small_margin_padding"
-                            android:text="@string/search"
+                            android:text="@string/barcode"
+                            android:tag="barcode"
                             android:textColor="@color/colorAccent"
                             android:textSize="@dimen/font"/>
 
@@ -104,11 +105,12 @@
                                         android:layout_height="wrap_content">
 
                             <AutoCompleteTextView
-                                android:id="@+id/tvTitleCode"
+                                android:id="@+id/tvCode"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_toStartOf="@+id/ivScan"
                                 android:background="@android:color/transparent"
+                                android:focusable="true"
                                 android:gravity="center_vertical"
                                 android:hint="@string/name_code"
                                 android:importantForAutofill="no"
@@ -116,6 +118,7 @@
                                 android:minHeight="@dimen/edit_text_height"
                                 android:minLines="1"
                                 android:padding="@dimen/big_margin_padding"
+                                android:tag="code"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="@dimen/small_font" />
 
@@ -151,6 +154,7 @@
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/normal_margin_padding"
                                 android:text="@string/units"
+                                android:tag="units"
                                 android:textColor="@color/colorAccent"
                                 android:textSize="@dimen/font"/>
 
@@ -171,7 +175,9 @@
                                 android:layout_marginStart="@dimen/small_margin_padding"
                                 android:layout_marginEnd="@dimen/small_margin_padding"
                                 android:layout_toStartOf="@+id/ivUnit"
-                                android:background="@android:color/transparent" />
+                                android:background="@android:color/transparent"
+                                android:clickable="true"
+                                android:focusable="true" />
 
                             <ImageView
                                     android:id="@+id/ivUnit"
@@ -204,6 +210,7 @@
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/small_margin_padding"
                                 android:text="@string/quantity"
+                                android:tag="@string/quantity"
                                 android:textColor="@color/colorAccent"
                                 android:textSize="@dimen/font"/>
 
@@ -284,6 +291,7 @@
                             android:layout_height="match_parent"
                             android:textColor="@color/white"
                             android:textSize="@dimen/font"
+                            android:tag="insert"
                             android:text="@string/insert"/>
 
                     <View android:layout_width="1dp"
@@ -296,23 +304,13 @@
                             android:layout_weight="1"
                             android:visibility="visible"
                             android:gravity="center"
+                            android:tag="insert"
                             android:layout_gravity="center_vertical|center_horizontal"
                             android:layout_height="match_parent"
                             android:textColor="@color/white"
                             android:textSize="@dimen/font"
-                            android:text="@string/insert_and_save"/>
+                            android:text="@string/insert_and_close"/>
 
-                    <com.ids.librascan.custom.CustomTextViewBold
-                        android:id="@+id/tvUpdate"
-                        android:layout_width="match_parent"
-                        android:layout_weight="1"
-                        android:visibility="gone"
-                        android:gravity="center"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:layout_height="match_parent"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/font"
-                        android:text="@string/update"/>
 
                 </LinearLayout>
 

@@ -18,7 +18,6 @@ interface QrCodeDao {
     @Update
     suspend fun updateUrl(qrCode:QrCode)
 
-
     @Delete
     suspend fun deleteCode(qrCode: QrCode)
 

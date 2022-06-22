@@ -32,6 +32,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/libra_scan"
+            android:tag="name_app"
             android:textColor="@color/white"
             android:textSize="@dimen/size_30"
             android:textStyle="bold" />
@@ -63,6 +64,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="@string/scan"
+                android:tag="scan"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font"
                 android:textStyle="bold" />
@@ -94,6 +96,7 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:text="@string/my_data"
+                android:tag="my_data"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font"
                 android:textStyle="bold" />
