@@ -3,12 +3,13 @@ package com.ids.librascan.controller.Activities
 
 import Base.ActivityCompactBase
 import android.Manifest
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.util.SparseArray
 import android.view.View
-import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -18,7 +19,6 @@ import com.google.android.gms.vision.barcode.Barcode
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ids.librascan.R
 import com.ids.librascan.controller.Adapters.OnInsertUpdate
-import com.ids.librascan.controller.Adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityMainBinding
 import com.ids.librascan.db.QrCode
@@ -30,13 +30,14 @@ import kotlinx.coroutines.launch
 import utils.hide
 import utils.show
 import utils.toast
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,OnInsertUpdate{
     lateinit var activityMainBinding: ActivityMainBinding
     lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var barcodeReader: BarcodeReader
-    private var arrQrCode = ArrayList<QrCode>()
     private var db: FirebaseFirestore? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +51,7 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
     }
 
     private fun init() {
+        db = FirebaseFirestore.getInstance()
         addUnit()
         AppHelper.setAllTexts(activityMainBinding.rootMain, this)
         activityMainBinding.llScan.setOnClickListener {
@@ -69,28 +71,44 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
            createDialogLogout()
        }
 
-        launch {
-            arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
-        }
-
         barcodeReader = supportFragmentManager.findFragmentById(R.id.barcodeReader) as BarcodeReader
 
         activityMainBinding.llSync.setOnClickListener {
-            addDataToFirestore(arrQrCode)
+            addDataToFirestore()
         }
 
 
     }
 
-    private fun addDataToFirestore(arrQrCode : ArrayList<QrCode>) {
-        val dbData = db!!.collection("Data")
-        dbData.add(arrQrCode).addOnSuccessListener {
-            toast("Added!!")
-        }.addOnFailureListener { e ->
-           toast("Fail to add data \n$e")
-        }
+
+    fun addDataToFirestore(){
+
+        launch {
+            val arrayList = ArrayList<QrCode>()
+            val docData: MutableMap<String, Any> = HashMap()
+            arrayList.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
+            if (arrayList.isNotEmpty()){
+                docData.put("QrCode", arrayList)
+                db!!.collection("Data")
+                    .add(docData)
+                    .addOnSuccessListener { documentReference ->
+                        toast("Success Added")
+                        Log.d(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w(TAG, "Error adding document", e)
+                    }
+
+                QrCodeDatabase(application).getCodeDao().deleteAllCode()
+            }
+            else{
+                toast("Please Add Data to upload")
+            }
+            }
+
 
     }
+
 
     fun addUnit(){
         if (MyApplication.isFirst){
@@ -106,6 +124,7 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
     private fun createDialogLogout() {
         val builder = android.app.AlertDialog.Builder(this)
             .setCancelable(true)
+            .setMessage(AppHelper.getRemoteString("logout_message",this))
             .setPositiveButton(AppHelper.getRemoteString("yes",this))
             { dialog, _ ->
                 mGoogleSignInClient.signOut().addOnCompleteListener {

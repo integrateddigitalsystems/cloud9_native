@@ -28,6 +28,7 @@
         <entry key="..\:/Users/m.chhadi/Desktop/LibraScan/app/src/main/res/layout/pop_dialog.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/m.chhadi/Desktop/LibraScan/app/src/main/res/layout/popup_barcode.xml" value="0.264" />
         <entry key="..\:/Users/m.chhadi/Desktop/LibraScan/app/src/main/res/layout/scan_barcode.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1125" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.16" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/drawable/rounded_button_layout.xml" value="0.16" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/drawable/rounded_primary_layout.xml" value="0.104" />
@@ -43,6 +44,8 @@
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/loading_trans.xml" value="0.1" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/popup_barcode.xml" value="0.264" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/scan_layout.xml" value="0.23731884057971014" />
+        <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/top_bar.xml" value="0.23731884057971014" />
+        <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1125" />
       </map>
     </option>
   </component>

@@ -56,8 +56,11 @@
                             android:layout_marginTop="@dimen/huge_margin"
                             android:layout_gravity="center_horizontal"
                             android:src="@drawable/scan"
+                            android:clickable="true"
                             android:layout_width="@dimen/barcode_width_height"
                             android:layout_height="@dimen/barcode_width_height"/>
+
+
 
                     <com.ids.librascan.custom.CustomTextViewBold
                         android:id="@+id/tvTitle"
@@ -113,9 +116,9 @@
                                 android:focusable="true"
                                 android:gravity="center_vertical"
                                 android:hint="@string/name_code"
-                                android:importantForAutofill="no"
-                                android:maxLines="1"
-                                android:minHeight="@dimen/edit_text_height"
+                                android:importantForAutofill="yes"
+                                android:maxLines="3"
+                                android:minHeight="@dimen/height_40"
                                 android:minLines="1"
                                 android:padding="@dimen/big_margin_padding"
                                 android:tag="code"
@@ -132,7 +135,6 @@
                                 android:layout_marginTop="@dimen/small_margin_padding"
                                 android:layout_marginEnd="@dimen/small_margin_padding"
                                 android:layout_marginBottom="@dimen/small_margin_padding"
-                                android:onClick="checkCameraPermissions"
                                 android:src="@drawable/scan"
                                 app:tint="@color/colorPrimaryDark" />
 
@@ -173,11 +175,12 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentStart="true"
                                 android:layout_centerInParent="true"
-                                android:focusable="true"
                                 android:layout_marginStart="@dimen/small_margin_padding"
                                 android:layout_marginEnd="@dimen/small_margin_padding"
                                 android:layout_toStartOf="@+id/ivUnit"
-                                android:background="@android:color/transparent" />
+                                android:background="@android:color/transparent"
+                                android:clickable="false"
+                                android:focusable="true" />
 
                             <ImageView
                                     android:id="@+id/ivUnit"
@@ -304,13 +307,19 @@
                             android:layout_weight="1"
                             android:visibility="visible"
                             android:gravity="center"
-                            android:tag="insert"
+                            android:tag="insert_and_close"
                             android:layout_gravity="center_vertical|center_horizontal"
                             android:layout_height="match_parent"
                             android:textColor="@color/white"
                             android:textSize="@dimen/font"
                             android:text="@string/insert_and_close"/>
 
+                    <Button
+                        android:id="@+id/btShowScan"
+                        android:onClick="checkCameraPermissions"
+                        android:layout_width="0dp"
+                        android:visibility="gone"
+                        android:layout_height="0dp"/>
 
                 </LinearLayout>
 

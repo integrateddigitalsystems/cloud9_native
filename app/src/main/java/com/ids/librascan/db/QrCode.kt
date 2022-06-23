@@ -7,16 +7,15 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "codeScan_table", primaryKeys = ["code", "unitId"])
 data class QrCode(
+
     var code: String = "" ,
     var unitId : Int = 0 ,
-    var quantity  :String = ""
+    var quantity  :Int = 0,
 ){
     override fun toString(): String {
         return code
     }
 }
 
-
-//, primaryKeys = ["code", "unitId"]
 
 

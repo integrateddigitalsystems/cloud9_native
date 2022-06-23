@@ -19,16 +19,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.ids.librascan.R
-import com.ids.librascan.controller.Activities.ActivityMain
-import com.ids.librascan.controller.Adapters.UnitsSpinnerAdapter
 import com.ids.librascan.controller.MyApplication
-import com.ids.librascan.databinding.ItemDropDownBinding
-import com.ids.librascan.databinding.PopupBarcodeBinding
-import com.ids.librascan.db.QrCode
-import com.ids.librascan.db.QrCodeDatabase
-import com.ids.librascan.db.Unit
-import info.bideens.barcode.BarcodeReader
-import kotlinx.coroutines.launch
 import utils.*
 import java.util.*
 
@@ -174,23 +165,23 @@ class AppHelper {
 
         }
         fun getTypeFace(context: Context): Typeface {
-            /* return if (Locale.getDefault().language == "ar")
+             return if (Locale.getDefault().language == "ar")
                 Typeface.createFromAsset(
                     context.applicationContext.assets,
                     "fonts/Inter-Medium.ttf"
-                )*/
-            // else
+                )
+            else
            return Typeface.createFromAsset(context.applicationContext.assets, "fonts/Inter-Medium.ttf")
 
         }
         fun getTypeFaceBold(context: Context): Typeface {
-           /* return if (Locale.getDefault().language == "ar")
+            return if (Locale.getDefault().language == "ar")
                 Typeface.createFromAsset(
                     context.applicationContext.assets,
                     "fonts/Inter-Bold.ttf"
-                )*/
+                )
 
-           // else
+            else
               return  Typeface.createFromAsset(
                     context.applicationContext.assets,
                     "fonts/Inter-Bold.ttf"

@@ -41,4 +41,5 @@
     <string name="update_message">New version is available, please update</string>
     <string name="update_title">Update Available</string>
     <string name="sync">Sync</string>
+    <string name="message_google">Sign in with Google</string>
 </resources>

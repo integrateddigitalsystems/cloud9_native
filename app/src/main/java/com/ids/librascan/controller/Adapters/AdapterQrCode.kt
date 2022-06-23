@@ -25,7 +25,7 @@ class AdapterQrCode(private var items:ArrayList<QrCode>, private val itemClickLi
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
         holder.title.text = items[position].code
-        holder.quantity.text = items[position].quantity
+        holder.quantity.text = items[position].quantity.toString()
 
         if (items[position].unitId == 1 )
            holder.unitSelected.text = "Kg"
@@ -41,7 +41,7 @@ class AdapterQrCode(private var items:ArrayList<QrCode>, private val itemClickLi
     override fun getItemCount(): Int {
         return items.size
     }
-    
+
 
 
     inner class MyViewHolder

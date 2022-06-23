@@ -11,12 +11,25 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/with_200"
+            android:layout_height="@dimen/width_150"
             android:layout_gravity="center"
-            android:src="@drawable/icon_google"
+            android:src="@drawable/google"
             android:layout_marginTop="@dimen/margin_30"/>
 
 
+        <com.ids.librascan.custom.CustomTextViewMedium
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/small_margin_padding"
+            android:text="@string/message_google"
+            android:tag="message_google"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/small_margin"
+            android:textSize="@dimen/size_30"
+            android:textColor="@color/white"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:layout_width="@dimen/with_200"
@@ -24,11 +37,12 @@
             android:id="@+id/btLogin"
             android:text="@string/signIn"
             android:tag="signIn"
+            android:textColor="@color/white"
             android:background="@drawable/rounded_button_layout"
             android:layout_marginTop="100dp"
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/big_margin"
-           android:textAllCaps="true"/>
+           android:textAllCaps="false"/>
 
         <LinearLayout
             android:layout_width="80dp"

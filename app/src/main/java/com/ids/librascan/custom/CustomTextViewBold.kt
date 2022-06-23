@@ -1,9 +1,11 @@
 package com.ids.librascan.custom
 
 import android.content.Context
+import android.graphics.Typeface
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import com.ids.librascan.utils.AppHelper
+import java.util.*
 
 
 class CustomTextViewBold : AppCompatTextView {
@@ -23,7 +25,5 @@ class CustomTextViewBold : AppCompatTextView {
         if (!isInEditMode)
             typeface = AppHelper.getTypeFaceBold(context)
 
-/*        if (Locale.getDefault().language == "fa")
-            setTypeface(typeface, Typeface.BOLD)*/
     }
 }

@@ -14,17 +14,10 @@ class MyApplication : Application() {
 
     companion object {
 
-        var selectedFragmentConstant:String=""
-        var fragmentManager: FragmentManager?=null
-
         lateinit var sharedPreferences : SharedPreferences
         lateinit var sharedPreferencesEditor : SharedPreferences.Editor
         var BASE_URL = ""
         var BASE_URLS: FirebaseBaseUrlsArray?= null
-        var force_update=false
-        var last_version=""
-        var UNIQUE_REQUEST_CODE = 0
-        var firstLaunch: Boolean = true
         var localizeArray: FirebaseLocalizeArray?= null
 
         internal lateinit var instance: MyApplication

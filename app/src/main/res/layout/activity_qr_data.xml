@@ -5,19 +5,50 @@
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/card_bg"
+    android:background="@drawable/background"
     android:orientation="vertical"
     android:id="@+id/rootData"
     tools:context=".controller.Activities.ActivityQrData">
 
-    <include layout="@layout/loading_trans"/>
+    <LinearLayout
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:gravity="center"
+        android:background="@drawable/background"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="@dimen/back_width_height"
+        android:layout_height="@dimen/back_width_height"
+        android:src="@drawable/back"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/ivBack"
+        android:paddingTop="@dimen/normal_margin_padding"
+        android:paddingBottom="@dimen/normal_margin_padding"
+        android:paddingStart="@dimen/big_margin_padding"
+        android:paddingEnd="@dimen/normal_margin_padding"
+        android:contentDescription="@string/app_name"
+        android:onClick="back"
+        app:tint="@color/white" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_marginStart="@dimen/big_margin_padding"
         android:layout_marginEnd="@dimen/big_margin_padding"
-        android:layout_marginTop="@dimen/small_margin"
+        android:layout_marginTop="@dimen/big_margin"
         android:gravity="center"
         android:layout_height="wrap_content">
 
@@ -28,7 +59,7 @@
             android:padding="@dimen/small_margin_padding"
             android:text="@string/search"
             android:tag="search"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/white"
             android:textSize="@dimen/font"/>
 
         <RelativeLayout android:layout_width="0dp"
@@ -45,12 +76,12 @@
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
                 android:hint="@string/name_code"
-                android:importantForAutofill="no"
-                android:maxLines="1"
-                android:minHeight="@dimen/edit_text_height"
-                android:minLines="1"
+                android:importantForAutofill="yes"
+                android:maxLines="3"
+                android:minHeight="@dimen/height_40"
                 android:padding="@dimen/big_margin_padding"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
                 android:textSize="@dimen/small_font" />
 
             <ImageView
@@ -72,7 +103,7 @@
         android:layout_marginStart="@dimen/small_margin_padding"
         android:layout_marginEnd="@dimen/small_margin_padding"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/big_margin"
+        android:layout_marginTop="@dimen/margin_100"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
