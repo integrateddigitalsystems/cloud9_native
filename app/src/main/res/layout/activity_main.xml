@@ -24,7 +24,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/big_margin"
+        android:layout_gravity="center"
         android:orientation="vertical">
 
         <TextView
@@ -80,6 +80,7 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/rounded_home_layout"
             android:gravity="center"
+            android:layout_marginBottom="@dimen/big_margin"
             android:orientation="vertical">
 
             <ImageView
@@ -104,6 +105,33 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/llSync"
+            android:layout_width="@dimen/width_150"
+            android:layout_gravity="center"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginStart="@dimen/big_margin_padding"
+            android:layout_marginTop="@dimen/normal_margin_padding"
+            android:layout_marginEnd="@dimen/big_margin_padding"
+            android:background="@drawable/rounded_primary_layout"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="@dimen/settings_item_height"
+                android:layout_height="@dimen/settings_item_height"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginEnd="@dimen/small_margin_padding"
+                android:src="@drawable/sync" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginStart="@dimen/small_margin_padding"
+                android:text="@string/sync"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font" />
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -113,25 +141,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <fragment
-        android:id="@+id/barcodeReader"
-        android:name="info.bideens.barcode.BarcodeReader"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:auto_focus="true"
-        app:use_flash="false" />
+        <fragment
+            android:id="@+id/barcodeReader"
+            android:name="info.bideens.barcode.BarcodeReader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:auto_focus="true"
+            app:use_flash="false" />
 
-    <info.bideens.barcode.ScannerOverlay
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#44000000"
-        app:line_color="#7323DC"
-        app:line_speed="6"
-        app:line_width="4"
-        app:square_height="200"
-        app:square_width="200"/>
+        <info.bideens.barcode.ScannerOverlay
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#44000000"
+            app:line_color="#7323DC"
+            app:line_speed="6"
+            app:line_width="4"
+            app:square_height="200"
+            app:square_width="200"/>
 
-</RelativeLayout>
+    </RelativeLayout>
 
 </FrameLayout>
 

@@ -41,6 +41,7 @@ class AdapterQrCode(private var items:ArrayList<QrCode>, private val itemClickLi
     override fun getItemCount(): Int {
         return items.size
     }
+    
 
 
     inner class MyViewHolder
@@ -50,7 +51,6 @@ class AdapterQrCode(private var items:ArrayList<QrCode>, private val itemClickLi
         val title : TextView = itemView.findViewById(R.id.tvTitleQrCode)
         val quantity : TextView = itemView.findViewById(R.id.tvQuantityCode)
         val unitSelected : TextView = itemView.findViewById(R.id.tvUnitCode)
-        val iVDelete : ImageView = itemView.findViewById(R.id.iVDelete)
         val swipeLayout : SwipeLayout = itemView.findViewById(R.id.swipe)
         val swipeLeft : LinearLayout = itemView.findViewById(R.id.bottom_wrapper)
         val tVDelete : TextView = itemView.findViewById(R.id.tVDelete)
@@ -58,7 +58,6 @@ class AdapterQrCode(private var items:ArrayList<QrCode>, private val itemClickLi
 
         init {
             itemView.setOnClickListener(this)
-            iVDelete.setOnClickListener(this)
             tVDelete.setOnClickListener (this)
             tVUpdate.setOnClickListener (this)
         }
@@ -68,6 +67,7 @@ class AdapterQrCode(private var items:ArrayList<QrCode>, private val itemClickLi
         }
 
     }
+
     fun filterList(filteredNames: ArrayList<QrCode>) {
         this.items = filteredNames
         notifyDataSetChanged()

@@ -12,6 +12,7 @@
             android:id="@+id/bottom_wrapper"
             android:layout_width="@dimen/width_150"
             android:weightSum="1"
+            android:layout_marginBottom="5dp"
             android:layout_height="match_parent">
 
             <TextView

@@ -35,4 +35,5 @@
     <dimen name="width_150">150dp</dimen>
     <dimen name="mini_radius">5dp</dimen>
     <dimen name="height_40">40dp</dimen>
+    <dimen name="settings_item_height">12dp</dimen>
 </resources>

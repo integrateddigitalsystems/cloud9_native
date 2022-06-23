@@ -30,16 +30,19 @@
         <entry key="..\:/Users/m.chhadi/Desktop/LibraScan/app/src/main/res/layout/scan_barcode.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.16" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/drawable/rounded_button_layout.xml" value="0.16" />
+        <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/drawable/rounded_primary_layout.xml" value="0.104" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/drawable/rounded_right_gray.xml" value="0.16" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/activity_login.xml" value="0.23731884057971014" />
-        <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/activity_qr_data.xml" value="0.23731884057971014" />
+        <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/activity_scan.xml" value="0.23731884057971014" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/activity_splash.xml" value="0.23731884057971014" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/item_dialog.xml" value="0.23731884057971014" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/item_drop_down.xml" value="0.1" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/item_qr_data.xml" value="0.1" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/loading_trans.xml" value="0.1" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/popup_barcode.xml" value="0.264" />
+        <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/scan_layout.xml" value="0.23731884057971014" />
       </map>
     </option>
   </component>

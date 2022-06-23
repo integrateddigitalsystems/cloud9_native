@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.vision.barcode.Barcode
 import com.ids.librascan.R
 import com.ids.librascan.controller.Adapters.AdapterQrCode
+import com.ids.librascan.controller.Adapters.OnInsertUpdate
 import com.ids.librascan.controller.Adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.librascan.databinding.ActivityQrDataBinding
 import com.ids.librascan.databinding.LoadingTransBinding
@@ -30,8 +31,7 @@ import utils.hide
 import utils.show
 import utils.toast
 
-class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeReader.BarcodeReaderListener {
-    var activityMain: ActivityMain? = null
+class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeReader.BarcodeReaderListener ,OnInsertUpdate{
     lateinit var activityQrDataBinding: ActivityQrDataBinding
     private lateinit var adapterQrCode: AdapterQrCode
     private var arrQrCode = ArrayList<QrCode>()
@@ -75,7 +75,6 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
              }
          })
 
-
          activityQrDataBinding.rVQrData.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
          activityQrDataBinding.rVQrData.layoutManager = LinearLayoutManager(this)
 
@@ -98,20 +97,24 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         activityQrDataBinding.rVQrData.adapter = adapterQrCode
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onItemClicked(view: View, position: Int) {
-        if (view.id == R.id.tVDelete)
+        if (view.id == R.id.tVDelete){
             createDialogDelete(position)
-       else if (view.id == R.id.tVUpdate){
-            createDialogDelete(position)
+           // adapterQrCode.notifyDataSetChanged()
         }
 
+       else if (view.id == R.id.tVUpdate){
+            showAddBarcodeAlertDialog(this,true,arrQrCode[position],this)
+
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteQrData(position: Int){
         launch {
-                 QrCodeDatabase(application).getCodeDao().deleteCode(arrQrCode.removeAt(position))
-                 adapterQrCode.notifyDataSetChanged()
+                QrCodeDatabase(application).getCodeDao().deleteCode(arrQrCode.removeAt(position))
+                adapterQrCode.notifyDataSetChanged()
         }
     }
 
@@ -157,7 +160,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {
             if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) { //GRANTED
-                activityQrDataBinding.rlBarcode.visibility = View.VISIBLE
+                activityQrDataBinding.rlBarcode.show()
                 barcodeReader.resumeScanning()
             } else {
                 toast(AppHelper.getRemoteString("camera_error",this))
@@ -169,7 +172,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         barcodeReader.playBeep()
         barcodeReader.pauseScanning()
         this.runOnUiThread {
-            activityQrDataBinding.rlBarcode.visibility = View.GONE
+            activityQrDataBinding.rlBarcode.hide()
             activityQrDataBinding.tvBarcode.setText(value)
         }
     }
@@ -223,6 +226,11 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onInsertUpdate(boolean: Boolean) {
+        adapterQrCode.notifyDataSetChanged()
     }
 
 }

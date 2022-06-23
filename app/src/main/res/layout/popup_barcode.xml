@@ -60,15 +60,15 @@
                             android:layout_height="@dimen/barcode_width_height"/>
 
                     <com.ids.librascan.custom.CustomTextViewBold
-                            android:id="@+id/tvTitle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center_horizontal"
-                            android:padding="@dimen/normal_margin_padding"
-                            android:text="@string/add_item"
-                            android:textColor="@color/colorAccent"
-                            android:textSize="@dimen/font"/>
+                        android:id="@+id/tvTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:padding="@dimen/normal_margin_padding"
+                        android:text="@string/add_item"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/font" />
 
                     <LinearLayout
                             android:orientation="horizontal"
@@ -132,6 +132,7 @@
                                 android:layout_marginTop="@dimen/small_margin_padding"
                                 android:layout_marginEnd="@dimen/small_margin_padding"
                                 android:layout_marginBottom="@dimen/small_margin_padding"
+                                android:onClick="checkCameraPermissions"
                                 android:src="@drawable/scan"
                                 app:tint="@color/colorPrimaryDark" />
 
@@ -316,9 +317,30 @@
 
             </LinearLayout>
 
-
         </androidx.cardview.widget.CardView>
+
+        <RelativeLayout
+            android:id="@+id/rlBarcode"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <info.bideens.barcode.ScannerOverlay
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#44000000"
+                app:line_color="#7323DC"
+                app:line_speed="6"
+                app:line_width="4"
+                app:square_height="200"
+                app:square_width="200"/>
+
+        </RelativeLayout>
+
     </FrameLayout>
+
+
 
 
 </FrameLayout>
