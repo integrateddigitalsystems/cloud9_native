@@ -41,4 +41,5 @@
     <string name="update_title">التحديث جاهز</string>
     <string name="sync">ترحيل</string>
     <string name="message_google">الدخول غبر غوغل</string>
+    <string name="delete">حذف</string>
 </resources>

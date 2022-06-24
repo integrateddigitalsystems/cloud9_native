@@ -35,6 +35,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     lateinit var activityQrDataBinding: ActivityQrDataBinding
     private lateinit var adapterQrCode: AdapterQrCode
     private var arrQrCode = ArrayList<QrCode>()
+    private var arrFilter = ArrayList<QrCode>()
     lateinit var barcodeReader: BarcodeReader
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,21 +79,19 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
          activityQrDataBinding.rVQrData.layoutManager = LinearLayoutManager(this)
 
      }
-
-
-
     private fun filter(text: String) {
-        val filteredNames = ArrayList<QrCode>()
-        arrQrCode.filterTo(filteredNames) {
+        arrFilter.clear()
+        arrFilter.addAll(arrQrCode.filter {
             it.code.lowercase().replaceFirstChar(Char::lowercase).contains(text.lowercase().replaceFirstChar(Char::lowercase))
-        }
-        adapterQrCode.filterList(filteredNames)
+        })
+        adapterQrCode.notifyDataSetChanged()
     }
 
     private fun setData() {
         val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         activityQrDataBinding.rVQrData.layoutManager = layoutManager
-        adapterQrCode = AdapterQrCode(arrQrCode, this)
+        arrFilter.addAll(arrQrCode)
+        adapterQrCode = AdapterQrCode(arrFilter, this)
         activityQrDataBinding.rVQrData.adapter = adapterQrCode
     }
 
@@ -100,7 +99,6 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.tVDelete){
             createDialogDelete(position)
-           // adapterQrCode.notifyDataSetChanged()
         }
         else if (view.id == R.id.tVUpdate){
             showAddBarcodeAlertDialog(this,true,arrQrCode[position],this)
@@ -111,7 +109,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteQrData(position: Int){
         launch {
-                QrCodeDatabase(application).getCodeDao().deleteCode(arrQrCode.removeAt(position))
+                QrCodeDatabase(application).getCodeDao().deleteCode(arrFilter.removeAt(position))
                 adapterQrCode.notifyDataSetChanged()
         }
     }

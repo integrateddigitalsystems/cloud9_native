@@ -42,8 +42,6 @@ class AdapterQrCode(private var items:ArrayList<QrCode>, private val itemClickLi
         return items.size
     }
 
-
-
     inner class MyViewHolder
 
     constructor (itemView :View) : RecyclerView.ViewHolder(itemView),View.OnClickListener{
@@ -68,9 +66,5 @@ class AdapterQrCode(private var items:ArrayList<QrCode>, private val itemClickLi
 
     }
 
-    fun filterList(filteredNames: ArrayList<QrCode>) {
-        this.items = filteredNames
-        notifyDataSetChanged()
-    }
 
 }

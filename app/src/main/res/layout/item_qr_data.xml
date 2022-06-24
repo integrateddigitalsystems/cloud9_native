@@ -15,10 +15,11 @@
             android:layout_marginBottom="5dp"
             android:layout_height="match_parent">
 
-            <TextView
+            <com.ids.librascan.custom.CustomTextViewMedium
                 android:id="@+id/tVUpdate"
                 android:textColor="#fff"
-                android:text="Update"
+                android:text="@string/update"
+                android:tag="update"
                 android:layout_weight="0.5"
                 android:gravity="center"
                 android:clickable="true"
@@ -27,9 +28,10 @@
                 android:layout_height="match_parent" />
 
 
-            <TextView
+            <com.ids.librascan.custom.CustomTextViewMedium
                 android:id="@+id/tVDelete"
-                android:text="Delete"
+                android:text="@string/delete"
+                android:tag="delete"
                 android:textColor="@color/white"
                 android:background="@color/red"
                 android:gravity="center"
