@@ -15,14 +15,8 @@ interface QrCodeDao {
     @Query("SELECT * FROM codeScan_table WHERE code=:code AND unitId=:unitId")
     suspend fun  getCode(code : String?,unitId : Int?): QrCode
 
-    @Update
-    suspend fun updateUrl(qrCode:QrCode)
-
     @Delete
     suspend fun deleteCode(qrCode: QrCode)
-
-    @Query("DELETE FROM codeScan_table WHERE code=:code AND unitId=:unitId")
-    suspend fun deleteCodeBy(code : String?,unitId : Int?)
 
     @Query("DELETE FROM codeScan_table ")
     suspend fun deleteAllCode()

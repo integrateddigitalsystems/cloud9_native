@@ -80,94 +80,115 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     }
 
     fun showAddBarcodeAlertDialog(c:Activity,isUpdate : Boolean,qrCode: QrCode,onInsUpdate: OnInsertUpdate) {
-        onInsertUpdate=onInsUpdate
         spinnerUnits.clear()
+        onInsertUpdate=onInsUpdate
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
         popupBarcodeBinding = PopupBarcodeBinding.inflate(layoutInflater)
         AppHelper.setAllTexts(popupBarcodeBinding.llPagerItem, this)
         spinnerAdapter = UnitsSpinnerAdapter(this, spinnerUnits)
 
-        getUnit()
+        launch {
+            spinnerUnits.addAll(QrCodeDatabase(application).getUnit().getUnitData())
+            popupBarcodeBinding.spUnits.adapter = spinnerAdapter
+            popupBarcodeBinding.spUnits.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                    }
 
-        popupBarcodeBinding.ivBarcode.setOnClickListener {
-            popupBarcodeBinding.btShowScan.performClick()
-            barcodeAlertDialog.cancel()
-        }
-
-        popupBarcodeBinding.ivScan.setOnClickListener {
-            popupBarcodeBinding.btShowScan.performClick()
-            barcodeAlertDialog.cancel()
-        }
-
-        popupBarcodeBinding.etQty.addTextChangedListener(object : TextWatcher {
-            override fun onTextChanged(arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int) {
-                if (arg0.isEmpty()) {
-                    quantity = 1
-                    popupBarcodeBinding.etQty.setText(quantity.toString())
-                } else {
-                    quantity = popupBarcodeBinding.etQty.text.toString().toInt()
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        selectedUnit = parent?.getItemAtPosition(position) as Unit
+                    }
                 }
-            }
-            override fun beforeTextChanged(
-                arg0: CharSequence, arg1: Int, arg2: Int,
-                arg3: Int
-            ) {
+
+            popupBarcodeBinding.ivBarcode.setOnClickListener {
+                popupBarcodeBinding.btShowScan.performClick()
+                barcodeAlertDialog.cancel()
             }
 
-            override fun afterTextChanged(arg0: Editable) {
+            popupBarcodeBinding.ivScan.setOnClickListener {
+                popupBarcodeBinding.btShowScan.performClick()
+                barcodeAlertDialog.cancel()
             }
-        })
-        popupBarcodeBinding.etQty.setOnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus) {
-                when {
-                    popupBarcodeBinding.etQty.text.isEmpty() -> {
+
+            popupBarcodeBinding.etQty.addTextChangedListener(object : TextWatcher {
+                override fun onTextChanged(arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int) {
+                    if (arg0.isEmpty()) {
                         quantity = 1
                         popupBarcodeBinding.etQty.setText(quantity.toString())
-                    }
-                    popupBarcodeBinding.etQty.text.toString() == "0" -> {
-                        quantity = 1
-                        popupBarcodeBinding.etQty.setText(quantity.toString())
-                    }
-                    else -> {
+                    } else {
                         quantity = popupBarcodeBinding.etQty.text.toString().toInt()
-                        popupBarcodeBinding.etQty.setText(popupBarcodeBinding.etQty.text.toString())
+                    }
+                }
+                override fun beforeTextChanged(
+                    arg0: CharSequence, arg1: Int, arg2: Int,
+                    arg3: Int
+                ) {
+                }
+
+                override fun afterTextChanged(arg0: Editable) {
+                }
+            })
+            popupBarcodeBinding.etQty.setOnFocusChangeListener { v, hasFocus ->
+                if (!hasFocus) {
+                    when {
+                        popupBarcodeBinding.etQty.text.isEmpty() -> {
+                            quantity = 1
+                            popupBarcodeBinding.etQty.setText(quantity.toString())
+                        }
+                        popupBarcodeBinding.etQty.text.toString() == "0" -> {
+                            quantity = 1
+                            popupBarcodeBinding.etQty.setText(quantity.toString())
+                        }
+                        else -> {
+                            quantity = popupBarcodeBinding.etQty.text.toString().toInt()
+                            popupBarcodeBinding.etQty.setText(popupBarcodeBinding.etQty.text.toString())
+                        }
                     }
                 }
             }
-        }
 
-        popupBarcodeBinding.tvDecrement.setOnClickListener {
-            if (quantity > 1) {
-                quantity -= 1
+            popupBarcodeBinding.tvDecrement.setOnClickListener {
+                if (quantity > 1) {
+                    quantity -= 1
+                    try {
+                        popupBarcodeBinding.etQty.setText(quantity.toString())
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+            popupBarcodeBinding.tvIncrement.setOnClickListener {
+                quantity += 1
                 try {
                     popupBarcodeBinding.etQty.setText(quantity.toString())
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
-        }
-        popupBarcodeBinding.tvIncrement.setOnClickListener {
-            quantity += 1
-            try {
-                popupBarcodeBinding.etQty.setText(quantity.toString())
-            } catch (e: Exception) {
-                e.printStackTrace()
+
+            popupBarcodeBinding.tvCode.setText(qrCode.code.ifEmpty { "" })
+
+            popupBarcodeBinding.tvInsertClose.setOnClickListener {
+                insertAndClose(c)
             }
+
+            popupBarcodeBinding.tvInsert.setOnClickListener {
+                insert(c)
+            }
+
+            popupBarcodeBinding.btClose.setOnClickListener {
+                barcodeAlertDialog.cancel()
+            }
+
+            isUpdateCheck(isUpdate,qrCode)
+
         }
 
-        popupBarcodeBinding.tvCode.setText(qrCode.code.ifEmpty { "" })
-
-        popupBarcodeBinding.tvInsertClose.setOnClickListener {
-            insertAndClose(c)
-        }
-
-        popupBarcodeBinding.tvInsert.setOnClickListener {
-          insert(c)
-        }
-
-        popupBarcodeBinding.btClose.setOnClickListener {
-            barcodeAlertDialog.cancel()
-        }
         AppHelper.overrideFonts(c, popupBarcodeBinding.llPagerItem)
         builder.setView(popupBarcodeBinding.root)
         barcodeAlertDialog = builder.create()
@@ -177,6 +198,10 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             e.printStackTrace()
         }
 
+    }
+
+
+    fun isUpdateCheck(isUpdate:Boolean,qrCode: QrCode){
         if (isUpdate){
             popupBarcodeBinding.tvInsertClose.setText(getRemoteString("update",this))
             popupBarcodeBinding.tvInsert.hide()
@@ -189,14 +214,16 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             popupBarcodeBinding.ivBarcode.isClickable = false
             popupBarcodeBinding.etQty.setText(qrCode.quantity.toString())
             selectedUnit.id = qrCode.unitId
-            popupBarcodeBinding.spUnits.adapter = spinnerAdapter
-
-
+            popupBarcodeBinding.spUnits.setSelection(spinnerUnits.indexOf(
+                spinnerUnits.find {
+                    it.id == selectedUnit.id
+                }
+            ))
+            spinnerAdapter.notifyDataSetChanged()
         }
         else{
             barcodeAlertDialog.show()
         }
-
     }
 
     fun createDialog(message: String) {
@@ -232,25 +259,6 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         }
     }
 
-    fun getUnit(){
-        launch {
-            spinnerUnits.addAll(QrCodeDatabase(application).getUnit().getUnitData())
-            popupBarcodeBinding.spUnits.adapter = spinnerAdapter
-        }
-
-        popupBarcodeBinding.spUnits.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                selectedUnit = parent?.getItemAtPosition(position) as Unit
-            }
-        }
-    }
     fun insertAndClose(c:Activity){
         if (popupBarcodeBinding.tvCode.text.toString() != ""  && selectedUnit.toString() != " " && quantity != 0) {
             launch {
@@ -342,8 +350,6 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             }
         }
     }
-
-
 
 
 }

@@ -88,6 +88,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     }
 
     private fun setData() {
+
         val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         activityQrDataBinding.rVQrData.layoutManager = layoutManager
         arrFilter.addAll(arrQrCode)
@@ -99,9 +100,12 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.tVDelete){
             createDialogDelete(position)
+
         }
         else if (view.id == R.id.tVUpdate){
-            showAddBarcodeAlertDialog(this,true,arrQrCode[position],this)
+
+            showAddBarcodeAlertDialog(this,true,arrFilter[position],this)
+
 
         }
     }
