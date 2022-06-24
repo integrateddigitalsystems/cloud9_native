@@ -98,9 +98,10 @@
                     android:layout_width="0dp"
                     android:background="@color/white"
                     android:layout_weight="1"
+                    android:layout_marginHorizontal="@dimen/small_margin"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|center"
-                    android:layout_gravity="center"
+                    android:gravity="start|center"
+                    android:layout_gravity="start"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/small_font"/>
 

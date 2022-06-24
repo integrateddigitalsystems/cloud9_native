@@ -3,11 +3,9 @@ package com.ids.librascan.controller.Activities
 
 import Base.ActivityCompactBase
 import android.Manifest
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.util.SparseArray
 import android.view.View
 import androidx.core.app.ActivityCompat
@@ -18,7 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ids.librascan.R
-import com.ids.librascan.controller.Adapters.OnInsertUpdate
+import com.ids.librascan.controller.Adapters.OnInsertUpdate.OnInsertUpdate
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityMainBinding
 import com.ids.librascan.db.QrCode
@@ -35,7 +33,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,OnInsertUpdate{
+class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener, OnInsertUpdate {
     lateinit var activityMainBinding: ActivityMainBinding
     lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var barcodeReader: BarcodeReader

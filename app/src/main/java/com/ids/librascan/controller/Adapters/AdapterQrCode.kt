@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.daimajia.swipe.SwipeLayout
 import com.ids.librascan.R
 import com.ids.librascan.controller.Adapters.RVOnItemClickListener.RVOnItemClickListener
+import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityLoginBinding
 import com.ids.librascan.databinding.ItemQrDataBinding
 import com.ids.librascan.db.QrCode
@@ -34,25 +35,32 @@ class AdapterQrCode(private var items:ArrayList<QrCode>, private val itemClickLi
         if (items[position].unitId == 3)
             holder.unitSelected.text = "item"
 
-        holder.swipeLayout.showMode = SwipeLayout.ShowMode.LayDown
-        holder.swipeLayout.addDrag(SwipeLayout.DragEdge.Right,holder.swipeLeft)
+        if(MyApplication.languageCode =="en"){
+            holder.swipeLayout.showMode = SwipeLayout.ShowMode.LayDown
+            holder.swipeLayout.addDrag(SwipeLayout.DragEdge.Right,holder.swipe)
+        }
+        else{
+            holder.swipeLayout.showMode = SwipeLayout.ShowMode.LayDown
+            holder.swipeLayout.addDrag(SwipeLayout.DragEdge.Left,holder.swipe)
+        }
+
 
     }
     override fun getItemCount(): Int {
         return items.size
     }
 
-    inner class MyViewHolder
 
-    constructor (itemView :View) : RecyclerView.ViewHolder(itemView),View.OnClickListener{
 
-        val title : TextView = itemView.findViewById(R.id.tvTitleQrCode)
-        val quantity : TextView = itemView.findViewById(R.id.tvQuantityCode)
-        val unitSelected : TextView = itemView.findViewById(R.id.tvUnitCode)
-        val swipeLayout : SwipeLayout = itemView.findViewById(R.id.swipe)
-        val swipeLeft : LinearLayout = itemView.findViewById(R.id.bottom_wrapper)
-        val tVDelete : TextView = itemView.findViewById(R.id.tVDelete)
-        val tVUpdate : TextView = itemView.findViewById(R.id.tVUpdate)
+    inner class MyViewHolder(itemView :View) : RecyclerView.ViewHolder(itemView),View.OnClickListener{
+
+        val title = itemView.findViewById<TextView>(R.id.tvTitleQrCode)
+        val quantity = itemView.findViewById<TextView>(R.id.tvQuantityCode)
+        val unitSelected =itemView.findViewById<TextView>(R.id.tvUnitCode)
+        val swipeLayout = itemView.findViewById<SwipeLayout>(R.id.swipe)
+        val swipe = itemView.findViewById<LinearLayout>(R.id.bottom_wrapper)
+        val tVDelete =  itemView.findViewById<TextView>(R.id.tVDelete)
+        val tVUpdate = itemView.findViewById<TextView>(R.id.tVUpdate)
 
         init {
             itemView.setOnClickListener(this)

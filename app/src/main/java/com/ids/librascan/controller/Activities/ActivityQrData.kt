@@ -12,16 +12,14 @@ import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.vision.barcode.Barcode
 import com.ids.librascan.R
 import com.ids.librascan.controller.Adapters.AdapterQrCode
-import com.ids.librascan.controller.Adapters.OnInsertUpdate
+import com.ids.librascan.controller.Adapters.OnInsertUpdate.OnInsertUpdate
 import com.ids.librascan.controller.Adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.librascan.databinding.ActivityQrDataBinding
-import com.ids.librascan.databinding.LoadingTransBinding
 import com.ids.librascan.db.QrCode
 import com.ids.librascan.db.QrCodeDatabase
 import com.ids.librascan.utils.AppHelper
@@ -31,7 +29,8 @@ import utils.hide
 import utils.show
 import utils.toast
 
-class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeReader.BarcodeReaderListener ,OnInsertUpdate{
+class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeReader.BarcodeReaderListener ,
+    OnInsertUpdate {
     lateinit var activityQrDataBinding: ActivityQrDataBinding
     private lateinit var adapterQrCode: AdapterQrCode
     private var arrQrCode = ArrayList<QrCode>()
@@ -45,7 +44,6 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     }
 
      fun init() {
-
          AppHelper.setAllTexts(activityQrDataBinding.rootData, this)
          activityQrDataBinding.ivScan.setOnClickListener {
              try {
@@ -72,13 +70,12 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
 
              override fun afterTextChanged(editable: Editable) {
                  filter(editable.toString())
+
              }
          })
 
-         activityQrDataBinding.rVQrData.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-         activityQrDataBinding.rVQrData.layoutManager = LinearLayoutManager(this)
-
      }
+    @SuppressLint("NotifyDataSetChanged")
     private fun filter(text: String) {
         arrFilter.clear()
         arrFilter.addAll(arrQrCode.filter {
@@ -88,9 +85,9 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     }
 
     private fun setData() {
-
         val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         activityQrDataBinding.rVQrData.layoutManager = layoutManager
+        arrFilter.clear()
         arrFilter.addAll(arrQrCode)
         adapterQrCode = AdapterQrCode(arrFilter, this)
         activityQrDataBinding.rVQrData.adapter = adapterQrCode
@@ -98,18 +95,13 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onItemClicked(view: View, position: Int) {
-        if (view.id == R.id.tVDelete){
+        if (view.id == R.id.tVDelete)
             createDialogDelete(position)
-
-        }
-        else if (view.id == R.id.tVUpdate){
-
-            showAddBarcodeAlertDialog(this,true,arrFilter[position],this)
-
-
+        else if (view.id == R.id.tVUpdate) {
+            showAddBarcodeAlertDialog(this, true, arrFilter[position], this)
+            adapterQrCode.notifyDataSetChanged()
         }
     }
-
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteQrData(position: Int){
         launch {
@@ -205,11 +197,16 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onInsertUpdate(boolean: Boolean) {
-        adapterQrCode.notifyDataSetChanged()
+        launch {
+            arrQrCode.clear()
+            arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
+            arrFilter.clear()
+            arrFilter.addAll(arrQrCode)
+            adapterQrCode.notifyDataSetChanged()
+        }
     }
     fun back(v: View) {
         onBackPressed()
     }
-
 
 }

@@ -1,4 +1,4 @@
-package com.ids.librascan.controller.Adapters
+package com.ids.librascan.controller.Adapters.OnInsertUpdate
 
 import android.view.View
 

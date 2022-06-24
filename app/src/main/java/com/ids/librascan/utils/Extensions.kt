@@ -29,9 +29,6 @@ fun Activity.toast(message: String) {
 }
 
 
-fun Int.toDp(): Int = (this / Resources.getSystem().displayMetrics.density).toInt()
-fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
-
 fun View.show() {
     try{ visibility = View.VISIBLE}catch (e:Exception){}
 }
