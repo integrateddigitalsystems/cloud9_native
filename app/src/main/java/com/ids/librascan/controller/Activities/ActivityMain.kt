@@ -30,6 +30,7 @@ import kotlinx.coroutines.launch
 import utils.hide
 import utils.show
 import utils.toast
+import utils.wtf
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -82,27 +83,26 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
 
 
     fun addDataToFirestore(){
-
         launch {
-            val arrayList = ArrayList<QrCode>()
+            val arrayQrcode = ArrayList<QrCode>()
             val docData: MutableMap<String, Any> = HashMap()
-            arrayList.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
-            if (arrayList.isNotEmpty()){
-                docData.put("QrCode", arrayList)
+            arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
+            if (arrayQrcode.isNotEmpty()){
+                docData.put("QrCode", arrayQrcode)
                 db!!.collection("Data")
                     .add(docData)
                     .addOnSuccessListener { documentReference ->
-                        toast("Success Added")
-                        Log.d(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
+                        toast(AppHelper.getRemoteString("sucess_added",this@ActivityMain))
+                        wtf("DocumentSnapshot written with ID: ${documentReference.id}")
                     }
                     .addOnFailureListener { e ->
-                        Log.w(TAG, "Error adding document", e)
+                        wtf("Error adding document" + e)
                     }
 
                 QrCodeDatabase(application).getCodeDao().deleteAllCode()
             }
             else{
-                toast("Please Add Data to upload")
+                toast(AppHelper.getRemoteString("added_faild",this@ActivityMain))
             }
             }
 

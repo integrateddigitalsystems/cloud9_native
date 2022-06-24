@@ -78,6 +78,7 @@
                 android:hint="@string/name_code"
                 android:importantForAutofill="yes"
                 android:maxLines="3"
+                android:tag="code"
                 android:minHeight="@dimen/height_40"
                 android:padding="@dimen/big_margin_padding"
                 android:textColor="@color/white"
