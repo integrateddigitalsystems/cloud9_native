@@ -96,7 +96,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
                     }
                 }
 
-            listener()
+            listeners()
 
             popupBarcodeBinding.tvCode.setText(qrCode.code.ifEmpty { "" })
             popupBarcodeBinding.tvInsertClose.setOnClickListener {
@@ -236,7 +236,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             )
         }
     }
-    fun listener(){
+    fun listeners(){
         popupBarcodeBinding.ivBarcode.setOnClickListener {
             popupBarcodeBinding.btShowScan.performClick()
             barcodeAlertDialog.cancel()
