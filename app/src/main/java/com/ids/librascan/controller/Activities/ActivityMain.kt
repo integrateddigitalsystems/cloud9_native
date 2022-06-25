@@ -83,7 +83,7 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
                 db!!.collection("Data")
                     .add(docData)
                     .addOnSuccessListener { documentReference ->
-                        toast(AppHelper.getRemoteString("sucess_added",this@ActivityMain))
+                        toast(AppHelper.getRemoteString("success_added",this@ActivityMain))
                         wtf("DocumentSnapshot written with ID: ${documentReference.id}")
                     }
                     .addOnFailureListener { e ->
