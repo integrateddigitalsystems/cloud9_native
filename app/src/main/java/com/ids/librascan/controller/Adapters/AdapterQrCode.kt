@@ -42,6 +42,7 @@ class AdapterQrCode(private var items:ArrayList<QrCode>, private val itemClickLi
         else{
             holder.swipeLayout.showMode = SwipeLayout.ShowMode.LayDown
             holder.swipeLayout.addDrag(SwipeLayout.DragEdge.Left,holder.swipe)
+            holder.swipeLayout.setRightSwipeEnabled(false);
         }
 
 
