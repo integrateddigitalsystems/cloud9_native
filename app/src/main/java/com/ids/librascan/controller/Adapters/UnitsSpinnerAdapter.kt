@@ -31,7 +31,6 @@ class UnitsSpinnerAdapter (val mContext: Context, private var items:MutableList<
 
         val sector = items[position]
         val tvItem = view.findViewById<TextView>(R.id.tvItem)
-        val llItem = view.findViewById<LinearLayout>(R.id.llItem)
 
         tvItem.text = sector.toString()
 

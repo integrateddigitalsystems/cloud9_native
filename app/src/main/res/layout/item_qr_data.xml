@@ -9,7 +9,7 @@
 
         <LinearLayout
             android:tag="Bottom"
-            android:id="@+id/bottom_wrapper"
+            android:id="@+id/llSwipe"
             android:layout_width="@dimen/width_150"
             android:weightSum="1"
             android:layout_marginBottom="5dp"
