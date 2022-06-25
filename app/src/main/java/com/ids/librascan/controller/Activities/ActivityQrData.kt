@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.util.SparseArray
 import android.view.View
 import androidx.core.app.ActivityCompat
@@ -28,6 +29,7 @@ import kotlinx.coroutines.launch
 import utils.hide
 import utils.show
 import utils.toast
+import utils.wtf
 
 class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeReader.BarcodeReaderListener ,
     OnInsertUpdate {
@@ -70,7 +72,6 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
 
              override fun afterTextChanged(editable: Editable) {
                  filter(editable.toString())
-
              }
          })
 
@@ -108,6 +109,20 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
                 QrCodeDatabase(application).getCodeDao().deleteCode(arrFilter.removeAt(position))
                 adapterQrCode.notifyDataSetChanged()
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onInsertUpdate(boolean: Boolean) {
+        launch {
+                arrQrCode.clear()
+               // arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
+                arrFilter.clear()
+                arrFilter.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
+                adapterQrCode.notifyDataSetChanged()
+        }
+    }
+    fun back(v: View) {
+        onBackPressed()
     }
 
     fun createDialogDelete(position: Int) {
@@ -194,19 +209,5 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         }
     }
 
-
-    @SuppressLint("NotifyDataSetChanged")
-    override fun onInsertUpdate(boolean: Boolean) {
-        launch {
-            arrQrCode.clear()
-            arrFilter.clear()
-            arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
-            arrFilter.addAll(arrQrCode)
-            adapterQrCode.notifyDataSetChanged()
-        }
-    }
-    fun back(v: View) {
-        onBackPressed()
-    }
 
 }
