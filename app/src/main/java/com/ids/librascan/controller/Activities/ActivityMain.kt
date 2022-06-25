@@ -44,11 +44,9 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
         setContentView(activityMainBinding.root)
         init()
     }
-
     override fun onInsertUpdate(boolean: Boolean) {
 
     }
-
     private fun init() {
         db = FirebaseFirestore.getInstance()
         addUnit()
@@ -69,17 +67,12 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
        activityMainBinding.iVLogout.setOnClickListener {
            createDialogLogout()
        }
-
         barcodeReader = supportFragmentManager.findFragmentById(R.id.barcodeReader) as BarcodeReader
 
         activityMainBinding.llSync.setOnClickListener {
             addDataToFirestore()
         }
-
-
     }
-
-
     fun addDataToFirestore(){
         launch {
             val arrayQrcode = ArrayList<QrCode>()
@@ -94,7 +87,7 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
                         wtf("DocumentSnapshot written with ID: ${documentReference.id}")
                     }
                     .addOnFailureListener { e ->
-                        wtf("Error adding document" + e)
+                        wtf("Error adding document$e")
                     }
 
                 QrCodeDatabase(application).getCodeDao().deleteAllCode()
@@ -104,10 +97,7 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
             }
             }
 
-
     }
-
-
     fun addUnit(){
         if (MyApplication.isFirst){
             launch {
