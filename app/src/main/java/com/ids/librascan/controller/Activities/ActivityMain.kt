@@ -253,24 +253,19 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
             buttonView!!.id == R.id.rbArabic -> {
 
                 if (isChecked) {
-                    createDialogChangeLanguage(MyApplication.ARABIC)
+                    changeLanguage(MyApplication.ARABIC)
                 }
             }
             buttonView.id == R.id.rbEnglish -> {
 
                 if (isChecked) {
-                    createDialogChangeLanguage(MyApplication.ENGLISH)
+                    changeLanguage(MyApplication.ENGLISH)
                 }
             }
         }
     }
 
-    private fun createDialogChangeLanguage(language: Int) {
-        val builder = AlertDialog.Builder(this)
-            .setCancelable(true)
-            .setMessage(AppHelper.getRemoteString("language", this) + "\n" + "\n" + AppHelper.getRemoteString("message_langaue", this))
-            .setPositiveButton(AppHelper.getRemoteString("ok",this))
-            { dialog, _ ->
+    private fun changeLanguage(language: Int) {
                 if (language == MyApplication.ARABIC) {
                     AppHelper.changeLanguage(this,"ar")
                     startActivity(Intent(this@ActivityMain, ActivityMain::class.java))
@@ -280,14 +275,9 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
                     startActivity(Intent(this@ActivityMain, ActivityMain::class.java))
                     finish()
                 }
-                dialog.cancel()
+
             }
-            .setNegativeButton(AppHelper.getRemoteString("cancel",this))
-            { dialog, _ ->
-                dialog.cancel()
-            }
-        val alert = builder.create()
-        alert.show()
-    }
+
+
 
 }
