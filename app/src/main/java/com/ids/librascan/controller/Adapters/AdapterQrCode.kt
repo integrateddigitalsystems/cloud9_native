@@ -41,10 +41,9 @@ class AdapterQrCode(private var items:ArrayList<QrCode>, private val itemClickLi
         else{
             holder.itemQrDataBinding.swipe.showMode = SwipeLayout.ShowMode.LayDown
             holder.itemQrDataBinding.swipe.addDrag(SwipeLayout.DragEdge.Left,holder.itemQrDataBinding.llSwipe)
-            holder.itemQrDataBinding.swipe.setRightSwipeEnabled(false);
+            holder.itemQrDataBinding.swipe.isRightSwipeEnabled = false
         }
-
-
+        
     }
     override fun getItemCount(): Int {
         return items.size

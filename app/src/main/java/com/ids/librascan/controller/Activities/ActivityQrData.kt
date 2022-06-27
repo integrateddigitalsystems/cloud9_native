@@ -115,9 +115,9 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     override fun onInsertUpdate(boolean: Boolean) {
         launch {
                 arrQrCode.clear()
-               // arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
+                arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
                 arrFilter.clear()
-                arrFilter.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
+                arrFilter.addAll(arrQrCode)
                 adapterQrCode.notifyDataSetChanged()
         }
     }
