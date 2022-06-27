@@ -166,23 +166,23 @@ class AppHelper {
              return if (Locale.getDefault().language == "ar")
                 Typeface.createFromAsset(
                     context.applicationContext.assets,
-                    "fonts/Inter-Medium.ttf"
+                    "fonts/HelveticaNeueLTArabic-Bold.ttf"
                 )
             else
-           return Typeface.createFromAsset(context.applicationContext.assets, "fonts/Inter-Medium.ttf")
+           return Typeface.createFromAsset(context.applicationContext.assets, "fonts/HelveticaNeueLTArabic-Bold.ttf")
 
         }
         fun getTypeFaceBold(context: Context): Typeface {
             return if (Locale.getDefault().language == "ar")
                 Typeface.createFromAsset(
                     context.applicationContext.assets,
-                    "fonts/Inter-Bold.ttf"
+                    "fonts/HelveticaNeueLTArabic-Bold.ttf"
                 )
 
             else
               return  Typeface.createFromAsset(
                     context.applicationContext.assets,
-                    "fonts/Inter-Bold.ttf"
+                    "fonts/HelveticaNeue_bold.ttf"
                 )
 
         }

@@ -156,7 +156,7 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
                                 android:layout_height="wrap_content"
-                                android:padding="@dimen/normal_margin_padding"
+                                android:padding="@dimen/small_margin_padding"
                                 android:text="@string/units"
                                 android:tag="units"
                                 android:textColor="@color/colorAccent"
@@ -218,7 +218,7 @@
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/small_margin_padding"
                                 android:text="@string/quantity"
-                                android:tag="@string/quantity"
+                                android:tag="quantity"
                                 android:textColor="@color/colorAccent"
                                 android:textSize="@dimen/font"/>
 
