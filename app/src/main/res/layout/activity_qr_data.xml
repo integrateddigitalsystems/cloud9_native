@@ -36,12 +36,14 @@
         android:layout_alignParentLeft="true"
         android:id="@+id/ivBack"
         android:paddingTop="@dimen/normal_margin_padding"
+        android:tint="@color/white"
         android:paddingBottom="@dimen/normal_margin_padding"
         android:paddingStart="@dimen/big_margin_padding"
         android:paddingEnd="@dimen/normal_margin_padding"
         android:contentDescription="@string/app_name"
         android:onClick="back"
-        app:tint="@color/white" />
+        app:tint="@color/white"
+        tools:ignore="UseAppTint" />
 
     <LinearLayout
         android:orientation="horizontal"

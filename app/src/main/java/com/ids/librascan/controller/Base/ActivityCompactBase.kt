@@ -197,6 +197,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
                             popupBarcodeBinding.tvCode.setText(qrCodeQuery.code)
                             popupBarcodeBinding.etQty.setText(qrCodeQuery.quantity.toString())
                             popupBarcodeBinding.viewUpdate.updateLayoutParams<LinearLayout.LayoutParams>{width = 0}
+                            popupBarcodeBinding.ivUnit.hide()
                         } else {
                             insertCode()
                             barcodeAlertDialog.cancel()
@@ -221,6 +222,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
                         popupBarcodeBinding.tvCode.setText(qrCodeQuery.code)
                         popupBarcodeBinding.etQty.setText(qrCodeQuery.quantity.toString())
                         popupBarcodeBinding.viewUpdate.updateLayoutParams<LinearLayout.LayoutParams>{width=0}
+                        popupBarcodeBinding.ivUnit.hide()
                     } else {
                         insertCode()
                         toast(getRemoteString("item_save",c))

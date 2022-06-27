@@ -195,7 +195,7 @@
                                 android:layout_marginBottom="@dimen/small_margin_padding"
                                 android:onClick="showUnit"
                                 android:rotation="270"
-                                android:src="@drawable/back"
+                                android:src="@drawable/icon_spinner"
                                 app:tint="@color/colorPrimaryDark" />
 
                         </RelativeLayout>
