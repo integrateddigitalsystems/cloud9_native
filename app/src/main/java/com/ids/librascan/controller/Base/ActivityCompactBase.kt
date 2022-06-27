@@ -183,12 +183,12 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
                 if (popupBarcodeBinding.tvInsertClose.text == (getRemoteString("insert_and_close",c))) {
                         val qrCodeQuery = QrCodeDatabase(application).getCodeDao().getCode(popupBarcodeBinding.tvCode.text.toString().trim(), selectedUnit.id)
                         if (qrCodeQuery != null) {
-                            createDialogUpdate(getRemoteString("item_exist", c) + "\n" + "\n" + AppHelper.getRemoteString("item_update", c))
+                            createDialogUpdate(getRemoteString("item_exist", c) + "\n" + "\n" + getRemoteString("item_update", c))
                             popupBarcodeBinding.tvCode.setText(qrCodeQuery.code)
                             popupBarcodeBinding.etQty.setText(qrCodeQuery.quantity.toString())
                         } else {
                             insertCode()
-                            toast(AppHelper.getRemoteString("item_save", c))
+                            toast(getRemoteString("item_save", c))
                             barcodeAlertDialog.cancel()
                         }
                     }

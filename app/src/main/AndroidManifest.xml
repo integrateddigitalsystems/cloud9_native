@@ -24,7 +24,7 @@
         <activity
             android:name=".controller.Activities.ActivityMain"
             android:exported="false"
-            android:theme="@style/Theme.Design.Light.NoActionBar" />
+            android:theme="@style/Theme.Design.Light.NoActionBar"/>
         <activity
             android:name=".controller.Activities.ActivityLogin"
             android:exported="false"

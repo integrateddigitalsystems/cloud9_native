@@ -28,7 +28,6 @@ import java.util.*
 class AppHelper {
     companion object {
         fun changeLanguage(context: Context, language: String) {
-
             when (language) {
                 AppConstants.LANG_ARABIC -> Locale.setDefault(Locale("ar"))
                 AppConstants.LANG_ENGLISH -> Locale.setDefault(Locale.ENGLISH)

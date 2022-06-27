@@ -42,4 +42,9 @@
     <string name="sync">ترحيل</string>
     <string name="message_google">الدخول غبر غوغل</string>
     <string name="delete">حذف</string>
+    <string name="logout_menu">خروج</string>
+    <string name="language">اللغة</string>
+    <string name="arabic">العربية</string>
+    <string name="english">الانجليزية</string>
+    <string name="change_language">تغير اللغة</string>
 </resources>

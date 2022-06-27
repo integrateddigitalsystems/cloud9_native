@@ -43,4 +43,9 @@
     <string name="sync">Sync</string>
     <string name="message_google">Sign in with Google</string>
     <string name="delete">Delete</string>
+    <string name="logout_menu">Sign out</string>
+    <string name="change_language">Change language</string>
+    <string name="language">Language</string>
+    <string name="arabic">Arabic</string>
+    <string name="english">English</string>
 </resources>

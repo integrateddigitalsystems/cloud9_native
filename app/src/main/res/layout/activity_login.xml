@@ -11,10 +11,10 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/width_150"
+            android:layout_height="@dimen/height_100"
             android:layout_gravity="center"
             android:src="@drawable/google"
-            android:layout_marginTop="@dimen/margin_30"/>
+            android:layout_marginTop="@dimen/big_margin"/>
 
 
         <com.ids.librascan.custom.CustomTextViewMedium

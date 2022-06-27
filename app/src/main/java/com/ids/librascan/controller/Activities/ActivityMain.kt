@@ -3,11 +3,18 @@ package com.ids.librascan.controller.Activities
 
 import Base.ActivityCompactBase
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.SparseArray
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.CompoundButton
+import android.widget.PopupMenu
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -19,24 +26,24 @@ import com.ids.librascan.R
 import com.ids.librascan.controller.Adapters.OnInsertUpdate.OnInsertUpdate
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityMainBinding
+import com.ids.librascan.databinding.PopupLanguageBinding
 import com.ids.librascan.db.QrCode
 import com.ids.librascan.db.QrCodeDatabase
 import com.ids.librascan.db.Unit
 import com.ids.librascan.utils.AppHelper
 import info.bideens.barcode.BarcodeReader
 import kotlinx.coroutines.launch
-import utils.hide
-import utils.show
-import utils.toast
-import utils.wtf
+import utils.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener, OnInsertUpdate {
+class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener, OnInsertUpdate, CompoundButton.OnCheckedChangeListener {
     lateinit var activityMainBinding: ActivityMainBinding
+    lateinit var popupLanguageBinding : PopupLanguageBinding
     lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var barcodeReader: BarcodeReader
+    private lateinit var languageAlertDialog: androidx.appcompat.app.AlertDialog
     private var db: FirebaseFirestore? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,14 +71,31 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
            .build()
        mGoogleSignInClient= GoogleSignIn.getClient(this,gso)
 
-       activityMainBinding.iVLogout.setOnClickListener {
-           createDialogLogout()
+       activityMainBinding.iVMore.setOnClickListener {
+           val popupMenu = PopupMenu(this,it)
+           popupMenu.setOnMenuItemClickListener { item->
+               when(item.itemId){
+                   R.id.action_logout ->{
+                       createDialogLogout()
+                       true
+                   }
+                   R.id.action_language ->{
+                       createDialogLanguage()
+                       true
+                   }
+                   else ->false
+               }
+           }
+           popupMenu.inflate(R.menu.menu)
+           popupMenu.show()
        }
         barcodeReader = supportFragmentManager.findFragmentById(R.id.barcodeReader) as BarcodeReader
 
         activityMainBinding.llSync.setOnClickListener {
             addDataToFirestore()
         }
+
+
     }
     fun addDataToFirestore(){
         launch {
@@ -131,6 +155,24 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
         val alert = builder.create()
         alert.show()
     }
+
+    private fun createDialogLanguage(){
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        popupLanguageBinding = PopupLanguageBinding.inflate(layoutInflater)
+        AppHelper.setAllTexts(popupLanguageBinding.llLanguage, this)
+        AppHelper.overrideFonts(this, popupLanguageBinding.llLanguage)
+        builder.setView(popupLanguageBinding.root)
+        if (MyApplication.languageCode == "en")
+            popupLanguageBinding.rbEnglish.isChecked = true
+        else popupLanguageBinding.rbArabic.isChecked =true
+
+        popupLanguageBinding.rbEnglish.setOnCheckedChangeListener(this)
+        popupLanguageBinding.rbArabic.setOnCheckedChangeListener(this)
+
+        languageAlertDialog = builder.create()
+        languageAlertDialog.show()
+    }
+
 
     fun checkCameraPermissions(view: View) {
         if (ContextCompat.checkSelfPermission(this@ActivityMain,
@@ -200,5 +242,46 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
     }
 
 
+    override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+        when {
+            buttonView!!.id == R.id.rbArabic -> {
+
+                if (isChecked) {
+                    createDialogChangeLanguage(MyApplication.ARABIC)
+                }
+            }
+            buttonView.id == R.id.rbEnglish -> {
+
+                if (isChecked) {
+                    createDialogChangeLanguage(MyApplication.ENGLISH)
+                }
+            }
+        }
+    }
+
+    private fun createDialogChangeLanguage(language: Int) {
+        val builder = AlertDialog.Builder(this)
+            .setCancelable(true)
+            .setMessage(AppHelper.getRemoteString("language", this) + "\n" + "\n" + AppHelper.getRemoteString("message_langaue", this))
+            .setPositiveButton(AppHelper.getRemoteString("ok",this))
+            { dialog, _ ->
+                if (language == MyApplication.ARABIC) {
+                    AppHelper.changeLanguage(this,"ar")
+                    startActivity(Intent(this@ActivityMain, ActivityMain::class.java))
+                    finish()
+                } else {
+                    AppHelper.changeLanguage(this,"en")
+                    startActivity(Intent(this@ActivityMain, ActivityMain::class.java))
+                    finish()
+                }
+                dialog.cancel()
+            }
+            .setNegativeButton(AppHelper.getRemoteString("cancel",this))
+            { dialog, _ ->
+                dialog.cancel()
+            }
+        val alert = builder.create()
+        alert.show()
+    }
 
 }

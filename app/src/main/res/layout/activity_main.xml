@@ -11,13 +11,13 @@
     tools:context=".controller.Activities.ActivityMain">
 
     <ImageView
-        android:id="@+id/iVLogout"
+        android:id="@+id/iVMore"
         android:layout_width="@dimen/size_30"
         android:layout_height="@dimen/size_30"
         android:layout_gravity="end"
         android:layout_marginTop="@dimen/small_margin"
         app:tint="@color/white"
-        android:src="@drawable/icon_logout"
+        android:src="@drawable/icon_more"
         android:layout_marginEnd="@dimen/small_margin"
         tools:ignore="ContentDescription" />
 
@@ -131,7 +131,10 @@
                 android:text="@string/sync"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font" />
+
         </LinearLayout>
+
+
 
     </LinearLayout>
 

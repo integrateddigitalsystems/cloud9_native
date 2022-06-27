@@ -3,7 +3,6 @@ package com.ids.librascan.controller.Activities
 import Base.ActivityCompactBase
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,7 +18,6 @@ import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityLoginBinding
 import com.ids.librascan.utils.AppHelper
-import kotlinx.coroutines.launch
 import utils.AppConstants
 import utils.LocaleUtils
 import utils.toast
@@ -57,9 +55,13 @@ class ActivityLogin : ActivityCompactBase() {
 
        activityLoginBinding.btChangeLanguage.setOnClickListener {
             if (MyApplication.languageCode.equals(AppConstants.LANG_ENGLISH)) {
-                changeToArabic()
+                AppHelper.changeLanguage(this,"ar")
+                startActivity(Intent(this@ActivityLogin, ActivityLogin::class.java))
+                finish()
             } else {
-                changeToEnglish()
+                AppHelper.changeLanguage(this,"en")
+                startActivity(Intent(this@ActivityLogin, ActivityLogin::class.java))
+                finish()
             }
         }
     }
@@ -104,24 +106,5 @@ class ActivityLogin : ActivityCompactBase() {
             }
     }
 
-    fun changeToEnglish() {
-        MyApplication.languageCode = AppConstants.LANG_ENGLISH
-        LocaleUtils.setLocale(Locale("en"))
-        try {
-            startActivity(Intent(this@ActivityLogin, ActivityLogin::class.java))
-            finish()
-        } catch (e: Exception) {
-        }
-    }
-
-    fun changeToArabic() {
-        MyApplication.languageCode = AppConstants.LANG_ARABIC
-        LocaleUtils.setLocale(Locale("ar"))
-        try {
-            startActivity(Intent(this@ActivityLogin, ActivityLogin::class.java))
-            finish()
-        } catch (e: Exception) {
-        }
-    }
 
 }

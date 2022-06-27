@@ -7,12 +7,10 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.util.SparseArray
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.vision.barcode.Barcode
@@ -29,7 +27,6 @@ import kotlinx.coroutines.launch
 import utils.hide
 import utils.show
 import utils.toast
-import utils.wtf
 
 class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeReader.BarcodeReaderListener ,
     OnInsertUpdate {
@@ -72,6 +69,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
 
              override fun afterTextChanged(editable: Editable) {
                  filter(editable.toString())
+
              }
          })
 
@@ -101,12 +99,15 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         else if (view.id == R.id.tVUpdate) {
             showAddBarcodeAlertDialog(this, true, arrFilter[position], this)
             adapterQrCode.notifyDataSetChanged()
+
         }
     }
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteQrData(position: Int){
         launch {
                 QrCodeDatabase(application).getCodeDao().deleteCode(arrFilter.removeAt(position))
+                arrFilter.clear()
+                arrFilter.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
                 adapterQrCode.notifyDataSetChanged()
         }
     }
