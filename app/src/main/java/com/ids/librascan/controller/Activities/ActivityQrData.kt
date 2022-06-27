@@ -117,7 +117,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
                 arrQrCode.clear()
                 arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
                 arrFilter.clear()
-                arrFilter.addAll(arrQrCode)
+                arrFilter.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
                 adapterQrCode.notifyDataSetChanged()
         }
     }
