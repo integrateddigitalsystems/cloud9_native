@@ -9,6 +9,8 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.SparseArray
 import android.view.Menu
 import android.view.MenuItem
@@ -94,8 +96,6 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
         activityMainBinding.llSync.setOnClickListener {
             addDataToFirestore()
         }
-
-
     }
     fun addDataToFirestore(){
         launch {
@@ -103,6 +103,7 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
             val docData: MutableMap<String, Any> = HashMap()
             arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
             if (arrayQrcode.isNotEmpty()){
+                activityMainBinding.loading.show()
                 docData.put("QrCode", arrayQrcode)
                 db!!.collection("Data")
                     .add(docData)
@@ -113,11 +114,16 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
                     .addOnFailureListener { e ->
                         wtf("Error adding document$e")
                     }
+                Handler(Looper.getMainLooper()).postDelayed({
+                    activityMainBinding.loading.hide()
+                }, 500)
+
 
                 QrCodeDatabase(application).getCodeDao().deleteAllCode()
             }
             else{
                 toast(AppHelper.getRemoteString("added_faild",this@ActivityMain))
+                activityMainBinding.loading.hide()
             }
             }
 

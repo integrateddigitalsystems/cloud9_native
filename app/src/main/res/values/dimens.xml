@@ -40,4 +40,7 @@
     <dimen name="margin_100">100dp</dimen>
     <dimen name="height_100">100dp</dimen>
     <dimen name="item_height">55dp</dimen>
+    <dimen name="splash_image_width_height">120dp</dimen>
+    <dimen name="splash_font">20sp</dimen>
+    <dimen name="radius_10">10dp</dimen>
 </resources>

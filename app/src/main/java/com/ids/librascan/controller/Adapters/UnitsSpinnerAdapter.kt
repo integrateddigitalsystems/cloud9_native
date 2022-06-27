@@ -34,6 +34,8 @@ class UnitsSpinnerAdapter (val mContext: Context, private var items:MutableList<
 
         tvItem.text = sector.toString()
 
+
+
        // Actions.overrideFonts(context, llItem)
 
         return view

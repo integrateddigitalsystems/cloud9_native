@@ -11,7 +11,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.updateLayoutParams
 import com.ids.librascan.controller.Adapters.OnInsertUpdate.OnInsertUpdate
 import com.ids.librascan.controller.Adapters.UnitsSpinnerAdapter
 import com.ids.librascan.databinding.PopupBarcodeBinding
@@ -93,6 +95,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
                         id: Long
                     ) {
                         selectedUnit = parent?.getItemAtPosition(position) as Unit
+
                     }
                 }
 
@@ -126,6 +129,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             popupBarcodeBinding.tvInsert.hide()
             popupBarcodeBinding.ivScan.hide()
             barcodeAlertDialog.show()
+            popupBarcodeBinding.viewUpdate.updateLayoutParams<LinearLayout.LayoutParams>{width=0}
             popupBarcodeBinding.spUnits.isEnabled = false
             popupBarcodeBinding.tvCode.isFocusable = false
             popupBarcodeBinding.ivBarcode.isClickable = false

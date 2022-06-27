@@ -10,6 +10,32 @@
     android:id="@+id/rootMain"
     tools:context=".controller.Activities.ActivityMain">
 
+    <LinearLayout
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:gravity="bottom"
+        android:background="@drawable/rounded_gray_edit_text"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+        <com.ids.librascan.custom.CustomTextViewMedium
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_30"/>
+
+    </LinearLayout>
+
     <ImageView
         android:id="@+id/iVMore"
         android:layout_width="@dimen/size_30"
