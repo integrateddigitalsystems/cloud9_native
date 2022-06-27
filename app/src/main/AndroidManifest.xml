@@ -20,7 +20,8 @@
         <activity
             android:name=".controller.Activities.ActivityQrData"
             android:exported="false"
-            android:theme="@style/Theme.Design.Light.NoActionBar"/>
+            android:theme="@style/Theme.Design.Light.NoActionBar"
+            android:windowSoftInputMode = "stateAlwaysHidden"/>
         <activity
             android:name=".controller.Activities.ActivityMain"
             android:exported="false"
