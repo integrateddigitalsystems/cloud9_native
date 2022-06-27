@@ -27,7 +27,6 @@ import java.util.*
 
 class AppHelper {
     companion object {
-        var fragmentAvailable: Int? = null
         fun changeLanguage(context: Context, language: String) {
 
             when (language) {
