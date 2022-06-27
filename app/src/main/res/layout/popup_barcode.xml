@@ -55,8 +55,9 @@
                             android:id="@+id/ivBarcode"
                             android:layout_marginTop="@dimen/huge_margin"
                             android:layout_gravity="center_horizontal"
-                            android:src="@drawable/scan"
+                            android:src="@drawable/icon_scan_new"
                             android:clickable="true"
+                            app:tint="@color/colorPrimaryDark"
                             android:layout_width="@dimen/barcode_width_height"
                             android:layout_height="@dimen/barcode_width_height"/>
 
@@ -135,7 +136,7 @@
                                 android:layout_marginTop="@dimen/small_margin_padding"
                                 android:layout_marginEnd="@dimen/small_margin_padding"
                                 android:layout_marginBottom="@dimen/small_margin_padding"
-                                android:src="@drawable/scan"
+                                android:src="@drawable/icon_scan_new"
                                 app:tint="@color/colorPrimaryDark" />
 
                         </RelativeLayout>
@@ -183,15 +184,19 @@
                                 android:focusable="true" />
 
                             <ImageView
-                                    android:id="@+id/ivUnit"
-                                    android:layout_width="10dp"
-                                    android:layout_height="10dp"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_margin="@dimen/small_margin_padding"
-                                    android:rotation="270"
-                                    android:src="@drawable/back"
-                                   app:tint="@color/colorPrimaryDark" />
+                                android:id="@+id/ivUnit"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/small_margin_padding"
+                                android:layout_marginTop="@dimen/small_margin_padding"
+                                android:layout_marginEnd="@dimen/small_margin_padding"
+                                android:layout_marginBottom="@dimen/small_margin_padding"
+                                android:onClick="showUnit"
+                                android:rotation="270"
+                                android:src="@drawable/back"
+                                app:tint="@color/colorPrimaryDark" />
 
                         </RelativeLayout>
 

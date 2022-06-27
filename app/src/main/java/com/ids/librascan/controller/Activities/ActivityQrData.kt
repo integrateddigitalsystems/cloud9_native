@@ -98,21 +98,18 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
             createDialogDelete(position)
         else if (view.id == R.id.tVUpdate) {
             showAddBarcodeAlertDialog(this, true, arrFilter[position], this)
+            adapterQrCode.notifyDataSetChanged()
             launch {
                 arrFilter.clear()
-                arrQrCode.clear()
                 arrFilter.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
-                arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
                 adapterQrCode.notifyDataSetChanged()
             }
-
-
         }
     }
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteQrData(position: Int){
         launch {
-                QrCodeDatabase(application).getCodeDao().deleteCode(arrFilter.removeAt(position))
+                QrCodeDatabase(application).getCodeDao().deleteCode(arrFilter[position])
                 arrFilter.clear()
                 arrQrCode.clear()
                 arrFilter.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
