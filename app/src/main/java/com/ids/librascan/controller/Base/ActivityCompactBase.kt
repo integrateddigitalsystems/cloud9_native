@@ -250,7 +250,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         popupBarcodeBinding.etQty.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int) {
                 if (arg0.isEmpty()) {
-                    quantity = 1
+                    quantity = 0
                     popupBarcodeBinding.etQty.setText(quantity.toString())
                 } else {
                     quantity = popupBarcodeBinding.etQty.text.toString().toInt()
@@ -269,11 +269,11 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             if (!hasFocus) {
                 when {
                     popupBarcodeBinding.etQty.text.isEmpty() -> {
-                        quantity = 1
+                        quantity = 0
                         popupBarcodeBinding.etQty.setText(quantity.toString())
                     }
                     popupBarcodeBinding.etQty.text.toString() == "0" -> {
-                        quantity = 1
+                        quantity = 0
                         popupBarcodeBinding.etQty.setText(quantity.toString())
                     }
                     else -> {
