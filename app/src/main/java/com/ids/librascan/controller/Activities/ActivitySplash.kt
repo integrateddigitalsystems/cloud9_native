@@ -9,7 +9,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.util.Log.wtf
 import android.view.Gravity
 import androidx.core.content.ContextCompat
@@ -30,8 +29,8 @@ import com.ids.librascan.utils.AppHelper
 import utils.AppConstants
 
 class ActivitySplash : ActivityCompactBase() {
-    lateinit var activitySplashBinding: ActivitySplashBinding
-    var mFirebaseRemoteConfig: FirebaseRemoteConfig? = null
+    private lateinit var activitySplashBinding: ActivitySplashBinding
+    private var mFirebaseRemoteConfig: FirebaseRemoteConfig? = null
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,8 +80,7 @@ class ActivitySplash : ActivityCompactBase() {
 
     }
     private fun checkUpdate(){
-        var currConfig : FirebaseUrlItems?=null
-        currConfig = MyApplication.BASE_URLS!!.android.find {
+        val currConfig: FirebaseUrlItems? = MyApplication.BASE_URLS!!.android.find {
             it.versionName == com.ids.librascan.BuildConfig.VERSION_NAME
         }
         MyApplication.BASE_URL =currConfig!!.baseUrl!!
@@ -104,7 +102,7 @@ class ActivitySplash : ActivityCompactBase() {
         val itemDialogBinding = ItemDialogBinding.inflate(layoutInflater)
         itemDialogBinding.dialogMsg.gravity = Gravity.CENTER
         itemDialogBinding.dialogMsg.text = AppHelper.getRemoteString("update_message",this)
-        builder.setTitle(AppHelper.getRemoteString("update_title",this))
+        builder.setTitle(AppHelper.getRemoteString("update_available",this))
         builder.setCancelable(false)
 
         builder.setView(itemDialogBinding.root)
@@ -115,7 +113,7 @@ class ActivitySplash : ActivityCompactBase() {
                     activity.startActivity(
                         Intent(
                             Intent.ACTION_VIEW,
-                            Uri.parse("market://details?id=" + appPackageName)
+                            Uri.parse("market://details?id=$appPackageName")
                         )
                     )
                     activity.finish()
@@ -125,7 +123,7 @@ class ActivitySplash : ActivityCompactBase() {
                     activity.startActivity(
                         Intent(
                             Intent.ACTION_VIEW,
-                            Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)
+                            Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")
                         )
                     )
                     activity.finish()
@@ -133,7 +131,6 @@ class ActivitySplash : ActivityCompactBase() {
             }
         val d = builder.create()
         d.setOnShowListener {
-            d.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, R.color.gray_bg))
             d.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, R.color.gray_bg))
             d.getButton(AlertDialog.BUTTON_NEGATIVE).transformationMethod = null
             d.getButton(AlertDialog.BUTTON_NEGATIVE).isAllCaps = false
@@ -147,7 +144,7 @@ class ActivitySplash : ActivityCompactBase() {
         val builder = AlertDialog.Builder(activity)
         itemDialogBinding.dialogMsg.gravity = Gravity.CENTER
         itemDialogBinding.dialogMsg.text = AppHelper.getRemoteString("update_message",this)
-        builder.setTitle(AppHelper.getRemoteString("update_title",this))
+        builder.setTitle(AppHelper.getRemoteString("update_available",this))
 
         builder.setView(itemDialogBinding.root)
             .setNegativeButton(AppHelper.getRemoteString("update",this)) { dialog, _ ->
@@ -157,7 +154,7 @@ class ActivitySplash : ActivityCompactBase() {
                     activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
                     activity.finish()
 
-                } catch (anfe:android.content.ActivityNotFoundException) {
+                } catch (anfe:ActivityNotFoundException) {
                     activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
                     activity.finish()
 
@@ -171,11 +168,9 @@ class ActivitySplash : ActivityCompactBase() {
         val d = builder.create()
         d.setOnShowListener {
             d.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, R.color.gray_bg))
-            d.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, R.color.gray_bg))
             d.getButton(AlertDialog.BUTTON_NEGATIVE).transformationMethod = null
             d.getButton(AlertDialog.BUTTON_NEGATIVE).isAllCaps = false
 
-            d.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, R.color.gray_bg))
             d.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, R.color.gray_bg))
             d.getButton(AlertDialog.BUTTON_POSITIVE).transformationMethod = null
             d.getButton(AlertDialog.BUTTON_POSITIVE).isAllCaps = false

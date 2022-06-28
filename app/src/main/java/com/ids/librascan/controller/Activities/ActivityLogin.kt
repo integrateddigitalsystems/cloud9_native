@@ -35,10 +35,7 @@ class ActivityLogin : ActivityCompactBase() {
         activityLoginBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(activityLoginBinding.root)
         init()
-
-
     }
-
     private fun init() {
         AppHelper.setAllTexts(activityLoginBinding.rootLogin, this)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -70,7 +67,6 @@ class ActivityLogin : ActivityCompactBase() {
         val signInIntent: Intent = mGoogleSignInClient.signInIntent
         getContent.launch(signInIntent)
     }
-
     private fun setUpContent() {
         getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
                 if (it.resultCode ==Activity.RESULT_OK){

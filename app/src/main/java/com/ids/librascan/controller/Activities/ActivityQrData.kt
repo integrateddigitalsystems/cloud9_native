@@ -42,7 +42,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         setContentView(activityQrDataBinding.root)
         init()
     }
-    fun init() {
+    private fun init() {
          AppHelper.setAllTexts(activityQrDataBinding.rootData, this)
          activityQrDataBinding.ivScan.setOnClickListener {
              try {
@@ -208,7 +208,6 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         } else {
             super.onBackPressed()
         }
+     }
+
     }
-
-
-}
