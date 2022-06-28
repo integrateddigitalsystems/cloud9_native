@@ -22,8 +22,7 @@ class MyApplication : Application() {
 
         internal lateinit var instance: MyApplication
         var showLogs: Boolean = true
-        const val ARABIC = 1
-        const val ENGLISH = 2
+
         var isFirst : Boolean
             get() = sharedPreferences.getBoolean(AppConstants.IS_FIRST, AppConstants.FIRST)
             set(value) { sharedPreferencesEditor.putBoolean(AppConstants.IS_FIRST, value).apply() }

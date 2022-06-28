@@ -58,36 +58,7 @@ class AppHelper {
 
         }
 
-
-        fun overrideFonts(context: Context, v: View) {
-
-            val typeface: Typeface
-
-            try {
-                if (v is ViewGroup) {
-                    for (i in 0 until v.childCount) {
-                        val child = v.getChildAt(i)
-                        overrideFonts(context, child)
-                    }
-                } else if (v is TextView) {
-
-                    when (MyApplication) {
-
-                        //MyApplication.ENGLISH -> typeface = MyApplication.gilroy
-
-                        // else -> typeface = MyApplication.droidRegular
-                    }
-
-                    //  v.typeface = typeface
-                }
-            } catch (e: Exception) {
-                // Crashlytics.logException(e)
-                e.printStackTrace()
-            }
-
-        }
-
-        fun setLocal(context: Context) {
+             fun setLocal(context: Context) {
 
             if (MyApplication.languageCode == AppConstants.LANG_ENGLISH) {
                 LocaleUtils.setLocale(Locale("en"))
@@ -96,7 +67,7 @@ class AppHelper {
             }
 
         }
-      ///
+
         fun setAllTexts(v: View?, context: Context) {
             if (MyApplication.localizeArray != null) {
                 try {
@@ -121,7 +92,7 @@ class AppHelper {
 
 
         fun setHintTag(view: View, tag: String, context: Context) {
-            var edit = view as EditText
+            val edit = view as EditText
             if (MyApplication.localizeArray != null) {
                 try {
                     edit.hint =
@@ -138,8 +109,6 @@ class AppHelper {
 
             }
         }
-
-
 
         fun getRemoteString(key: String, con: Context): String {
             if (MyApplication.localizeArray != null) {
@@ -196,23 +165,6 @@ class AppHelper {
             )
         }
 
-        fun createDialog(c: Activity, message: String) {
-            val builder = AlertDialog.Builder(c)
-            builder
-                .setMessage(message)
-                .setCancelable(true)
-                .setPositiveButton(c.getString(android.R.string.ok))
-                { dialog, _ ->
-                    dialog.cancel()
-                }
-                .setNegativeButton(c.getString(android.R.string.cancel))
-                { dialog, _ ->
-                    dialog.cancel()
-                }
-
-            val alert = builder.create()
-            alert.show()
-        }
 
         fun createDialogPositive(c: Activity, message: String) {
             val builder = AlertDialog.Builder(c)

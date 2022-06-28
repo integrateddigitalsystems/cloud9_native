@@ -65,8 +65,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx:24.1.2'
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.5'
     implementation 'com.google.firebase:firebase-firestore-ktx:24.1.2'
-    implementation 'androidx.preference:preference-ktx:1.2.0'
-   // implementation 'com.google.firebase:firebase-crashlytics:18.2.11'
+
 
     //noinspection GradleCompatible
     implementation 'com.android.support:recyclerview-v7:21.0.0'

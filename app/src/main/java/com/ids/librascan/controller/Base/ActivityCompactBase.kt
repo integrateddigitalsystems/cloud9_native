@@ -113,7 +113,6 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
 
             isUpdateChecked(isUpdate,qrCode)
         }
-        AppHelper.overrideFonts(c, popupBarcodeBinding.llPagerItem)
         builder.setView(popupBarcodeBinding.root)
         barcodeAlertDialog = builder.create()
         try {
@@ -127,8 +126,8 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     @SuppressLint("ResourceAsColor")
     private fun isUpdateChecked(isUpdate:Boolean, qrCode: QrCode){
         if (isUpdate){
-            popupBarcodeBinding.tvInsertClose.setText(getRemoteString("update",this))
-            popupBarcodeBinding.tvTitle.setText(getRemoteString("update_title",this))
+            popupBarcodeBinding.tvInsertClose.text = getRemoteString("update",this)
+            popupBarcodeBinding.tvTitle.text = getRemoteString("update_title",this)
             popupBarcodeBinding.tvInsert.hide()
             popupBarcodeBinding.ivScan.hide()
             barcodeAlertDialog.show()
@@ -137,7 +136,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             popupBarcodeBinding.tvCode.isFocusable = false
             popupBarcodeBinding.ivBarcode.isClickable = false
             popupBarcodeBinding.ivUnit.hide()
-            //popupBarcodeBinding.tvCode.setTextColor(Color.WHITE)
+
             popupBarcodeBinding.tvCode.setText(qrCode.code)
             popupBarcodeBinding.etQty.setText(qrCode.quantity.toString())
 
@@ -153,7 +152,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         }
     }
 
-    fun createDialogUpdate(message: String) {
+    private fun createDialogUpdate(message: String) {
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
             .setMessage(message)
             .setCancelable(true)
@@ -163,7 +162,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
                 popupBarcodeBinding.tvCode.isFocusable = false
                 popupBarcodeBinding.spUnits.isFocusable = false
                 popupBarcodeBinding.spUnits.isEnabled = false
-                popupBarcodeBinding.tvInsertClose.setText(getRemoteString("update",this))
+                popupBarcodeBinding.tvInsertClose.text = getRemoteString("update",this)
                 dialog.cancel()
             }
             .setNegativeButton(getRemoteString("no",this))
@@ -175,7 +174,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         alert.show()
     }
 
-    fun insertCode (){
+    private fun insertCode (){
         launch {
             QrCodeDatabase(application).getCodeDao().insertCode(QrCode(popupBarcodeBinding.tvCode.text.toString().trim(),selectedUnit.id,quantity))
             popupBarcodeBinding.tvCode.setText("")
@@ -186,7 +185,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         }
     }
 
-    fun insertAndClose(c:Activity){
+    private fun insertAndClose(c:Activity){
         if (popupBarcodeBinding.tvCode.text.toString() != ""  && selectedUnit.toString() != " " && quantity != 0) {
             launch {
                 if (popupBarcodeBinding.tvInsertClose.text == (getRemoteString("insert_and_close",c))) {
@@ -235,7 +234,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         else checkIsNotEmpty(c)
     }
 
-    fun checkIsNotEmpty(c: Activity){
+    private fun checkIsNotEmpty(c: Activity){
         when {
             popupBarcodeBinding.tvCode.text.toString() == "" -> AppHelper.createDialogPositive(c, getRemoteString("error_filled_barcode",this))
             selectedUnit.toString() == " "-> AppHelper.createDialogPositive(c, getRemoteString("error_filled_unit",this))
@@ -314,7 +313,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         }
     }
 
-    fun updateQrcode(c:Activity){
+    private fun updateQrcode(c:Activity){
         insertCode()
         onInsertUpdate.onInsertUpdate(true)
         toast(getRemoteString("message_update",c))

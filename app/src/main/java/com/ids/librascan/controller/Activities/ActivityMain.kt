@@ -140,7 +140,7 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
     }
 
     private fun createDialogLogout() {
-        val builder = android.app.AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this)
             .setCancelable(true)
             .setMessage(AppHelper.getRemoteString("logout_message",this))
             .setPositiveButton(AppHelper.getRemoteString("yes",this))
@@ -166,7 +166,6 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
         popupLanguageBinding = PopupLanguageBinding.inflate(layoutInflater)
         AppHelper.setAllTexts(popupLanguageBinding.llLanguage, this)
-        AppHelper.overrideFonts(this, popupLanguageBinding.llLanguage)
         builder.setView(popupLanguageBinding.root)
         if (MyApplication.languageCode == "en")
             popupLanguageBinding.rbEnglish.isChecked = true
@@ -247,37 +246,24 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
         }
     }
 
-
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
         when {
             buttonView!!.id == R.id.rbArabic -> {
-
                 if (isChecked) {
-                    changeLanguage(MyApplication.ARABIC)
+                    AppHelper.changeLanguage(this,"ar")
+                    startActivity(Intent(this@ActivityMain, ActivityMain::class.java))
+                    finish()
                 }
             }
             buttonView.id == R.id.rbEnglish -> {
 
                 if (isChecked) {
-                    changeLanguage(MyApplication.ENGLISH)
-                }
-            }
-        }
-    }
-
-    private fun changeLanguage(language: Int) {
-                if (language == MyApplication.ARABIC) {
-                    AppHelper.changeLanguage(this,"ar")
-                    startActivity(Intent(this@ActivityMain, ActivityMain::class.java))
-                    finish()
-                } else {
                     AppHelper.changeLanguage(this,"en")
                     startActivity(Intent(this@ActivityMain, ActivityMain::class.java))
                     finish()
                 }
-
             }
-
-
+        }
+    }
 
 }

@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.util.Log.wtf
 import android.view.Gravity
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
@@ -56,7 +57,7 @@ class ActivitySplash : ActivityCompactBase() {
                     )
 
                 } catch (e: Exception) {
-                    Log.wtf("exception_firebase", e.toString())
+                    wtf("exception_firebase", e.toString())
                 }
                 try {
                     MyApplication.localizeArray = Gson().fromJson(
@@ -66,16 +67,16 @@ class ActivitySplash : ActivityCompactBase() {
                     AppHelper.setAllTexts(activitySplashBinding.rootLayout, this)
                     checkUpdate()
                 } catch (e: Exception) {
-                    Log.wtf("exception_firebase", e.toString())
+                   wtf("exception_firebase", e.toString())
                 }
 
             } else {
-                Log.wtf("exception_firebase", "e")
+                wtf("exception_firebase", "e")
             }
 
         }
             .addOnFailureListener {
-                Log.wtf("exception_firebase", it.toString())
+                wtf("exception_firebase", it.toString())
             }
 
     }

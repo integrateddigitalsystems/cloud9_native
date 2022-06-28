@@ -36,19 +36,6 @@ fun View.show() {
 fun View.hide() {
     try{visibility = View.GONE}catch (e:Exception){}
 }
-fun String.occurrencesOf(sub: String): Int {
-    var count = 0
-    var last = 0
-    while (last != -1) {
-        last = this.indexOf(sub, last)
-        if (last != -1) {
-            count++
-            last += sub.length
-        }
-    }
-    return count
-}
-
 
 
 fun TextView.textRemote(key: String, con:Context) {

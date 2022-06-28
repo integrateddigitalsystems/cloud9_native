@@ -69,7 +69,6 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
 
              override fun afterTextChanged(editable: Editable) {
                  filter(editable.toString())
-
              }
          })
 
@@ -99,11 +98,6 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         else if (view.id == R.id.tVUpdate) {
             showAddBarcodeAlertDialog(this, true, arrFilter[position], this)
             adapterQrCode.notifyDataSetChanged()
-            launch {
-                arrFilter.clear()
-                arrFilter.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
-                adapterQrCode.notifyDataSetChanged()
-            }
         }
     }
 
@@ -111,14 +105,8 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     private fun deleteQrData(position: Int){
         launch {
                 QrCodeDatabase(application).getCodeDao().deleteCode(arrFilter[position])
+                arrQrCode.remove(arrFilter[position])
                 adapterQrCode.notifyDataSetChanged()
-                adapterQrCode.notifyItemChanged(position)
-
-                arrFilter.clear()
-                arrQrCode.clear()
-                //arrFilter.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
-                arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
-                arrFilter.addAll(arrQrCode)
                 activityQrDataBinding.tvBarcode.setText("")
         }
     }
@@ -126,13 +114,12 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     @SuppressLint("NotifyDataSetChanged")
     override fun onInsertUpdate(boolean: Boolean) {
         launch {
-                activityQrDataBinding.tvBarcode.setText("")
-                arrQrCode.clear()
-                arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
-                arrFilter.clear()
-                arrFilter.addAll(arrQrCode)
-                adapterQrCode.notifyDataSetChanged()
-
+              activityQrDataBinding.tvBarcode.setText("")
+              arrQrCode.clear()
+              arrFilter.clear()
+              arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
+              arrFilter.addAll(arrQrCode)
+              adapterQrCode.notifyDataSetChanged()
         }
     }
     fun back(v: View) {
