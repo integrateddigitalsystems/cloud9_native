@@ -1,21 +1,17 @@
 package com.ids.librascan.controller.Adapters
 
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.daimajia.swipe.SwipeLayout
-import com.ids.librascan.R
 import com.ids.librascan.controller.Adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.librascan.controller.MyApplication
-import com.ids.librascan.databinding.ActivityLoginBinding
 import com.ids.librascan.databinding.ItemQrDataBinding
 import com.ids.librascan.db.QrCode
 import java.util.*
-import kotlin.collections.ArrayList
 
 class AdapterQrCode(private var items:ArrayList<QrCode>, private val itemClickListener: RVOnItemClickListener) : RecyclerView.Adapter<AdapterQrCode.MyViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -59,4 +55,5 @@ class AdapterQrCode(private var items:ArrayList<QrCode>, private val itemClickLi
             itemClickListener.onItemClicked(v, layoutPosition)
         }
     }
+
 }
