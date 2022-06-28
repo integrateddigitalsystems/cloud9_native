@@ -123,7 +123,6 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
 
     }
 
-    @SuppressLint("ResourceAsColor")
     private fun isUpdateChecked(isUpdate:Boolean, qrCode: QrCode){
         if (isUpdate){
             popupBarcodeBinding.tvInsertClose.text = getRemoteString("update",this)

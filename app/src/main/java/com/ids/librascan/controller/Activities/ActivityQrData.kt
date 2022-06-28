@@ -114,7 +114,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     @SuppressLint("NotifyDataSetChanged")
     override fun onInsertUpdate(boolean: Boolean) {
         launch {
-              activityQrDataBinding.tvBarcode.setText("")
+            with(activityQrDataBinding) { tvBarcode.setText("") }
               arrQrCode.clear()
               arrFilter.clear()
               arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
@@ -126,7 +126,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         onBackPressed()
     }
 
-    fun createDialogDelete(position: Int) {
+    private fun createDialogDelete(position: Int) {
         val builder = android.app.AlertDialog.Builder(this)
             .setMessage(AppHelper.getRemoteString("delete_message",this))
             .setCancelable(true)
