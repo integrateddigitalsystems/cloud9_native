@@ -36,7 +36,7 @@
     <dimen name="mini_radius">5dp</dimen>
     <dimen name="height_40">40dp</dimen>
     <dimen name="settings_item_height">12dp</dimen>
-    <dimen name="back_width_height">40dp</dimen>
+    <dimen name="back_width_height">50dp</dimen>
     <dimen name="margin_100">100dp</dimen>
     <dimen name="height_100">100dp</dimen>
     <dimen name="item_height">55dp</dimen>
