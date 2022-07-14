@@ -1,6 +1,7 @@
 package com.ids.librascan.controller.Activities
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -84,6 +85,7 @@ class QrCodeActivity : AppCompatActivity(), BarcodeReader.BarcodeReaderListener 
         if (qrCodeBinding.rlBarcode.visibility == View.VISIBLE) {
             barcodeReader.pauseScanning()
             qrCodeBinding.rlBarcode.hide()
+            super.onBackPressed()
         } else {
             super.onBackPressed()
         }
