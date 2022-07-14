@@ -45,14 +45,8 @@ class ActivityLogin : ActivityCompactBase() {
 
     private fun init() {
         AppHelper.setAllTexts(activityLoginBinding.rootLogin, this)
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id_auth))
-            .requestEmail()
-            .build()
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-        firebaseAuth = FirebaseAuth.getInstance()
-
+        configureGoogleSignIn()
+        
         activityLoginBinding.btLogin.setOnClickListener {
             if (MyApplication.clientKey == "") {
                 startActivity(Intent(this, QrCodeActivity::class.java))
@@ -79,6 +73,16 @@ class ActivityLogin : ActivityCompactBase() {
                 finish()
             }
         }
+    }
+
+    private fun configureGoogleSignIn() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id_auth))
+            .requestEmail()
+            .build()
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+        firebaseAuth = FirebaseAuth.getInstance()
     }
 
     private fun signInGoogle() {

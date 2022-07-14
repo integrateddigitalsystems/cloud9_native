@@ -34,7 +34,6 @@ class QrCodeActivity : AppCompatActivity(), BarcodeReader.BarcodeReaderListener 
         barcodeReader.setListener(this)
 
     }
-
     override fun onResume() {
         super.onResume()
         if (ContextCompat.checkSelfPermission(this@QrCodeActivity,
@@ -52,7 +51,6 @@ class QrCodeActivity : AppCompatActivity(), BarcodeReader.BarcodeReaderListener 
             barcodeReader.resumeScanning()
         }
     }
-
     override fun onBitmapScanned(sparseArray: SparseArray<Barcode>?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -79,14 +77,9 @@ class QrCodeActivity : AppCompatActivity(), BarcodeReader.BarcodeReaderListener 
         this.runOnUiThread {
             qrCodeBinding.rlBarcode.hide()
             MyApplication.clientKey = value
-         //   MyApplication.sharedPreferencesEditor.putString(getString(R.string.mobile_key), value).apply()
-          //  toast(value)
             finish()
         }
-
-       // finish()
     }
-
     override fun onBackPressed() {
         if (qrCodeBinding.rlBarcode.visibility == View.VISIBLE) {
             barcodeReader.pauseScanning()
