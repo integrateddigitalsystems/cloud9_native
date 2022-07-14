@@ -11,10 +11,8 @@ object AppConstants {
     const val FIREBASE_URL_LIST = "configuration"
     const val IS_LOGIN = "is_login"
     const val IS_FIRST = "is_first"
+    const val CLIENT_KEY = "clientKey"
 
     const val CHECK_LOGIN = false
     const val FIRST = true
-    const val TOKEN_ID= "idToken"
-
-
 }

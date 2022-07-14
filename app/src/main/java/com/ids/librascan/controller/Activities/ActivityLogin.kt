@@ -46,7 +46,7 @@ class ActivityLogin : ActivityCompactBase() {
     private fun init() {
         AppHelper.setAllTexts(activityLoginBinding.rootLogin, this)
         configureGoogleSignIn()
-        
+
         activityLoginBinding.btLogin.setOnClickListener {
             if (MyApplication.clientKey == "") {
                 startActivity(Intent(this, QrCodeActivity::class.java))
@@ -101,8 +101,6 @@ class ActivityLogin : ActivityCompactBase() {
                     firebaseAuthWithGoogle(account)
                 } catch (e: ApiException) {
                     wtf(e.toString())
-                    toast("Google sign in failed:(")
-
                     MyApplication.isLogin = false
                     wtf("exception: " + e.message)
                     wtf("exception code: " + e.statusCode)
@@ -165,13 +163,14 @@ class ActivityLogin : ActivityCompactBase() {
                             }
                             activityLoginBinding.progressBar.hide()
                             wtf("after progressBar ")
+                           // toast(response.body()!!.message!!)
                             startActivity(Intent(this@ActivityLogin, ActivityMain::class.java))
                             wtf("after startActivity ")
                             finish()
                             wtf("after finish ")
                         } catch (e: Exception) {
                             wtf("ex:: " + e.message)
-                            errorDialog(this@ActivityLogin,e.message.toString())
+                            errorDialog(this@ActivityLogin,e.toString())
                         }
 
                     } else {
@@ -179,7 +178,7 @@ class ActivityLogin : ActivityCompactBase() {
                           activityLoginBinding.progressBar.hide()
                             toast(AppHelper.getRemoteString("login_faild",this@ActivityLogin))
                             try {
-                                errorDialog(this@ActivityLogin, response.body()!!.errorMessage.toString())
+                               // errorDialog(this@ActivityLogin, response.errorBody()!!.toString())
                             } catch (e: Exception) {
                             }
 
@@ -187,16 +186,7 @@ class ActivityLogin : ActivityCompactBase() {
                     }
                 }
                 override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
-                    this@ActivityLogin.runOnUiThread {
-                        activityLoginBinding.progressBar.hide()
-                        toast("login failed")
-                        try {
-                            errorDialog(this@ActivityLogin, t.toString())
-                        } catch (e: Exception) {
-                        }
-                        MyApplication.sharedPreferencesEditor.putBoolean("isLogged", false).apply()
-                        activityLoginBinding.btLogin.isEnabled = true
-                    }
+                    toast(AppHelper.getRemoteString("login_faild",this@ActivityLogin))
                 }
             })
     }

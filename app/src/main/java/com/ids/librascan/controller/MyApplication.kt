@@ -25,19 +25,18 @@ class MyApplication : Application() {
         var BASE_URLS: FirebaseBaseUrlsArray?= null
         var localizeArray: FirebaseLocalizeArray?= null
         var displayName = ""
-        //var clientKey = ""
         internal lateinit var instance: MyApplication
         var showLogs: Boolean = true
 
         var bearer: String
             get() = sharedPreferences.getString("bearer", "")!!
             set(value) {
-                MyApplication.sharedPreferencesEditor.putString("bearer", value).apply()
+                sharedPreferencesEditor.putString("bearer", value).apply()
             }
         var clientKey: String
-            get() = sharedPreferences.getString("clientKey", "")!!
+            get() = sharedPreferences.getString(AppConstants.CLIENT_KEY, "")!!
             set(value) {
-                MyApplication.sharedPreferencesEditor.putString("clientKey", value).apply()
+                sharedPreferencesEditor.putString(AppConstants.CLIENT_KEY, value).apply()
             }
         var isFirst : Boolean
             get() = sharedPreferences.getBoolean(AppConstants.IS_FIRST, AppConstants.FIRST)
@@ -69,8 +68,4 @@ class MyApplication : Application() {
         }
         super.attachBaseContext(newBase)
     }
-
-
-
-
 }
