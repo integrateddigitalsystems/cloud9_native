@@ -14,6 +14,7 @@ object AppConstants {
 
     const val CHECK_LOGIN = false
     const val FIRST = true
+    const val TOKEN_ID= "idToken"
 
 
 }

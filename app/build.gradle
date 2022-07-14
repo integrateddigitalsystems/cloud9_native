@@ -46,6 +46,8 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.21"
     implementation "androidx.room:room-runtime:2.4.2"
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.11'
+    implementation 'com.google.firebase:firebase-analytics-ktx:21.0.0'
     kapt "androidx.room:room-compiler:2.4.2"
     implementation "androidx.room:room-ktx:2.4.2"
 
@@ -78,6 +80,11 @@ dependencies {
     implementation 'com.github.Brayan1863:Barcode-Reader:0.1.1'
 
 
+    implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.8.1'
+    api 'com.squareup.okhttp3:okhttp:4.7.2'
+
+
     implementation 'com.google.firebase:firebase-perf:20.1.0'
     implementation 'com.google.gms:google-services:4.3.10'
 
@@ -90,4 +97,5 @@ dependencies {
 
 }
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 

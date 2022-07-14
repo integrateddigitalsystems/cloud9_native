@@ -159,6 +159,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:gravity="center"
+            android:visibility="gone"
             android:layout_margin="2dp"
             android:text="@string/unit"
             android:tag="unit"

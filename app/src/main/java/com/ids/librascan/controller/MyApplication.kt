@@ -3,8 +3,13 @@ package com.ids.librascan.controller
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Typeface
 import android.os.Build
+import android.preference.PreferenceManager
 import androidx.fragment.app.FragmentManager
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.auth.FirebaseAuth
 import com.ids.librascan.model.FirebaseBaseUrlsArray
 import com.ids.librascan.model.FirebaseLocalizeArray
 import utils.AppConstants
@@ -16,13 +21,24 @@ class MyApplication : Application() {
 
         lateinit var sharedPreferences : SharedPreferences
         lateinit var sharedPreferencesEditor : SharedPreferences.Editor
-        var BASE_URL = ""
+        var BASE_URL = "https://invo.ids.com.lb/"
         var BASE_URLS: FirebaseBaseUrlsArray?= null
         var localizeArray: FirebaseLocalizeArray?= null
-
+        var displayName = ""
+        //var clientKey = ""
         internal lateinit var instance: MyApplication
         var showLogs: Boolean = true
 
+        var bearer: String
+            get() = sharedPreferences.getString("bearer", "")!!
+            set(value) {
+                MyApplication.sharedPreferencesEditor.putString("bearer", value).apply()
+            }
+        var clientKey: String
+            get() = sharedPreferences.getString("clientKey", "")!!
+            set(value) {
+                MyApplication.sharedPreferencesEditor.putString("clientKey", value).apply()
+            }
         var isFirst : Boolean
             get() = sharedPreferences.getBoolean(AppConstants.IS_FIRST, AppConstants.FIRST)
             set(value) { sharedPreferencesEditor.putBoolean(AppConstants.IS_FIRST, value).apply() }
@@ -53,5 +69,8 @@ class MyApplication : Application() {
         }
         super.attachBaseContext(newBase)
     }
+
+
+
 
 }

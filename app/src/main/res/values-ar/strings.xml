@@ -48,4 +48,6 @@
     <string name="english">الانجليزية</string>
     <string name="change_language">تغير اللغة</string>
     <string name="loading"> …جاري التحميل</string>
+    <string name="done">تم</string>
+    <string name="login_failed">فشل عملية الدخول</string>
 </resources>

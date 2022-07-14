@@ -147,6 +147,7 @@
                             android:layout_gravity="center_vertical"
                             android:gravity="center_vertical"
                             android:layout_marginTop="@dimen/normal_margin_padding"
+                            android:visibility="gone"
                             android:layout_marginStart="@dimen/big_margin_padding"
                             android:layout_marginEnd="@dimen/big_margin_padding"
                             android:layout_width="match_parent"

@@ -1,0 +1,15 @@
+package com.ids.librascan.apis
+
+
+import com.ids.librascan.model.ResponseLogin
+import retrofit2.Call
+import retrofit2.http.*
+
+
+interface RetrofitInterface {
+
+    @POST("api/Auth/GoogleLogin")
+    fun getLogin(
+        @Query("idToken") idToken: String?,
+    ): Call<ResponseLogin>
+}

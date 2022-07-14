@@ -148,7 +148,7 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
                 mGoogleSignInClient.signOut().addOnCompleteListener {
                     MyApplication.isLogin = false
                     val intent= Intent(this, ActivityLogin::class.java)
-                    toast(AppHelper.getRemoteString("logout",this))
+                   // toast(AppHelper.getRemoteString("logout",this))
                     startActivity(intent)
                     finish()
                 }

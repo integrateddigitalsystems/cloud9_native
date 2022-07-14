@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <LinearLayout
+            android:id="@+id/llItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <TextView
+                android:text="@string/login_failed"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginTop="@dimen/normal_margin_padding"
+                android:layout_marginBottom="@dimen/normal_margin_padding"
+                android:layout_marginStart="@dimen/big_margin_padding"
+                android:layout_marginEnd="@dimen/big_margin_padding"
+                android:gravity="start"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/header_font"/>
+
+        <ImageView
+                android:src="@drawable/back"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/big_margin_padding"
+                android:rotation="270"
+                android:tint="@color/black"
+                android:layout_width="@dimen/list_icon_width_height"
+                android:layout_height="@dimen/list_icon_width_height"/>
+    </LinearLayout>
+
+    <TextView
+            android:id="@+id/tvDetails"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="@dimen/normal_margin_padding"
+            android:layout_marginBottom="@dimen/normal_margin_padding"
+            android:layout_marginStart="@dimen/big_margin_padding"
+            android:layout_marginEnd="@dimen/big_margin_padding"
+            android:gravity="start"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/header_font"/>
+
+</LinearLayout>

@@ -43,4 +43,5 @@
     <dimen name="splash_image_width_height">120dp</dimen>
     <dimen name="splash_font">20sp</dimen>
     <dimen name="radius_10">10dp</dimen>
+    <dimen name="list_icon_width_height">15dp</dimen>
 </resources>
