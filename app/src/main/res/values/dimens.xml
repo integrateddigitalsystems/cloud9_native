@@ -44,4 +44,6 @@
     <dimen name="splash_font">20sp</dimen>
     <dimen name="radius_10">10dp</dimen>
     <dimen name="list_icon_width_height">15dp</dimen>
+    <dimen name="margin_start_end">18dp</dimen>
+    <dimen name="size_18">18sp</dimen>
 </resources>

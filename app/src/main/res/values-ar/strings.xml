@@ -50,4 +50,13 @@
     <string name="loading"> …جاري التحميل</string>
     <string name="done">تم</string>
     <string name="login_failed">فشل عملية الدخول</string>
+    <string name="scan_settings">اعدادات البحث</string>
+    <string name="settings">اعدادات</string>
+    <string name="all_sessions">التقارير</string>
+    <string name="session_name">عنوان التقرير</string>
+    <string name="add_session">ادخال تقرير</string>
+    <string name="name">الاسم</string>
+    <string name="warehouse">المخزن</string>
+    <string name="date">التاريخ</string>
+    <string name="description">التفاصيل</string>
 </resources>

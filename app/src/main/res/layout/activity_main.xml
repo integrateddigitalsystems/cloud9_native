@@ -101,7 +101,7 @@
 
 
         <LinearLayout
-            android:id="@+id/llData"
+            android:id="@+id/llSession"
             android:layout_width="@dimen/section_size"
             android:layout_height="@dimen/section_size"
             android:layout_gravity="center_horizontal"
@@ -124,8 +124,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:text="@string/my_data"
-                android:tag="my_data"
+                android:text="@string/all_sessions"
+                android:tag="all_sessions"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font"
                 android:textStyle="bold" />

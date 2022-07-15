@@ -49,6 +49,10 @@ class MyApplication : Application() {
             get() = sharedPreferences.getBoolean(AppConstants.IS_LOGIN, AppConstants.CHECK_LOGIN)
             set(value) { sharedPreferencesEditor.putBoolean(AppConstants.IS_LOGIN, value).apply() }
 
+        var enableInsert : Boolean
+            get() = sharedPreferences.getBoolean(AppConstants.IS_Enable, AppConstants.Enable)
+            set(value) { sharedPreferencesEditor.putBoolean(AppConstants.IS_Enable, value).apply() }
+
     }
 
     override fun onCreate() {

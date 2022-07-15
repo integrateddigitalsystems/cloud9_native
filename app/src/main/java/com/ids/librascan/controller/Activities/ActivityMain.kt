@@ -25,6 +25,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ids.librascan.R
+import com.ids.librascan.apis.RetrofitClient
+import com.ids.librascan.apis.RetrofitInterface
 import com.ids.librascan.controller.Adapters.OnInsertUpdate.OnInsertUpdate
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityMainBinding
@@ -32,9 +34,14 @@ import com.ids.librascan.databinding.PopupLanguageBinding
 import com.ids.librascan.db.QrCode
 import com.ids.librascan.db.QrCodeDatabase
 import com.ids.librascan.db.Unit
+import com.ids.librascan.db.Warehouse
+import com.ids.librascan.model.ResponseGetWareHouse
 import com.ids.librascan.utils.AppHelper
 import info.bideens.barcode.BarcodeReader
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import utils.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -59,12 +66,13 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
     private fun init() {
         db = FirebaseFirestore.getInstance()
         addUnit()
+        addWarehouse()
         AppHelper.setAllTexts(activityMainBinding.rootMain, this)
         activityMainBinding.llScan.setOnClickListener {
            showAddBarcodeAlertDialog(this,false, QrCode(),this)
        }
-       activityMainBinding.llData.setOnClickListener {
-           startActivity(Intent(this, ActivityQrData::class.java))
+       activityMainBinding.llSession.setOnClickListener {
+           startActivity(Intent(this, ActivitySessions::class.java))
        }
 
        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -83,6 +91,10 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
                    }
                    R.id.action_language ->{
                        createDialogLanguage()
+                       true
+                   }
+                   R.id.action_settings ->{
+                       startActivity(Intent(this, ActivitySettings::class.java))
                        true
                    }
                    else ->false
@@ -135,8 +147,43 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
                 QrCodeDatabase(application).getUnit().insertUnit(Unit("box"))
                 QrCodeDatabase(application).getUnit().insertUnit(Unit("item"))
             }
+
             MyApplication.isFirst = false
         }
+    }
+
+    fun addWarehouse(){
+     //   getWarehouse()
+
+    }
+
+    private fun getWarehouse() {
+        RetrofitClient.client?.create(RetrofitInterface::class.java)
+            ?.getWarehouse()?.enqueue(object :
+                Callback<ResponseGetWareHouse> {
+                override fun onResponse(
+                    call: Call<ResponseGetWareHouse>,
+                    response: Response<ResponseGetWareHouse>
+                ) {
+                    if (response.isSuccessful && response.body()!!.wareHouses!!.size>0) {
+
+                        for (item in response.body()!!.wareHouses!!) {
+                            launch {
+                                QrCodeDatabase(application).getWarehouse().insertWarehouse(
+                                    Warehouse(
+                                    item.id!!,item.name.toString())
+                                )
+                            }
+                        }
+
+                    } else {
+                        toast("Faild")
+                    }
+                }
+                override fun onFailure(call: Call<ResponseGetWareHouse>, t: Throwable) {
+
+                }
+            })
     }
 
     private fun createDialogLogout() {
@@ -218,7 +265,12 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
         this.runOnUiThread {
             activityMainBinding.rlBarcode.hide()
           showAddBarcodeAlertDialog(this,false,QrCode(value),this)
+            if (MyApplication.enableInsert){
+                 popupBarcodeBinding.tvCode.setText(value)
+                  insert(this)
+            }
         }
+
     }
 
     override fun onScannedMultiple(barcodes: MutableList<Barcode>?) {

@@ -6,4 +6,7 @@
     <item
         android:id="@+id/action_logout"
         android:title="@string/logout_menu" />
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/scan_settings" />
 </menu>

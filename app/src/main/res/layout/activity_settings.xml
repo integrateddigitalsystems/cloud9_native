@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    android:id="@+id/rootSettings"
+    tools:context=".controller.Activities.ActivitySettings">
+
+
+    <include layout="@layout/toolbar" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/height_50"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ToggleButton
+            android:id="@+id/tgEnable"
+            android:layout_width="45dp"
+            android:background="@drawable/enable_selector_day"
+            android:layout_height="25dp"
+            android:onClick="setUpEnable"
+            android:textOff=""
+            android:textOn="" />
+
+
+        <com.ids.librascan.custom.CustomTextViewBold
+            android:id="@+id/tvEnable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:text="Enable insert"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
+</layout>
