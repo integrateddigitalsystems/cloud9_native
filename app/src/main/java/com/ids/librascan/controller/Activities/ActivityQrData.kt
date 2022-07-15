@@ -3,6 +3,7 @@ package com.ids.librascan.controller.Activities
 import Base.ActivityCompactBase
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Editable
@@ -18,6 +19,7 @@ import com.ids.librascan.R
 import com.ids.librascan.controller.Adapters.AdapterQrCode
 import com.ids.librascan.controller.Adapters.OnInsertUpdate.OnInsertUpdate
 import com.ids.librascan.controller.Adapters.RVOnItemClickListener.RVOnItemClickListener
+import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityQrDataBinding
 import com.ids.librascan.db.QrCode
 import com.ids.librascan.db.QrCodeDatabase
@@ -54,7 +56,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
          }
          activityQrDataBinding.loading.show()
          launch {
-             arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
+             arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getCode(MyApplication.sessionId))
              activityQrDataBinding.loading.hide()
              setData()
          }
@@ -117,13 +119,14 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
             with(activityQrDataBinding) { tvBarcode.setText("") }
               arrQrCode.clear()
               arrFilter.clear()
-              arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
+              arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getCode(MyApplication.sessionId))
               arrFilter.addAll(arrQrCode)
               adapterQrCode.notifyDataSetChanged()
         }
     }
     fun back(v: View) {
-        onBackPressed()
+        startActivity(Intent(this@ActivityQrData, ActivitySessions::class.java))
+        finish()
     }
 
     private fun createDialogDelete(position: Int) {

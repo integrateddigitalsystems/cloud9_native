@@ -51,6 +51,8 @@
                         android:layout_height="0dp"
                         android:layout_weight="1">
 
+
+
                     <ImageView
                             android:id="@+id/ivBarcode"
                             android:layout_marginTop="@dimen/huge_margin"
@@ -73,6 +75,66 @@
                         android:text="@string/add_item"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/font" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginStart="@dimen/big_margin_padding"
+                        android:layout_marginEnd="@dimen/big_margin_padding"
+                        android:layout_marginBottom="@dimen/size_20"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.ids.librascan.custom.CustomTextViewMedium
+                            android:layout_width="0dp"
+                            android:layout_weight="1.5"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/small_margin_padding"
+                            android:text="Sessions"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/font"/>
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="4.5"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/normal_margin_padding"
+                            android:minHeight="@dimen/size_20"
+                            android:background="@drawable/rounded_gray_edit_text">
+
+                            <Spinner
+                                android:id="@+id/spSession"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerInParent="true"
+                                android:layout_marginStart="@dimen/small_margin_padding"
+                                android:layout_marginEnd="@dimen/small_margin_padding"
+                                android:layout_toStartOf="@+id/ivSession"
+                                android:background="@android:color/transparent"
+                                android:clickable="false"
+                                android:focusable="true" />
+
+                            <ImageView
+                                android:id="@+id/ivSession"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/small_margin_padding"
+                                android:layout_marginTop="@dimen/small_margin_padding"
+                                android:layout_marginEnd="@dimen/small_margin_padding"
+                                android:layout_marginBottom="@dimen/small_margin_padding"
+                                android:onClick="showSession"
+                                android:rotation="270"
+                                android:src="@drawable/icon_spinner"
+                                app:tint="@color/colorPrimaryDark" />
+
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
 
                     <LinearLayout
                             android:orientation="horizontal"

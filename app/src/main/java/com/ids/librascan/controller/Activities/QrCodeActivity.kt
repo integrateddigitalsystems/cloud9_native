@@ -1,5 +1,6 @@
 package com.ids.librascan.controller.Activities
 
+import Base.ActivityCompactBase
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -24,7 +25,7 @@ import utils.show
 import utils.toast
 
 lateinit var barcodeReader: BarcodeReader
-class QrCodeActivity : AppCompatActivity(), BarcodeReader.BarcodeReaderListener {
+class QrCodeActivity : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener {
     lateinit var qrCodeBinding: ActivityQrCodeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

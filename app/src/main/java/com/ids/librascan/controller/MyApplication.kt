@@ -53,6 +53,10 @@ class MyApplication : Application() {
             get() = sharedPreferences.getBoolean(AppConstants.IS_Enable, AppConstants.Enable)
             set(value) { sharedPreferencesEditor.putBoolean(AppConstants.IS_Enable, value).apply() }
 
+        var sessionId :Int
+            get() = sharedPreferences.getInt(AppConstants.SESSION_ID, 0)
+            set(value) { sharedPreferencesEditor.putInt(AppConstants.SESSION_ID, value).apply() }
+
     }
 
     override fun onCreate() {

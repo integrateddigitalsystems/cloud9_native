@@ -14,14 +14,18 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isEmpty
+import androidx.core.view.isNotEmpty
 import androidx.core.view.updateLayoutParams
 import com.ids.librascan.R
 import com.ids.librascan.controller.Adapters.OnInsertUpdate.OnInsertUpdate
+import com.ids.librascan.controller.Adapters.SessionsSpinnerAdapter
 import com.ids.librascan.controller.Adapters.UnitsSpinnerAdapter
 import com.ids.librascan.databinding.ItemDropDownBinding
 import com.ids.librascan.databinding.PopupBarcodeBinding
 import com.ids.librascan.db.QrCode
 import com.ids.librascan.db.QrCodeDatabase
+import com.ids.librascan.db.Sessions
 import com.ids.librascan.db.Unit
 import com.ids.librascan.utils.AppHelper
 import com.ids.librascan.utils.AppHelper.Companion.getRemoteString
@@ -42,9 +46,12 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     private lateinit var job: Job
     lateinit var popupBarcodeBinding: PopupBarcodeBinding
     private var spinnerUnits: ArrayList<Unit> = arrayListOf()
+    var spinnerSessions: ArrayList<Sessions> = arrayListOf()
     lateinit var spinnerAdapter: UnitsSpinnerAdapter
+    lateinit var sessionsSpinnerAdapter: SessionsSpinnerAdapter
     var quantity = 1
     var selectedUnit = Unit()
+    var selectedSession = Sessions()
     lateinit var onInsertUpdate: OnInsertUpdate
 
     init {
@@ -77,17 +84,17 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     }
 
     fun showAddBarcodeAlertDialog(c:Activity,isUpdate : Boolean,qrCode: QrCode,onInsUpdate: OnInsertUpdate) {
-        spinnerUnits.clear()
+        spinnerSessions.clear()
         onInsertUpdate=onInsUpdate
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
         popupBarcodeBinding = PopupBarcodeBinding.inflate(layoutInflater)
         AppHelper.setAllTexts(popupBarcodeBinding.llPagerItem, this)
 
-        spinnerAdapter = UnitsSpinnerAdapter(this, spinnerUnits)
+        sessionsSpinnerAdapter = SessionsSpinnerAdapter(this, spinnerSessions)
         launch {
-            spinnerUnits.addAll(QrCodeDatabase(application).getUnit().getUnitData())
-            popupBarcodeBinding.spUnits.adapter = spinnerAdapter
-            popupBarcodeBinding.spUnits.onItemSelectedListener =
+            spinnerSessions.addAll(QrCodeDatabase(application).getSessions().getSessions())
+            popupBarcodeBinding.spSession.adapter = sessionsSpinnerAdapter
+            popupBarcodeBinding.spSession.onItemSelectedListener =
                 object : AdapterView.OnItemSelectedListener {
                     override fun onNothingSelected(parent: AdapterView<*>?) {
                     }
@@ -97,7 +104,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
                         position: Int,
                         id: Long
                     ) {
-                        selectedUnit = parent?.getItemAtPosition(position) as Unit
+                        selectedSession = parent?.getItemAtPosition(position) as Sessions
 
                     }
                 }
@@ -131,20 +138,20 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             popupBarcodeBinding.ivScan.hide()
             barcodeAlertDialog.show()
             popupBarcodeBinding.viewUpdate.updateLayoutParams<LinearLayout.LayoutParams>{width=0}
-            popupBarcodeBinding.spUnits.isEnabled = false
+            popupBarcodeBinding.spSession.isEnabled = false
             popupBarcodeBinding.tvCode.isFocusable = false
             popupBarcodeBinding.ivBarcode.isClickable = false
-            popupBarcodeBinding.ivUnit.hide()
+            popupBarcodeBinding.ivSession.hide()
 
             popupBarcodeBinding.tvCode.setText(qrCode.code)
             popupBarcodeBinding.etQty.setText(qrCode.quantity.toString())
 
-            popupBarcodeBinding.spUnits.setSelection(spinnerUnits.indexOf(
-                spinnerUnits.find {
-                    it.id == qrCode.unitId
+            popupBarcodeBinding.spSession.setSelection(spinnerSessions.indexOf(
+                spinnerSessions.find {
+                    it.id == qrCode.sessionId
                 }
             ))
-            spinnerAdapter.notifyDataSetChanged()
+            sessionsSpinnerAdapter.notifyDataSetChanged()
         }
         else{
             barcodeAlertDialog.show()
@@ -175,34 +182,22 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
 
     private fun insertCode (){
         launch {
-            QrCodeDatabase(application).getCodeDao().insertCode(QrCode(popupBarcodeBinding.tvCode.text.toString().trim(),selectedUnit.id,quantity))
+            QrCodeDatabase(application).getCodeDao().insertCode(QrCode(popupBarcodeBinding.tvCode.text.toString().trim(),selectedUnit.id,quantity,selectedSession.id))
             popupBarcodeBinding.tvCode.setText("")
             popupBarcodeBinding.etQty.setText("1")
-            spinnerUnits.clear()
-            spinnerUnits.addAll(QrCodeDatabase(application).getUnit().getUnitData())
-            popupBarcodeBinding.spUnits.adapter = spinnerAdapter
+            spinnerSessions.clear()
+            spinnerSessions.addAll(QrCodeDatabase(application).getSessions().getSessions())
+            popupBarcodeBinding.spSession.adapter = sessionsSpinnerAdapter
         }
     }
 
     private fun insertAndClose(c:Activity){
-        if (popupBarcodeBinding.tvCode.text.toString() != ""  && selectedUnit.toString() != " " && quantity != 0) {
+        if (popupBarcodeBinding.tvCode.text.toString() != ""  &&  popupBarcodeBinding.spSession.isNotEmpty() && quantity != 0) {
             launch {
                 if (popupBarcodeBinding.tvInsertClose.text == (getRemoteString("insert_and_close",c))) {
-                    launch {
-                        val qrCodeQuery = QrCodeDatabase(application).getCodeDao().getCode(popupBarcodeBinding.tvCode.text.toString().trim(), selectedUnit.id)
-                        if (qrCodeQuery != null) {
-                            createDialogUpdate(getRemoteString("item_exist", c) + "\n" + "\n" + getRemoteString("item_update", c))
-                            popupBarcodeBinding.tvCode.setText(qrCodeQuery.code)
-                            popupBarcodeBinding.etQty.setText(qrCodeQuery.quantity.toString())
-                            popupBarcodeBinding.viewUpdate.updateLayoutParams<LinearLayout.LayoutParams>{width = 0}
-                            popupBarcodeBinding.ivUnit.hide()
-                        } else {
-                            insertCode()
-                            barcodeAlertDialog.cancel()
-                            toast(getRemoteString("item_save", c))
-                        }
-                    }
-
+                    insertCode()
+                    barcodeAlertDialog.cancel()
+                    toast(getRemoteString("item_save", c))
                 //Update QrCode
                 }else updateQrcode(c)
 
@@ -211,20 +206,11 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         else checkIsNotEmpty(c)
     }
     fun insert(c:Activity){
-        if (popupBarcodeBinding.tvCode.text.toString() != ""  && selectedUnit.toString() != " " && quantity != 0) {
+        if (popupBarcodeBinding.tvCode.text.toString() != ""  &&  popupBarcodeBinding.spSession.isNotEmpty() && quantity != 0) {
             launch {
                 if(popupBarcodeBinding.tvInsert.text == (getRemoteString("insert",c))) {
-                    val qrCodeQuery = QrCodeDatabase(application).getCodeDao().getCode(popupBarcodeBinding.tvCode.text.toString().trim(),selectedUnit.id)
-                    if (qrCodeQuery !=null ) {
-                        createDialogUpdate(getRemoteString("item_exist",c) + "\n" + "\n" + getRemoteString("item_update",c))
-                        popupBarcodeBinding.tvCode.setText(qrCodeQuery.code)
-                        popupBarcodeBinding.etQty.setText(qrCodeQuery.quantity.toString())
-                        popupBarcodeBinding.viewUpdate.updateLayoutParams<LinearLayout.LayoutParams>{width=0}
-                        popupBarcodeBinding.ivUnit.hide()
-                    } else {
-                        insertCode()
-                        toast(getRemoteString("item_save",c))
-                    }
+                    insertCode()
+                    toast(getRemoteString("item_save",c))
                 }
                 //Update QrCode
                 else updateQrcode(c)
@@ -236,7 +222,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     private fun checkIsNotEmpty(c: Activity){
         when {
             popupBarcodeBinding.tvCode.text.toString() == "" -> AppHelper.createDialogPositive(c, getRemoteString("error_filled_barcode",this))
-            selectedUnit.toString() == " "-> AppHelper.createDialogPositive(c, getRemoteString("error_filled_unit",this))
+           // popupBarcodeBinding.spSession.isEmpty()-> AppHelper.createDialogPositive(c, getRemoteString("error_filled_session",this))
             quantity == 0 -> AppHelper.createDialogPositive(c, getRemoteString("error_filled_qty",this))
         }
     }
@@ -319,7 +305,8 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         barcodeAlertDialog.cancel()
     }
 
-    fun showUnit(view: View){
-        popupBarcodeBinding.spUnits.performClick()
+    fun showSession(view: View){
+        popupBarcodeBinding.spSession.performClick()
     }
+
 }

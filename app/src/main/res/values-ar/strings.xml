@@ -59,4 +59,5 @@
     <string name="warehouse">المخزن</string>
     <string name="date">التاريخ</string>
     <string name="description">التفاصيل</string>
+    <string name="please_enter_a_date">ادخل التاريخ</string>
 </resources>

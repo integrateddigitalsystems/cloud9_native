@@ -65,7 +65,7 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
     }
     private fun init() {
         db = FirebaseFirestore.getInstance()
-        addUnit()
+        //addUnit()
         addWarehouse()
         AppHelper.setAllTexts(activityMainBinding.rootMain, this)
         activityMainBinding.llScan.setOnClickListener {
@@ -105,6 +105,7 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
        }
         barcodeReader = supportFragmentManager.findFragmentById(R.id.barcodeReader) as BarcodeReader
 
+        activityMainBinding.llSync.hide()
         activityMainBinding.llSync.setOnClickListener {
             addDataToFirestore()
         }
@@ -140,7 +141,7 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
             }
 
     }
-    fun addUnit(){
+   /* fun addUnit(){
         if (MyApplication.isFirst){
             launch {
                 QrCodeDatabase(application).getUnit().insertUnit(Unit("Kg"))
@@ -150,11 +151,13 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
 
             MyApplication.isFirst = false
         }
-    }
+    }*/
 
     fun addWarehouse(){
-     //   getWarehouse()
-
+        if (MyApplication.isFirst){
+            getWarehouse()
+            MyApplication.isFirst = false
+        }
     }
 
     private fun getWarehouse() {
@@ -195,7 +198,6 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
                 mGoogleSignInClient.signOut().addOnCompleteListener {
                     MyApplication.isLogin = false
                     val intent= Intent(this, ActivityLogin::class.java)
-                   // toast(AppHelper.getRemoteString("logout",this))
                     startActivity(intent)
                     finish()
                 }

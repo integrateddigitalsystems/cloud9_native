@@ -13,6 +13,7 @@ object AppConstants {
     const val IS_FIRST = "is_first"
     const val CLIENT_KEY = "clientKey"
     const val IS_Enable = "is_enable"
+    const val SESSION_ID = "session_id"
 
     const val CHECK_LOGIN = false
     const val FIRST = true

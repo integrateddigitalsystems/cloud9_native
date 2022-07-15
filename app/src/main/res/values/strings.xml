@@ -61,4 +61,5 @@
     <string name="warehouse">Warehouse</string>
     <string name="date">Date</string>
     <string name="description">Description</string>
+    <string name="please_enter_a_date">Enter a date</string>
 </resources>

@@ -12,6 +12,9 @@ interface QrCodeDao {
     @Query("SELECT * FROM codeScan_table")
     suspend fun getAllCode(): List<QrCode>
 
+    @Query("SELECT * FROM codeScan_table WHERE sessionId=:sessionId")
+    suspend fun getCode(sessionId:Int?): List<QrCode>
+
     @Query("SELECT * FROM codeScan_table WHERE code=:code AND unitId=:unitId")
     suspend fun  getCode(code : String?,unitId : Int?): QrCode
 
@@ -20,5 +23,8 @@ interface QrCodeDao {
 
     @Query("DELETE FROM codeScan_table ")
     suspend fun deleteAllCode()
+
+    @Query("DELETE  FROM codeScan_table WHERE sessionId=:sessionId ")
+    suspend fun deleteCode(sessionId:Int?)
 
 }

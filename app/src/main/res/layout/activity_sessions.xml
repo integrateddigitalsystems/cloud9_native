@@ -2,13 +2,42 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/rootSessions"
-    android:orientation="vertical"
-    android:background="@drawable/background"
-    tools:context=".controller.Activities.ActivitySessions">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:orientation="vertical"
+        android:id="@+id/rootSessions"
+        tools:context=".controller.Activities.ActivityMain">
+
+
+    <LinearLayout
+        android:id="@+id/loadingData"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:gravity="bottom"
+        android:background="@drawable/rounded_gray_edit_text"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+        <com.ids.librascan.custom.CustomTextViewMedium
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:tag="loading"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_30"/>
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/loading"
@@ -72,7 +101,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="@dimen/normal_margin_padding"
+        android:layout_marginTop="@dimen/margin_100"
         android:layout_marginStart="@dimen/normal_margin_padding"
         android:layout_marginEnd="@dimen/normal_margin_padding"
         android:layout_width="match_parent"
@@ -100,20 +129,47 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_100"
         android:layout_weight="1">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rVSessions"
             android:paddingStart="@dimen/normal_margin_padding"
             android:paddingEnd="@dimen/normal_margin_padding"
-            android:layout_marginTop="@dimen/small_margin_padding"
+            android:layout_marginTop="@dimen/height_40"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
     </LinearLayout>
-    </LinearLayout>
 
+    <RelativeLayout
+        android:id="@+id/rlBarcode"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <fragment
+            android:id="@+id/barcodeReader"
+            android:name="info.bideens.barcode.BarcodeReader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:auto_focus="true"
+            app:use_flash="false" />
+
+        <info.bideens.barcode.ScannerOverlay
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#44000000"
+            app:line_color="#7323DC"
+            app:line_speed="6"
+            app:line_width="4"
+            app:square_height="200"
+            app:square_width="200"/>
+
+    </RelativeLayout>
+
+    </FrameLayout>
 </layout>
