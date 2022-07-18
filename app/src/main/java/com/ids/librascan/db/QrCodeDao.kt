@@ -20,6 +20,8 @@ interface QrCodeDao {
 
     @Delete
     suspend fun deleteCode(qrCode: QrCode)
+    @Update
+    suspend fun updateCode(qrCode: QrCode)
 
     @Query("DELETE FROM codeScan_table ")
     suspend fun deleteAllCode()

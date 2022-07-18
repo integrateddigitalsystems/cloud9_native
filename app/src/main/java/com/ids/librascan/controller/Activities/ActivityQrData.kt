@@ -23,6 +23,7 @@ import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityQrDataBinding
 import com.ids.librascan.db.QrCode
 import com.ids.librascan.db.QrCodeDatabase
+import com.ids.librascan.db.Sessions
 import com.ids.librascan.utils.AppHelper
 import info.bideens.barcode.BarcodeReader
 import kotlinx.coroutines.launch
@@ -98,7 +99,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         if (view.id == R.id.tVDelete)
             createDialogDelete(position)
         else if (view.id == R.id.tVUpdate) {
-            showAddBarcodeAlertDialog(this, true, arrFilter[position], this)
+            showAddBarcodeAlertDialog(this, true, arrFilter[position], this,false, Sessions())
             adapterQrCode.notifyDataSetChanged()
         }
     }

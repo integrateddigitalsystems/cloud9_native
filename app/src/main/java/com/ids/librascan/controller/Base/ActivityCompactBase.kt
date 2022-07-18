@@ -42,7 +42,7 @@ import kotlin.collections.ArrayList
 import kotlin.coroutines.CoroutineContext
 
 open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
-    private lateinit var barcodeAlertDialog: androidx.appcompat.app.AlertDialog
+    lateinit var barcodeAlertDialog: androidx.appcompat.app.AlertDialog
     private lateinit var job: Job
     lateinit var popupBarcodeBinding: PopupBarcodeBinding
     private var spinnerUnits: ArrayList<Unit> = arrayListOf()
@@ -83,7 +83,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         job.cancel()
     }
 
-    fun showAddBarcodeAlertDialog(c:Activity,isUpdate : Boolean,qrCode: QrCode,onInsUpdate: OnInsertUpdate) {
+    fun showAddBarcodeAlertDialog(c:Activity,isUpdate : Boolean,qrCode: QrCode,onInsUpdate: OnInsertUpdate,isScan : Boolean,sessions: Sessions) {
         spinnerSessions.clear()
         onInsertUpdate=onInsUpdate
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
@@ -91,6 +91,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         AppHelper.setAllTexts(popupBarcodeBinding.llPagerItem, this)
 
         sessionsSpinnerAdapter = SessionsSpinnerAdapter(this, spinnerSessions)
+
         launch {
             spinnerSessions.addAll(QrCodeDatabase(application).getSessions().getSessions())
             popupBarcodeBinding.spSession.adapter = sessionsSpinnerAdapter
@@ -108,6 +109,15 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
 
                     }
                 }
+            if (isScan){
+                popupBarcodeBinding.ivSession.hide()
+                popupBarcodeBinding.spSession.isEnabled = false
+                popupBarcodeBinding.spSession.setSelection(spinnerSessions.indexOf(
+                    spinnerSessions.find {
+                        it.id == sessions.id
+                    }
+                ))
+            }
 
             listeners()
             popupBarcodeBinding.tvCode.setText(qrCode.code.ifEmpty { "" })
@@ -185,9 +195,9 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             QrCodeDatabase(application).getCodeDao().insertCode(QrCode(popupBarcodeBinding.tvCode.text.toString().trim(),selectedUnit.id,quantity,selectedSession.id))
             popupBarcodeBinding.tvCode.setText("")
             popupBarcodeBinding.etQty.setText("1")
-            spinnerSessions.clear()
+           /* spinnerSessions.clear()
             spinnerSessions.addAll(QrCodeDatabase(application).getSessions().getSessions())
-            popupBarcodeBinding.spSession.adapter = sessionsSpinnerAdapter
+            popupBarcodeBinding.spSession.adapter = sessionsSpinnerAdapter*/
         }
     }
 

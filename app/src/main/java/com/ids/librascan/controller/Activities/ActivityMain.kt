@@ -31,10 +31,8 @@ import com.ids.librascan.controller.Adapters.OnInsertUpdate.OnInsertUpdate
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityMainBinding
 import com.ids.librascan.databinding.PopupLanguageBinding
-import com.ids.librascan.db.QrCode
-import com.ids.librascan.db.QrCodeDatabase
+import com.ids.librascan.db.*
 import com.ids.librascan.db.Unit
-import com.ids.librascan.db.Warehouse
 import com.ids.librascan.model.ResponseGetWareHouse
 import com.ids.librascan.utils.AppHelper
 import info.bideens.barcode.BarcodeReader
@@ -69,7 +67,7 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
         addWarehouse()
         AppHelper.setAllTexts(activityMainBinding.rootMain, this)
         activityMainBinding.llScan.setOnClickListener {
-           showAddBarcodeAlertDialog(this,false, QrCode(),this)
+           showAddBarcodeAlertDialog(this,false, QrCode(),this,false, Sessions())
        }
        activityMainBinding.llSession.setOnClickListener {
            startActivity(Intent(this, ActivitySessions::class.java))
@@ -266,11 +264,12 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
         barcodeReader.pauseScanning()
         this.runOnUiThread {
             activityMainBinding.rlBarcode.hide()
-          showAddBarcodeAlertDialog(this,false,QrCode(value),this)
-            if (MyApplication.enableInsert){
+            barcodeAlertDialog.show()
+            popupBarcodeBinding.tvCode.setText(value)
+           /* if (MyApplication.enableInsert){
                  popupBarcodeBinding.tvCode.setText(value)
                   insert(this)
-            }
+            }*/
         }
 
     }

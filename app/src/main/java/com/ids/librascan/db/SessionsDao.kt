@@ -14,4 +14,7 @@ interface SessionsDao {
 
     @Query("DELETE  FROM sessions_table WHERE id=:id")
     suspend fun deleteSession(id:Int?)
+
+    @Query("SELECT * FROM sessions_table WHERE warehouseName=:warehouseName")
+    suspend fun  getSession(warehouseName : String?): Sessions
 }

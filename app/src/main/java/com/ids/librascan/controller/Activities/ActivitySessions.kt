@@ -137,17 +137,25 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     fun insertSession(c:Activity){
         if (popupSessionBinding.tvName.text.toString()!="" && popupSessionBinding.spWarehouse.isNotEmpty() && popupSessionBinding.tvDescription.text.toString()!="" && popupSessionBinding.tvDate.text.toString()!=""){
             launch {
-                QrCodeDatabase(application).getSessions().insertSessions(Sessions(popupSessionBinding.tvName.text.toString(),selectedWarehouse.name,popupSessionBinding.tvDate.text.toString(),popupSessionBinding.tvDescription.text.toString()))
-                popupSessionBinding.tvName.setText("")
-                popupSessionBinding.tvDescription.setText("")
-                spinnerWarehouse.clear()
-                spinnerWarehouse.addAll(QrCodeDatabase(application).getWarehouse().getWarehouse())
-                popupSessionBinding.spWarehouse.adapter = warehouseSpinnerAdapter
-                sessionAlertDialog.cancel()
-                arrSession.clear()
-                arrSession.addAll(QrCodeDatabase(application).getSessions().getSessions())
-                adapterSession.notifyDataSetChanged()
-                toast(AppHelper.getRemoteString("session_save", c))
+                var sessions = Sessions()
+                sessions = QrCodeDatabase(application).getSessions().getSession(selectedWarehouse.name)
+                if (sessions!=null){
+                   AppHelper.createDialogPositive(this@ActivitySessions,"Warehouse session exist")
+                }
+                else{
+                    QrCodeDatabase(application).getSessions().insertSessions(Sessions(popupSessionBinding.tvName.text.toString(),selectedWarehouse.name,popupSessionBinding.tvDate.text.toString(),popupSessionBinding.tvDescription.text.toString()))
+                    popupSessionBinding.tvName.setText("")
+                    popupSessionBinding.tvDescription.setText("")
+                    spinnerWarehouse.clear()
+                    spinnerWarehouse.addAll(QrCodeDatabase(application).getWarehouse().getWarehouse())
+                    popupSessionBinding.spWarehouse.adapter = warehouseSpinnerAdapter
+                    sessionAlertDialog.cancel()
+                    arrSession.clear()
+                    arrSession.addAll(QrCodeDatabase(application).getSessions().getSessions())
+                    adapterSession.notifyDataSetChanged()
+                    toast(AppHelper.getRemoteString("session_save", c))
+                }
+
             }
         }
         else checkValid(this)
@@ -198,18 +206,10 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         activitySessionsBinding.rVSessions.adapter = adapterSession
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.llScan){
-            showAddBarcodeAlertDialog(this, false, QrCode(), this)
-            popupBarcodeBinding.ivSession.hide()
-            popupBarcodeBinding.spSession.isEnabled = false
-            popupBarcodeBinding.spSession.setSelection(spinnerSessions.indexOf(
-                spinnerSessions.find {
-                    it.id == 2
-                }
-            ))
-            sessionsSpinnerAdapter.notifyDataSetChanged()
-
+            showAddBarcodeAlertDialog(this, false, QrCode(), this,true,arrSession[position])
         }
         else{
             if (view.id == R.id.llSync){
@@ -305,9 +305,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         this.runOnUiThread {
             activitySessionsBinding.rlBarcode.hide()
             popupBarcodeBinding.tvCode.setText(value)
-            showAddBarcodeAlertDialog(this,false,QrCode(value),this)
-            popupBarcodeBinding.ivSession.hide()
-            popupBarcodeBinding.spSession.isEnabled = false
+            barcodeAlertDialog.show()
         }
 
     }

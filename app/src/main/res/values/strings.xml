@@ -62,4 +62,5 @@
     <string name="date">Date</string>
     <string name="description">Description</string>
     <string name="please_enter_a_date">Enter a date</string>
+    <string name="syncAll">Sync All</string>
 </resources>

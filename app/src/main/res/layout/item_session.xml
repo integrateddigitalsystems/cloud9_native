@@ -1,83 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
-    <LinearLayout
-        android:orientation="horizontal"
-        android:weightSum="3"
-        android:id="@+id/llItem"
-        android:paddingBottom="@dimen/small_margin_padding"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.daimajia.swipe.SwipeLayout
         android:layout_width="match_parent"
-        android:minHeight="60dp"
-        android:background="@color/white"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/swipe">
+
+        <LinearLayout
+            android:tag="Bottom"
+            android:id="@+id/llSwipe"
+            android:layout_width="@dimen/width_150"
+            android:weightSum="1"
+            android:layout_marginBottom="5dp"
+            android:layout_height="match_parent">
 
 
-                <com.ids.librascan.custom.CustomTextViewBold
-                        android:id="@+id/tvNameSession"
+            <com.ids.librascan.custom.CustomTextViewMedium
+                android:id="@+id/tVDelete"
+                android:text="@string/delete"
+                android:tag="delete"
+                android:textColor="@color/white"
+                android:background="@color/red"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:id="@+id/llItem"
+            android:paddingBottom="@dimen/small_margin_padding"
+            android:layout_width="match_parent"
+            android:minHeight="80dp"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:layout_height="80dp">
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                    <LinearLayout
                         android:layout_width="@dimen/width_150"
                         android:layout_height="match_parent"
-                        android:ellipsize="start"
-                        android:layout_marginStart="@dimen/small_margin"
-                        android:layout_marginEnd="@dimen/small_margin"
-                        android:maxLines="2"
+                        android:orientation="vertical">
+
+                        <com.ids.librascan.custom.CustomTextViewBold
+                            android:id="@+id/tvNameSession"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:ellipsize="start"
+                            android:layout_marginStart="@dimen/small_margin"
+                            android:layout_marginEnd="@dimen/small_margin"
+                            android:maxLines="2"
+                            android:gravity="start|center"
+                            android:layout_gravity="start"
+                            android:paddingStart="1dp"
+                            android:paddingTop="@dimen/normal_margin_padding"
+                            android:paddingEnd="1dp"
+                            android:paddingBottom="@dimen/normal_margin_padding"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/small_font" />
+
+
+
+                    </LinearLayout>
+
+
+                    <com.ids.librascan.custom.CustomTextViewMedium
+                        android:id="@+id/tvWarehouses"
+                        android:padding="@dimen/normal_margin_padding"
+                        android:layout_width="0dp"
+                        android:background="@color/white"
+                        android:layout_weight="5"
+                        android:layout_height="match_parent"
                         android:gravity="start|center"
                         android:layout_gravity="start"
-                        android:paddingStart="1dp"
-                        android:paddingTop="@dimen/normal_margin_padding"
-                        android:paddingEnd="1dp"
-                        android:paddingBottom="@dimen/normal_margin_padding"
                         android:textColor="@color/colorAccent"
-                        android:textSize="@dimen/size_18" />
+                        android:textSize="@dimen/small_font"/>
 
-        <LinearLayout
-            android:id="@+id/llSync"
-            android:layout_width="@dimen/size_image_60"
-            android:layout_gravity="center"
-            android:layout_height="@dimen/button_height"
-            android:layout_marginStart="@dimen/size_30"
-            android:layout_marginEnd="@dimen/size_20"
-            android:background="@drawable/rounded_primary_layout"
-            android:gravity="center">
+                    <com.ids.librascan.custom.CustomTextViewMedium
+                        android:id="@+id/tvDate"
+                        android:background="@color/white"
+                        android:padding="@dimen/normal_margin_padding"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical|center"
+                        android:layout_gravity="start"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/small_font"/>
 
-            <ImageView
-                android:layout_width="@dimen/settings_item_height"
-                android:layout_height="@dimen/settings_item_height"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginEnd="@dimen/small_margin_padding"
-                android:src="@drawable/sync" />
 
-            <com.ids.librascan.custom.CustomTextViewBold
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginStart="@dimen/small_margin_padding"
-                android:text="@string/sync"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:gravity="end"
+                    android:layout_weight="1">
+                    <LinearLayout
+                        android:id="@+id/llSync"
+                        android:layout_width="@dimen/size_image_60"
+                        android:layout_gravity="center"
+                        android:layout_height="@dimen/size_30"
+                        android:layout_marginStart="@dimen/small_margin"
+                        android:layout_marginEnd="@dimen/small_margin"
+                        android:background="@drawable/rounded_primary_layout"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="@dimen/settings_item_height"
+                            android:layout_height="@dimen/settings_item_height"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:layout_marginEnd="@dimen/small_margin_padding"
+                            android:src="@drawable/sync" />
+
+                        <com.ids.librascan.custom.CustomTextViewBold
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:layout_marginStart="@dimen/small_margin_padding"
+                            android:text="@string/sync"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llScan"
+                        android:layout_width="@dimen/size_image_60"
+                        android:layout_gravity="center"
+                        android:layout_height="@dimen/size_30"
+                        android:background="@drawable/rounded_primary_layout"
+                        android:gravity="center">
+
+
+                        <com.ids.librascan.custom.CustomTextViewBold
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:layout_marginStart="@dimen/small_margin_padding"
+                            android:text="@string/scan"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llScan"
-            android:layout_width="@dimen/size_image_60"
-            android:layout_gravity="center"
-            android:layout_height="@dimen/button_height"
-            android:background="@drawable/rounded_primary_layout"
-            android:gravity="center">
-
-
-            <com.ids.librascan.custom.CustomTextViewBold
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginStart="@dimen/small_margin_padding"
-                android:text="@string/scan"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-
-        </LinearLayout>
-
-
-
-    </LinearLayout>
+    </com.daimajia.swipe.SwipeLayout>
 </layout>

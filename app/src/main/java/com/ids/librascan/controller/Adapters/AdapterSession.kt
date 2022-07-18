@@ -24,6 +24,8 @@ class AdapterSession(private var items:ArrayList<Sessions>, private val itemClic
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
         holder.itemSessionBinding.tvNameSession.text = items[position].sessionName
+        holder.itemSessionBinding.tvWarehouses.text = items[position].warehouseName
+        holder.itemSessionBinding.tvDate.text = items[position].date
 
 
     }

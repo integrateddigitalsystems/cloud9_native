@@ -60,4 +60,5 @@
     <string name="date">التاريخ</string>
     <string name="description">التفاصيل</string>
     <string name="please_enter_a_date">ادخل التاريخ</string>
+    <string name="syncAll">Sync All</string>
 </resources>
