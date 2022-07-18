@@ -102,6 +102,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
             showAddBarcodeAlertDialog(this, true, arrFilter[position], this,false, Sessions())
             adapterQrCode.notifyDataSetChanged()
         }
+
     }
 
     @SuppressLint("NotifyDataSetChanged")

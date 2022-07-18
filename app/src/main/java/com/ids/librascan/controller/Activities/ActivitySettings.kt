@@ -1,6 +1,5 @@
 package com.ids.librascan.controller.Activities
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.ToggleButton
@@ -23,10 +22,8 @@ class ActivitySettings : AppCompatActivity() {
     fun init() {
         AppHelper.setAllTexts(activitySettingsBinding.rootSettings, this)
         toolbarBinding = ToolbarBinding.inflate(layoutInflater)
-        if (MyApplication.enableInsert){
-            activitySettingsBinding.tgEnable.isChecked
-        }
-
+        if (MyApplication.enableInsert) activitySettingsBinding.tgEnable.isChecked = true
+        if (MyApplication.enableNewLine) activitySettingsBinding.tgNewLine.isChecked = true
     }
 
     fun back(v: View) {
@@ -34,13 +31,20 @@ class ActivitySettings : AppCompatActivity() {
     }
 
     fun setUpEnable(view: View) {
-        val tb = view as ToggleButton
-        if (tb.isChecked) {
-            tb.isChecked = true
-            MyApplication.enableInsert =true
+        if (activitySettingsBinding.tgEnable.isChecked) {
+            activitySettingsBinding.tgEnable.isChecked = true
+            MyApplication.enableInsert=true
         } else {
             MyApplication.enableInsert=false
-            tb.isChecked = false
+        }
+    }
+
+    fun setUpNewLine(view: View) {
+        if (activitySettingsBinding.tgNewLine.isChecked) {
+            activitySettingsBinding.tgNewLine.isChecked = true
+            MyApplication.enableNewLine = true
+        } else {
+            MyApplication.enableNewLine = false
         }
     }
 }

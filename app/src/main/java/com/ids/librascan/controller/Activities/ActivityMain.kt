@@ -264,12 +264,15 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
         barcodeReader.pauseScanning()
         this.runOnUiThread {
             activityMainBinding.rlBarcode.hide()
-            barcodeAlertDialog.show()
             popupBarcodeBinding.tvCode.setText(value)
-           /* if (MyApplication.enableInsert){
-                 popupBarcodeBinding.tvCode.setText(value)
-                  insert(this)
-            }*/
+            if (MyApplication.enableInsert && !MyApplication.enableNewLine){
+                insert(this,QrCode())
+            }
+            if (MyApplication.enableInsert && MyApplication.enableNewLine){
+                insert(this, QrCode())
+            }
+            else  barcodeAlertDialog.show()
+
         }
 
     }

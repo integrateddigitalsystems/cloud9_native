@@ -28,6 +28,16 @@ class AdapterSession(private var items:ArrayList<Sessions>, private val itemClic
         holder.itemSessionBinding.tvDate.text = items[position].date
 
 
+        if(MyApplication.languageCode =="en"){
+            holder.itemSessionBinding.swipe.showMode = SwipeLayout.ShowMode.LayDown
+            holder.itemSessionBinding.swipe.addDrag(SwipeLayout.DragEdge.Right,holder.itemSessionBinding.llSwipe)
+        }
+        else{
+            holder.itemSessionBinding.swipe.showMode = SwipeLayout.ShowMode.LayDown
+            holder.itemSessionBinding.swipe.addDrag(SwipeLayout.DragEdge.Left,holder.itemSessionBinding.llSwipe)
+            holder.itemSessionBinding.swipe.isRightSwipeEnabled = false
+        }
+
     }
     override fun getItemCount(): Int {
         return items.size
@@ -38,6 +48,7 @@ class AdapterSession(private var items:ArrayList<Sessions>, private val itemClic
             itemView.setOnClickListener(this)
             itemSessionBinding.llSync.setOnClickListener(this)
             itemSessionBinding.llScan.setOnClickListener(this)
+            itemSessionBinding.tVDelete.setOnClickListener(this)
 
         }
         override fun onClick(v: View) {

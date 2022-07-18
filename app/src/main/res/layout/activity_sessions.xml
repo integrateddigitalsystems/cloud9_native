@@ -199,6 +199,13 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/font" />
 
+            <Button
+                android:id="@+id/btShowScan"
+                android:onClick="checkCameraPermissions"
+                android:layout_width="0dp"
+                android:visibility="gone"
+                android:layout_height="0dp"/>
+
         </LinearLayout>
 
     </LinearLayout>

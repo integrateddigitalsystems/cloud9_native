@@ -61,4 +61,6 @@
     <string name="description">التفاصيل</string>
     <string name="please_enter_a_date">ادخل التاريخ</string>
     <string name="syncAll">Sync All</string>
+    <string name="auto_quantity">اضافة رمز تلقائيا</string>
+    <string name="scan_new_line"> ادخال الرمز</string>
 </resources>

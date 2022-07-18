@@ -10,7 +10,7 @@
         <LinearLayout
             android:tag="Bottom"
             android:id="@+id/llSwipe"
-            android:layout_width="@dimen/width_150"
+            android:layout_width="@dimen/height_50"
             android:weightSum="1"
             android:layout_marginBottom="5dp"
             android:layout_height="match_parent">
@@ -23,7 +23,7 @@
                 android:textColor="@color/white"
                 android:background="@color/red"
                 android:gravity="center"
-                android:layout_weight="0.5"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
         </LinearLayout>

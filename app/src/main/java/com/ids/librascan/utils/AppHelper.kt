@@ -176,8 +176,11 @@ class AppHelper {
             alert.show()
         }
 
+        fun handleCrashes(context: Activity) {
+            Thread.getDefaultUncaughtExceptionHandler()
+            Thread.setDefaultUncaughtExceptionHandler(MyExceptionHandler(context))
+        }
 
     }
-
 
 }

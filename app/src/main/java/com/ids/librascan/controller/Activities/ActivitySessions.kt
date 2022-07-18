@@ -68,9 +68,11 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         AppHelper.setAllTexts(activitySessionsBinding.rootSessions, this)
         activitySessionsBinding.llAddSession.setOnClickListener {
             showAddSessionAlertDialog()
-
         }
 
+        activitySessionsBinding.llSync.setOnClickListener {
+            addAllDataToFirestore()
+        }
         activitySessionsBinding.loading.show()
         launch {
             arrSession.addAll(QrCodeDatabase(application).getSessions().getSessions())
@@ -140,7 +142,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 var sessions = Sessions()
                 sessions = QrCodeDatabase(application).getSessions().getSession(selectedWarehouse.name)
                 if (sessions!=null){
-                   AppHelper.createDialogPositive(this@ActivitySessions,"Warehouse session exist")
+                   AppHelper.createDialogPositive(this@ActivitySessions,AppHelper.getRemoteString("warehouse_session_exist",this@ActivitySessions))
                 }
                 else{
                     QrCodeDatabase(application).getSessions().insertSessions(Sessions(popupSessionBinding.tvName.text.toString(),selectedWarehouse.name,popupSessionBinding.tvDate.text.toString(),popupSessionBinding.tvDescription.text.toString()))
@@ -206,23 +208,33 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         activitySessionsBinding.rVSessions.adapter = adapterSession
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.llScan){
+            if (MyApplication.enableInsert && !MyApplication.enableNewLine){
+                showAddBarcodeAlertDialog(this, false, QrCode(), this,true,arrSession[position])
+            }
+            else
             showAddBarcodeAlertDialog(this, false, QrCode(), this,true,arrSession[position])
         }
         else{
             if (view.id == R.id.llSync){
                 addDataToFirestore(position)
             }
+            else if (view.id == R.id.tVDelete){
+                launch {
+                    QrCodeDatabase(application).getCodeDao().deleteCode(arrSession[position].id)
+                    QrCodeDatabase(application).getSessions().deleteSession(arrSession[position].id)
+                    arrSession.remove(arrSession[position])
+                    adapterSession.notifyDataSetChanged()
+                }
+            }
             else{
                 startActivity(Intent(this@ActivitySessions, ActivityQrData::class.java))
                 MyApplication.sessionId = arrSession[position].id
                 finish()
             }
-
         }
-
     }
 
     override fun onInsertUpdate(boolean: Boolean) {
@@ -249,8 +261,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 Handler(Looper.getMainLooper()).postDelayed({
                     activitySessionsBinding.loadingData.hide()
                 }, 500)
-
-
                 QrCodeDatabase(application).getCodeDao().deleteCode(arrSession[position].id)
                 QrCodeDatabase(application).getSessions().deleteSession(arrSession[position].id)
                 arrSession.remove(arrSession[position])
@@ -265,6 +275,39 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
 
     }
 
+    fun addAllDataToFirestore(){
+        launch {
+            val arrayQrcode = ArrayList<QrCode>()
+            val docData: MutableMap<String, Any> = HashMap()
+            arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
+            if (arrayQrcode.isNotEmpty()){
+                activitySessionsBinding.loadingData.show()
+                docData.put("QrCode", arrayQrcode)
+                db!!.collection("Data")
+                    .add(docData)
+                    .addOnSuccessListener { documentReference ->
+                        toast(AppHelper.getRemoteString("success_added",this@ActivitySessions))
+                        wtf("DocumentSnapshot written with ID: ${documentReference.id}")
+                    }
+                    .addOnFailureListener { e ->
+                        wtf("Error adding document$e")
+                    }
+                Handler(Looper.getMainLooper()).postDelayed({
+                    activitySessionsBinding.loadingData.hide()
+                }, 500)
+                QrCodeDatabase(application).getCodeDao().deleteAllCode()
+                QrCodeDatabase(application).getSessions().deleteAllSession()
+                arrSession.clear()
+                adapterSession.notifyDataSetChanged()
+
+            }
+            else{
+                toast(AppHelper.getRemoteString("added_faild",this@ActivitySessions))
+                activitySessionsBinding.loadingData.hide()
+            }
+        }
+
+    }
 
     fun checkCameraPermissions(view: View) {
         if (ContextCompat.checkSelfPermission(this@ActivitySessions,
@@ -304,8 +347,11 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         barcodeReader.pauseScanning()
         this.runOnUiThread {
             activitySessionsBinding.rlBarcode.hide()
-            popupBarcodeBinding.tvCode.setText(value)
             barcodeAlertDialog.show()
+            popupBarcodeBinding.tvCode.setText(value)
+            if (MyApplication.enableInsert && !MyApplication.enableNewLine) insert(this, QrCode())
+            if (MyApplication.enableInsert && MyApplication.enableNewLine) insert(this, QrCode())
+
         }
 
     }

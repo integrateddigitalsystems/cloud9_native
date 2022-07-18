@@ -21,6 +21,7 @@ import com.ids.librascan.R
 import com.ids.librascan.controller.Adapters.OnInsertUpdate.OnInsertUpdate
 import com.ids.librascan.controller.Adapters.SessionsSpinnerAdapter
 import com.ids.librascan.controller.Adapters.UnitsSpinnerAdapter
+import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ItemDropDownBinding
 import com.ids.librascan.databinding.PopupBarcodeBinding
 import com.ids.librascan.db.QrCode
@@ -63,6 +64,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         get() = job + Dispatchers.Main
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppHelper.handleCrashes(this)
         super.onCreate(savedInstanceState)
         AppHelper.setLocal(this)
         job =Job()
@@ -122,10 +124,10 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             listeners()
             popupBarcodeBinding.tvCode.setText(qrCode.code.ifEmpty { "" })
             popupBarcodeBinding.tvInsertClose.setOnClickListener {
-                insertAndClose(c)
+                insertAndClose(c,qrCode)
             }
             popupBarcodeBinding.tvInsert.setOnClickListener {
-                insert(c)
+                insert(c,qrCode)
             }
 
             isUpdateChecked(isUpdate,qrCode)
@@ -190,7 +192,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         alert.show()
     }
 
-    private fun insertCode (){
+    private fun insertCodeNewLine (qrCode: QrCode){
         launch {
             QrCodeDatabase(application).getCodeDao().insertCode(QrCode(popupBarcodeBinding.tvCode.text.toString().trim(),selectedUnit.id,quantity,selectedSession.id))
             popupBarcodeBinding.tvCode.setText("")
@@ -201,29 +203,99 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         }
     }
 
-    private fun insertAndClose(c:Activity){
+    private fun insertAutoQuantity (qrCode: QrCode){
+        launch {
+            QrCodeDatabase(application).getCodeDao().updateCode(qrCode.quantity+1,qrCode.id)
+            popupBarcodeBinding.tvCode.setText("")
+            popupBarcodeBinding.etQty.setText("1")
+
+        }
+    }
+    private fun insertCode (qrCode: QrCode){
+        launch {
+            QrCodeDatabase(application).getCodeDao().updateCode(qrCode.quantity +quantity,qrCode.id)
+            popupBarcodeBinding.tvCode.setText("")
+            popupBarcodeBinding.etQty.setText("1")
+
+        }
+    }
+    private fun insertCodeNew (){
+        launch {
+            QrCodeDatabase(application).getCodeDao().insertCode(QrCode(popupBarcodeBinding.tvCode.text.toString().trim(),selectedUnit.id,quantity,selectedSession.id))
+            popupBarcodeBinding.tvCode.setText("")
+            popupBarcodeBinding.etQty.setText("1")
+
+        }
+    }
+
+    fun insertAndClose(c:Activity,qrCode: QrCode){
         if (popupBarcodeBinding.tvCode.text.toString() != ""  &&  popupBarcodeBinding.spSession.isNotEmpty() && quantity != 0) {
             launch {
                 if (popupBarcodeBinding.tvInsertClose.text == (getRemoteString("insert_and_close",c))) {
-                    insertCode()
-                    barcodeAlertDialog.cancel()
+                    var qrCode = QrCode()
+                    qrCode = QrCodeDatabase(application).getCodeDao().getCode(popupBarcodeBinding.tvCode.text.toString(),selectedSession.id)
+                    if (qrCode!=null){
+                        if(!MyApplication.enableInsert && !MyApplication.enableNewLine){
+                            insertCode(qrCode)
+                            toast(getRemoteString("item_save", c))
+                        }
+                        else{
+                            if(MyApplication.enableInsert && !MyApplication.enableNewLine){
+                                insertAutoQuantity(qrCode)
+                                toast(getRemoteString("item_save", c))
+                            }
+                            else if (!MyApplication.enableInsert && MyApplication.enableNewLine){
+                                insertCodeNew()
+                                toast(getRemoteString("item_save", c))
+                            }
+                            else if (MyApplication.enableInsert && MyApplication.enableNewLine){
+                                insertCodeNew()
+                                toast(getRemoteString("item_save", c))
+                            }
+                        }
+                    }
+                    else insertCodeNew()
                     toast(getRemoteString("item_save", c))
+                    barcodeAlertDialog.cancel()
+
                 //Update QrCode
-                }else updateQrcode(c)
+                }else updateQrcode(c,qrCode)
 
             }
         }
         else checkIsNotEmpty(c)
     }
-    fun insert(c:Activity){
+    fun insert(c:Activity,qrCode: QrCode){
         if (popupBarcodeBinding.tvCode.text.toString() != ""  &&  popupBarcodeBinding.spSession.isNotEmpty() && quantity != 0) {
             launch {
                 if(popupBarcodeBinding.tvInsert.text == (getRemoteString("insert",c))) {
-                    insertCode()
-                    toast(getRemoteString("item_save",c))
+                    var qrCode = QrCode()
+                    qrCode = QrCodeDatabase(application).getCodeDao().getCode(popupBarcodeBinding.tvCode.text.toString(),selectedSession.id)
+                    if (qrCode!=null){
+                        if(!MyApplication.enableInsert && !MyApplication.enableNewLine){
+                            insertCode(qrCode)
+                            toast(getRemoteString("item_save", c))
+                        }
+                        else{
+                            if(MyApplication.enableInsert && !MyApplication.enableNewLine){
+                                insertAutoQuantity(qrCode)
+                                toast(getRemoteString("item_save", c))
+                            }
+                            else if (!MyApplication.enableInsert && MyApplication.enableNewLine){
+                                insertCodeNew()
+                                toast(getRemoteString("item_save", c))
+                            }
+                            else if (MyApplication.enableInsert && MyApplication.enableNewLine){
+                                insertCodeNew()
+                                toast(getRemoteString("item_save", c))
+                            }
+                        }
+                    }
+                    else insertCodeNew()
+                    toast(getRemoteString("item_save", c))
                 }
                 //Update QrCode
-                else updateQrcode(c)
+                else updateQrcode(c, qrCode)
             }
         }
         else checkIsNotEmpty(c)
@@ -308,11 +380,16 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         }
     }
 
-    private fun updateQrcode(c:Activity){
-        insertCode()
+    private fun updateQrcode(c:Activity,qrCode: QrCode){
+        launch {
+            QrCodeDatabase(application).getCodeDao().updateCode(quantity,qrCode.id)
+            popupBarcodeBinding.tvCode.setText("")
+            popupBarcodeBinding.etQty.setText("1")
+
         onInsertUpdate.onInsertUpdate(true)
         toast(getRemoteString("message_update",c))
         barcodeAlertDialog.cancel()
+            }
     }
 
     fun showSession(view: View){

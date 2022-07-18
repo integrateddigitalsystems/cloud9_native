@@ -18,16 +18,14 @@ import java.util.*
 class MyApplication : Application() {
 
     companion object {
-
+        internal lateinit var instance: MyApplication
         lateinit var sharedPreferences : SharedPreferences
         lateinit var sharedPreferencesEditor : SharedPreferences.Editor
         var BASE_URL = "https://invo.ids.com.lb/"
         var BASE_URLS: FirebaseBaseUrlsArray?= null
         var localizeArray: FirebaseLocalizeArray?= null
         var displayName = ""
-        internal lateinit var instance: MyApplication
         var showLogs: Boolean = true
-
         var bearer: String
             get() = sharedPreferences.getString("bearer", "")!!
             set(value) {
@@ -52,6 +50,10 @@ class MyApplication : Application() {
         var enableInsert : Boolean
             get() = sharedPreferences.getBoolean(AppConstants.IS_Enable, AppConstants.Enable)
             set(value) { sharedPreferencesEditor.putBoolean(AppConstants.IS_Enable, value).apply() }
+
+        var enableNewLine : Boolean
+            get() = sharedPreferences.getBoolean(AppConstants.IS_NEW_LINE, AppConstants.Enable)
+            set(value) { sharedPreferencesEditor.putBoolean(AppConstants.IS_NEW_LINE, value).apply() }
 
         var sessionId :Int
             get() = sharedPreferences.getInt(AppConstants.SESSION_ID, 0)

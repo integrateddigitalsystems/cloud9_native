@@ -28,22 +28,59 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="@dimen/back_width_height"
-        android:layout_height="@dimen/back_width_height"
-        android:src="@drawable/back"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:id="@+id/ivBack"
-        android:paddingTop="@dimen/normal_margin_padding"
-        android:tint="@color/white"
-        android:paddingBottom="@dimen/normal_margin_padding"
-        android:paddingStart="@dimen/big_margin_padding"
-        android:paddingEnd="@dimen/normal_margin_padding"
-        android:contentDescription="@string/app_name"
-        android:onClick="back"
-        app:tint="@color/white"
-        tools:ignore="UseAppTint" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp">
+        <ImageView
+            android:layout_width="@dimen/back_width_height"
+            android:layout_height="@dimen/back_width_height"
+            android:src="@drawable/back"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/ivBack"
+            android:paddingTop="@dimen/normal_margin_padding"
+            android:tint="@color/white"
+            android:paddingBottom="@dimen/normal_margin_padding"
+            android:paddingStart="@dimen/big_margin_padding"
+            android:paddingEnd="@dimen/normal_margin_padding"
+            android:contentDescription="@string/app_name"
+            android:onClick="back"
+            app:tint="@color/white"
+            tools:ignore="UseAppTint" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_gravity="end|center"
+        android:gravity="end|center"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp">
+
+        <LinearLayout
+            android:id="@+id/llScan"
+            android:layout_width="@dimen/size_image_60"
+            android:layout_gravity="center"
+            android:layout_height="@dimen/size_30"
+            android:background="@drawable/rounded_primary_layout"
+            android:gravity="center">
+            <com.ids.librascan.custom.CustomTextViewBold
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginStart="@dimen/small_margin_padding"
+                android:text="@string/scan"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:orientation="horizontal"

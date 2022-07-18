@@ -6,27 +6,28 @@ import androidx.room.*
 
 @Dao
 interface QrCodeDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert()
     suspend fun insertCode(qrCode: QrCode)
 
-    @Query("SELECT * FROM codeScan_table")
+    @Query("SELECT * FROM codeScan_table ORDER BY id DESC")
     suspend fun getAllCode(): List<QrCode>
 
-    @Query("SELECT * FROM codeScan_table WHERE sessionId=:sessionId")
+    @Query("SELECT * FROM codeScan_table WHERE sessionId=:sessionId ORDER BY id DESC")
     suspend fun getCode(sessionId:Int?): List<QrCode>
 
-    @Query("SELECT * FROM codeScan_table WHERE code=:code AND unitId=:unitId")
-    suspend fun  getCode(code : String?,unitId : Int?): QrCode
+    @Query("SELECT * FROM codeScan_table WHERE code=:code AND sessionId=:sessionId ORDER BY id DESC")
+    suspend fun  getCode(code : String?,sessionId : Int?): QrCode
 
     @Delete
     suspend fun deleteCode(qrCode: QrCode)
-    @Update
-    suspend fun updateCode(qrCode: QrCode)
+    @Query("UPDATE codeScan_table SET quantity=:quantity WHERE id = :id")
+    suspend fun updateCode(quantity : Int?,id : Int?)
 
     @Query("DELETE FROM codeScan_table ")
     suspend fun deleteAllCode()
 
     @Query("DELETE  FROM codeScan_table WHERE sessionId=:sessionId ")
     suspend fun deleteCode(sessionId:Int?)
+
 
 }

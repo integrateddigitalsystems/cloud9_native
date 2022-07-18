@@ -63,4 +63,6 @@
     <string name="description">Description</string>
     <string name="please_enter_a_date">Enter a date</string>
     <string name="syncAll">Sync All</string>
+    <string name="auto_quantity">Auto quantity</string>
+    <string name="scan_new_line">Scan new line</string>
 </resources>
