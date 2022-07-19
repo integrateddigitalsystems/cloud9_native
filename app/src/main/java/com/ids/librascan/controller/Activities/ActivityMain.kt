@@ -6,14 +6,10 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.SparseArray
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.CompoundButton
 import android.widget.PopupMenu
@@ -32,7 +28,6 @@ import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityMainBinding
 import com.ids.librascan.databinding.PopupLanguageBinding
 import com.ids.librascan.db.*
-import com.ids.librascan.db.Unit
 import com.ids.librascan.model.ResponseGetWareHouse
 import com.ids.librascan.utils.AppHelper
 import info.bideens.barcode.BarcodeReader
@@ -225,7 +220,6 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
         languageAlertDialog.show()
     }
 
-
     fun checkCameraPermissions(view: View) {
         if (ContextCompat.checkSelfPermission(this@ActivityMain,
                 Manifest.permission.CAMERA
@@ -266,10 +260,10 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
             activityMainBinding.rlBarcode.hide()
             popupBarcodeBinding.tvCode.setText(value)
             if (MyApplication.enableInsert && !MyApplication.enableNewLine){
-                insert(this,QrCode())
+                //insert(this,QrCode())
             }
             if (MyApplication.enableInsert && MyApplication.enableNewLine){
-                insert(this, QrCode())
+               // insert(this, QrCode())
             }
             else  barcodeAlertDialog.show()
 
@@ -321,5 +315,6 @@ class ActivityMain : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener,
             }
         }
     }
+
 
 }

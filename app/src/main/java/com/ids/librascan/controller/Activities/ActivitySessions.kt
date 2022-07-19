@@ -16,7 +16,6 @@ import android.util.SparseArray
 import android.view.View
 import android.widget.AdapterView
 import android.widget.DatePicker
-import androidx.annotation.IntegerRes
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isEmpty
@@ -45,7 +44,7 @@ import java.util.*
 
 
 class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertUpdate,
-    BarcodeReader.BarcodeReaderListener, DatePickerDialog.OnDateSetListener {
+    BarcodeReader.BarcodeReaderListener, DatePickerDialog.OnDateSetListener{
     lateinit var activitySessionsBinding: ActivitySessionsBinding
     lateinit var popupSessionBinding: PopupSessionBinding
     private lateinit var sessionAlertDialog: androidx.appcompat.app.AlertDialog
@@ -85,7 +84,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     fun back(v: View) {
         onBackPressed()
     }
-
 
     private fun showAddSessionAlertDialog() {
         spinnerWarehouse.clear()
@@ -211,15 +209,20 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.llScan){
-            if (MyApplication.enableInsert && !MyApplication.enableNewLine){
-                showAddBarcodeAlertDialog(this, false, QrCode(), this,true,arrSession[position])
-            }
-            else
-            showAddBarcodeAlertDialog(this, false, QrCode(), this,true,arrSession[position])
+            MyApplication.isScan =false
+            MyApplication.sessionId = arrSession[position].id
+            MyApplication.sessionName = arrSession[position].sessionName
+            if (MyApplication.enableInsert && !MyApplication.enableNewLine)
+                startActivity(Intent(this@ActivitySessions, QrCodeActivity::class.java))
+            else if (MyApplication.enableInsert && MyApplication.enableNewLine)
+                startActivity(Intent(this@ActivitySessions, QrCodeActivity::class.java))
+
+            else showAddBarcodeAlertDialog(this, false, QrCode(), this,true,arrSession[position])
+            activitySessionsBinding.tvNameSession.text = arrSession[position].sessionName
         }
         else{
             if (view.id == R.id.llSync){
-                addDataToFirestore(position)
+                createDialogUpdate(AppHelper.getRemoteString("sync_data",this),position)
             }
             else if (view.id == R.id.tVDelete){
                 launch {
@@ -232,13 +235,13 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             else{
                 startActivity(Intent(this@ActivitySessions, ActivityQrData::class.java))
                 MyApplication.sessionId = arrSession[position].id
+                MyApplication.sessionName = arrSession[position].sessionName
                 finish()
             }
         }
     }
 
     override fun onInsertUpdate(boolean: Boolean) {
-        TODO("Not yet implemented")
     }
 
     fun addDataToFirestore(position: Int){
@@ -347,11 +350,14 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         barcodeReader.pauseScanning()
         this.runOnUiThread {
             activitySessionsBinding.rlBarcode.hide()
-            barcodeAlertDialog.show()
-            popupBarcodeBinding.tvCode.setText(value)
-            if (MyApplication.enableInsert && !MyApplication.enableNewLine) insert(this, QrCode())
-            if (MyApplication.enableInsert && MyApplication.enableNewLine) insert(this, QrCode())
-
+            if (!MyApplication.enableInsert && !MyApplication.enableNewLine){
+                barcodeAlertDialog.show()
+                popupBarcodeBinding.tvCode.setText(value)
+            }
+            if (!MyApplication.enableInsert && MyApplication.enableNewLine){
+                barcodeAlertDialog.show()
+                popupBarcodeBinding.tvCode.setText(value)
+            }
         }
 
     }
@@ -379,6 +385,24 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         } else {
             super.onBackPressed()
         }
+    }
+
+    private fun createDialogUpdate(message: String,position: Int) {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setMessage(message)
+            .setCancelable(true)
+            .setPositiveButton(AppHelper.getRemoteString("yes", this))
+            { dialog, _ ->
+                addDataToFirestore(position)
+                dialog.cancel()
+            }
+            .setNegativeButton(AppHelper.getRemoteString("no", this))
+            { dialog, _ ->
+                dialog.cancel()
+
+            }
+        val alert = builder.create()
+        alert.show()
     }
 
 }

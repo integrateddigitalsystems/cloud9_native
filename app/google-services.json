@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "971196707267",
-    "project_id": "librascan-84bcc",
-    "storage_bucket": "librascan-84bcc.appspot.com"
+    "project_number": "43913368539",
+    "project_id": "librascan-dbfb4",
+    "storage_bucket": "librascan-dbfb4.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:971196707267:android:e10c3933af3c253eb74d76",
+        "mobilesdk_app_id": "1:43913368539:android:6889956757c5d76a718dfe",
         "android_client_info": {
           "package_name": "com.ids.librascan"
         }
       },
       "oauth_client": [
         {
-          "client_id": "971196707267-69d9bkeurcf6qgtc8r3psqfkicha15iq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ids.librascan",
-            "certificate_hash": "99cfef12d300a124c08d17db42c1c27781dad555"
-          }
-        },
-        {
-          "client_id": "971196707267-a0cn7k5klsf18d0d8n81d4ipjb8njmvs.apps.googleusercontent.com",
+          "client_id": "43913368539-7g9ndhiv91n9dt40pu2gc1fvfa4q3eqg.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDf7U_VsqjiuwXIFokEqT6vawLSBFm39Tw"
+          "current_key": "AIzaSyD0TZ_yCjf7lQn8LRzbMc4TLRDfdIHscmo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "971196707267-a0cn7k5klsf18d0d8n81d4ipjb8njmvs.apps.googleusercontent.com",
+              "client_id": "43913368539-7g9ndhiv91n9dt40pu2gc1fvfa4q3eqg.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

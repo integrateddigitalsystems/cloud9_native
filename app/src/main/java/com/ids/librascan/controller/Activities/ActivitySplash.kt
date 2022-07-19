@@ -37,7 +37,6 @@ class ActivitySplash : ActivityCompactBase() {
          super.onCreate(savedInstanceState)
          activitySplashBinding = ActivitySplashBinding.inflate(layoutInflater)
          setContentView(activitySplashBinding.root)
-
         getFirebasePrefs()
     }
     private fun getFirebasePrefs() {

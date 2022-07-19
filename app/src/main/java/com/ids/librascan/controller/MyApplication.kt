@@ -55,9 +55,17 @@ class MyApplication : Application() {
             get() = sharedPreferences.getBoolean(AppConstants.IS_NEW_LINE, AppConstants.Enable)
             set(value) { sharedPreferencesEditor.putBoolean(AppConstants.IS_NEW_LINE, value).apply() }
 
+        var isScan : Boolean
+            get() = sharedPreferences.getBoolean(AppConstants.IS_SCAN, AppConstants.Enable)
+            set(value) { sharedPreferencesEditor.putBoolean(AppConstants.IS_SCAN, value).apply() }
+
         var sessionId :Int
             get() = sharedPreferences.getInt(AppConstants.SESSION_ID, 0)
             set(value) { sharedPreferencesEditor.putInt(AppConstants.SESSION_ID, value).apply() }
+
+        var sessionName :String
+            get() = sharedPreferences.getString(AppConstants.SESSION_NAME, "")!!
+            set(value) { sharedPreferencesEditor.putString(AppConstants.SESSION_NAME, value).apply() }
 
     }
 

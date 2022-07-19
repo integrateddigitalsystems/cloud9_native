@@ -101,7 +101,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="@dimen/margin_100"
+        android:layout_marginTop="80dp"
         android:layout_marginStart="@dimen/normal_margin_padding"
         android:layout_marginEnd="@dimen/normal_margin_padding"
         android:layout_width="match_parent"
@@ -159,29 +159,24 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/margin_100"
-        android:layout_weight="2">
+        android:layout_marginTop="@dimen/margin_100">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rVSessions"
             android:paddingStart="@dimen/normal_margin_padding"
             android:paddingEnd="@dimen/normal_margin_padding"
-            android:layout_marginTop="@dimen/height_40"
+            android:layout_marginTop="@dimen/size_20"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_height="570dp"/>
 
         <LinearLayout
             android:id="@+id/llSync"
             android:layout_width="@dimen/width_150"
             android:layout_gravity="center"
             android:layout_height="@dimen/button_height"
-            android:layout_marginStart="@dimen/big_margin_padding"
-            android:layout_marginTop="@dimen/size_20"
-            android:layout_marginEnd="@dimen/big_margin_padding"
             android:background="@drawable/rounded_primary_layout"
-            android:gravity="center|bottom">
+            android:gravity="center">
 
             <ImageView
                 android:layout_width="@dimen/settings_item_height"
@@ -223,6 +218,17 @@
             android:layout_height="match_parent"
             app:auto_focus="true"
             app:use_flash="false" />
+
+        <com.ids.librascan.custom.CustomTextViewBold
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvNameSession"
+            android:textSize="@dimen/size_20"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_marginTop="@dimen/small_margin"
+            android:textColor="@color/white"
+            android:text="Session 1"/>
 
         <info.bideens.barcode.ScannerOverlay
             android:layout_width="match_parent"

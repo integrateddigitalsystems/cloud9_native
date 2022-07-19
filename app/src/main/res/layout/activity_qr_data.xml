@@ -33,6 +33,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="5dp">
         <ImageView
             android:layout_width="@dimen/back_width_height"
@@ -87,7 +88,7 @@
         android:layout_width="match_parent"
         android:layout_marginStart="@dimen/big_margin_padding"
         android:layout_marginEnd="@dimen/big_margin_padding"
-        android:layout_marginTop="@dimen/big_margin"
+        android:layout_marginTop="@dimen/size_image_60"
         android:gravity="center"
         android:layout_height="wrap_content">
 
@@ -221,6 +222,13 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
+        <Button
+            android:id="@+id/btShowScan"
+            android:onClick="checkCameraPermissions"
+            android:layout_width="0dp"
+            android:visibility="gone"
+            android:layout_height="0dp"/>
+
     </LinearLayout>
     </LinearLayout>
     <RelativeLayout
@@ -236,6 +244,17 @@
             android:layout_height="match_parent"
             app:auto_focus="true"
             app:use_flash="false" />
+
+        <com.ids.librascan.custom.CustomTextViewBold
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvNameSession"
+            android:textSize="@dimen/size_20"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_marginTop="@dimen/small_margin"
+            android:textColor="@color/white"/>
+
 
         <info.bideens.barcode.ScannerOverlay
             android:layout_width="match_parent"

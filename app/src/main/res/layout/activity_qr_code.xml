@@ -9,6 +9,13 @@
     android:id="@+id/rootQrCode"
     tools:context=".controller.Activities.QrCodeActivity">
 
+    <Button
+        android:id="@+id/btShowScan"
+        android:onClick="checkCameraPermissions"
+        android:layout_width="0dp"
+        android:visibility="gone"
+        android:layout_height="0dp"/>
+
     <RelativeLayout
         android:id="@+id/rlBarcode"
         android:visibility="gone"
@@ -22,6 +29,15 @@
             android:layout_height="match_parent"
             app:auto_focus="true"
             app:use_flash="false" />
+        <com.ids.librascan.custom.CustomTextViewBold
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvNameSession"
+            android:textSize="@dimen/size_20"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_marginTop="@dimen/small_margin"
+            android:textColor="@color/white"/>
 
         <info.bideens.barcode.ScannerOverlay
             android:layout_width="match_parent"
