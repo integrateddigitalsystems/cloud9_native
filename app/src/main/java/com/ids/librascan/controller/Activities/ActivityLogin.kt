@@ -49,10 +49,12 @@ class ActivityLogin : ActivityCompactBase() {
 
         activityLoginBinding.btLogin.setOnClickListener {
             if (MyApplication.clientKey == "") {
+
                 startActivity(Intent(this, QrCodeActivity::class.java))
             } else {
                 mGoogleSignInClient.signOut()
                 signInGoogle()
+                startActivity(Intent(this, ActivityMain::class.java))
             }
         }
         activityLoginBinding.btScan.setOnClickListener {
@@ -106,6 +108,10 @@ class ActivityLogin : ActivityCompactBase() {
                     wtf("exception code: " + e.statusCode)
                 }
 
+            }
+            else{
+                toast(it.resultCode.toString())
+                toast(AppHelper.getRemoteString("login_faild",this@ActivityLogin))
             }
         }
     }

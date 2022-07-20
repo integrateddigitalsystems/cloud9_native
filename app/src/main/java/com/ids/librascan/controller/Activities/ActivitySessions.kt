@@ -70,7 +70,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         }
 
         activitySessionsBinding.llSync.setOnClickListener {
-            addAllDataToFirestore()
+           createDialSyncAllData(AppHelper.getRemoteString("sync_all",this))
         }
         activitySessionsBinding.loading.show()
         launch {
@@ -213,16 +213,16 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             MyApplication.sessionId = arrSession[position].id
             MyApplication.sessionName = arrSession[position].sessionName
             if (MyApplication.enableInsert && !MyApplication.enableNewLine)
-                startActivity(Intent(this@ActivitySessions, QrCodeActivity::class.java))
+               activitySessionsBinding.btShowScan.performClick()
             else if (MyApplication.enableInsert && MyApplication.enableNewLine)
-                startActivity(Intent(this@ActivitySessions, QrCodeActivity::class.java))
+                activitySessionsBinding.btShowScan.performClick()
 
             else showAddBarcodeAlertDialog(this, false, QrCode(), this,true,arrSession[position])
             activitySessionsBinding.tvNameSession.text = arrSession[position].sessionName
         }
         else{
             if (view.id == R.id.llSync){
-                createDialogUpdate(AppHelper.getRemoteString("sync_data",this),position)
+                createDialSync(AppHelper.getRemoteString("sync_data",this),position)
             }
             else if (view.id == R.id.tVDelete){
                 launch {
@@ -278,6 +278,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addAllDataToFirestore(){
         launch {
             val arrayQrcode = ArrayList<QrCode>()
@@ -350,11 +351,14 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         barcodeReader.pauseScanning()
         this.runOnUiThread {
             activitySessionsBinding.rlBarcode.hide()
-            if (!MyApplication.enableInsert && !MyApplication.enableNewLine){
-                barcodeAlertDialog.show()
-                popupBarcodeBinding.tvCode.setText(value)
+            if (MyApplication.enableInsert && !MyApplication.enableNewLine){
+                insertScanAuto(QrCode(value,0,1,MyApplication.sessionId), this,this)
             }
-            if (!MyApplication.enableInsert && MyApplication.enableNewLine){
+
+            else  if (MyApplication.enableInsert && MyApplication.enableNewLine){
+                insertScan(QrCode(value,0,1,MyApplication.sessionId),this,this)
+            }
+            else{
                 barcodeAlertDialog.show()
                 popupBarcodeBinding.tvCode.setText(value)
             }
@@ -387,13 +391,31 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         }
     }
 
-    private fun createDialogUpdate(message: String,position: Int) {
+    private fun createDialSync(message: String,position: Int) {
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
             .setMessage(message)
             .setCancelable(true)
             .setPositiveButton(AppHelper.getRemoteString("yes", this))
             { dialog, _ ->
                 addDataToFirestore(position)
+                dialog.cancel()
+            }
+            .setNegativeButton(AppHelper.getRemoteString("no", this))
+            { dialog, _ ->
+                dialog.cancel()
+
+            }
+        val alert = builder.create()
+        alert.show()
+    }
+
+    private fun createDialSyncAllData(message: String) {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setMessage(message)
+            .setCancelable(true)
+            .setPositiveButton(AppHelper.getRemoteString("yes", this))
+            { dialog, _ ->
+                addAllDataToFirestore()
                 dialog.cancel()
             }
             .setNegativeButton(AppHelper.getRemoteString("no", this))

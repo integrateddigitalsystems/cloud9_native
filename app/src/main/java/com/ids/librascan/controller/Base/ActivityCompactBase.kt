@@ -349,7 +349,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
                 toast(getRemoteString("item_save", activity))
             }
             else{
-                QrCodeDatabase(application).getCodeDao().insertCode(QrCode(qrCode.code,0,qrCode.quantity,qrCode.id))
+                QrCodeDatabase(application).getCodeDao().insertCode(QrCode(qrCode.code,0,qrCode.quantity,qrCode.sessionId))
                 onInsertUpdate.onInsertUpdate(true)
                 toast(getRemoteString("item_save", activity))
 

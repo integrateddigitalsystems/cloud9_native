@@ -14,21 +14,18 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.vision.barcode.Barcode
 import com.ids.librascan.R
-import com.ids.librascan.controller.Adapters.OnInsertUpdate.OnInsertUpdate
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityQrCodeBinding
 import com.ids.librascan.databinding.ActivityQrDataBinding
 import com.ids.librascan.db.QrCode
-import com.ids.librascan.db.QrCodeDatabase
 import com.ids.librascan.utils.AppHelper
 import info.bideens.barcode.BarcodeReader
-import kotlinx.coroutines.launch
 import utils.hide
 import utils.show
 import utils.toast
 
 lateinit var barcodeReader: BarcodeReader
-class QrCodeActivity : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener, OnInsertUpdate {
+class QrCodeActivity : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener {
     lateinit var qrCodeBinding: ActivityQrCodeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +34,6 @@ class QrCodeActivity : ActivityCompactBase(), BarcodeReader.BarcodeReaderListene
 
         barcodeReader = supportFragmentManager.findFragmentById(R.id.barcodeReader) as BarcodeReader
         barcodeReader.setListener(this)
-
-        qrCodeBinding.tvNameSession.text = MyApplication.sessionName
 
     }
     override fun onResume() {
@@ -58,24 +53,6 @@ class QrCodeActivity : ActivityCompactBase(), BarcodeReader.BarcodeReaderListene
             barcodeReader.resumeScanning()
         }
     }
-
-    fun checkCameraPermissions(view: View) {
-        if (ContextCompat.checkSelfPermission(this@QrCodeActivity,
-                Manifest.permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this@QrCodeActivity,
-                arrayOf(Manifest.permission.CAMERA),
-                1
-            )
-        } else { //permissions granted
-            //show barcode
-            qrCodeBinding.rlBarcode.show()
-            barcodeReader.resumeScanning()
-        }
-    }
-
     override fun onBitmapScanned(sparseArray: SparseArray<Barcode>?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -102,12 +79,6 @@ class QrCodeActivity : ActivityCompactBase(), BarcodeReader.BarcodeReaderListene
         this.runOnUiThread {
             qrCodeBinding.rlBarcode.hide()
             MyApplication.clientKey = value
-            if (MyApplication.enableInsert && !MyApplication.enableNewLine){
-                insertScanAuto(QrCode(value,0,1,MyApplication.sessionId), this,this)
-            }
-            if (MyApplication.enableInsert && MyApplication.enableNewLine){
-                insertScan(QrCode(value,0,1,MyApplication.sessionId),this,this)
-            }
             finish()
         }
     }
@@ -123,9 +94,5 @@ class QrCodeActivity : ActivityCompactBase(), BarcodeReader.BarcodeReaderListene
 
     override fun onScanError(errorMessage: String?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onInsertUpdate(boolean: Boolean) {
-
     }
 }
