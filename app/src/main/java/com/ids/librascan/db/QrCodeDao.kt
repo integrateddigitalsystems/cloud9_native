@@ -1,7 +1,9 @@
 package com.ids.librascan.db
 
 
+
 import androidx.room.*
+
 
 
 @Dao
@@ -20,10 +22,11 @@ interface QrCodeDao {
 
     @Delete
     suspend fun deleteCode(qrCode: QrCode)
+
     @Query("UPDATE codeScan_table SET quantity=:quantity WHERE id = :id")
     suspend fun updateCode(quantity : Int?,id : Int?)
 
-    @Query("DELETE FROM codeScan_table ")
+    @Query("DELETE FROM codeScan_table")
     suspend fun deleteAllCode()
 
     @Query("DELETE  FROM codeScan_table WHERE sessionId=:sessionId ")

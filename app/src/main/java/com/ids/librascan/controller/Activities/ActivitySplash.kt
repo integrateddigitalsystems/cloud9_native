@@ -6,11 +6,13 @@ import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log.wtf
 import android.view.Gravity
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
@@ -27,55 +29,64 @@ import com.ids.librascan.model.FirebaseLocalizeArray
 import com.ids.librascan.model.FirebaseUrlItems
 import com.ids.librascan.utils.AppHelper
 import utils.AppConstants
+import utils.toast
 
 class ActivitySplash : ActivityCompactBase() {
     private lateinit var activitySplashBinding: ActivitySplashBinding
     private var mFirebaseRemoteConfig: FirebaseRemoteConfig? = null
     private lateinit var auth: FirebaseAuth
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
          super.onCreate(savedInstanceState)
          activitySplashBinding = ActivitySplashBinding.inflate(layoutInflater)
          setContentView(activitySplashBinding.root)
         getFirebasePrefs()
     }
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun getFirebasePrefs() {
-        auth = FirebaseAuth.getInstance()
-        mFirebaseRemoteConfig = Firebase.remoteConfig
-        val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 0
-        }
-        mFirebaseRemoteConfig!!.setConfigSettingsAsync(configSettings)
-        mFirebaseRemoteConfig!!.fetchAndActivate().addOnCompleteListener(this) { task ->
-            if (task.isSuccessful) {
-                try {
-                    MyApplication.BASE_URLS = Gson().fromJson(
-                        mFirebaseRemoteConfig!!.getString(AppConstants.FIREBASE_URL_LIST),
-                        FirebaseBaseUrlsArray::class.java
-                    )
-
-                } catch (e: Exception) {
-                    wtf("exception_firebase", e.toString())
-                }
-                try {
-                    MyApplication.localizeArray = Gson().fromJson(
-                        mFirebaseRemoteConfig!!.getString(AppConstants.FIREBASE_LOCALIZE),
-                        FirebaseLocalizeArray::class.java
-                    )
-                    AppHelper.setAllTexts(activitySplashBinding.rootLayout, this)
-                    checkUpdate()
-                } catch (e: Exception) {
-                   wtf("exception_firebase", e.toString())
-                }
-
-            } else {
-                wtf("exception_firebase", "e")
+        if (AppHelper.isNetworkAvailable(this)){
+            auth = FirebaseAuth.getInstance()
+            mFirebaseRemoteConfig = Firebase.remoteConfig
+            val configSettings = remoteConfigSettings {
+                minimumFetchIntervalInSeconds = 0
             }
+            mFirebaseRemoteConfig!!.setConfigSettingsAsync(configSettings)
+            mFirebaseRemoteConfig!!.fetchAndActivate().addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    try {
+                        MyApplication.BASE_URLS = Gson().fromJson(
+                            mFirebaseRemoteConfig!!.getString(AppConstants.FIREBASE_URL_LIST),
+                            FirebaseBaseUrlsArray::class.java
+                        )
 
-        }
-            .addOnFailureListener {
-                wtf("exception_firebase", it.toString())
+                    } catch (e: Exception) {
+                        wtf("exception_firebase", e.toString())
+                    }
+                    try {
+                        MyApplication.localizeArray = Gson().fromJson(
+                            mFirebaseRemoteConfig!!.getString(AppConstants.FIREBASE_LOCALIZE),
+                            FirebaseLocalizeArray::class.java
+                        )
+                        AppHelper.setAllTexts(activitySplashBinding.rootLayout, this)
+                        checkUpdate()
+                    } catch (e: Exception) {
+                        wtf("exception_firebase", e.toString())
+                    }
+
+                } else {
+                    wtf("exception_firebase", "e")
+                }
+
             }
+                .addOnFailureListener {
+                    wtf("exception_firebase", it.toString())
+                }
+        }
+        else {
+            toast(getString(R.string.check_internet_connection))
+        }
+
 
     }
     private fun checkUpdate(){
@@ -181,15 +192,13 @@ class ActivitySplash : ActivityCompactBase() {
     private fun goLogin(){
         if (MyApplication.isLogin){
             Handler(Looper.getMainLooper()).postDelayed({
-                val i = Intent(this@ActivitySplash, ActivitySessions::class.java)
-                startActivity(i)
+                startActivity(Intent(this, ActivitySessions::class.java))
                 finish()
             }, 500)
         }
         else{
             Handler(Looper.getMainLooper()).postDelayed({
-                val i = Intent(this@ActivitySplash, ActivityLogin::class.java)
-                startActivity(i)
+                startActivity(Intent(this, ActivityLogin::class.java))
                 finish()
             }, 500)
         }

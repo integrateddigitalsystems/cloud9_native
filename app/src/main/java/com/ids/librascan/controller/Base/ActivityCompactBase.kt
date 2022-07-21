@@ -53,6 +53,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     var selectedUnit = Unit()
     var selectedSession = Sessions()
     lateinit var onInsertUpdate: OnInsertUpdate
+    var isShow : Boolean = false
 
     init {
         AppHelper.setLocal(this)
@@ -131,11 +132,13 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             listeners()
             popupBarcodeBinding.tvCode.setText(qrCode.code.ifEmpty { "" })
             popupBarcodeBinding.tvInsertClose.setOnClickListener {
+                isShow =false
                 insertAndClose(c,qrCode)
                 if (!MyApplication.isScan) activitySessionsBinding.llSync.show()
 
             }
             popupBarcodeBinding.tvInsert.setOnClickListener {
+                isShow =true
                 insertAndClose(c,qrCode)
                 if (!MyApplication.isScan) activitySessionsBinding.llSync.show()
             }
@@ -189,27 +192,17 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
                     if (qrCode!=null){
                         if(!MyApplication.enableInsert && !MyApplication.enableNewLine){
                             insertCode(qrCode)
-
-                            toast(getRemoteString("item_save", c))
                         }
                         else{
-                            if(MyApplication.enableInsert && !MyApplication.enableNewLine){
-                                insertAutoQuantity(qrCode)
-                                toast(getRemoteString("item_save", c))
-                            }
-                            else if (!MyApplication.enableInsert && MyApplication.enableNewLine){
+                            if (!MyApplication.enableInsert && MyApplication.enableNewLine){
                                 insertCodeNew()
-                                toast(getRemoteString("item_save", c))
-                            }
-                            else if (MyApplication.enableInsert && MyApplication.enableNewLine){
-                                insertCodeNew()
-                                toast(getRemoteString("item_save", c))
                             }
                         }
+                        toast(getRemoteString("item_save", c))
                     }
                     else insertCodeNew()
                     toast(getRemoteString("item_save", c))
-                    barcodeAlertDialog.cancel()
+                    if (!isShow) barcodeAlertDialog.cancel()
 
                 //Update QrCode
                 }else updateQrcode(c,qrCode)

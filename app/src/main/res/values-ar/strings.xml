@@ -65,4 +65,5 @@
     <string name="scan_new_line"> ادخال رمز جديد</string>
     <string name="sessions">التقارير</string>
     <string name="no_data">لا يوجد معلومات</string>
+    <string name="check_internet_connection">الرجاء التحقق من اتصال الانترنت الخاص بك</string>
 </resources>

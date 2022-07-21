@@ -5,10 +5,14 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.Application
 import android.content.Context
+import android.content.Context.CONNECTIVITY_SERVICE
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
 import android.os.Build
 import android.provider.Settings.Global.getString
 import android.text.Editable
@@ -18,6 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.annotation.RequiresApi
 import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
 import utils.*
@@ -90,6 +95,12 @@ class AppHelper {
             }
         }
 
+        @RequiresApi(Build.VERSION_CODES.M)
+        fun isNetworkAvailable(context: Context): Boolean {
+            val cm = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+            val capabilities = cm.getNetworkCapabilities(cm.activeNetwork)
+            return capabilities?.hasCapability(NET_CAPABILITY_INTERNET) == true
+        }
 
         fun setHintTag(view: View, tag: String, context: Context) {
             val edit = view as EditText
