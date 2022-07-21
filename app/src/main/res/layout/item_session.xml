@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.daimajia.swipe.SwipeLayout
@@ -36,7 +36,7 @@
             android:id="@+id/llItem"
             android:paddingBottom="@dimen/small_margin_padding"
             android:layout_width="match_parent"
-            android:minHeight="80dp"
+            android:minHeight="@dimen/min_height"
             android:layout_height="wrap_content">
 
 
@@ -44,7 +44,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:background="@color/white"
-                android:layout_height="80dp">
+                android:layout_height="@dimen/min_height">
 
 
                 <LinearLayout
@@ -64,9 +64,9 @@
                             android:layout_height="match_parent"
                             android:ellipsize="start"
                             android:layout_marginStart="@dimen/small_margin"
-                            android:layout_marginEnd="@dimen/size_30"
+                            android:layout_marginEnd="@dimen/size_image_60"
                             android:maxLines="2"
-                            android:gravity="start|center"
+                            android:gravity="center_vertical|center"
                             android:layout_gravity="start"
                             android:paddingStart="1dp"
                             android:paddingTop="@dimen/normal_margin_padding"
@@ -79,15 +79,15 @@
 
                     </LinearLayout>
 
-
                     <com.ids.librascan.custom.CustomTextViewMedium
                         android:id="@+id/tvWarehouses"
                         android:padding="@dimen/normal_margin_padding"
                         android:layout_width="0dp"
                         android:background="@color/white"
-                        android:layout_weight="1.5"
+                        android:layout_weight="1"
                         android:layout_height="match_parent"
                         android:gravity="start|center"
+                        android:layout_marginEnd="@dimen/small_margin"
                         android:layout_gravity="start"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/small_font"/>
@@ -97,15 +97,15 @@
                         android:background="@color/white"
                         android:padding="@dimen/normal_margin_padding"
                         android:layout_width="0dp"
-                        android:layout_weight="3"
+                        android:layout_marginHorizontal="@dimen/margin_30"
+                        android:layout_weight="1"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical|center"
                         android:layout_gravity="start"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/small_font"/>
 
-
-                </LinearLayout>
+                    </LinearLayout>
 
 
 
@@ -127,12 +127,6 @@
                         android:background="@drawable/rounded_primary_layout"
                         android:gravity="center">
 
-                        <ImageView
-                            android:layout_width="@dimen/settings_item_height"
-                            android:layout_height="@dimen/settings_item_height"
-                            android:layout_gravity="center_vertical|center_horizontal"
-                            android:layout_marginEnd="@dimen/small_margin_padding"
-                            android:src="@drawable/sync" />
 
                         <com.ids.librascan.custom.CustomTextViewBold
                             android:layout_width="wrap_content"
@@ -141,7 +135,7 @@
                             android:layout_marginStart="@dimen/small_margin_padding"
                             android:text="@string/sync"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="@dimen/size_14"/>
 
                     </LinearLayout>
 
@@ -161,7 +155,7 @@
                             android:layout_marginStart="@dimen/small_margin_padding"
                             android:text="@string/scan"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="@dimen/size_14"/>
 
                     </LinearLayout>
 

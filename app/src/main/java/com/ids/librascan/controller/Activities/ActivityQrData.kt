@@ -85,7 +85,9 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         }
 
      }
-    @SuppressLint("NotifyDataSetChanged")
+
+
+        @SuppressLint("NotifyDataSetChanged")
     private fun filter(text: String) {
         arrFilter.clear()
         arrFilter.addAll(arrQrCode.filter {
@@ -101,6 +103,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         arrFilter.addAll(arrQrCode)
         adapterQrCode = AdapterQrCode(arrFilter, this)
         activityQrDataBinding.rVQrData.adapter = adapterQrCode
+
     }
 
     @SuppressLint("NotifyDataSetChanged")

@@ -17,6 +17,7 @@ object AppConstants {
     const val SESSION_ID = "session_id"
     const val SESSION_NAME = "session_name"
     const val IS_SCAN = "is_scan"
+    const val SHOW_SYNC = "show_sync"
 
     const val CHECK_LOGIN = false
     const val FIRST = true

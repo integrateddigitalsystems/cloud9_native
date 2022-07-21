@@ -46,4 +46,7 @@
     <dimen name="list_icon_width_height">15dp</dimen>
     <dimen name="margin_start_end">18dp</dimen>
     <dimen name="size_18">18sp</dimen>
+    <dimen name="margin_big">460dp</dimen>
+    <dimen name="min_height">80dp</dimen>
+    <dimen name="size_14">14sp</dimen>
 </resources>

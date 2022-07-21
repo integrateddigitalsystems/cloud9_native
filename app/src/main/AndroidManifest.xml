@@ -35,11 +35,7 @@
             android:exported="false"
             android:theme="@style/Theme.Design.Light.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name=".controller.Activities.ActivityMain"
-            android:exported="false"
-            android:theme="@style/Theme.Design.Light.NoActionBar" />
-        <activity
+              <activity
             android:name=".controller.Activities.ActivityLogin"
             android:exported="false"
             android:theme="@style/Theme.Design.Light.NoActionBar" />

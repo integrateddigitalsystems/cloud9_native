@@ -63,4 +63,5 @@
     <string name="syncAll">ترحيل الكل</string>
     <string name="auto_quantity">اضافة رمز تلقائيا</string>
     <string name="scan_new_line"> ادخال الرمز</string>
+    <string name="sessions">التقارير</string>
 </resources>

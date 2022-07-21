@@ -14,16 +14,12 @@
       },
       "oauth_client": [
         {
-          "client_id": "43913368539-0d1a2veaccv9eeeh3pdae78knhksej59.apps.googleusercontent.com",
+          "client_id": "43913368539-mgncndf07jkulqbno5heatar8573kp4t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ids.librascan",
             "certificate_hash": "99cfef12d300a124c08d17db42c1c27781dad555"
           }
-        },
-        {
-          "client_id": "43913368539-7g9ndhiv91n9dt40pu2gc1fvfa4q3eqg.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [

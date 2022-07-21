@@ -19,6 +19,7 @@ import com.ids.librascan.controller.Adapters.OnInsertUpdate.OnInsertUpdate
 import com.ids.librascan.controller.Adapters.SessionsSpinnerAdapter
 import com.ids.librascan.controller.Adapters.UnitsSpinnerAdapter
 import com.ids.librascan.controller.MyApplication
+import com.ids.librascan.databinding.ActivitySessionsBinding
 import com.ids.librascan.databinding.PopupBarcodeBinding
 import com.ids.librascan.db.QrCode
 import com.ids.librascan.db.QrCodeDatabase
@@ -33,6 +34,7 @@ import kotlinx.coroutines.launch
 
 import utils.LocaleUtils
 import utils.hide
+import utils.show
 import utils.toast
 import java.util.*
 import kotlin.collections.ArrayList
@@ -46,6 +48,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     var spinnerSessions: ArrayList<Sessions> = arrayListOf()
     lateinit var spinnerAdapter: UnitsSpinnerAdapter
     lateinit var sessionsSpinnerAdapter: SessionsSpinnerAdapter
+    lateinit var activitySessionsBinding: ActivitySessionsBinding
     var quantity = 1
     var selectedUnit = Unit()
     var selectedSession = Sessions()
@@ -130,9 +133,11 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             popupBarcodeBinding.tvCode.setText(qrCode.code.ifEmpty { "" })
             popupBarcodeBinding.tvInsertClose.setOnClickListener {
                 insertAndClose(c,qrCode)
+                activitySessionsBinding.llSync.show()
             }
             popupBarcodeBinding.tvInsert.setOnClickListener {
                 insertAndClose(c,qrCode)
+                activitySessionsBinding.llSync.show()
             }
 
             isUpdateChecked(isUpdate,qrCode)

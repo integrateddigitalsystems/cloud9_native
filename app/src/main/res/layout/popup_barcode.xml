@@ -91,7 +91,8 @@
                             android:layout_weight="1.5"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/small_margin_padding"
-                            android:text="Sessions"
+                            android:text="@string/sessions"
+                            android:tag="sessions"
                             android:textColor="@color/colorAccent"
                             android:textSize="@dimen/font"/>
 

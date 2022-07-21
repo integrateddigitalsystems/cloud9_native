@@ -181,7 +181,7 @@ class ActivitySplash : ActivityCompactBase() {
     private fun goLogin(){
         if (MyApplication.isLogin){
             Handler(Looper.getMainLooper()).postDelayed({
-                val i = Intent(this@ActivitySplash, ActivityMain::class.java)
+                val i = Intent(this@ActivitySplash, ActivitySessions::class.java)
                 startActivity(i)
                 finish()
             }, 500)

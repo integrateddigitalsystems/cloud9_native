@@ -58,6 +58,9 @@ class MyApplication : Application() {
         var isScan : Boolean
             get() = sharedPreferences.getBoolean(AppConstants.IS_SCAN, AppConstants.Enable)
             set(value) { sharedPreferencesEditor.putBoolean(AppConstants.IS_SCAN, value).apply() }
+        var showSync : Boolean
+            get() = sharedPreferences.getBoolean(AppConstants.SHOW_SYNC, AppConstants.Enable)
+            set(value) { sharedPreferencesEditor.putBoolean(AppConstants.SHOW_SYNC, value).apply() }
 
         var sessionId :Int
             get() = sharedPreferences.getInt(AppConstants.SESSION_ID, 0)

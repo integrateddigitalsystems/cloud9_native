@@ -23,8 +23,12 @@ import com.ids.librascan.apis.RetrofitClient
 import com.ids.librascan.apis.RetrofitInterface
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityLoginBinding
+import com.ids.librascan.db.QrCodeDatabase
+import com.ids.librascan.db.Warehouse
+import com.ids.librascan.model.ResponseGetWareHouse
 import com.ids.librascan.model.ResponseLogin
 import com.ids.librascan.utils.AppHelper
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -49,12 +53,10 @@ class ActivityLogin : ActivityCompactBase() {
 
         activityLoginBinding.btLogin.setOnClickListener {
             if (MyApplication.clientKey == "") {
-
                 startActivity(Intent(this, QrCodeActivity::class.java))
             } else {
                 mGoogleSignInClient.signOut()
                 signInGoogle()
-                startActivity(Intent(this, ActivityMain::class.java))
             }
         }
         activityLoginBinding.btScan.setOnClickListener {
@@ -108,10 +110,6 @@ class ActivityLogin : ActivityCompactBase() {
                     wtf("exception code: " + e.statusCode)
                 }
 
-            }
-            else{
-                toast(it.resultCode.toString())
-                toast(AppHelper.getRemoteString("login_faild",this@ActivityLogin))
             }
         }
     }
@@ -170,7 +168,7 @@ class ActivityLogin : ActivityCompactBase() {
                             activityLoginBinding.progressBar.hide()
                             wtf("after progressBar ")
                            // toast(response.body()!!.message!!)
-                            startActivity(Intent(this@ActivityLogin, ActivityMain::class.java))
+                            startActivity(Intent(this@ActivityLogin, ActivitySessions::class.java))
                             wtf("after startActivity ")
                             finish()
                             wtf("after finish ")
@@ -230,5 +228,7 @@ class ActivityLogin : ActivityCompactBase() {
         d.setCancelable(false)
         d.show()
     }
+
+
 
 }

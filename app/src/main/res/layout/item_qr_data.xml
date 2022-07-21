@@ -66,7 +66,7 @@
                 android:layout_weight="1">
 
                 <LinearLayout
-                    android:layout_width="@dimen/width_150"
+                    android:layout_width="@dimen/with_200"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
@@ -98,10 +98,10 @@
                     android:layout_width="0dp"
                     android:background="@color/white"
                     android:layout_weight="1"
-                    android:layout_marginHorizontal="@dimen/small_margin"
+                    android:layout_marginEnd="@dimen/small_margin"
                     android:layout_height="match_parent"
-                    android:gravity="start|center"
-                    android:layout_gravity="start"
+                    android:gravity="center"
+                    android:layout_gravity="center"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/small_font"/>
 

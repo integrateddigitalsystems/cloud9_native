@@ -57,34 +57,56 @@
 
     </LinearLayout>
 
+        <ImageView
+            android:id="@+id/iVMore"
+            android:layout_width="@dimen/size_30"
+            android:layout_height="@dimen/size_30"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/small_margin"
+            app:tint="@color/white"
+            android:src="@drawable/icon_more"
+            android:layout_marginEnd="@dimen/small_margin"
+            tools:ignore="ContentDescription" />
+
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/small_margin"
+        android:layout_marginTop="@dimen/big_margin"
+        android:layout_gravity="end"
+        android:gravity="end"
         android:orientation="horizontal">
 
-    <ImageView
-        android:layout_width="@dimen/back_width_height"
-        android:layout_height="@dimen/back_width_height"
-        android:src="@drawable/back"
-        android:id="@+id/ivBack"
-        android:paddingTop="@dimen/normal_margin_padding"
-        android:tint="@color/white"
-        android:paddingBottom="@dimen/normal_margin_padding"
-        android:paddingStart="@dimen/big_margin_padding"
-        android:paddingEnd="@dimen/normal_margin_padding"
-        android:contentDescription="@string/app_name"
-        android:onClick="back"
-        app:tint="@color/white"
-        tools:ignore="UseAppTint" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginStart="@dimen/margin_100"
+            android:orientation="horizontal">
+
+            <com.ids.librascan.custom.CustomTextViewBold
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ellipsize="start"
+                android:maxLines="2"
+                android:text="@string/add_session"
+                android:tag="add_session"
+                android:gravity="start|center"
+                android:layout_gravity="start"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/llAddSession"
-            android:layout_marginStart="280dp"
-            android:layout_marginEnd="280dp"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:layout_marginStart="@dimen/small_margin"
             android:layout_width="@dimen/button_height"
             android:layout_height="@dimen/button_height"
-            android:layout_marginTop="@dimen/normal_margin_padding"
             android:layout_marginBottom="@dimen/normal_margin_padding"
             android:background="@drawable/rounded_primary_layout"
             android:gravity="center">
@@ -101,7 +123,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="120dp"
         android:layout_marginStart="@dimen/normal_margin_padding"
         android:layout_marginEnd="@dimen/normal_margin_padding"
         android:layout_width="match_parent"
@@ -161,39 +183,51 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/margin_100">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/big_margin"
+            android:gravity="center">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rVSessions"
             android:paddingStart="@dimen/normal_margin_padding"
             android:paddingEnd="@dimen/normal_margin_padding"
-            android:layout_marginTop="@dimen/size_20"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="570dp"/>
+            android:layout_height="match_parent"/>
 
-        <LinearLayout
-            android:id="@+id/llSync"
-            android:layout_width="@dimen/width_150"
-            android:layout_gravity="center"
-            android:layout_height="@dimen/button_height"
-            android:background="@drawable/rounded_primary_layout"
-            android:gravity="center">
+            <LinearLayout
+                android:id="@+id/llSync"
+                android:layout_width="@dimen/width_150"
+                android:layout_height="@dimen/button_height"
+                android:visibility="gone"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_big"
+                android:background="@drawable/rounded_primary_layout"
+                android:gravity="center">
 
-            <ImageView
-                android:layout_width="@dimen/settings_item_height"
-                android:layout_height="@dimen/settings_item_height"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginEnd="@dimen/small_margin_padding"
-                android:src="@drawable/sync" />
+                <ImageView
+                    android:layout_width="@dimen/settings_item_height"
+                    android:layout_height="@dimen/settings_item_height"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:layout_marginEnd="@dimen/small_margin_padding"
+                    android:src="@drawable/sync" />
 
-            <com.ids.librascan.custom.CustomTextViewBold
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginStart="@dimen/small_margin_padding"
-                android:text="@string/syncAll"
-                android:textColor="@color/white"
-                android:textSize="@dimen/font" />
+                <com.ids.librascan.custom.CustomTextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:layout_marginStart="@dimen/small_margin_padding"
+                    android:text="@string/syncAll"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font" />
+            </LinearLayout>
 
+        </RelativeLayout>
             <Button
                 android:id="@+id/btShowScan"
                 android:onClick="checkCameraPermissions"
@@ -203,7 +237,7 @@
 
         </LinearLayout>
 
-    </LinearLayout>
+
 
     <RelativeLayout
         android:id="@+id/rlBarcode"

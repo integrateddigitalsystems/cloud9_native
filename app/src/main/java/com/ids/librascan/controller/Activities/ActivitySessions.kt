@@ -4,6 +4,7 @@ import Base.ActivityCompactBase
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -15,27 +16,39 @@ import android.os.Looper
 import android.util.SparseArray
 import android.view.View
 import android.widget.AdapterView
+import android.widget.CompoundButton
 import android.widget.DatePicker
+import android.widget.PopupMenu
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isEmpty
 import androidx.core.view.isNotEmpty
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ids.librascan.R
+import com.ids.librascan.apis.RetrofitClient
+import com.ids.librascan.apis.RetrofitInterface
 import com.ids.librascan.controller.Adapters.AdapterSession
 import com.ids.librascan.controller.Adapters.OnInsertUpdate.OnInsertUpdate
 import com.ids.librascan.controller.Adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.librascan.controller.Adapters.WarehouseSpinnerAdapter
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivitySessionsBinding
+import com.ids.librascan.databinding.PopupLanguageBinding
 import com.ids.librascan.databinding.PopupSessionBinding
 import com.ids.librascan.db.*
+import com.ids.librascan.model.ResponseGetWareHouse
 import com.ids.librascan.utils.AppHelper
 import info.bideens.barcode.BarcodeReader
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import utils.hide
 import utils.show
 import utils.toast
@@ -44,10 +57,11 @@ import java.util.*
 
 
 class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertUpdate,
-    BarcodeReader.BarcodeReaderListener, DatePickerDialog.OnDateSetListener{
-    lateinit var activitySessionsBinding: ActivitySessionsBinding
+    BarcodeReader.BarcodeReaderListener, DatePickerDialog.OnDateSetListener,CompoundButton.OnCheckedChangeListener{
     lateinit var popupSessionBinding: PopupSessionBinding
+    lateinit var popupLanguageBinding : PopupLanguageBinding
     private lateinit var sessionAlertDialog: androidx.appcompat.app.AlertDialog
+    private lateinit var languageAlertDialog: androidx.appcompat.app.AlertDialog
     private var spinnerWarehouse: ArrayList<Warehouse> = arrayListOf()
     lateinit var warehouseSpinnerAdapter: WarehouseSpinnerAdapter
     lateinit var adapterSession: AdapterSession
@@ -55,6 +69,8 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     var selectedWarehouse = Warehouse()
     lateinit var barcodeReader: BarcodeReader
     private var db: FirebaseFirestore? = null
+    var arrayQrcode = ArrayList<QrCode>()
+    lateinit var mGoogleSignInClient: GoogleSignInClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activitySessionsBinding = ActivitySessionsBinding.inflate(layoutInflater)
@@ -64,6 +80,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     }
     fun init(){
         db = FirebaseFirestore.getInstance()
+        addWarehouse()
         AppHelper.setAllTexts(activitySessionsBinding.rootSessions, this)
         activitySessionsBinding.llAddSession.setOnClickListener {
             showAddSessionAlertDialog()
@@ -80,6 +97,40 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         }
         barcodeReader = supportFragmentManager.findFragmentById(R.id.barcodeReader) as BarcodeReader
 
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id_auth))
+            .requestEmail()
+            .build()
+        mGoogleSignInClient= GoogleSignIn.getClient(this,gso)
+
+        activitySessionsBinding.iVMore.setOnClickListener {
+            val popupMenu = PopupMenu(this,it)
+            popupMenu.setOnMenuItemClickListener { item->
+                when(item.itemId){
+                    R.id.action_logout ->{
+                        createDialogLogout()
+                        true
+                    }
+                    R.id.action_language ->{
+                        createDialogLanguage()
+                        true
+                    }
+                    R.id.action_settings ->{
+                        startActivity(Intent(this, ActivitySettings::class.java))
+                        true
+                    }
+                    else ->false
+                }
+            }
+            popupMenu.inflate(R.menu.menu)
+            popupMenu.show()
+        }
+
+        launch {
+                arrayQrcode.clear()
+                arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
+                if (arrayQrcode.isNotEmpty()) activitySessionsBinding.llSync.show()
+            }
     }
     fun back(v: View) {
         onBackPressed()
@@ -250,6 +301,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             val docData: MutableMap<String, Any> = HashMap()
             arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getCode(arrSession[position].id))
             if (arrayQrcode.isNotEmpty()){
+                MyApplication.showSync = true
                 activitySessionsBinding.loadingData.show()
                 docData.put("QrCode", arrayQrcode)
                 db!!.collection("Data")
@@ -271,6 +323,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
 
             }
             else{
+                MyApplication.showSync = false
                 toast(AppHelper.getRemoteString("added_faild",this@ActivitySessions))
                 activitySessionsBinding.loadingData.hide()
             }
@@ -303,6 +356,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 QrCodeDatabase(application).getSessions().deleteAllSession()
                 arrSession.clear()
                 adapterSession.notifyDataSetChanged()
+                activitySessionsBinding.llSync.hide()
 
             }
             else{
@@ -353,10 +407,12 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             activitySessionsBinding.rlBarcode.hide()
             if (MyApplication.enableInsert && !MyApplication.enableNewLine){
                 insertScanAuto(QrCode(value,0,1,MyApplication.sessionId), this,this)
+                activitySessionsBinding.llSync.show()
             }
 
             else  if (MyApplication.enableInsert && MyApplication.enableNewLine){
                 insertScan(QrCode(value,0,1,MyApplication.sessionId),this,this)
+                activitySessionsBinding.llSync.show()
             }
             else{
                 barcodeAlertDialog.show()
@@ -425,6 +481,100 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             }
         val alert = builder.create()
         alert.show()
+    }
+
+    private fun createDialogLogout() {
+        val builder = AlertDialog.Builder(this)
+            .setCancelable(true)
+            .setMessage(AppHelper.getRemoteString("logout_message",this))
+            .setPositiveButton(AppHelper.getRemoteString("yes",this))
+            { dialog, _ ->
+                mGoogleSignInClient.signOut().addOnCompleteListener {
+                    MyApplication.isLogin = false
+                    val intent= Intent(this, ActivityLogin::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                dialog.cancel()
+            }
+            .setNegativeButton(AppHelper.getRemoteString("no",this))
+            { dialog, _ ->
+                dialog.cancel()
+            }
+        val alert = builder.create()
+        alert.show()
+    }
+
+    private fun createDialogLanguage(){
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        popupLanguageBinding = PopupLanguageBinding.inflate(layoutInflater)
+        AppHelper.setAllTexts(popupLanguageBinding.llLanguage, this)
+        builder.setView(popupLanguageBinding.root)
+        if (MyApplication.languageCode == "en")
+            popupLanguageBinding.rbEnglish.isChecked = true
+        else popupLanguageBinding.rbArabic.isChecked =true
+
+        popupLanguageBinding.rbEnglish.setOnCheckedChangeListener(this)
+        popupLanguageBinding.rbArabic.setOnCheckedChangeListener(this)
+
+        languageAlertDialog = builder.create()
+        languageAlertDialog.show()
+    }
+
+    override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+        when {
+            buttonView!!.id == R.id.rbArabic -> {
+                if (isChecked) {
+                    AppHelper.changeLanguage(this,"ar")
+                    startActivity(Intent(this@ActivitySessions, ActivitySessions::class.java))
+                    finish()
+                }
+            }
+            buttonView.id == R.id.rbEnglish -> {
+
+                if (isChecked) {
+                    AppHelper.changeLanguage(this,"en")
+                    startActivity(Intent(this@ActivitySessions, ActivitySessions::class.java))
+                    finish()
+                }
+            }
+        }
+    }
+
+    fun addWarehouse(){
+        if (MyApplication.isFirst){
+            getWarehouse()
+            MyApplication.isFirst = false
+        }
+    }
+
+    private fun getWarehouse() {
+        RetrofitClient.client?.create(RetrofitInterface::class.java)
+            ?.getWarehouse()?.enqueue(object :
+                Callback<ResponseGetWareHouse> {
+                override fun onResponse(
+                    call: Call<ResponseGetWareHouse>,
+                    response: Response<ResponseGetWareHouse>
+                ) {
+                    if (response.isSuccessful && response.body()!!.wareHouses!!.size>0) {
+
+                        for (item in response.body()!!.wareHouses!!) {
+                            launch {
+                                QrCodeDatabase(application).getWarehouse().insertWarehouse(
+                                    Warehouse(
+                                        item.id!!,item.name.toString())
+                                )
+                            }
+                        }
+
+                    } else {
+                        toast("Faild")
+                    }
+                }
+                override fun onFailure(call: Call<ResponseGetWareHouse>, t: Throwable) {
+
+                }
+            })
     }
 
 }
