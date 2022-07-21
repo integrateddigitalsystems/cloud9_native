@@ -543,10 +543,10 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     }
 
     fun addWarehouse(){
-        if (MyApplication.isFirst){
-            getWarehouse()
-            MyApplication.isFirst = false
+        launch {
+            QrCodeDatabase(application).getWarehouse().deleteAllWarehouse()
         }
+        getWarehouse()
     }
 
     private fun getWarehouse() {

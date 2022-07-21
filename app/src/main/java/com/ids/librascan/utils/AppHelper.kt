@@ -1,6 +1,7 @@
 package com.ids.librascan.utils
 
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Application
@@ -95,7 +96,7 @@ class AppHelper {
             }
         }
 
-        @RequiresApi(Build.VERSION_CODES.M)
+        @SuppressLint("NewApi")
         fun isNetworkAvailable(context: Context): Boolean {
             val cm = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
             val capabilities = cm.getNetworkCapabilities(cm.activeNetwork)

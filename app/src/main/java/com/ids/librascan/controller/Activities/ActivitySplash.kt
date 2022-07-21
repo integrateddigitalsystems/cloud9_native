@@ -41,9 +41,8 @@ class ActivitySplash : ActivityCompactBase() {
          super.onCreate(savedInstanceState)
          activitySplashBinding = ActivitySplashBinding.inflate(layoutInflater)
          setContentView(activitySplashBinding.root)
-        getFirebasePrefs()
+         getFirebasePrefs()
     }
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun getFirebasePrefs() {
         if (AppHelper.isNetworkAvailable(this)){
             auth = FirebaseAuth.getInstance()
