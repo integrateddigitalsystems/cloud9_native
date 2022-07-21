@@ -90,7 +90,6 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
         popupBarcodeBinding = PopupBarcodeBinding.inflate(layoutInflater)
         AppHelper.setAllTexts(popupBarcodeBinding.llPagerItem, this)
-
         sessionsSpinnerAdapter = SessionsSpinnerAdapter(this, spinnerSessions)
 
         launch {
@@ -133,11 +132,12 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             popupBarcodeBinding.tvCode.setText(qrCode.code.ifEmpty { "" })
             popupBarcodeBinding.tvInsertClose.setOnClickListener {
                 insertAndClose(c,qrCode)
-                activitySessionsBinding.llSync.show()
+                if (!MyApplication.isScan) activitySessionsBinding.llSync.show()
+
             }
             popupBarcodeBinding.tvInsert.setOnClickListener {
                 insertAndClose(c,qrCode)
-                activitySessionsBinding.llSync.show()
+                if (!MyApplication.isScan) activitySessionsBinding.llSync.show()
             }
 
             isUpdateChecked(isUpdate,qrCode)
@@ -222,7 +222,6 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     private fun checkIsNotEmpty(c: Activity){
         when {
             popupBarcodeBinding.tvCode.text.toString() == "" -> AppHelper.createDialogPositive(c, getRemoteString("error_filled_barcode",this))
-           // popupBarcodeBinding.spSession.isEmpty()-> AppHelper.createDialogPositive(c, getRemoteString("error_filled_session",this))
             quantity == 0 -> AppHelper.createDialogPositive(c, getRemoteString("error_filled_qty",this))
         }
     }
@@ -321,6 +320,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             popupBarcodeBinding.etQty.setText("1")
             onInsertUpdate.onInsertUpdate(true)
 
+
         }
     }
     private fun insertCode (qrCode: QrCode){
@@ -330,6 +330,8 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             popupBarcodeBinding.etQty.setText("1")
             onInsertUpdate.onInsertUpdate(true)
 
+
+
         }
     }
     private fun insertCodeNew (){
@@ -338,6 +340,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             popupBarcodeBinding.tvCode.setText("")
             popupBarcodeBinding.etQty.setText("1")
             onInsertUpdate.onInsertUpdate(true)
+
 
         }
     }

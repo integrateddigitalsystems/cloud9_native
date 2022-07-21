@@ -55,6 +55,9 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
          activityQrDataBinding.loading.show()
          launch {
              arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getCode(MyApplication.sessionId))
+             if (arrQrCode.isEmpty())
+                 activityQrDataBinding.tvNodata.show()
+             else  activityQrDataBinding.tvNodata.hide()
              activityQrDataBinding.loading.hide()
              setData()
          }
@@ -111,6 +114,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         if (view.id == R.id.tVDelete)
             createDialogDelete(position)
         else if (view.id == R.id.tVUpdate) {
+            MyApplication.isScan = true
             showAddBarcodeAlertDialog(this, true, arrFilter[position], this,false, Sessions())
             adapterQrCode.notifyDataSetChanged()
         }
@@ -134,6 +138,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
               arrFilter.clear()
               arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getCode(MyApplication.sessionId))
               arrFilter.addAll(arrQrCode)
+              activityQrDataBinding.tvNodata.hide()
               adapterQrCode.notifyDataSetChanged()
         }
     }

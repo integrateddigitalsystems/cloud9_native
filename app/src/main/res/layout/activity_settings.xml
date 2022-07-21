@@ -16,17 +16,17 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/height_50"
         android:orientation="horizontal"
         android:layout_marginBottom="@dimen/size_20"
-        android:padding="10dp">
+        android:padding="@dimen/padding_10">
 
         <ToggleButton
             android:id="@+id/tgEnable"
-            android:layout_width="45dp"
+            android:layout_width="@dimen/with_toggle"
             android:background="@drawable/enable_selector_day"
-            android:layout_height="25dp"
+            android:layout_height="@dimen/height_toggle"
             android:onClick="setUpEnable"
             android:textOff=""
             android:textOn="" />
@@ -39,7 +39,7 @@
             android:layout_marginStart="@dimen/normal_margin"
             android:text="@string/auto_quantity"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="@dimen/size_20"
             android:textStyle="bold" />
 
 
@@ -47,15 +47,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="@dimen/padding_10">
 
         <ToggleButton
             android:id="@+id/tgNewLine"
-            android:layout_width="45dp"
+            android:layout_width="@dimen/with_toggle"
             android:background="@drawable/enable_selector_day"
-            android:layout_height="25dp"
+            android:layout_height="@dimen/height_toggle"
             android:onClick="setUpNewLine"
             android:textOff=""
             android:textOn="" />
@@ -67,7 +67,7 @@
             android:layout_marginStart="@dimen/normal_margin"
             android:text="@string/scan_new_line"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="@dimen/size_20"
             android:textStyle="bold" />
 
 

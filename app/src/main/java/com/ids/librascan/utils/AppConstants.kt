@@ -21,5 +21,5 @@ object AppConstants {
 
     const val CHECK_LOGIN = false
     const val FIRST = true
-    const val Enable = false
+    const val Default = false
 }

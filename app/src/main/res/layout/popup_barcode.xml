@@ -80,6 +80,7 @@
                         android:orientation="horizontal"
                         android:layout_gravity="center"
                         android:gravity="center"
+                        android:id="@+id/tvSession"
                         android:layout_marginStart="@dimen/big_margin_padding"
                         android:layout_marginEnd="@dimen/big_margin_padding"
                         android:layout_marginBottom="@dimen/size_20"

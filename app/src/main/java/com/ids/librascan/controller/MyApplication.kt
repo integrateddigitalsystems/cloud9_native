@@ -48,18 +48,19 @@ class MyApplication : Application() {
             set(value) { sharedPreferencesEditor.putBoolean(AppConstants.IS_LOGIN, value).apply() }
 
         var enableInsert : Boolean
-            get() = sharedPreferences.getBoolean(AppConstants.IS_Enable, AppConstants.Enable)
+            get() = sharedPreferences.getBoolean(AppConstants.IS_Enable, AppConstants.Default)
             set(value) { sharedPreferencesEditor.putBoolean(AppConstants.IS_Enable, value).apply() }
 
         var enableNewLine : Boolean
-            get() = sharedPreferences.getBoolean(AppConstants.IS_NEW_LINE, AppConstants.Enable)
+            get() = sharedPreferences.getBoolean(AppConstants.IS_NEW_LINE, AppConstants.Default)
             set(value) { sharedPreferencesEditor.putBoolean(AppConstants.IS_NEW_LINE, value).apply() }
 
         var isScan : Boolean
-            get() = sharedPreferences.getBoolean(AppConstants.IS_SCAN, AppConstants.Enable)
+            get() = sharedPreferences.getBoolean(AppConstants.IS_SCAN, AppConstants.Default)
             set(value) { sharedPreferencesEditor.putBoolean(AppConstants.IS_SCAN, value).apply() }
+
         var showSync : Boolean
-            get() = sharedPreferences.getBoolean(AppConstants.SHOW_SYNC, AppConstants.Enable)
+            get() = sharedPreferences.getBoolean(AppConstants.SHOW_SYNC, AppConstants.Default)
             set(value) { sharedPreferencesEditor.putBoolean(AppConstants.SHOW_SYNC, value).apply() }
 
         var sessionId :Int

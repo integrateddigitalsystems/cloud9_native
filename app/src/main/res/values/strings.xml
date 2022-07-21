@@ -66,4 +66,5 @@
     <string name="auto_quantity">Auto quantity</string>
     <string name="scan_new_line">Scan new line</string>
     <string name="sessions">Sessions</string>
+    <string name="no_data">No Data</string>
 </resources>

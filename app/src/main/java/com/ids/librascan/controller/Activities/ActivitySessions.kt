@@ -92,6 +92,8 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         activitySessionsBinding.loading.show()
         launch {
             arrSession.addAll(QrCodeDatabase(application).getSessions().getSessions())
+            if (arrSession.isEmpty())
+                activitySessionsBinding.tvNodata.show()
             activitySessionsBinding.loading.hide()
             setData()
         }
@@ -203,6 +205,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                     sessionAlertDialog.cancel()
                     arrSession.clear()
                     arrSession.addAll(QrCodeDatabase(application).getSessions().getSessions())
+                    activitySessionsBinding.tvNodata.hide()
                     adapterSession.notifyDataSetChanged()
                     toast(AppHelper.getRemoteString("session_save", c))
                 }
@@ -301,7 +304,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             val docData: MutableMap<String, Any> = HashMap()
             arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getCode(arrSession[position].id))
             if (arrayQrcode.isNotEmpty()){
-                MyApplication.showSync = true
                 activitySessionsBinding.loadingData.show()
                 docData.put("QrCode", arrayQrcode)
                 db!!.collection("Data")
@@ -323,7 +325,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
 
             }
             else{
-                MyApplication.showSync = false
                 toast(AppHelper.getRemoteString("added_faild",this@ActivitySessions))
                 activitySessionsBinding.loadingData.hide()
             }
