@@ -100,7 +100,7 @@
                     android:layout_weight="1"
                     android:layout_marginEnd="@dimen/small_margin"
                     android:layout_height="match_parent"
-                    android:gravity="center"
+                    android:gravity="end|center"
                     android:layout_gravity="center"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/small_font"/>

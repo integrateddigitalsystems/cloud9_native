@@ -196,7 +196,7 @@
             android:paddingEnd="@dimen/normal_margin_padding"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="500dp"/>
 
             <com.ids.librascan.custom.CustomTextViewMedium
                 android:layout_width="match_parent"

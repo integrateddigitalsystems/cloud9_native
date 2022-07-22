@@ -11,7 +11,6 @@ import com.ids.librascan.utils.AppHelper
 
 class ActivitySettings : AppCompatActivity() {
     lateinit var activitySettingsBinding: ActivitySettingsBinding
-    lateinit var toolbarBinding: ToolbarBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activitySettingsBinding = ActivitySettingsBinding.inflate(layoutInflater)
@@ -21,9 +20,11 @@ class ActivitySettings : AppCompatActivity() {
 
     fun init() {
         AppHelper.setAllTexts(activitySettingsBinding.rootSettings, this)
-        toolbarBinding = ToolbarBinding.inflate(layoutInflater)
         if (MyApplication.enableInsert) activitySettingsBinding.tgEnable.isChecked = true
         if (MyApplication.enableNewLine) activitySettingsBinding.tgNewLine.isChecked = true
+        activitySettingsBinding.tvEnable.typeface = AppHelper.getTypeFace(this)
+        activitySettingsBinding.tvNewLine.typeface = AppHelper.getTypeFace(this)
+        activitySettingsBinding.tvToolBarTitle.typeface = AppHelper.getTypeFace(this)
     }
 
     fun back(v: View) {

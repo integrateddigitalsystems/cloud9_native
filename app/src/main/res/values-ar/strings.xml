@@ -66,4 +66,8 @@
     <string name="sessions">التقارير</string>
     <string name="no_data">لا يوجد معلومات</string>
     <string name="check_internet_connection">الرجاء التحقق من اتصال الانترنت الخاص بك</string>
+    <string name="select_language">اختيار اللغة</string>
+    <string name="new_scan">بحث جديد</string>
+    <string name="ar">Ar</string>
+    <string name="en">En</string>
 </resources>

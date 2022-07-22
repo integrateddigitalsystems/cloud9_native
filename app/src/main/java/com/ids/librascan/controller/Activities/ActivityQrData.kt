@@ -87,6 +87,10 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
             activityQrDataBinding.tvNameSession.text = MyApplication.sessionName
         }
 
+        activityQrDataBinding.tvBarcode.typeface = AppHelper.getTypeFace(this)
+        activityQrDataBinding.ivClear.setOnClickListener {
+            activityQrDataBinding.tvBarcode.setText("")
+        }
      }
 
 

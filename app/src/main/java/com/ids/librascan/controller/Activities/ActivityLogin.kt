@@ -1,6 +1,7 @@
 package com.ids.librascan.controller.Activities
 
 import Base.ActivityCompactBase
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -23,12 +24,8 @@ import com.ids.librascan.apis.RetrofitClient
 import com.ids.librascan.apis.RetrofitInterface
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityLoginBinding
-import com.ids.librascan.db.QrCodeDatabase
-import com.ids.librascan.db.Warehouse
-import com.ids.librascan.model.ResponseGetWareHouse
 import com.ids.librascan.model.ResponseLogin
 import com.ids.librascan.utils.AppHelper
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -47,6 +44,7 @@ class ActivityLogin : ActivityCompactBase() {
         init()
     }
 
+    @SuppressLint("ResourceAsColor")
     private fun init() {
         AppHelper.setAllTexts(activityLoginBinding.rootLogin, this)
         configureGoogleSignIn()
@@ -66,16 +64,23 @@ class ActivityLogin : ActivityCompactBase() {
                     signInGoogle()
                 }
             }
-        activityLoginBinding.btChangeLanguage.setOnClickListener {
-            if (MyApplication.languageCode.equals(AppConstants.LANG_ENGLISH)) {
-                AppHelper.changeLanguage(this, "ar")
-                startActivity(Intent(this@ActivityLogin, ActivityLogin::class.java))
-                finish()
-            } else {
+        activityLoginBinding.btEn.setOnClickListener {
                 AppHelper.changeLanguage(this, "en")
                 startActivity(Intent(this@ActivityLogin, ActivityLogin::class.java))
                 finish()
-            }
+
+        }
+        activityLoginBinding.btAr.setOnClickListener {
+                AppHelper.changeLanguage(this, "ar")
+                startActivity(Intent(this@ActivityLogin, ActivityLogin::class.java))
+                finish()
+        }
+
+        if (MyApplication.languageCode ==AppConstants.LANG_ENGLISH){
+            activityLoginBinding.btEn.background = ContextCompat.getDrawable(this@ActivityLogin, R.drawable.rounded)
+        }
+        else{
+            activityLoginBinding.btAr.background = ContextCompat.getDrawable(this@ActivityLogin, R.drawable.rounded)
         }
     }
 

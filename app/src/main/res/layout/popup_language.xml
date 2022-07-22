@@ -10,9 +10,11 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:layout_marginTop="@dimen/small_margin"
-       android:text="@string/change_language"
-       android:tag="change_language"
+       android:text="@string/select_language"
        android:textSize="@dimen/size_20"
+       android:layout_gravity="center"
+       android:gravity="center"
+       android:tag="select_language"
        android:textStyle="bold"
        android:layout_marginStart="@dimen/small_margin"
        android:layout_marginEnd="@dimen/small_margin"
@@ -25,20 +27,12 @@
         android:id="@+id/llLanguage"
         android:background="@color/white"
         android:minHeight="@dimen/item_height"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:orientation="horizontal"
         android:paddingStart="@dimen/huge_margin"
         android:paddingEnd="@dimen/huge_margin">
 
-
-        <com.ids.librascan.custom.CustomTextViewMedium
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:layout_weight="1"
-            android:tag="language"
-            android:text="@string/language"
-            android:textColor="@color/gray_bg"
-            android:textSize="@dimen/header_font" />
 
         <RadioGroup
             android:id="@+id/rgLanguage"

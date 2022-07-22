@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_marginTop="@dimen/size_20"
-    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/llBackButton"
         android:layout_width="wrap_content"
         android:layout_marginStart="@dimen/margin_start_end"
-        android:layout_height="match_parent"
-        android:gravity="start|center_vertical">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/btBackTool"
@@ -21,27 +16,7 @@
             android:onClick="back"
             android:tint="@color/white" />
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_marginEnd="@dimen/margin_30"
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        android:gravity="start"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.ids.librascan.custom.CustomTextViewBold
-            android:id="@+id/tvToolBarTitle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:maxLines="1"
-            android:tag="settings"
-            android:text="@string/settings"
-            android:textColor="@color/white"
-            android:textSize="18sp"/>
-
-    </LinearLayout>
 
 </LinearLayout>
 </layout>

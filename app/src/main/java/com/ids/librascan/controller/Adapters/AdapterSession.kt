@@ -13,6 +13,7 @@ import com.ids.librascan.databinding.ItemQrDataBinding
 import com.ids.librascan.databinding.ItemSessionBinding
 import com.ids.librascan.db.QrCode
 import com.ids.librascan.db.Sessions
+import utils.show
 import java.util.*
 
 class AdapterSession(private var items:ArrayList<Sessions>, private val itemClickListener: RVOnItemClickListener) : RecyclerView.Adapter<AdapterSession.MyViewHolder>(){
@@ -37,7 +38,9 @@ class AdapterSession(private var items:ArrayList<Sessions>, private val itemClic
             holder.itemSessionBinding.swipe.addDrag(SwipeLayout.DragEdge.Left,holder.itemSessionBinding.llSwipe)
             holder.itemSessionBinding.swipe.isRightSwipeEnabled = false
         }
-
+            if (MyApplication.showSync){
+                holder.itemSessionBinding.llSync.show()
+            }
     }
     override fun getItemCount(): Int {
         return items.size
@@ -49,10 +52,11 @@ class AdapterSession(private var items:ArrayList<Sessions>, private val itemClic
             itemSessionBinding.llSync.setOnClickListener(this)
             itemSessionBinding.llScan.setOnClickListener(this)
             itemSessionBinding.tVDelete.setOnClickListener(this)
+            itemSessionBinding.llItem.setOnClickListener(this)
 
         }
         override fun onClick(v: View) {
-            itemClickListener.onItemClicked(v, layoutPosition)
+           itemClickListener.onItemClicked(v, layoutPosition)
         }
     }
 

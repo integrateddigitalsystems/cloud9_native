@@ -17,4 +17,6 @@
     <color name="gray_bg1">#33999999</color>
     <color name="red">#e26969</color>
     <color name="gray_border">#757579</color>
+    <color name="new_night_blue">#262046</color>
+    <color name="new_yellow">#d6e237</color>
 </resources>

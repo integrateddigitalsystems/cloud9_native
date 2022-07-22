@@ -6,14 +6,22 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Spannable
+import android.text.SpannableString
 import android.util.SparseArray
+import android.view.Gravity
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.CompoundButton
@@ -38,7 +46,9 @@ import com.ids.librascan.controller.Adapters.OnInsertUpdate.OnInsertUpdate
 import com.ids.librascan.controller.Adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.librascan.controller.Adapters.WarehouseSpinnerAdapter
 import com.ids.librascan.controller.MyApplication
+import com.ids.librascan.custom.CustomTypeFaceSpan
 import com.ids.librascan.databinding.ActivitySessionsBinding
+import com.ids.librascan.databinding.ItemDialogBinding
 import com.ids.librascan.databinding.PopupLanguageBinding
 import com.ids.librascan.databinding.PopupSessionBinding
 import com.ids.librascan.db.*
@@ -49,10 +59,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import utils.hide
-import utils.show
-import utils.toast
-import utils.wtf
+import utils.*
 import java.util.*
 
 
@@ -70,6 +77,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     lateinit var barcodeReader: BarcodeReader
     private var db: FirebaseFirestore? = null
     var arrayQrcode = ArrayList<QrCode>()
+
     lateinit var mGoogleSignInClient: GoogleSignInClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,8 +85,11 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         setContentView(activitySessionsBinding.root)
         popupSessionBinding = PopupSessionBinding.inflate(layoutInflater)
         init()
+
     }
+    @SuppressLint("ResourceType")
     fun init(){
+
         db = FirebaseFirestore.getInstance()
         addWarehouse()
         AppHelper.setAllTexts(activitySessionsBinding.rootSessions, this)
@@ -110,7 +121,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             popupMenu.setOnMenuItemClickListener { item->
                 when(item.itemId){
                     R.id.action_logout ->{
-                        createDialogLogout()
+                       createDialogLogout()
                         true
                     }
                     R.id.action_language ->{
@@ -126,16 +137,38 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             }
             popupMenu.inflate(R.menu.menu)
             popupMenu.show()
+            val menu: Menu = popupMenu.menu
+            for (i in 0 until menu.size()) {
+                val mi: MenuItem = menu.getItem(i)
+                applyFontToMenuItem(mi)
+            }
+
         }
 
         launch {
                 arrayQrcode.clear()
                 arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
-                if (arrayQrcode.isNotEmpty()) activitySessionsBinding.llSync.show()
+                if (arrayQrcode.isNotEmpty()){
+                    activitySessionsBinding.llSync.show()
+
+                }
             }
+
+
     }
     fun back(v: View) {
         onBackPressed()
+    }
+    private fun applyFontToMenuItem(mi: MenuItem) {
+        val font = Typeface.createFromAsset(this.assets, "fonts/HelveticaNeueLTArabic-Bold.ttf")
+        val mNewTitle = SpannableString(mi.title)
+        mNewTitle.setSpan(
+            CustomTypeFaceSpan("", font, Color.BLACK),
+            0,
+            mNewTitle.length,
+            Spannable.SPAN_INCLUSIVE_INCLUSIVE
+        )
+        mi.title = mNewTitle
     }
 
     private fun showAddSessionAlertDialog() {
@@ -166,6 +199,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 }
         }
 
+        popupSessionBinding.tvName.typeface = AppHelper.getTypeFace(this)
         popupSessionBinding.tvInsert.setOnClickListener {
             insertSession(this)
         }
@@ -177,6 +211,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         }
         builder.setView(popupSessionBinding.root)
         sessionAlertDialog = builder.create()
+        sessionAlertDialog.setCanceledOnTouchOutside(false)
         try {
             sessionAlertDialog.show()
             sessionAlertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -191,7 +226,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         if (popupSessionBinding.tvName.text.toString()!="" && popupSessionBinding.spWarehouse.isNotEmpty() && popupSessionBinding.tvDescription.text.toString()!="" && popupSessionBinding.tvDate.text.toString()!=""){
             launch {
                 var sessions = Sessions()
-                sessions = QrCodeDatabase(application).getSessions().getSession(selectedWarehouse.name)
+                sessions = QrCodeDatabase(application).getSessions().getSession(selectedWarehouse.name,popupSessionBinding.tvDate.text.toString())
                 if (sessions!=null){
                    AppHelper.createDialogPositive(this@ActivitySessions,AppHelper.getRemoteString("warehouse_session_exist",this@ActivitySessions))
                 }
@@ -240,7 +275,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             Calendar.getInstance()[Calendar.MONTH],
             Calendar.getInstance()[Calendar.DAY_OF_MONTH]
         )
-        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000)
+        datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
         datePickerDialog.show()
     }
 
@@ -274,11 +309,10 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             else showAddBarcodeAlertDialog(this, false, QrCode(), this,true,arrSession[position])
             activitySessionsBinding.tvNameSession.text = arrSession[position].sessionName
         }
-        else{
             if (view.id == R.id.llSync){
                 createDialSync(AppHelper.getRemoteString("sync_data",this),position)
             }
-            else if (view.id == R.id.tVDelete){
+            if (view.id == R.id.tVDelete){
                 launch {
                     QrCodeDatabase(application).getCodeDao().deleteCode(arrSession[position].id)
                     QrCodeDatabase(application).getSessions().deleteSession(arrSession[position].id)
@@ -286,13 +320,14 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                     adapterSession.notifyDataSetChanged()
                 }
             }
-            else{
-                startActivity(Intent(this@ActivitySessions, ActivityQrData::class.java))
-                MyApplication.sessionId = arrSession[position].id
-                MyApplication.sessionName = arrSession[position].sessionName
-                finish()
-            }
-        }
+                if (view.id == R.id.llItem){
+                    startActivity(Intent(this@ActivitySessions, ActivityQrData::class.java))
+                    MyApplication.sessionId = arrSession[position].id
+                    MyApplication.sessionName = arrSession[position].sessionName
+                    finish()
+                }
+
+
     }
 
     override fun onInsertUpdate(boolean: Boolean) {
@@ -336,6 +371,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     fun addAllDataToFirestore(){
         launch {
             val arrayQrcode = ArrayList<QrCode>()
+            val arraySession = ArrayList<QrCode>()
             val docData: MutableMap<String, Any> = HashMap()
             arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
             if (arrayQrcode.isNotEmpty()){
@@ -409,11 +445,13 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             if (MyApplication.enableInsert && !MyApplication.enableNewLine){
                 insertScanAuto(QrCode(value,0,1,MyApplication.sessionId), this,this)
                 activitySessionsBinding.llSync.show()
+                MyApplication.showSync = true
             }
 
             else  if (MyApplication.enableInsert && MyApplication.enableNewLine){
                 insertScan(QrCode(value,0,1,MyApplication.sessionId),this,this)
                 activitySessionsBinding.llSync.show()
+                MyApplication.showSync = true
             }
             else{
                 barcodeAlertDialog.show()
@@ -504,7 +542,9 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             }
         val alert = builder.create()
         alert.show()
+        alert.setCanceledOnTouchOutside(false)
     }
+
 
     private fun createDialogLanguage(){
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
@@ -520,6 +560,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
 
         languageAlertDialog = builder.create()
         languageAlertDialog.show()
+        languageAlertDialog.setCanceledOnTouchOutside(false)
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
@@ -532,7 +573,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 }
             }
             buttonView.id == R.id.rbEnglish -> {
-
                 if (isChecked) {
                     AppHelper.changeLanguage(this,"en")
                     startActivity(Intent(this@ActivitySessions, ActivitySessions::class.java))
