@@ -134,13 +134,10 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             popupBarcodeBinding.tvInsertClose.setOnClickListener {
                 isShow =false
                 insertAndClose(c,qrCode)
-                if (!MyApplication.isScan) activitySessionsBinding.llSync.show()
-
             }
             popupBarcodeBinding.tvInsert.setOnClickListener {
                 isShow =true
                 insertAndClose(c,qrCode)
-                if (!MyApplication.isScan) activitySessionsBinding.llSync.show()
             }
 
             isUpdateChecked(isUpdate,qrCode)
@@ -190,20 +187,14 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
                     var qrCode = QrCode()
                     qrCode = QrCodeDatabase(application).getCodeDao().getCode(popupBarcodeBinding.tvCode.text.toString(),selectedSession.id)
                     if (qrCode!=null){
-                        if(!MyApplication.enableInsert && !MyApplication.enableNewLine){
-                            insertCode(qrCode)
-                        }
-                        else{
-                            if (!MyApplication.enableInsert && MyApplication.enableNewLine){
-                                insertCodeNew()
-                            }
-                        }
+                        if(!MyApplication.enableInsert && !MyApplication.enableNewLine) insertCode(qrCode)
+                        else if (!MyApplication.enableInsert && MyApplication.enableNewLine) insertCodeNew()
                         toast(getRemoteString("item_save", c))
                     }
                     else insertCodeNew()
                     toast(getRemoteString("item_save", c))
                     if (!isShow) barcodeAlertDialog.cancel()
-
+                    if (!MyApplication.isScan) activitySessionsBinding.llSync.show()
                 //Update QrCode
                 }else updateQrcode(c,qrCode)
 
