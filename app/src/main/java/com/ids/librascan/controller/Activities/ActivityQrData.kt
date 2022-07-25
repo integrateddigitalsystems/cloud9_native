@@ -53,7 +53,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
          }
          activityQrDataBinding.loading.show()
          launch {
-             arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getCode(MyApplication.sessionId))
+             arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getCodes(MyApplication.sessionId))
              if (arrQrCode.isEmpty()){
                  activityQrDataBinding.tvNodata.show()
                  activityQrDataBinding.ivScan.hide()
@@ -137,6 +137,8 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteQrData(position: Int){
         launch {
+                arrFilter.clear()
+                arrFilter.addAll(QrCodeDatabase(application).getCodeDao().getCodes(MyApplication.sessionId))
                 QrCodeDatabase(application).getCodeDao().deleteCode(arrFilter[position].id)
                 arrQrCode.remove(arrFilter[position])
                 adapterQrCode.notifyDataSetChanged()
@@ -150,7 +152,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
             with(activityQrDataBinding) { tvBarcode.setText("") }
               arrQrCode.clear()
               arrFilter.clear()
-              arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getCode(MyApplication.sessionId))
+              arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getCodes(MyApplication.sessionId))
               arrFilter.addAll(arrQrCode)
               activityQrDataBinding.tvNodata.hide()
               adapterQrCode.notifyDataSetChanged()

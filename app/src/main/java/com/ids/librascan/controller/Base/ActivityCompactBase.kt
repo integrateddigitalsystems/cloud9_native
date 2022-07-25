@@ -343,8 +343,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         onInsertUpdate=onInsUpdate
         launch {
             var qrCodeScan = QrCode()
-            qrCodeScan = QrCodeDatabase(application).getCodeDao()
-                .getCode(qrCode.code, qrCode.sessionId)
+            qrCodeScan = QrCodeDatabase(application).getCodeDao().getCode(qrCode.code, qrCode.sessionId)
             if (qrCodeScan != null) {
                 QrCodeDatabase(application).getCodeDao().updateCode(qrCodeScan.quantity+1,qrCodeScan.id)
                 QrCodeDatabase(application).getSessions().updateCount(1,qrCode.sessionId)
@@ -364,7 +363,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     fun insertScan(qrCode: QrCode,activity: Activity,onInsUpdate: OnInsertUpdate){
         onInsertUpdate=onInsUpdate
         launch {
-            QrCodeDatabase(application).getCodeDao().insertCode(QrCode(qrCode.code,0,qrCode.quantity,qrCode.sessionId))
+            QrCodeDatabase(application).getCodeDao().insertCode(qrCode)
             QrCodeDatabase(application).getSessions().updateCount(1,qrCode.sessionId)
             onInsertUpdate.onInsertUpdate(true)
             toast(getRemoteString("item_save", activity))

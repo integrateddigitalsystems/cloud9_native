@@ -100,7 +100,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         activitySessionsBinding.loading.show()
         launch {
             val  array=ArrayList<QrCode>()
-            array.addAll(QrCodeDatabase(application).getCodeDao().getCode(MyApplication.sessionId))
+            array.addAll(QrCodeDatabase(application).getCodeDao().getCodes(MyApplication.sessionId))
             if (array.isEmpty()) {
 
                 QrCodeDatabase(application).getSessions().updateCount(0, MyApplication.sessionId)
@@ -326,7 +326,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         launch {
             val arrayQrcode = ArrayList<QrCode>()
             val docData: MutableMap<String, Any> = HashMap()
-            arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getCode(arrSession[position].id))
+            arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getCodes(arrSession[position].id))
             if (arrayQrcode.isNotEmpty()){
                 activitySessionsBinding.loadingData.show()
                 docData.put("QrCode", arrayQrcode)
@@ -342,7 +342,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 Handler(Looper.getMainLooper()).postDelayed({
                     activitySessionsBinding.loadingData.hide()
                 }, 500)
-                QrCodeDatabase(application).getCodeDao().deleteCode(arrSession[position].id)
+                QrCodeDatabase(application).getCodeDao().deleteCodes(arrSession[position].id)
                 QrCodeDatabase(application).getSessions().deleteSession(arrSession[position].id)
                 arrSession.remove(arrSession[position])
                 adapterSession.notifyDataSetChanged()
@@ -380,11 +380,11 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 for (item in arrSession.indices) {
                     array.clear()
                     array.addAll(
-                        QrCodeDatabase(application).getCodeDao().getCode(arrSession[item].id)
+                        QrCodeDatabase(application).getCodeDao().getCodes(arrSession[item].id)
                     )
                     if (array.isNotEmpty()) {
                         QrCodeDatabase(application).getSessions().deleteSession(arrSession[item].id)
-                        QrCodeDatabase(application).getCodeDao().deleteCode(arrSession[item].id)
+                        QrCodeDatabase(application).getCodeDao().deleteCodes(arrSession[item].id)
                     }
                 }
                 arrSession.clear()
@@ -633,7 +633,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
 
     fun deleteSession(position: Int){
         launch {
-            QrCodeDatabase(application).getCodeDao().deleteCode(arrSession[position].id)
+            QrCodeDatabase(application).getCodeDao().deleteCodes(arrSession[position].id)
             QrCodeDatabase(application).getSessions().deleteSession(arrSession[position].id)
             arrSession.remove(arrSession[position])
             adapterSession.notifyDataSetChanged()
