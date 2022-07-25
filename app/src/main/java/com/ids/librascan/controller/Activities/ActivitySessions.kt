@@ -322,8 +322,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                     MyApplication.sessionName = arrSession[position].sessionName
                     finish()
                 }
-
-
     }
 
     override fun onInsertUpdate(boolean: Boolean) {
@@ -369,8 +367,9 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             val arrayQrcode = ArrayList<QrCode>()
             val array = ArrayList<QrCode>()
             val docData: MutableMap<String, Any> = HashMap()
-          arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
-            activitySessionsBinding.loadingData.show()
+            arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
+            if (arrayQrcode.isNotEmpty()) {
+                activitySessionsBinding.loadingData.show()
                 docData.put("QrCode", arrayQrcode)
                 db!!.collection("Data")
                     .add(docData)
@@ -384,20 +383,27 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 Handler(Looper.getMainLooper()).postDelayed({
                     activitySessionsBinding.loadingData.hide()
                 }, 500)
-            for (item in arrSession.indices) {
-                array.clear()
-                array.addAll(QrCodeDatabase(application).getCodeDao().getCode(arrSession[item].id))
-                if (array.isNotEmpty()) {
-                    QrCodeDatabase(application).getSessions().deleteSession(arrSession[item].id)
-                    QrCodeDatabase(application).getCodeDao().deleteCode(arrSession[item].id)
+                for (item in arrSession.indices) {
+                    array.clear()
+                    array.addAll(
+                        QrCodeDatabase(application).getCodeDao().getCode(arrSession[item].id)
+                    )
+                    if (array.isNotEmpty()) {
+                        QrCodeDatabase(application).getSessions().deleteSession(arrSession[item].id)
+                        QrCodeDatabase(application).getCodeDao().deleteCode(arrSession[item].id)
+                    }
                 }
+                arrSession.clear()
+                arrSession.addAll(QrCodeDatabase(application).getSessions().getSessions())
+                adapterSession.notifyDataSetChanged()
+                activitySessionsBinding.llSync.hide()
             }
-            arrSession.clear()
-            arrSession.addAll(QrCodeDatabase(application).getSessions().getSessions())
-            setData()
-            adapterSession.notifyDataSetChanged()
-            activitySessionsBinding.llSync.hide()
+            else{
+                toast(AppHelper.getRemoteString("added_faild",this@ActivitySessions))
+                activitySessionsBinding.loadingData.hide()
+            }
         }
+
     }
 
     fun checkCameraPermissions(view: View) {
@@ -441,13 +447,13 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             if (MyApplication.enableInsert && !MyApplication.enableNewLine){
                 insertScanAuto(QrCode(value,0,1,MyApplication.sessionId), this,this)
                 activitySessionsBinding.llSync.show()
-                MyApplication.showSync = true
+
             }
 
             else  if (MyApplication.enableInsert && MyApplication.enableNewLine){
                 insertScan(QrCode(value,0,1,MyApplication.sessionId),this,this)
                 activitySessionsBinding.llSync.show()
-                MyApplication.showSync = true
+
             }
             else{
                 barcodeAlertDialog.show()

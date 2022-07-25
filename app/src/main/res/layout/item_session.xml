@@ -112,7 +112,6 @@
                         android:layout_height="@dimen/size_30"
                         android:layout_marginStart="@dimen/small_margin"
                         android:layout_marginEnd="@dimen/small_margin"
-                        android:visibility="visible"
                         android:background="@drawable/rounded_primary_layout"
                         android:gravity="center">
 

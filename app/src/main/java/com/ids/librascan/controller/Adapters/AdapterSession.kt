@@ -38,9 +38,7 @@ class AdapterSession(private var items:ArrayList<Sessions>, private val itemClic
             holder.itemSessionBinding.swipe.addDrag(SwipeLayout.DragEdge.Left,holder.itemSessionBinding.llSwipe)
             holder.itemSessionBinding.swipe.isRightSwipeEnabled = false
         }
-            if (MyApplication.showSync){
-                holder.itemSessionBinding.llSync.show()
-            }
+
     }
     override fun getItemCount(): Int {
         return items.size
