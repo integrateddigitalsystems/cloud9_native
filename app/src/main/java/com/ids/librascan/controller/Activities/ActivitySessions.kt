@@ -140,17 +140,13 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             }
 
         }
-
         launch {
                 arrayQrcode.clear()
                 arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
                 if (arrayQrcode.isNotEmpty()){
                     activitySessionsBinding.llSync.show()
-
                 }
             }
-
-
     }
     fun back(v: View) {
         onBackPressed()
@@ -182,7 +178,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 object : AdapterView.OnItemSelectedListener {
                     override fun onNothingSelected(parent: AdapterView<*>?) {
                     }
-
                     override fun onItemSelected(
                         parent: AdapterView<*>?,
                         view: View?,
@@ -214,9 +209,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         } catch (e: Exception) {
 
         }
-
     }
-
     @SuppressLint("NotifyDataSetChanged")
     fun insertSession(c:Activity){
         if (popupSessionBinding.tvName.text.toString()!="" && popupSessionBinding.spWarehouse.isNotEmpty() && popupSessionBinding.tvDescription.text.toString()!="" && popupSessionBinding.tvDate.text.toString()!=""){
@@ -248,19 +241,10 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
 
     private fun checkValid(c: Activity){
         when {
-            popupSessionBinding.tvName.text.toString() == "" -> AppHelper.createDialogPositive(c,
-                AppHelper.getRemoteString("error_filled_session_name", this)
-            )
-            popupSessionBinding.spWarehouse.isEmpty()-> AppHelper.createDialogPositive(c,
-                AppHelper.getRemoteString("error_filled_warehouse", this)
-            )
-            popupSessionBinding.tvDate.text.toString() == "" -> AppHelper.createDialogPositive(c,
-                AppHelper.getRemoteString("error_filled_date", this)
-            )
-            popupSessionBinding.tvDescription.text.toString() == "" -> AppHelper.createDialogPositive(c,
-                AppHelper.getRemoteString("error_filled_description", this)
-            )
-
+            popupSessionBinding.tvName.text.toString() == "" -> AppHelper.createDialogPositive(c,AppHelper.getRemoteString("error_filled_session_name", this))
+            popupSessionBinding.spWarehouse.isEmpty()-> AppHelper.createDialogPositive(c,AppHelper.getRemoteString("error_filled_warehouse", this))
+            popupSessionBinding.tvDate.text.toString() == "" -> AppHelper.createDialogPositive(c, AppHelper.getRemoteString("error_filled_date", this))
+            popupSessionBinding.tvDescription.text.toString() == "" -> AppHelper.createDialogPositive(c, AppHelper.getRemoteString("error_filled_description", this))
         }
     }
     fun datePickerDialog() {
@@ -327,6 +311,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     override fun onInsertUpdate(boolean: Boolean) {
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addDataToFirestore(position: Int){
         launch {
             val arrayQrcode = ArrayList<QrCode>()
@@ -351,7 +336,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 QrCodeDatabase(application).getSessions().deleteSession(arrSession[position].id)
                 arrSession.remove(arrSession[position])
                 adapterSession.notifyDataSetChanged()
-
             }
             else{
                 toast(AppHelper.getRemoteString("added_faild",this@ActivitySessions))
@@ -403,7 +387,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 activitySessionsBinding.loadingData.hide()
             }
         }
-
     }
 
     fun checkCameraPermissions(view: View) {
