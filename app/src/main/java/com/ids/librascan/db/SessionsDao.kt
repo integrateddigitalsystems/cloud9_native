@@ -22,4 +22,6 @@ interface SessionsDao {
     @Query("DELETE FROM sessions_table ")
     suspend fun deleteAllSession()
 
+    @Query("UPDATE sessions_table SET count=:count WHERE id=:id")
+    suspend fun updateCount(count : Int?,id : Int?)
 }

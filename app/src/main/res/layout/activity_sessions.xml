@@ -189,13 +189,14 @@
             android:layout_marginTop="@dimen/big_margin"
             android:gravity="center">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rVSessions"
-            android:paddingStart="@dimen/normal_margin_padding"
-            android:paddingEnd="@dimen/normal_margin_padding"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="500dp"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rVSessions"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_500"
+                android:layout_marginTop="@dimen/small_margin_padding"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/normal_margin_padding"
+                android:paddingEnd="@dimen/normal_margin_padding" />
 
             <com.ids.librascan.custom.CustomTextViewMedium
                 android:layout_width="match_parent"

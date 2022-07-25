@@ -57,6 +57,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import utils.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertUpdate,
@@ -98,6 +99,12 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         }
         activitySessionsBinding.loading.show()
         launch {
+            val  array=ArrayList<QrCode>()
+            array.addAll(QrCodeDatabase(application).getCodeDao().getCode(MyApplication.sessionId))
+            if (array.isEmpty()) {
+
+                QrCodeDatabase(application).getSessions().updateCount(0, MyApplication.sessionId)
+            }
             arrSession.addAll(QrCodeDatabase(application).getSessions().getSessions())
             if (arrSession.isEmpty())
                 activitySessionsBinding.tvNodata.show()
@@ -146,6 +153,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 if (arrayQrcode.isNotEmpty()){
                     activitySessionsBinding.llSync.show()
                 }
+
             }
     }
     fun back(v: View) {
@@ -275,6 +283,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         activitySessionsBinding.rVSessions.adapter = adapterSession
     }
 
+
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.llScan){
@@ -286,19 +295,14 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             else if (MyApplication.enableInsert && MyApplication.enableNewLine)
                 activitySessionsBinding.btShowScan.performClick()
 
-            else showAddBarcodeAlertDialog(this, false, QrCode(), this,true,arrSession[position])
+            else showAddBarcodeAlertDialog(this, false, QrCode(), this,true,arrSession[position],MyApplication.sessionId)
             activitySessionsBinding.tvNameSession.text = arrSession[position].sessionName
         }
             if (view.id == R.id.llSync){
                 createDialSync(AppHelper.getRemoteString("sync_data",this),position)
             }
             if (view.id == R.id.tVDelete){
-                launch {
-                    QrCodeDatabase(application).getCodeDao().deleteCode(arrSession[position].id)
-                    QrCodeDatabase(application).getSessions().deleteSession(arrSession[position].id)
-                    arrSession.remove(arrSession[position])
-                    adapterSession.notifyDataSetChanged()
-                }
+                createDialogDelete(position)
             }
                 if (view.id == R.id.llItem){
                     startActivity(Intent(this@ActivitySessions, ActivityQrData::class.java))
@@ -308,7 +312,13 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onInsertUpdate(boolean: Boolean) {
+        launch {
+            arrSession.clear()
+            arrSession.addAll(QrCodeDatabase(application).getSessions().getSessions())
+            adapterSession.notifyDataSetChanged()
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -430,7 +440,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             if (MyApplication.enableInsert && !MyApplication.enableNewLine){
                 insertScanAuto(QrCode(value,0,1,MyApplication.sessionId), this,this)
                 activitySessionsBinding.llSync.show()
-
             }
 
             else  if (MyApplication.enableInsert && MyApplication.enableNewLine){
@@ -603,6 +612,32 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
 
                 }
             })
+    }
+
+    private fun createDialogDelete(position: Int) {
+        val builder = android.app.AlertDialog.Builder(this)
+            .setMessage(AppHelper.getRemoteString("delete_message_session",this))
+            .setCancelable(true)
+            .setPositiveButton(AppHelper.getRemoteString("yes",this))
+            { dialog, _ ->
+                deleteSession(position)
+                dialog.cancel()
+            }
+            .setNegativeButton(AppHelper.getRemoteString("no",this))
+            { dialog, _ ->
+                dialog.cancel()
+            }
+        val alert = builder.create()
+        alert.show()
+    }
+
+    fun deleteSession(position: Int){
+        launch {
+            QrCodeDatabase(application).getCodeDao().deleteCode(arrSession[position].id)
+            QrCodeDatabase(application).getSessions().deleteSession(arrSession[position].id)
+            arrSession.remove(arrSession[position])
+            adapterSession.notifyDataSetChanged()
+        }
     }
 
 }

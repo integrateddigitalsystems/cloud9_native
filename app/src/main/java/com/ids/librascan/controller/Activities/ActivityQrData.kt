@@ -34,7 +34,6 @@ import java.util.*
 
 class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeReader.BarcodeReaderListener ,
     OnInsertUpdate{
-    lateinit var activityQrDataBinding: ActivityQrDataBinding
     private lateinit var adapterQrCode: AdapterQrCode
     private var arrQrCode = ArrayList<QrCode>()
     private var arrFilter = ArrayList<QrCode>()
@@ -55,9 +54,15 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
          activityQrDataBinding.loading.show()
          launch {
              arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getCode(MyApplication.sessionId))
-             if (arrQrCode.isEmpty())
+             if (arrQrCode.isEmpty()){
                  activityQrDataBinding.tvNodata.show()
-             else  activityQrDataBinding.tvNodata.hide()
+                 activityQrDataBinding.ivScan.hide()
+                // QrCodeDatabase(application).getSessions().updateCount(0,MyApplication.sessionId)
+             }
+             else{
+                 activityQrDataBinding.tvNodata.hide()
+                 activityQrDataBinding.ivScan.show()
+             }
              activityQrDataBinding.loading.hide()
              setData()
          }
@@ -71,7 +76,12 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
              }
 
              override fun afterTextChanged(editable: Editable) {
+                 if (editable.toString() ==""){
+                     activityQrDataBinding.ivClear.hide()
+                 }
+                 else  activityQrDataBinding.ivClear.show()
                  filter(editable.toString())
+
              }
          })
 
@@ -82,7 +92,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
             else if (MyApplication.enableInsert && MyApplication.enableNewLine)
                 activityQrDataBinding.btShowScan.performClick()
             else{
-                showAddBarcodeAlertDialog(this, false, QrCode(), this,true,Sessions())
+                showAddBarcodeAlertDialog(this, false, QrCode(), this,true,Sessions(),MyApplication.sessionId)
             }
             activityQrDataBinding.tvNameSession.text = MyApplication.sessionName
         }
@@ -119,7 +129,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
             createDialogDelete(position)
         else if (view.id == R.id.tVUpdate) {
             MyApplication.isScan = true
-            showAddBarcodeAlertDialog(this, true, arrFilter[position], this,false, Sessions())
+            showAddBarcodeAlertDialog(this, true, arrFilter[position], this,false, Sessions(),MyApplication.sessionId)
             adapterQrCode.notifyDataSetChanged()
         }
     }
@@ -127,7 +137,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteQrData(position: Int){
         launch {
-                QrCodeDatabase(application).getCodeDao().deleteCode(arrFilter[position].sessionId)
+                QrCodeDatabase(application).getCodeDao().deleteCode(arrFilter[position].id)
                 arrQrCode.remove(arrFilter[position])
                 adapterQrCode.notifyDataSetChanged()
                 activityQrDataBinding.tvBarcode.setText("")
@@ -209,10 +219,12 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
             if (MyApplication.isScan){
                 if (MyApplication.enableInsert && !MyApplication.enableNewLine){
                     insertScanAuto(QrCode(value,0,1,MyApplication.sessionId), this,this)
+                    activityQrDataBinding.ivScan.show()
                 }
 
                 else  if (MyApplication.enableInsert && MyApplication.enableNewLine){
                     insertScan(QrCode(value,0,1,MyApplication.sessionId),this,this)
+                    activityQrDataBinding.ivScan.show()
                 }
                 else{
                     barcodeAlertDialog.show()
@@ -243,9 +255,12 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         if (activityQrDataBinding.rlBarcode.visibility == View.VISIBLE) {
             barcodeReader.pauseScanning()
             activityQrDataBinding.rlBarcode.hide()
-        } else {
-            super.onBackPressed()
         }
+        else{
+            startActivity(Intent(this@ActivityQrData, ActivitySessions::class.java))
+            finish()
+        }
+
      }
 
 

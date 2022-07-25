@@ -29,7 +29,7 @@ interface QrCodeDao {
     @Query("DELETE FROM codeScan_table")
     suspend fun deleteAllCode()
 
-    @Query("DELETE  FROM codeScan_table WHERE sessionId=:sessionId ")
+    @Query("DELETE  FROM codeScan_table WHERE id=:sessionId ")
     suspend fun deleteCode(sessionId:Int?)
 
 

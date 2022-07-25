@@ -73,6 +73,7 @@ class MyApplication : Application() {
 
     }
 
+
     override fun onCreate() {
         super.onCreate()
         sharedPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(applicationContext)

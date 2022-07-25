@@ -52,33 +52,7 @@
             app:tint="@color/white"
             tools:ignore="UseAppTint" />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_gravity="end|center"
-        android:gravity="end|center"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp">
 
-        <LinearLayout
-            android:id="@+id/llScan"
-            android:layout_width="@dimen/size_image_60"
-            android:layout_gravity="center"
-            android:layout_height="@dimen/size_30"
-            android:background="@drawable/rounded_primary_layout"
-            android:gravity="center">
-            <com.ids.librascan.custom.CustomTextViewBold
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginStart="@dimen/small_margin_padding"
-                android:text="@string/scan"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-
-        </LinearLayout>
-
-    </LinearLayout>
     </LinearLayout>
 
 
@@ -106,19 +80,19 @@
         <RelativeLayout android:layout_width="0dp"
             android:layout_weight="4"
             android:background="@drawable/rounded_gray_edit_text"
-            android:minHeight="@dimen/edit_text_height"
+            android:minHeight="@dimen/size_30"
             android:layout_height="wrap_content">
 
             <AutoCompleteTextView
                 android:id="@+id/tvBarcode"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/width_250"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
                 android:hint="@string/name_code"
                 android:importantForAutofill="yes"
-                android:maxLines="3"
-                android:minHeight="@dimen/height_40"
+                android:maxLines="1"
+                android:minHeight="@dimen/size_30"
                 android:padding="@dimen/big_margin_padding"
                 android:tag="code"
                 android:textColor="@color/white"
@@ -133,25 +107,26 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                android:id="@+id/ivClear"
-                android:layout_width="@dimen/size_20"
-                android:src="@drawable/icon_clear"
-                android:layout_gravity="end|center"
-                android:layout_height="@dimen/size_20"
-                android:tint="@color/white"
+                    android:id="@+id/ivClear"
+                    android:layout_width="@dimen/size_20"
+                    android:layout_height="@dimen/size_20"
+                    android:layout_gravity="end|center"
+                    android:src="@drawable/icon_clear"
+                    android:tint="@color/white"
+                    android:visibility="gone"
                     tools:ignore="UseAppTint" />
 
 
-            <ImageView
-                android:id="@+id/ivScan"
-                android:layout_width="@dimen/edit_text_height"
-                android:layout_height="@dimen/edit_text_height"
-                android:layout_gravity="end|center"
-                android:layout_marginStart="@dimen/small_margin_padding"
-                android:layout_marginTop="@dimen/small_margin_padding"
-                android:layout_marginEnd="@dimen/small_margin_padding"
-                android:layout_marginBottom="@dimen/small_margin_padding"
-                android:src="@drawable/scan" />
+                <ImageView
+                    android:id="@+id/ivScan"
+                    android:layout_width="@dimen/edit_text_height"
+                    android:layout_height="@dimen/edit_text_height"
+                    android:layout_gravity="end|center"
+                    android:layout_marginStart="@dimen/small_margin_padding"
+                    android:layout_marginTop="@dimen/small_margin_padding"
+                    android:layout_marginEnd="@dimen/small_margin_padding"
+                    android:layout_marginBottom="@dimen/small_margin_padding"
+                    android:src="@drawable/scan" />
 
             </LinearLayout>
 
@@ -162,9 +137,10 @@
         android:layout_marginStart="@dimen/small_margin_padding"
         android:layout_marginEnd="@dimen/small_margin_padding"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/margin_100"
+        android:layout_marginTop="110dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
 
 
     <LinearLayout
@@ -230,16 +206,18 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rVQrData"
-            android:paddingStart="@dimen/normal_margin_padding"
-            android:paddingEnd="@dimen/normal_margin_padding"
-            android:layout_marginTop="@dimen/small_margin_padding"
-            android:orientation="vertical"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rVQrData"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_500"
+                android:layout_marginTop="@dimen/small_margin_padding"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/normal_margin_padding"
+                android:paddingEnd="@dimen/normal_margin_padding" />
 
         <com.ids.librascan.custom.CustomTextViewMedium
             android:layout_width="match_parent"
@@ -253,15 +231,46 @@
             android:textSize="@dimen/size_14"
             android:textColor="@color/white"/>
 
-        <Button
-            android:id="@+id/btShowScan"
-            android:onClick="checkCameraPermissions"
-            android:layout_width="0dp"
-            android:visibility="gone"
-            android:layout_height="0dp"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/margin_big"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp">
+
+                <LinearLayout
+                    android:id="@+id/llScan"
+                    android:layout_width="@dimen/height_100"
+                    android:layout_gravity="center"
+                    android:layout_height="@dimen/height_40"
+                    android:background="@drawable/rounded_primary_layout"
+                    android:gravity="center">
+                    <com.ids.librascan.custom.CustomTextViewBold
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_marginStart="@dimen/small_margin_padding"
+                        android:text="@string/scan"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
     </LinearLayout>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btShowScan"
+        android:onClick="checkCameraPermissions"
+        android:layout_width="0dp"
+        android:visibility="gone"
+        android:layout_height="0dp"/>
     <RelativeLayout
         android:id="@+id/rlBarcode"
         android:visibility="gone"
