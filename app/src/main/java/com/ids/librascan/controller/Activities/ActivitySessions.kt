@@ -6,20 +6,17 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Spannable
 import android.text.SpannableString
 import android.util.SparseArray
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -48,7 +45,6 @@ import com.ids.librascan.controller.Adapters.WarehouseSpinnerAdapter
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.custom.CustomTypeFaceSpan
 import com.ids.librascan.databinding.ActivitySessionsBinding
-import com.ids.librascan.databinding.ItemDialogBinding
 import com.ids.librascan.databinding.PopupLanguageBinding
 import com.ids.librascan.databinding.PopupSessionBinding
 import com.ids.librascan.db.*
@@ -371,16 +367,15 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     fun addAllDataToFirestore(){
         launch {
             val arrayQrcode = ArrayList<QrCode>()
-            val arraySession = ArrayList<QrCode>()
+            val array = ArrayList<QrCode>()
             val docData: MutableMap<String, Any> = HashMap()
-            arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
-            if (arrayQrcode.isNotEmpty()){
-                activitySessionsBinding.loadingData.show()
+          arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
+            activitySessionsBinding.loadingData.show()
                 docData.put("QrCode", arrayQrcode)
                 db!!.collection("Data")
                     .add(docData)
                     .addOnSuccessListener { documentReference ->
-                        toast(AppHelper.getRemoteString("success_added",this@ActivitySessions))
+                        toast(AppHelper.getRemoteString("success_added", this@ActivitySessions))
                         wtf("DocumentSnapshot written with ID: ${documentReference.id}")
                     }
                     .addOnFailureListener { e ->
@@ -389,19 +384,20 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 Handler(Looper.getMainLooper()).postDelayed({
                     activitySessionsBinding.loadingData.hide()
                 }, 500)
-                QrCodeDatabase(application).getCodeDao().deleteAllCode()
-                QrCodeDatabase(application).getSessions().deleteAllSession()
-                arrSession.clear()
-                adapterSession.notifyDataSetChanged()
-                activitySessionsBinding.llSync.hide()
-
+            for (item in arrSession.indices) {
+                array.clear()
+                array.addAll(QrCodeDatabase(application).getCodeDao().getCode(arrSession[item].id))
+                if (array.isNotEmpty()) {
+                    QrCodeDatabase(application).getSessions().deleteSession(arrSession[item].id)
+                    QrCodeDatabase(application).getCodeDao().deleteCode(arrSession[item].id)
+                }
             }
-            else{
-                toast(AppHelper.getRemoteString("added_faild",this@ActivitySessions))
-                activitySessionsBinding.loadingData.hide()
-            }
+            arrSession.clear()
+            arrSession.addAll(QrCodeDatabase(application).getSessions().getSessions())
+            setData()
+            adapterSession.notifyDataSetChanged()
+            activitySessionsBinding.llSync.hide()
         }
-
     }
 
     fun checkCameraPermissions(view: View) {
@@ -557,6 +553,8 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
 
         popupLanguageBinding.rbEnglish.setOnCheckedChangeListener(this)
         popupLanguageBinding.rbArabic.setOnCheckedChangeListener(this)
+        popupLanguageBinding.rbEnglish.typeface =AppHelper.getTypeFace(this)
+        popupLanguageBinding.rbArabic.typeface =AppHelper.getTypeFace(this)
 
         languageAlertDialog = builder.create()
         languageAlertDialog.show()

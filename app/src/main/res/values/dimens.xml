@@ -54,4 +54,5 @@
     <dimen name="height_toggle">25dp</dimen>
     <dimen name="with_80">80dp</dimen>
     <dimen name="card_corner_radius">24dp</dimen>
+    <dimen name="margin_120">120dp</dimen>
 </resources>

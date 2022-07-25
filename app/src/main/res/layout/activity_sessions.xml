@@ -123,7 +123,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="@dimen/margin_120"
         android:layout_marginStart="@dimen/normal_margin_padding"
         android:layout_marginEnd="@dimen/normal_margin_padding"
         android:layout_width="match_parent"
@@ -140,10 +140,9 @@
             android:layout_gravity="center_vertical"
             android:layout_margin="2dp"
             android:layout_weight="1"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:padding="@dimen/normal_margin_padding"
             android:tag="session_name"
-            android:paddingEnd="1dp"
             android:text="@string/session_name"
             android:textColor="@android:color/white"
             android:textSize="@dimen/small_font" />
