@@ -57,11 +57,6 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
              if (arrQrCode.isEmpty()){
                  activityQrDataBinding.tvNodata.show()
                  activityQrDataBinding.ivScan.hide()
-                // QrCodeDatabase(application).getSessions().updateCount(0,MyApplication.sessionId)
-             }
-             else{
-                 activityQrDataBinding.tvNodata.hide()
-                 activityQrDataBinding.ivScan.show()
              }
              activityQrDataBinding.loading.hide()
              setData()
