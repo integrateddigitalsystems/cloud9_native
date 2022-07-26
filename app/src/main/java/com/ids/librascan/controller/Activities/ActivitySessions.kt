@@ -17,13 +17,11 @@ import android.os.Looper
 import android.text.Spannable
 import android.text.SpannableString
 import android.util.SparseArray
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
-import android.widget.CompoundButton
-import android.widget.DatePicker
-import android.widget.PopupMenu
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isEmpty
@@ -57,7 +55,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import utils.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertUpdate,
@@ -102,7 +99,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             val  array=ArrayList<QrCode>()
             array.addAll(QrCodeDatabase(application).getCodeDao().getCodes(MyApplication.sessionId))
             if (array.isEmpty()) {
-
                 QrCodeDatabase(application).getSessions().updateCount(0, MyApplication.sessionId)
             }
             arrSession.addAll(QrCodeDatabase(application).getSessions().getSessions())
@@ -159,6 +155,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     fun back(v: View) {
         onBackPressed()
     }
+
     private fun applyFontToMenuItem(mi: MenuItem) {
         val font = Typeface.createFromAsset(this.assets, "fonts/HelveticaNeueLTArabic-Bold.ttf")
         val mNewTitle = SpannableString(mi.title)
@@ -631,6 +628,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         alert.show()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun deleteSession(position: Int){
         launch {
             QrCodeDatabase(application).getCodeDao().deleteCodes(arrSession[position].id)

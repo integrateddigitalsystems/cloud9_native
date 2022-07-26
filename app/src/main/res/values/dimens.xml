@@ -56,4 +56,6 @@
     <dimen name="card_corner_radius">24dp</dimen>
     <dimen name="margin_120">120dp</dimen>
     <dimen name="height_500">500dp</dimen>
+    <dimen name="scan_width">300dp</dimen>
+    <dimen name="scan_height">100dp</dimen>
 </resources>
