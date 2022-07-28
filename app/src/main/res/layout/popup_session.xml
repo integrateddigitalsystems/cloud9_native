@@ -75,7 +75,7 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="2"
                                 android:layout_height="wrap_content"
-                                android:padding="@dimen/small_margin_padding"
+                                android:padding="@dimen/padding_5"
                                 android:text="@string/session_name"
                                 android:tag="session_name"
                                 android:textColor="@color/colorAccent"
@@ -116,23 +116,41 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
-                            <com.ids.librascan.custom.CustomTextViewMedium
+                            <RelativeLayout
                                 android:layout_width="0dp"
-                                android:layout_weight="2"
-                                android:layout_height="wrap_content"
-                                android:padding="@dimen/small_margin_padding"
-                                android:text="@string/warehouse"
-                                android:tag="warehouse"
-                                android:textColor="@color/colorAccent"
-                                android:textSize="@dimen/font"/>
+                                android:layout_weight="1"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:layout_height="match_parent">
+
+                                <com.ids.librascan.custom.CustomTextViewMedium
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="@dimen/small_margin_padding"
+                                    android:tag="warehouse"
+                                    android:text="@string/warehouse"
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="@dimen/font" />
+
+                            <ImageView
+                                android:layout_width="@dimen/size_20"
+                                android:layout_height="@dimen/size_20"
+                                android:tint="@color/gray_bg"
+                                android:id="@+id/ivReloadWarehouse"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginTop="@dimen/margin_10"
+                                android:src="@drawable/sync"
+                                tools:ignore="UseAppTint" />
+                            </RelativeLayout>
 
                             <RelativeLayout
                                 android:layout_width="0dp"
-                                android:layout_weight="3"
+                                android:layout_weight="1.5"
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/normal_margin_padding"
                                 android:minHeight="@dimen/size_20"
                                 android:background="@drawable/rounded_gray_edit_text">
+
 
                                 <Spinner
                                     android:id="@+id/spWarehouse"
@@ -180,7 +198,7 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="2"
                                 android:layout_height="wrap_content"
-                                android:padding="@dimen/small_margin_padding"
+                                android:padding="@dimen/padding_5"
                                 android:text="@string/date"
                                 android:tag="date"
                                 android:textColor="@color/colorAccent"
@@ -223,7 +241,7 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="2"
                                 android:layout_height="wrap_content"
-                                android:padding="@dimen/small_margin_padding"
+                                android:padding="@dimen/padding_5"
                                 android:text="@string/description"
                                 android:tag="description"
                                 android:textColor="@color/colorAccent"
@@ -280,8 +298,35 @@
                     </LinearLayout>
 
 
+
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/loadingData"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:background="@drawable/block_white_border_gray"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"/>
+
+                    <com.ids.librascan.custom.CustomTextViewMedium
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/loading"
+                        android:tag="loading"
+                        android:layout_gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/size_30"/>
+
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
 
 

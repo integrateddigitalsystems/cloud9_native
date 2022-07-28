@@ -12,4 +12,7 @@ interface WarehouseDao {
 
     @Query("DELETE FROM warehouse_table")
     suspend fun deleteAllWarehouse()
+
+    @Query("SELECT * FROM warehouse_table WHERE id=:id")
+    suspend fun  getWarehouse(id : Int?): Warehouse
 }

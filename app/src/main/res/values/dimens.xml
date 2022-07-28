@@ -58,4 +58,6 @@
     <dimen name="height_500">500dp</dimen>
     <dimen name="scan_width">300dp</dimen>
     <dimen name="scan_height">100dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="padding_5">5dp</dimen>
 </resources>

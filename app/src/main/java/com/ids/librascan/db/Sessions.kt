@@ -24,13 +24,6 @@ data class Sessions(
 
 }
 
-/*class Converters {
-    @TypeConverter
-    fun listToJson(value: List<QrCode>?) = Gson().toJson(value)
-
-    @TypeConverter
-    fun jsonToList(value: String) = Gson().fromJson(value, Array<QrCode>::class.java).toList()
-}*/
 
 
 

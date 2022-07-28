@@ -185,7 +185,7 @@ class ActivityLogin : ActivityCompactBase() {
                     } else {
                         this@ActivityLogin.runOnUiThread {
                           activityLoginBinding.progressBar.hide()
-                            toast(AppHelper.getRemoteString("login_faild",this@ActivityLogin))
+                            toast(AppHelper.getRemoteString("login_failed",this@ActivityLogin))
                             try {
                                // errorDialog(this@ActivityLogin, response.errorBody()!!.toString())
                             } catch (e: Exception) {
@@ -195,7 +195,7 @@ class ActivityLogin : ActivityCompactBase() {
                     }
                 }
                 override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
-                    toast(AppHelper.getRemoteString("login_faild",this@ActivityLogin))
+                    toast(AppHelper.getRemoteString("login_failed",this@ActivityLogin))
                 }
             })
     }
