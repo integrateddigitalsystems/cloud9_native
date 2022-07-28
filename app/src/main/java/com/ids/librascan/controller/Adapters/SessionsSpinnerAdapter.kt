@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.ids.librascan.R
+import com.ids.librascan.db.SessionQrcode
 import com.ids.librascan.db.Sessions
 import com.ids.librascan.db.Unit
 

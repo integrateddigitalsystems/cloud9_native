@@ -16,7 +16,7 @@ data class Sessions(
     var count: Int = 0
 ){
     @PrimaryKey(autoGenerate = true)
-    var id: Int =0
+    var idSession: Int =0
 
     override fun toString(): String {
         return let {sessionName}

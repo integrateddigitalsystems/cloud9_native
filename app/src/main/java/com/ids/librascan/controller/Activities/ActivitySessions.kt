@@ -17,7 +17,6 @@ import android.os.Looper
 import android.text.Spannable
 import android.text.SpannableString
 import android.util.SparseArray
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -66,7 +65,8 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     private var spinnerWarehouse: ArrayList<Warehouse> = arrayListOf()
     lateinit var warehouseSpinnerAdapter: WarehouseSpinnerAdapter
     lateinit var adapterSession: AdapterSession
-    private var arrSession = ArrayList<Sessions>()
+    private var arrSession = ArrayList<SessionQrcode>()
+    private var arrSessionQrcode = ArrayList<QrCode>()
     var selectedWarehouse = Warehouse()
     lateinit var barcodeReader: BarcodeReader
     private var db: FirebaseFirestore? = null
@@ -96,12 +96,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         }
         activitySessionsBinding.loading.show()
         launch {
-            val  array=ArrayList<QrCode>()
-            array.addAll(QrCodeDatabase(application).getCodeDao().getCodes(MyApplication.sessionId))
-            if (array.isEmpty()) {
-                QrCodeDatabase(application).getSessions().updateCount(0, MyApplication.sessionId)
-            }
-            arrSession.addAll(QrCodeDatabase(application).getSessions().getSessions())
+                 arrSession.addAll(QrCodeDatabase(application).getSessions().getSessions())
             if (arrSession.isEmpty())
                 activitySessionsBinding.tvNodata.show()
             activitySessionsBinding.loading.hide()
@@ -285,7 +280,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.llScan){
             MyApplication.isScan =false
-            MyApplication.sessionId = arrSession[position].id
+            MyApplication.sessionId = arrSession[position].idSession
             MyApplication.sessionName = arrSession[position].sessionName
             if (MyApplication.enableInsert && !MyApplication.enableNewLine)
                activitySessionsBinding.btShowScan.performClick()
@@ -303,7 +298,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             }
                 if (view.id == R.id.llItem){
                     startActivity(Intent(this@ActivitySessions, ActivityQrData::class.java))
-                    MyApplication.sessionId = arrSession[position].id
+                    MyApplication.sessionId = arrSession[position].idSession
                     MyApplication.sessionName = arrSession[position].sessionName
                     finish()
                 }
@@ -323,7 +318,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         launch {
             val arrayQrcode = ArrayList<QrCode>()
             val docData: MutableMap<String, Any> = HashMap()
-            arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getCodes(arrSession[position].id))
+            arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getCodes(arrSession[position].idSession))
             if (arrayQrcode.isNotEmpty()){
                 activitySessionsBinding.loadingData.show()
                 docData.put("QrCode", arrayQrcode)
@@ -339,8 +334,8 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 Handler(Looper.getMainLooper()).postDelayed({
                     activitySessionsBinding.loadingData.hide()
                 }, 500)
-                QrCodeDatabase(application).getCodeDao().deleteCodes(arrSession[position].id)
-                QrCodeDatabase(application).getSessions().deleteSession(arrSession[position].id)
+                QrCodeDatabase(application).getCodeDao().deleteCodes(arrSession[position].idSession)
+                QrCodeDatabase(application).getSessions().deleteSession(arrSession[position].idSession)
                 arrSession.remove(arrSession[position])
                 adapterSession.notifyDataSetChanged()
             }
@@ -377,11 +372,11 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 for (item in arrSession.indices) {
                     array.clear()
                     array.addAll(
-                        QrCodeDatabase(application).getCodeDao().getCodes(arrSession[item].id)
+                        QrCodeDatabase(application).getCodeDao().getCodes(arrSession[item].idSession)
                     )
                     if (array.isNotEmpty()) {
-                        QrCodeDatabase(application).getSessions().deleteSession(arrSession[item].id)
-                        QrCodeDatabase(application).getCodeDao().deleteCodes(arrSession[item].id)
+                        QrCodeDatabase(application).getSessions().deleteSession(arrSession[item].idSession)
+                        QrCodeDatabase(application).getCodeDao().deleteCodes(arrSession[item].idSession)
                     }
                 }
                 arrSession.clear()
@@ -435,12 +430,12 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         this.runOnUiThread {
             activitySessionsBinding.rlBarcode.hide()
             if (MyApplication.enableInsert && !MyApplication.enableNewLine){
-                insertScanAuto(QrCode(value,0,1,MyApplication.sessionId), this,this)
+                insertScanAuto(QrCode(value,0,1,MyApplication.sessionId), this)
                 activitySessionsBinding.llSync.show()
             }
 
             else  if (MyApplication.enableInsert && MyApplication.enableNewLine){
-                insertScan(QrCode(value,0,1,MyApplication.sessionId),this,this)
+                insertScan(QrCode(value,0,1,MyApplication.sessionId),this)
                 activitySessionsBinding.llSync.show()
 
             }
@@ -576,10 +571,13 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     }
 
     fun addWarehouse(){
-        launch {
-            QrCodeDatabase(application).getWarehouse().deleteAllWarehouse()
+        if (MyApplication.isFirst){
+            getWarehouse()
+            MyApplication.isFirst = false
         }
-        getWarehouse()
+        /*launch {
+            QrCodeDatabase(application).getWarehouse().deleteAllWarehouse()
+        }*/
     }
 
     private fun getWarehouse() {
@@ -612,7 +610,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     }
 
     private fun createDialogDelete(position: Int) {
-        val builder = android.app.AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this)
             .setMessage(AppHelper.getRemoteString("delete_message_session",this))
             .setCancelable(true)
             .setPositiveButton(AppHelper.getRemoteString("yes",this))
@@ -631,10 +629,14 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     @SuppressLint("NotifyDataSetChanged")
     fun deleteSession(position: Int){
         launch {
-            QrCodeDatabase(application).getCodeDao().deleteCodes(arrSession[position].id)
-            QrCodeDatabase(application).getSessions().deleteSession(arrSession[position].id)
-            arrSession.remove(arrSession[position])
-            adapterSession.notifyDataSetChanged()
+                QrCodeDatabase(application).getCodeDao().deleteCodes(arrSession[position].idSession)
+                QrCodeDatabase(application).getSessions().deleteSession(arrSession[position].idSession)
+                arrSession.remove(arrSession[position])
+                arrayQrcode.clear()
+                arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
+             if (arrayQrcode.isEmpty())
+                activitySessionsBinding.llSync.hide()
+                adapterSession.notifyDataSetChanged()
         }
     }
 

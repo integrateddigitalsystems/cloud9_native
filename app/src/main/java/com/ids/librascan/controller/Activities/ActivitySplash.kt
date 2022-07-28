@@ -83,6 +83,7 @@ class ActivitySplash : ActivityCompactBase() {
                 }
         }
         else {
+            goLogin()
             toast(getString(R.string.check_internet_connection))
         }
 

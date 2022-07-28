@@ -12,13 +12,14 @@ import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ItemQrDataBinding
 import com.ids.librascan.databinding.ItemSessionBinding
 import com.ids.librascan.db.QrCode
+import com.ids.librascan.db.SessionQrcode
 import com.ids.librascan.db.Sessions
 import kotlinx.coroutines.launch
 import utils.hide
 import utils.show
 import java.util.*
 
-class AdapterSession(private var items:ArrayList<Sessions>, private val itemClickListener: RVOnItemClickListener) : RecyclerView.Adapter<AdapterSession.MyViewHolder>(){
+class AdapterSession(private var items:ArrayList<SessionQrcode>, private val itemClickListener: RVOnItemClickListener) : RecyclerView.Adapter<AdapterSession.MyViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemSessionBinding = ItemSessionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(itemSessionBinding)
@@ -29,7 +30,7 @@ class AdapterSession(private var items:ArrayList<Sessions>, private val itemClic
         holder.itemSessionBinding.tvNameSession.text = items[position].sessionName
         holder.itemSessionBinding.tvWarehouses.text = items[position].warehouseName
         holder.itemSessionBinding.tvDate.text = items[position].date
-        if(items[position].count >0){
+        if(items[position].count>0){
             holder.itemSessionBinding.llSync.show()
         }
         else holder.itemSessionBinding.llSync.hide()

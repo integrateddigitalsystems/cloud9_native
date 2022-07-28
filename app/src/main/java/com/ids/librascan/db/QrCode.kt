@@ -1,22 +1,19 @@
 package com.ids.librascan.db
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
 @Entity(tableName = "codeScan_table")
 data class QrCode(
-    var code: String = "" ,
-    var unitId : Int = 0 ,
-    var quantity  :Int = 0,
-    var sessionId : Int = 0
+    var code: String? = null,
+    var unitId: Int = 0,
+    var quantity:Int = 0,
+    var sessionId: Int = 0
 ){
     @PrimaryKey(autoGenerate = true)
-    var id: Int =0
-    override fun toString(): String {
-        return code
-    }
+    var idQrcode: Int =0
+
 }
 
 

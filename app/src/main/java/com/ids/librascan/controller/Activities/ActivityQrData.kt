@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.util.SparseArray
 import android.view.View
 import androidx.core.app.ActivityCompat
@@ -23,6 +24,7 @@ import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityQrDataBinding
 import com.ids.librascan.db.QrCode
 import com.ids.librascan.db.QrCodeDatabase
+import com.ids.librascan.db.SessionQrcode
 import com.ids.librascan.db.Sessions
 import com.ids.librascan.utils.AppHelper
 import info.bideens.barcode.BarcodeReader
@@ -87,7 +89,13 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
             else if (MyApplication.enableInsert && MyApplication.enableNewLine)
                 activityQrDataBinding.btShowScan.performClick()
             else{
-                showAddBarcodeAlertDialog(this, false, QrCode(), this,true,Sessions(),MyApplication.sessionId)
+                try {
+                    showAddBarcodeAlertDialog(this, false, QrCode(), this,true,
+                        SessionQrcode(),MyApplication.sessionId)
+                } catch (e: Exception) {
+                    Log.wtf("error", e.toString())
+                }
+
             }
             activityQrDataBinding.tvNameSession.text = MyApplication.sessionName
         }
@@ -103,7 +111,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     private fun filter(text: String) {
         arrFilter.clear()
         arrFilter.addAll(arrQrCode.filter {
-            it.code.lowercase().replaceFirstChar(Char::lowercase).contains(text.lowercase().replaceFirstChar(Char::lowercase))
+            it.code!!.lowercase().replaceFirstChar(Char::lowercase).contains(text.lowercase().replaceFirstChar(Char::lowercase))
         })
         adapterQrCode.notifyDataSetChanged()
 
@@ -124,7 +132,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
             createDialogDelete(position)
         else if (view.id == R.id.tVUpdate) {
             MyApplication.isScan = true
-            showAddBarcodeAlertDialog(this, true, arrFilter[position], this,false, Sessions(),MyApplication.sessionId)
+            showAddBarcodeAlertDialog(this, true, arrFilter[position], this,false, SessionQrcode(),MyApplication.sessionId)
             adapterQrCode.notifyDataSetChanged()
         }
     }
@@ -134,7 +142,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         launch {
                 arrFilter.clear()
                 arrFilter.addAll(QrCodeDatabase(application).getCodeDao().getCodes(MyApplication.sessionId))
-                QrCodeDatabase(application).getCodeDao().deleteCode(arrFilter[position].id)
+                QrCodeDatabase(application).getCodeDao().deleteCode(arrFilter[position].idQrcode)
                 arrQrCode.remove(arrFilter[position])
                 adapterQrCode.notifyDataSetChanged()
                 activityQrDataBinding.tvBarcode.setText("")
@@ -215,12 +223,12 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
             activityQrDataBinding.rlBarcode.hide()
             if (MyApplication.isScan){
                 if (MyApplication.enableInsert && !MyApplication.enableNewLine){
-                    insertScanAuto(QrCode(value,0,1,MyApplication.sessionId), this,this)
+                    insertScanAuto(QrCode(value,0,1,MyApplication.sessionId), this)
                     activityQrDataBinding.ivScan.show()
                 }
 
                 else  if (MyApplication.enableInsert && MyApplication.enableNewLine){
-                    insertScan(QrCode(value,0,1,MyApplication.sessionId),this,this)
+                    insertScan(QrCode(value,0,1,MyApplication.sessionId),this)
                     activityQrDataBinding.ivScan.show()
                 }
                 else{
