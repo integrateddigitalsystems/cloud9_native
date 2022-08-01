@@ -68,7 +68,7 @@ class ActivitySplash : ActivityCompactBase() {
                             FirebaseLocalizeArray::class.java
                         )
                         AppHelper.setAllTexts(activitySplashBinding.rootLayout, this)
-                        checkUpdate()
+                      checkUpdate()
                     } catch (e: Exception) {
                         wtf("exception_firebase", e.toString())
                     }

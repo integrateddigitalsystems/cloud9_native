@@ -18,8 +18,12 @@ object AppConstants {
     const val SESSION_NAME = "session_name"
     const val IS_SCAN = "is_scan"
     const val SHOW_SYNC = "show_sync"
+    const val ADD_SUCCESS = "add_success"
+    const val IS_DONE_ADD = "is_done_add"
+    const val IS_DONE_GET = "is_done_get"
 
     const val CHECK_LOGIN = false
     const val FIRST = true
     const val Default = false
+
 }

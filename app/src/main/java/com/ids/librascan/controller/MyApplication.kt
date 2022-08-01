@@ -22,6 +22,7 @@ class MyApplication : Application() {
         lateinit var sharedPreferences : SharedPreferences
         lateinit var sharedPreferencesEditor : SharedPreferences.Editor
         var BASE_URL = "https://invo.ids.com.lb/"
+        var BAS = "https://fakerapi.it"
         var BASE_URLS: FirebaseBaseUrlsArray?= null
         var localizeArray: FirebaseLocalizeArray?= null
         var displayName = ""
@@ -59,9 +60,21 @@ class MyApplication : Application() {
             get() = sharedPreferences.getBoolean(AppConstants.IS_SCAN, AppConstants.Default)
             set(value) { sharedPreferencesEditor.putBoolean(AppConstants.IS_SCAN, value).apply() }
 
-        var showSync : Boolean
-            get() = sharedPreferences.getBoolean(AppConstants.SHOW_SYNC, AppConstants.Default)
-            set(value) { sharedPreferencesEditor.putBoolean(AppConstants.SHOW_SYNC, value).apply() }
+        var showError : String
+            get() = sharedPreferences.getString(AppConstants.SHOW_SYNC, "")!!
+            set(value) { sharedPreferencesEditor.putString(AppConstants.SHOW_SYNC, value).apply() }
+
+        var isDoneAdd : String
+            get() = sharedPreferences.getString(AppConstants.IS_DONE_ADD, "")!!
+            set(value) { sharedPreferencesEditor.putString(AppConstants.IS_DONE_ADD, value).apply() }
+
+        var isDoneGet : String
+            get() = sharedPreferences.getString(AppConstants.IS_DONE_GET, "")!!
+            set(value) { sharedPreferencesEditor.putString(AppConstants.IS_DONE_GET, value).apply() }
+
+        var addSuccess : String
+            get() = sharedPreferences.getString(AppConstants.ADD_SUCCESS, "")!!
+            set(value) { sharedPreferencesEditor.putString(AppConstants.ADD_SUCCESS, value).apply() }
 
         var sessionId :Int
             get() = sharedPreferences.getInt(AppConstants.SESSION_ID, 0)

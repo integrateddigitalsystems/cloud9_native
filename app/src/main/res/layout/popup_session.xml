@@ -273,7 +273,6 @@
                         </LinearLayout>
 
 
-
                     </LinearLayout>
 
                     <LinearLayout
@@ -305,10 +304,9 @@
                     android:id="@+id/loadingData"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
+                    android:layout_gravity="bottom"
                     android:clickable="true"
                     android:gravity="center"
-                    android:background="@drawable/block_white_border_gray"
                     android:orientation="vertical"
                     android:visibility="gone">
 
@@ -322,8 +320,9 @@
                         android:layout_height="wrap_content"
                         android:text="@string/loading"
                         android:tag="loading"
+                        android:visibility="gone"
                         android:layout_gravity="center"
-                        android:textColor="@color/black"
+                        android:textColor="@color/gray_bg"
                         android:textSize="@dimen/size_30"/>
 
                 </LinearLayout>

@@ -118,8 +118,10 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onItemClicked(view: View, position: Int) {
-        if (view.id == R.id.tVDelete)
+        if (view.id == R.id.tVDelete){
             createDialogDelete(position)
+            adapterQrCode.notifyDataSetChanged()
+        }
         else if (view.id == R.id.tVUpdate) {
             MyApplication.isScan = true
             showAddBarcodeAlertDialog(this, true, arrFilter[position], this,false, SessionQrcode())

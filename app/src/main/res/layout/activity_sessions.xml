@@ -210,6 +210,71 @@
                 android:textSize="@dimen/size_14"
                 android:textColor="@color/white"/>
 
+            <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/llProgressDialog"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/scan_width"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/margin_30"
+                app:cardUseCompatPadding="true"
+                android:layout_marginStart="@dimen/margin_30"
+                android:layout_marginEnd="@dimen/margin_30"
+                android:layout_centerInParent="true"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="@dimen/card_radius"
+                card_view:cardElevation="@dimen/app_elevation"
+                card_view:cardPreventCornerOverlap="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_synching_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:padding="@dimen/small_margin_padding"
+                        android:text="@string/synching_data"
+                        android:textAppearance="?android:textAppearanceSmall"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fillViewport="true">
+
+                        <com.ids.librascan.custom.CustomTextViewMedium
+                            android:id="@+id/tvMessage"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_margin="6sp"
+                            android:textAppearance="?android:textAppearanceSmall"
+                            android:textColor="@color/colorPrimaryDark" />
+                    </ScrollView>
+
+
+                    <Button
+                        android:id="@+id/btDone"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/button_height"
+                        android:layout_marginLeft="20sp"
+                        android:layout_marginRight="20sp"
+                        android:layout_marginBottom="14sp"
+                        android:background="@color/colorPrimaryDark"
+                        android:text="@string/done"
+                        android:textColor="@color/white"
+                        android:visibility="visible" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
             <LinearLayout
                 android:id="@+id/llSync"
                 android:layout_width="@dimen/width_150"

@@ -4,31 +4,23 @@ package com.ids.librascan.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.Application
 import android.content.Context
 import android.content.Context.CONNECTIVITY_SERVICE
 import android.content.res.Configuration
-import android.graphics.Color
 import android.graphics.Typeface
-import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
 import android.os.Build
-import android.provider.Settings.Global.getString
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.LayoutInflater
+import android.text.Html
+import android.text.Spanned
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.annotation.RequiresApi
 import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
 import utils.*
 import java.util.*
-
 
 
 class AppHelper {
@@ -179,6 +171,7 @@ class AppHelper {
 
 
         fun createDialogPositive(c: Activity, message: String) {
+
             val builder = AlertDialog.Builder(c)
             builder
                 .setMessage(message)
@@ -193,6 +186,15 @@ class AppHelper {
             Thread.setDefaultUncaughtExceptionHandler(MyExceptionHandler(context))
         }
 
+    }
+
+    fun htmlString(string: String): Spanned {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(string, Html.FROM_HTML_MODE_LEGACY)
+        } else {
+            return Html.fromHtml(string)
+        }
     }
 
 }
