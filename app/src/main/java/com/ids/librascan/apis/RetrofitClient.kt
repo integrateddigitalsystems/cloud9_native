@@ -3,6 +3,7 @@ package com.ids.librascan.apis
 
 import com.google.gson.GsonBuilder
 import com.ids.librascan.controller.MyApplication
+import com.ids.librascan.utils.AppHelper
 import okhttp3.OkHttpClient
 import okhttp3.internal.addHeaderLenient
 import retrofit2.Retrofit
@@ -11,7 +12,6 @@ import java.util.concurrent.TimeUnit
 
 
 object RetrofitClient {
-
     private var retrofit: Retrofit? = null
     val client: Retrofit?
         get() {

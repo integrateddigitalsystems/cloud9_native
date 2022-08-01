@@ -6,11 +6,11 @@
     android:background="#FFFFFF"
     android:orientation="vertical">
 
-    <com.ids.librascan.custom.CustomTextViewMedium
+    <TextView
         android:id="@+id/dialogMsg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:height="55dp"
+        android:height="50dp"
         android:layout_gravity="center"
         android:textSize="15dp"
         android:layout_margin="8dp"
