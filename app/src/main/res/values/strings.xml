@@ -13,7 +13,7 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="save_data">Save Data</string>
-    <string name="item_save">Barcode Saved!</string>
+    <string name="item_save">Barcode Saved</string>
     <string name="add_item">Add Barcode</string>
     <string name="search">Search</string>
     <string name="name_code">Code</string>
@@ -72,5 +72,14 @@
     <string name="new_scan">New scan</string>
     <string name="ar">Ar</string>
     <string name="en">En</string>
-    <string name="synching_data">Sync Data</string>
+    <string name="sync_all">Sync All</string>
+    <string name="warehouse_added">Warehouse added</string>
+    <string name="success_added">Success Added</string>
+    <string name="warehouse_session_exist">Warehouse session exist in this date</string>
+    <string name="error_filled_session_name">Please enter a session name</string>
+    <string name="error_filled_warehouse">Please choose a session</string>
+    <string name="error_filled_date">Please enter a date</string>
+    <string name="error_filled_description">Please enter a description</string>
+    <string name="session_save">Session Saved</string>
+    <string name="delete_message_session">Do you delete this Session!</string>
 </resources>

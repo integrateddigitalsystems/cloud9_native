@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
+import com.ids.librascan.apis.WifiService
 import com.ids.librascan.model.FirebaseBaseUrlsArray
 import com.ids.librascan.model.FirebaseLocalizeArray
 import utils.AppConstants
@@ -25,13 +26,7 @@ class MyApplication : Application() {
         var BAS = "https://fakerapi.it"
         var BASE_URLS: FirebaseBaseUrlsArray?= null
         var localizeArray: FirebaseLocalizeArray?= null
-        var displayName = ""
         var showLogs: Boolean = true
-        var bearer: String
-            get() = sharedPreferences.getString("bearer", "")!!
-            set(value) {
-                sharedPreferencesEditor.putString("bearer", value).apply()
-            }
         var clientKey: String
             get() = sharedPreferences.getString(AppConstants.CLIENT_KEY, "")!!
             set(value) {
@@ -69,13 +64,12 @@ class MyApplication : Application() {
             set(value) { sharedPreferencesEditor.putString(AppConstants.SESSION_NAME, value).apply() }
 
     }
-
-
     override fun onCreate() {
         super.onCreate()
         sharedPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(applicationContext)
         sharedPreferencesEditor = sharedPreferences.edit()
         instance =this
+        setupServices()
 
     }
 
@@ -88,4 +82,8 @@ class MyApplication : Application() {
         }
         super.attachBaseContext(newBase)
     }
+    private fun setupServices() {
+        WifiService.instance.initializeWithApplicationContext(this)
+    }
+
 }

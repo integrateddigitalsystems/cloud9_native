@@ -132,15 +132,16 @@
                                     android:textColor="@color/colorAccent"
                                     android:textSize="@dimen/font" />
 
-                            <ImageView
-                                android:layout_width="@dimen/size_20"
-                                android:layout_height="@dimen/size_20"
-                                android:tint="@color/gray_bg"
-                                android:id="@+id/ivReloadWarehouse"
-                                android:layout_alignParentEnd="true"
-                                android:layout_marginTop="@dimen/margin_10"
-                                android:src="@drawable/sync"
-                                tools:ignore="UseAppTint" />
+                                <ImageView
+                                    android:id="@+id/ivReloadWarehouse"
+                                    android:layout_width="@dimen/size_20"
+                                    android:layout_height="@dimen/size_20"
+                                    android:layout_marginEnd="@dimen/margin_10"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginTop="@dimen/margin_10"
+                                    android:src="@drawable/sync"
+                                    android:tint="@color/gray_bg"
+                                    tools:ignore="UseAppTint" />
                             </RelativeLayout>
 
                             <RelativeLayout
@@ -279,6 +280,8 @@
                         android:layout_width="match_parent"
                         android:gravity="center"
                         android:layout_marginTop="@dimen/small_margin"
+                        android:focusable="true"
+                        android:clickable="true"
                         android:background="@drawable/bottom_rounded_green"
                         android:layout_height="@dimen/button_height">
 
@@ -292,6 +295,7 @@
                             android:textColor="@color/white"
                             android:textSize="@dimen/font"
                             android:tag="insert"
+                            android:background="?android:attr/selectableItemBackground"
                             android:text="@string/insert"/>
 
                     </LinearLayout>

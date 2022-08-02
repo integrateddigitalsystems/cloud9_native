@@ -9,9 +9,10 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-        <TextView
-                android:text="@string/login_failed"
+        <com.ids.librascan.custom.CustomTextViewMedium
+                android:text="Message"
                 android:layout_width="0dp"
+                 android:id="@+id/tvTitle"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center_vertical"
@@ -33,7 +34,7 @@
                 android:layout_height="@dimen/list_icon_width_height"/>
     </LinearLayout>
 
-    <TextView
+    <com.ids.librascan.custom.CustomTextViewBold
             android:id="@+id/tvDetails"
             android:visibility="gone"
             android:layout_width="match_parent"
@@ -44,7 +45,7 @@
             android:layout_marginStart="@dimen/big_margin_padding"
             android:layout_marginEnd="@dimen/big_margin_padding"
             android:gravity="start"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/holo_red_light"
             android:textSize="@dimen/header_font"/>
 
 </LinearLayout>

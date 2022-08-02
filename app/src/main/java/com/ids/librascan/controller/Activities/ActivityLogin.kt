@@ -152,19 +152,7 @@ class ActivityLogin : ActivityCompactBase() {
                     response: Response<ResponseLogin>
                 ) {
                     if (response.isSuccessful) {
-                        var bearer = MyApplication.bearer
-                        try {
-                            bearer = response.body()!!.body!!.token!!
-
-                            wtf("bearer " + bearer)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                        MyApplication.bearer = bearer
-                        MyApplication.displayName = displayName
                         MyApplication.isLogin = true
-                        MyApplication.sharedPreferencesEditor.putString("bearer", bearer).apply()
-                        MyApplication.sharedPreferencesEditor.putString("displayName", displayName).apply()
                         wtf("after data set ")
                         try {
                             this@ActivityLogin.runOnUiThread {
@@ -179,7 +167,7 @@ class ActivityLogin : ActivityCompactBase() {
                             wtf("after finish ")
                         } catch (e: Exception) {
                             wtf("ex:: " + e.message)
-                            errorDialog(this@ActivityLogin,e.toString())
+                           // errorDialog(this@ActivityLogin,e.toString())
                         }
 
                     } else {
@@ -195,43 +183,10 @@ class ActivityLogin : ActivityCompactBase() {
                     }
                 }
                 override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
+                    AppHelper.createDialogError(this@ActivityLogin,t.toString(),"performGoogleLogin")
                     toast(AppHelper.getRemoteString("login_failed",this@ActivityLogin))
                 }
             })
-    }
-    private fun errorDialog(activity: Activity, errorMessage: String) {
-        val builder = android.app.AlertDialog.Builder(activity)
-
-        val textView: TextView
-        val llItem: LinearLayout
-
-        val inflater = activity.layoutInflater
-        val textEntryView = inflater.inflate(R.layout.error_dialog, null)
-        textView = textEntryView.findViewById(R.id.tvDetails)
-        llItem = textEntryView.findViewById(R.id.llItem)
-
-        textView.text = errorMessage
-
-        llItem.setOnClickListener {
-            if (textView.visibility == View.VISIBLE)
-                textView.visibility = View.GONE
-            else
-                textView.visibility = View.VISIBLE
-        }
-
-        builder.setView(textEntryView)
-            .setNegativeButton(activity.resources.getString(R.string.done)) { dialog, _ ->
-                dialog.dismiss()
-            }
-        val d = builder.create()
-        d.setOnShowListener {
-            d.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE)
-                .setTextColor(ContextCompat.getColor(this@ActivityLogin, R.color.colorPrimaryDark))
-            d.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).transformationMethod = null
-            d.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).isAllCaps = false
-        }
-        d.setCancelable(false)
-        d.show()
     }
 
 

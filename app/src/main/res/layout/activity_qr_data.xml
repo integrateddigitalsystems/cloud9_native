@@ -34,6 +34,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_marginEnd="5dp">
             <ImageView
                 android:layout_width="@dimen/back_width_height"
@@ -47,6 +49,7 @@
                 android:paddingBottom="@dimen/normal_margin_padding"
                 android:paddingStart="@dimen/big_margin_padding"
                 android:paddingEnd="@dimen/normal_margin_padding"
+                android:background="?android:attr/selectableItemBackground"
                 android:contentDescription="@string/app_name"
                 android:onClick="back"
                 app:tint="@color/white"
@@ -246,15 +249,18 @@
                             android:layout_width="@dimen/height_100"
                             android:layout_height="@dimen/height_40"
                             android:layout_gravity="center"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:background="@drawable/rounded_primary_layout"
                             android:gravity="center">
 
                             <com.ids.librascan.custom.CustomTextViewBold
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:layout_gravity="center_vertical|center_horizontal"
-                                android:layout_marginStart="@dimen/small_margin_padding"
                                 android:text="@string/scan"
+                                android:gravity="center"
+                                android:background="?android:attr/selectableItemBackground"
                                 android:textColor="@color/white"
                                 android:textSize="14sp" />
 

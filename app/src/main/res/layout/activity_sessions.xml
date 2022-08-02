@@ -107,16 +107,25 @@
             android:layout_marginStart="@dimen/small_margin"
             android:layout_width="@dimen/button_height"
             android:layout_height="@dimen/button_height"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_marginBottom="@dimen/normal_margin_padding"
             android:background="@drawable/rounded_primary_layout"
             android:gravity="center">
 
-            <ImageView
-                android:layout_width="@dimen/size_30"
-                android:layout_height="@dimen/size_30"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:src="@drawable/add_session"
-                app:tint="@color/white" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="@dimen/size_30"
+                    android:layout_height="@dimen/size_30"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:src="@drawable/add_session"
+                    app:tint="@color/white" />
+            </LinearLayout>
+
 
         </LinearLayout>
 
@@ -215,29 +224,39 @@
                 android:id="@+id/llSync"
                 android:layout_width="@dimen/width_150"
                 android:layout_height="@dimen/button_height"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_alignParentTop="true"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
+                android:focusable="true"
+                android:clickable="true"
                 android:layout_marginTop="@dimen/margin_big"
                 android:background="@drawable/rounded_primary_layout"
                 android:gravity="center">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
 
                 <ImageView
-                    android:layout_width="@dimen/settings_item_height"
-                    android:layout_height="@dimen/settings_item_height"
-                    android:layout_gravity="center_vertical|center_horizontal"
-                    android:layout_marginEnd="@dimen/small_margin_padding"
+                    android:layout_width="@dimen/size_20"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/tvSync"
+                    android:layout_marginStart="@dimen/size_20"
+                    android:layout_marginEnd="@dimen/size_20"
+                    android:layout_height="@dimen/size_20"
                     android:src="@drawable/sync" />
 
-                <com.ids.librascan.custom.CustomTextViewBold
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|center_horizontal"
-                    android:layout_marginStart="@dimen/small_margin_padding"
-                    android:text="@string/syncAll"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/font" />
+                    <com.ids.librascan.custom.CustomTextViewBold
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/syncAll"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font" />
+                </RelativeLayout>
             </LinearLayout>
 
         </RelativeLayout>

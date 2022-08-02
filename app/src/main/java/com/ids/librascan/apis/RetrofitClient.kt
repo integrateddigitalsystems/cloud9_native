@@ -1,13 +1,20 @@
 package com.ids.librascan.apis
 
 
+import android.provider.Settings.Global.getString
+import com.google.common.net.HttpHeaders.CACHE_CONTROL
 import com.google.gson.GsonBuilder
+import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.utils.AppHelper
+import okhttp3.CacheControl
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.internal.addHeaderLenient
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 
@@ -35,6 +42,9 @@ object RetrofitClient {
             .connectTimeout(45, TimeUnit.SECONDS) // connect timeout
             .writeTimeout(45, TimeUnit.SECONDS) // write timeout
             .readTimeout(45, TimeUnit.SECONDS)
+            .addInterceptor(ConnectivityInterceptor())
             .build()
 
 }
+
+

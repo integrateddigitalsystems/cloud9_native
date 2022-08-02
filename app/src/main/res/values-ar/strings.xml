@@ -70,4 +70,14 @@
     <string name="new_scan">بحث جديد</string>
     <string name="ar">Ar</string>
     <string name="en">En</string>
+    <string name="sync_all">ترحيل الكل</string>
+    <string name="warehouse_added">تم اضافة المخازن</string>
+    <string name="success_added">تم ترحيل المعلومات بنجاح</string>
+    <string name="warehouse_session_exist">يوجد تقرير لهذا المخزن بهذا التاريخ</string>
+    <string name="error_filled_session_name">يرجى ادخال اسم التقرير</string>
+    <string name="error_filled_warehouse">"يرجى اختيار المخزن</string>
+    <string name="error_filled_date">يرجى ادخال التاريخ</string>
+    <string name="error_filled_description">يرجى ادخال التفاصيل</string>
+    <string name="session_save">تم الحفظ</string>
+    <string name="delete_message_session">"هل تريد ازالة هذا التقرير؟</string>
 </resources>

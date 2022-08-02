@@ -183,11 +183,11 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     }
 
     fun insert(qrCode: QrCode){
-        if (popupBarcodeBinding.tvCode.text.toString() != ""  &&  popupBarcodeBinding.spSession.isNotEmpty() && quantity != 0) {
+        if (popupBarcodeBinding.tvCode.text.toString().trim() != ""  &&  popupBarcodeBinding.spSession.isNotEmpty() && quantity != 0) {
             launch {
                 if (popupBarcodeBinding.tvInsertClose.text == (getRemoteString("insert_and_close",this@ActivityCompactBase))) {
                     var qrCode = QrCode()
-                    qrCode = QrCodeDatabase(application).getCodeDao().getCode(popupBarcodeBinding.tvCode.text.toString(),selectedSession.idSession)
+                    qrCode = QrCodeDatabase(application).getCodeDao().getCode(popupBarcodeBinding.tvCode.text.toString().trim(),selectedSession.idSession)
                     if (qrCode!=null){
                         if(!MyApplication.enableInsert && !MyApplication.enableNewLine)
                             insertCode(qrCode)
@@ -211,7 +211,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
 
     private fun checkIsNotEmpty(){
         when {
-            popupBarcodeBinding.tvCode.text.toString() == "" -> AppHelper.createDialogPositive(this@ActivityCompactBase, getRemoteString("error_filled_barcode",this))
+            popupBarcodeBinding.tvCode.text.toString().trim() == "" -> AppHelper.createDialogPositive(this@ActivityCompactBase, getRemoteString("error_filled_barcode",this))
             quantity == 0 -> AppHelper.createDialogPositive(this@ActivityCompactBase, getRemoteString("error_filled_qty",this))
         }
     }

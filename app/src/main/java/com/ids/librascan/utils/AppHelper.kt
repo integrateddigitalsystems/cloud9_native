@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.core.content.ContextCompat
 import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
 import utils.*
@@ -179,6 +180,46 @@ class AppHelper {
                 .setNegativeButton(c.getString(R.string.ok)){ dialog, _ -> dialog.cancel() }
             val alert = builder.create()
             alert.show()
+        }
+
+        fun createDialogError(activity: Activity, errorMessage: String,titleMessage:String) {
+            val builder = android.app.AlertDialog.Builder(activity)
+
+            val textView: TextView
+            val llItem: LinearLayout
+            val textViewtitle: TextView
+
+            val inflater = activity.layoutInflater
+            val textEntryView = inflater.inflate(R.layout.error_dialog, null)
+            textView = textEntryView.findViewById(R.id.tvDetails)
+            textViewtitle = textEntryView.findViewById(R.id.tvTitle)
+            llItem = textEntryView.findViewById(R.id.llItem)
+
+            textView.text = errorMessage
+            textViewtitle.text = titleMessage
+
+
+
+            llItem.setOnClickListener {
+                if (textView.visibility == View.VISIBLE)
+                    textView.hide()
+                else
+                    textView.show()
+            }
+
+            builder.setView(textEntryView)
+                .setNegativeButton(activity.resources.getString(R.string.done)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+            val d = builder.create()
+            d.setOnShowListener {
+                d.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE)
+                    .setTextColor(ContextCompat.getColor(activity, R.color.colorPrimaryDark))
+                d.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).transformationMethod = null
+                d.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).isAllCaps = false
+            }
+            d.setCancelable(false)
+            d.show()
         }
 
         fun handleCrashes(context: Activity) {

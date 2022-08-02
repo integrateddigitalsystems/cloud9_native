@@ -352,6 +352,8 @@
                         android:layout_width="match_parent"
                         android:gravity="center"
                         android:layout_marginTop="@dimen/small_margin"
+                        android:focusable="true"
+                        android:clickable="true"
                         android:background="@drawable/bottom_rounded_green"
                         android:layout_height="@dimen/button_height">
 
@@ -360,7 +362,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:visibility="visible"
+                            android:background="?android:attr/selectableItemBackground"
                             android:layout_gravity="center_vertical|center_horizontal"
                             android:layout_height="match_parent"
                             android:textColor="@color/white"
@@ -377,7 +379,7 @@
                             android:id="@+id/tvInsertClose"
                             android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:visibility="visible"
+                            android:background="?android:attr/selectableItemBackground"
                             android:gravity="center"
                             android:tag="insert_and_close"
                             android:layout_gravity="center_vertical|center_horizontal"

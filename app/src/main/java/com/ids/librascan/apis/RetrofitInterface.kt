@@ -15,7 +15,7 @@ interface RetrofitInterface {
         @Query("idToken") idToken: String?,
     ): Call<ResponseLogin>
 
-    @GET("/api/WareHouses")
+    @GET("api/WareHouses")
     fun getWarehouse(
     ): Call<ResponseGetWareHouse>
 
