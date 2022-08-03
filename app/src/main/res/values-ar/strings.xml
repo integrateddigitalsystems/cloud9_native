@@ -15,7 +15,7 @@
     <string name="item_save">تم الحفظ</string>
     <string name="add_item">ادخال الرمز</string>
     <string name="search">بحث</string>
-    <string name="name_code">الاسم - الرمز</string>
+    <string name="name_code">الرمز</string>
     <string name="units">وحدات</string>
     <string name="insert">ادخال</string>
     <string name="quantity">الكمية</string>
@@ -70,7 +70,7 @@
     <string name="new_scan">بحث جديد</string>
     <string name="ar">Ar</string>
     <string name="en">En</string>
-    <string name="sync_all">ترحيل الكل</string>
+    <string name="sync_all">هل تريد ترحيل كل المعلومات</string>
     <string name="warehouse_added">تم اضافة المخازن</string>
     <string name="success_added">تم ترحيل المعلومات بنجاح</string>
     <string name="warehouse_session_exist">يوجد تقرير لهذا المخزن بهذا التاريخ</string>
@@ -80,4 +80,5 @@
     <string name="error_filled_description">يرجى ادخال التفاصيل</string>
     <string name="session_save">تم الحفظ</string>
     <string name="delete_message_session">"هل تريد ازالة هذا التقرير؟</string>
+    <string name="sync_data">هل تريد ترحيل هذه المعلومات</string>
 </resources>

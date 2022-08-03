@@ -7,9 +7,14 @@ import java.io.IOException
 class ConnectivityInterceptor: Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         if (!WifiService.instance.isOnline()) {
-            throw IOException("No internet connection")
+            throw NoConnectivityException()
         } else {
             return chain.proceed(chain.request())
         }
     }
+}
+
+class NoConnectivityException : IOException() {
+    override val message: String
+        get() = "No network available, please check your WiFi or Data connection"
 }

@@ -86,6 +86,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     private var db: FirebaseFirestore? = null
     var arrayQrcode = ArrayList<QrCode>()
     lateinit var mGoogleSignInClient: GoogleSignInClient
+    private var show: Boolean? = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activitySessionsBinding = ActivitySessionsBinding.inflate(layoutInflater)
@@ -110,6 +111,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         }
 
         activitySessionsBinding.llSync.setOnClickListener {
+            arrApiStatus.clear()
             createDialSyncAllData(AppHelper.getRemoteString("sync_all", this))
 
         }
@@ -202,21 +204,17 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         }
 
         popupSessionBinding.ivReloadWarehouse.setOnClickListener {
-           // if (AppHelper.isNetworkAvailable(this@ActivitySessions)) {
                 popupSessionBinding.loadingData.show()
                 launch {
-               //   QrCodeDatabase(application).getWarehouse().deleteAllWarehouse()
+                    show = true
                     getWarehouse()
                     spinnerWarehouse.clear()
-                    spinnerWarehouse.addAll(
-                        QrCodeDatabase(application).getWarehouse().getWarehouse()
-                    )
+                    spinnerWarehouse.addAll(QrCodeDatabase(application).getWarehouse().getWarehouse())
                     popupSessionBinding.spWarehouse.adapter = warehouseSpinnerAdapter
                     Handler(Looper.getMainLooper()).postDelayed({
                         popupSessionBinding.loadingData.hide()
                     }, 500)
                 }
-           // } else toast(getString(R.string.check_internet_connection))
         }
         popupSessionBinding.tvName.typeface = AppHelper.getTypeFace(this)
         popupSessionBinding.tvInsert.setOnClickListener {
@@ -409,6 +407,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
 
     @SuppressLint("NotifyDataSetChanged")
   suspend fun addAllDataToFirestore() {
+        show = false
         launch {
             val arrayQrcode = ArrayList<QrCode>()
             val array = ArrayList<QrCode>()
@@ -416,7 +415,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
           if (AppHelper.isNetworkAvailable(this@ActivitySessions)) {
                 if (arrayQrcode.isNotEmpty()) {
-                    arrApiStatus.add(ApiStatus("sendData","...done","send"))
+                    arrApiStatus.add(ApiStatus("sendData","...Done","send"))
                     activitySessionsBinding.loadingData.show()
                     docData.put("QrCode", arrayQrcode)
                     db!!.collection("Data")
@@ -430,7 +429,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                         .addOnFailureListener { e ->
                             wtf("Error adding document$e")
                             toast(e.toString())
-                            arrApiStatus.add(ApiStatus("sendData","...failed","send"))
+                            arrApiStatus.add(ApiStatus("sendData","...Failed","send"))
                         }
                     Handler(Looper.getMainLooper()).postDelayed({
                         activitySessionsBinding.loadingData.hide()
@@ -456,7 +455,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                     checkQrcodeData()
                 } else {
                     toast(AppHelper.getRemoteString("added_failed", this@ActivitySessions))
-                    arrApiStatus.add(ApiStatus("sendData","...failed","send"))
+                    arrApiStatus.add(ApiStatus("sendData","...NoData","send"))
                     activitySessionsBinding.loadingData.hide()
                 }
             } else toast(getString(R.string.check_internet_connection))
@@ -657,6 +656,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         readData.await()
 
         showDialogSync()
+
     }
 
     private suspend fun sendData() {
@@ -665,9 +665,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
 
     private suspend fun getData() {
         getWarehouse()
-       // getCompanies()
-        //getPersons()
-
 
     }
 
@@ -676,49 +673,47 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             val responseWarehouse =
                 RetrofitClient.client?.create(RetrofitInterface::class.java)!!.getWarehouses()
             if (responseWarehouse.isSuccessful) {
-                arrApiStatus.add(ApiStatus("getWarehouse","...done","received"))
+                arrApiStatus.add(ApiStatus("getWarehouse","...Done","received"))
                 for (item in responseWarehouse.body()!!.wareHouses!!) {
                     QrCodeDatabase(application).getWarehouse().insertWarehouse(Warehouse(item.id!!, item.name.toString()))
                 }
-                toast(AppHelper.getRemoteString("warehouse_added", this@ActivitySessions))
+             //   toast(AppHelper.getRemoteString("warehouse_added", this@ActivitySessions))
+                if (show!!)
+                AppHelper.createDialogError(this,responseWarehouse.body()!!.message.toString(),"getWarehouse",true)
             }
             else{
-                arrApiStatus.add(ApiStatus("getWarehouse","...failed","received"))
-
+                arrApiStatus.add(ApiStatus("getWarehouse","...Failed","received"))
+                if (show!!)
+                AppHelper.createDialogError(this,responseWarehouse.body()!!.errorMessage.toString(),"getWarehouse",false)
             }
 
         }catch (t: Throwable) {
-            AppHelper.createDialogError(this,t.toString(),"getWarehouse")
+            if (show!!)
+            AppHelper.createDialogError(this,t.toString(),"getWarehouse",false)
         }
 
     }
 
     private suspend fun getCompanies() {
-        val responseCompanies =
-            RetrofitClientCompanies.client?.create(RetrofitInterface::class.java)!!.getCompanies()
+        val responseCompanies = RetrofitClientCompanies.client?.create(RetrofitInterface::class.java)!!.getCompanies()
         if (responseCompanies.isSuccessful) {
-         //   arrApiStatus.add(ApiStatus("getCompanies","...done","received"))
+           arrApiStatus.add(ApiStatus("getCompanies","...done","received"))
             arrCompanies.clear()
             arrCompanies.addAll(responseCompanies.body()!!.companies!!)
-           // toast(arrCompanies[0].nameCompanies.toString() + " hi")
-           // toast(arrCompanies[1].nameCompanies.toString() + " hi")
         }
-        else  toast(responseCompanies.errorBody().toString())
+        else  arrApiStatus.add(ApiStatus("getCompanies","...Failed","received"))
     }
 
 
    private suspend fun getPersons() {
-        val responseGetPerson =
-            RetrofitClientCompanies.client?.create(RetrofitInterface::class.java)!!.getPerson()
+        val responseGetPerson = RetrofitClientPerson.client?.create(RetrofitInterface::class.java)!!.getPerson()
         if (responseGetPerson.isSuccessful) {
-
+            arrApiStatus.add(ApiStatus("getPersons","...done","received"))
             arrperson.clear()
             arrperson.addAll(responseGetPerson.body()!!.person!!)
-          //  toast(arrperson[0].firstname.toString() + "+ " + arrperson[0].lastname)
-          //  toast(arrperson[1].firstname.toString() + "+ " + arrperson[0].lastname)
 
         }
-        else  toast(responseGetPerson.errorBody().toString())
+        else  arrApiStatus.add(ApiStatus("getPersons","...Failed","received"))
     }
 
 
@@ -791,15 +786,14 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     }
 
     @SuppressLint("SetTextI18n")
-    private fun showDialogSync() {
+    fun showDialogSync() {
         val itemDialogSyncBinding = ItemDialogSyncBinding.inflate(layoutInflater)
         val builder = AlertDialog.Builder(this)
         itemDialogSyncBinding.dialogMsg.gravity = Gravity.START
-        for (item in arrApiStatus.indices){
-                itemDialogSyncBinding.dialogMsg.text = (Html.fromHtml( arrApiStatus[0].apiName + "  " + arrApiStatus[0].type + " "+ arrApiStatus[0].status + "<br/>").toString() +
-                        Html.fromHtml( arrApiStatus[item].apiName + "  " + arrApiStatus[item].type + " "+ arrApiStatus[item].status + "<br/>").toString())
+        for (item in 0 until arrApiStatus.size){
+            itemDialogSyncBinding.dialogMsg.text = arrApiStatus[0].apiName + "  " + arrApiStatus[0].type + arrApiStatus[0].status +"\n" +
+                    arrApiStatus[item].apiName + "  " + arrApiStatus[item].type + arrApiStatus[item].status +"\n"
         }
-
         itemDialogSyncBinding.dialogMsg.setTextColor(ContextCompat.getColor(this, R.color.gray_bg))
         builder.setView(itemDialogSyncBinding.root)
             .setPositiveButton(AppHelper.getRemoteString("ok",this)) { dialog, _ ->
@@ -808,7 +802,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         val d = builder.create()
         d.setCancelable(false)
         d.show()
-        //AppHelper.createDialogPositive(this@ActivitySessions,(Html.fromHtml(MyApplication.addSuccess + "  " + MyApplication.isDoneAdd + "<br/>" +  "<br/>" + MyApplication.showError + "  " + MyApplication.isDoneGet).toString()))
     }
 
 

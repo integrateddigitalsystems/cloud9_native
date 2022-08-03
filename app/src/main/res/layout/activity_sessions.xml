@@ -224,7 +224,7 @@
                 android:id="@+id/llSync"
                 android:layout_width="@dimen/width_150"
                 android:layout_height="@dimen/button_height"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_alignParentTop="true"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"

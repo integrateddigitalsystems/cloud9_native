@@ -7,6 +7,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Context.CONNECTIVITY_SERVICE
 import android.content.res.Configuration
+import android.graphics.Color
 import android.graphics.Typeface
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
@@ -182,7 +183,8 @@ class AppHelper {
             alert.show()
         }
 
-        fun createDialogError(activity: Activity, errorMessage: String,titleMessage:String) {
+        @SuppressLint("ResourceAsColor")
+        fun createDialogError(activity: Activity, errorMessage: String, titleMessage:String, isSuccess:Boolean) {
             val builder = android.app.AlertDialog.Builder(activity)
 
             val textView: TextView
@@ -198,7 +200,7 @@ class AppHelper {
             textView.text = errorMessage
             textViewtitle.text = titleMessage
 
-
+            if (isSuccess) textView.setTextColor(Color.parseColor("#009688"))
 
             llItem.setOnClickListener {
                 if (textView.visibility == View.VISIBLE)

@@ -165,26 +165,29 @@ class ActivityLogin : ActivityCompactBase() {
                             wtf("after startActivity ")
                             finish()
                             wtf("after finish ")
-                        } catch (e: Exception) {
-                            wtf("ex:: " + e.message)
-                           // errorDialog(this@ActivityLogin,e.toString())
+                        } catch (t: Throwable) {
+                            wtf("ex:: " + t.message)
+
                         }
 
                     } else {
                         this@ActivityLogin.runOnUiThread {
                           activityLoginBinding.progressBar.hide()
+                          //  AppHelper.createDialogError(this@ActivityLogin,response.errorBody().toString(),"performGoogleLogin",false)
                             toast(AppHelper.getRemoteString("login_failed",this@ActivityLogin))
                             try {
-                               // errorDialog(this@ActivityLogin, response.errorBody()!!.toString())
-                            } catch (e: Exception) {
+
+                            } catch (t: Throwable) {
+
+                                activityLoginBinding.progressBar.hide()
                             }
 
                         }
                     }
                 }
                 override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
-                    AppHelper.createDialogError(this@ActivityLogin,t.toString(),"performGoogleLogin")
-                    toast(AppHelper.getRemoteString("login_failed",this@ActivityLogin))
+                    AppHelper.createDialogError(this@ActivityLogin,t.toString(),"performGoogleLogin",false)
+                    activityLoginBinding.progressBar.hide()
                 }
             })
     }

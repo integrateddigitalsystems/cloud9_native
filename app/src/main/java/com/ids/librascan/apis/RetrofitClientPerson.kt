@@ -20,7 +20,7 @@ object RetrofitClientPerson {
 
             if (retrofit == null) {
                 retrofit = Retrofit.Builder()
-                    .baseUrl(MyApplication.BAS)
+                    .baseUrl(MyApplication.BASE_URL)
                     .client(requestHeader)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build()

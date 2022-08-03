@@ -39,13 +39,6 @@ object RetrofitClientCompanies {
             .build()
 
 
-    fun changeApiBaseUrl() {
-        retrofit = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(MyApplication.BAS)
-            .client(requestHeader)
-            .build()
-    }
 }
 
 
