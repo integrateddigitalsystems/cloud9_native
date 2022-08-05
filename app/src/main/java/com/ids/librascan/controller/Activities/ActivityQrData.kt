@@ -47,7 +47,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         init()
     }
     private fun init() {
-         AppHelper.setAllTexts(activityQrDataBinding.rootData, this)
+       //  AppHelper.setAllTexts(activityQrDataBinding.rootData, this)
          activityQrDataBinding.ivScan.setOnClickListener {
              checkCameraPermissions(view = activityQrDataBinding.btShowScan)
              MyApplication.isScan = false
@@ -86,7 +86,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
             else if (MyApplication.enableInsert && MyApplication.enableNewLine)
                 activityQrDataBinding.btShowScan.performClick()
 
-            else showAddBarcodeAlertDialog(this, false, QrCode(), this,true,SessionQrcode())
+            else showAddBarcodeAlertDialog( false, QrCode(), this,true,SessionQrcode())
             activityQrDataBinding.tvNameSession.text = MyApplication.sessionName
         }
 
@@ -124,7 +124,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         }
         else if (view.id == R.id.tVUpdate) {
             MyApplication.isScan = true
-            showAddBarcodeAlertDialog(this, true, arrFilter[position], this,false, SessionQrcode())
+            showAddBarcodeAlertDialog( true, arrFilter[position], this,false, SessionQrcode())
             adapterQrCode.notifyDataSetChanged()
         }
     }

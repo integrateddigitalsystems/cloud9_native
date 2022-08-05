@@ -87,7 +87,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 MyApplication.isFirst = false
             }
         }
-        AppHelper.setAllTexts(activitySessionsBinding.rootSessions, this)
+       // AppHelper.setAllTexts(activitySessionsBinding.rootSessions, this)
 
         activitySessionsBinding.llAddSession.setOnClickListener {
             showAddSessionAlertDialog()
@@ -95,7 +95,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
 
         activitySessionsBinding.llSync.setOnClickListener {
             arrApiStatus.clear()
-            createDialSyncAllData(AppHelper.getRemoteString("sync_all", this))
+            createDialSyncAllData(resources.getString(R.string.sync_all))
 
         }
         activitySessionsBinding.loading.show()
@@ -161,7 +161,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     private fun showAddSessionAlertDialog() {
         spinnerWarehouse.clear()
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
-        AppHelper.setAllTexts(popupSessionBinding.llPagerSession, this)
+        //AppHelper.setAllTexts(popupSessionBinding.llPagerSession, this)
 
         popupSessionBinding = PopupSessionBinding.inflate(layoutInflater)
 
@@ -230,7 +230,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 if (sessions != null) {
                     AppHelper.createDialogPositive(
                         this@ActivitySessions,
-                        AppHelper.getRemoteString("warehouse_session_exist", this@ActivitySessions)
+                        resources.getString(R.string.warehouse_session_exist)
                     )
                 } else {
                     QrCodeDatabase(application).getSessions().insertSessions(
@@ -253,7 +253,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                     arrSession.addAll(QrCodeDatabase(application).getSessions().getSessions())
                     activitySessionsBinding.tvNodata.hide()
                     adapterSession.notifyDataSetChanged()
-                    toast(AppHelper.getRemoteString("session_save", c))
+                    toast(resources.getString(R.string.session_save))
                 }
 
             }
@@ -264,19 +264,19 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         when {
             popupSessionBinding.tvName.text.toString().trim() == "" -> AppHelper.createDialogPositive(
                 c,
-                AppHelper.getRemoteString("error_filled_session_name", this)
+              resources.getString(R.string.error_filled_session_name)
             )
             popupSessionBinding.spWarehouse.isEmpty() -> AppHelper.createDialogPositive(
                 c,
-                AppHelper.getRemoteString("error_filled_warehouse", this)
+                resources.getString(R.string.error_filled_warehouse)
             )
             popupSessionBinding.tvDate.text.toString().trim() == "" -> AppHelper.createDialogPositive(
                 c,
-                AppHelper.getRemoteString("error_filled_date", this)
+                resources.getString(R.string.error_filled_date)
             )
             popupSessionBinding.tvDescription.text.toString().trim() == "" -> AppHelper.createDialogPositive(
                 c,
-                AppHelper.getRemoteString("error_filled_description", this)
+               resources.getString(R.string.error_filled_description)
             )
         }
     }
@@ -319,11 +319,11 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 activitySessionsBinding.btShowScan.performClick()
             else if (MyApplication.enableInsert && MyApplication.enableNewLine)
                 activitySessionsBinding.btShowScan.performClick()
-            else showAddBarcodeAlertDialog(this, false, QrCode(), this, true, arrSession[position])
+            else showAddBarcodeAlertDialog( false, QrCode(), this, true, arrSession[position])
             activitySessionsBinding.tvNameSession.text = arrSession[position].sessionName
         }
         if (view.id == R.id.llSync) {
-            createDialSync(AppHelper.getRemoteString("sync_data", this), position)
+            createDialSync(resources.getString(R.string.sync_data), position)
         }
         if (view.id == R.id.tVDelete) {
             createDialogDelete(position)
@@ -359,7 +359,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                     db!!.collection("Data")
                         .add(docData)
                         .addOnSuccessListener { documentReference ->
-                            toast(AppHelper.getRemoteString("success_added", this@ActivitySessions))
+                            toast(resources.getString(R.string.success_added))
                             wtf("DocumentSnapshot written with ID: ${documentReference.id}")
                         }
                         .addOnFailureListener { e ->
@@ -380,7 +380,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                     adapterSession.notifyDataSetChanged()
                     checkQrcodeData()
                 } else {
-                    toast(AppHelper.getRemoteString("added_failed", this@ActivitySessions))
+                    toast(resources.getString(R.string.added_failed))
                     activitySessionsBinding.loadingData.hide()
                 }
             } else toast(getString(R.string.check_internet_connection))
@@ -404,7 +404,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                     db!!.collection("Data")
                         .add(docData)
                         .addOnSuccessListener { documentReference ->
-                            toast(AppHelper.getRemoteString("success_added", this@ActivitySessions))
+                            toast(resources.getString(R.string.success_added))
                           //  arrApiStatus.add(ApiStatus("sendData","...done","send"))
                             wtf("DocumentSnapshot written with ID: ${documentReference.id}")
 
@@ -437,7 +437,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                     activitySessionsBinding.llSync.hide()
                     checkQrcodeData()
                 } else {
-                    toast(AppHelper.getRemoteString("added_failed", this@ActivitySessions))
+                    toast(resources.getString(R.string.added_failed))
                     arrApiStatus.add(ApiStatus("sendData","...NoData","send"))
                     activitySessionsBinding.loadingData.hide()
                 }
@@ -478,7 +478,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 activitySessionsBinding.rlBarcode.show()
                 barcodeReader.resumeScanning()
             } else {
-                toast(AppHelper.getRemoteString("camera_error", this))
+                toast(resources.getString(R.string.camera_error))
             }
         }
     }
@@ -515,7 +515,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     }
 
     override fun onCameraPermissionDenied() {
-        toast(AppHelper.getRemoteString("camera_error", this))
+        toast(resources.getString(R.string.camera_error))
     }
 
     override fun onBackPressed() {
@@ -531,14 +531,14 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
             .setMessage(message)
             .setCancelable(true)
-            .setPositiveButton(AppHelper.getRemoteString("yes", this))
+            .setPositiveButton(resources.getString(R.string.yes))
             { dialog, _ ->
                 launch {
                     addDataToFirestore(position)
                 }
                 dialog.cancel()
             }
-            .setNegativeButton(AppHelper.getRemoteString("no", this))
+            .setNegativeButton(resources.getString(R.string.no))
             { dialog, _ ->
                 dialog.cancel()
 
@@ -551,14 +551,14 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
             .setMessage(message)
             .setCancelable(true)
-            .setPositiveButton(AppHelper.getRemoteString("yes", this))
+            .setPositiveButton(resources.getString(R.string.yes))
             { dialog, _ ->
                launch {
                    apiRequest()
                 }
                 dialog.cancel()
             }
-            .setNegativeButton(AppHelper.getRemoteString("no", this))
+            .setNegativeButton(resources.getString(R.string.no))
             { dialog, _ ->
                 dialog.cancel()
 
@@ -570,8 +570,8 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     private fun createDialogLogout() {
         val builder = AlertDialog.Builder(this)
             .setCancelable(true)
-            .setMessage(AppHelper.getRemoteString("logout_message", this))
-            .setPositiveButton(AppHelper.getRemoteString("yes", this))
+            .setMessage(resources.getString(R.string.logout_message))
+            .setPositiveButton(resources.getString(R.string.yes))
             { dialog, _ ->
                 mGoogleSignInClient.signOut().addOnCompleteListener {
                     MyApplication.isLogin = false
@@ -581,7 +581,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 }
                 dialog.cancel()
             }
-            .setNegativeButton(AppHelper.getRemoteString("no", this))
+            .setNegativeButton(resources.getString(R.string.no))
             { dialog, _ ->
                 dialog.cancel()
             }
@@ -594,7 +594,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     private fun createDialogLanguage() {
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
         popupLanguageBinding = PopupLanguageBinding.inflate(layoutInflater)
-        AppHelper.setAllTexts(popupLanguageBinding.llLanguage, this)
+       // AppHelper.setAllTexts(popupLanguageBinding.llLanguage, this)
         builder.setView(popupLanguageBinding.root)
         if (MyApplication.languageCode == "en")
             popupLanguageBinding.rbEnglish.isChecked = true
@@ -711,14 +711,14 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
 
     private fun createDialogDelete(position: Int) {
         val builder = AlertDialog.Builder(this)
-            .setMessage(AppHelper.getRemoteString("delete_message_session", this))
+            .setMessage(resources.getString(R.string.delete_message_session))
             .setCancelable(true)
-            .setPositiveButton(AppHelper.getRemoteString("yes", this))
+            .setPositiveButton(resources.getString(R.string.yes))
             { dialog, _ ->
                 deleteSession(position)
                 dialog.cancel()
             }
-            .setNegativeButton(AppHelper.getRemoteString("no", this))
+            .setNegativeButton(resources.getString(R.string.no))
             { dialog, _ ->
                 dialog.cancel()
             }
@@ -761,7 +761,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         }
         itemDialogSyncBinding.dialogMsg.setTextColor(ContextCompat.getColor(this, R.color.gray_bg))
         builder.setView(itemDialogSyncBinding.root)
-            .setPositiveButton(AppHelper.getRemoteString("ok",this)) { dialog, _ ->
+            .setPositiveButton(resources.getString(R.string.ok)) { dialog, _ ->
                 dialog.dismiss()
             }
         val d = builder.create()

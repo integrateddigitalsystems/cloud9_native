@@ -13,6 +13,7 @@ import com.ids.librascan.model.FirebaseBaseUrlsArray
 import com.ids.librascan.model.FirebaseLocalizeArray
 import dev.b3nedikt.app_locale.AppLocale
 import dev.b3nedikt.restring.Restring
+import dev.b3nedikt.restring.Restring.stringRepository
 import dev.b3nedikt.reword.RewordInterceptor
 import dev.b3nedikt.viewpump.ViewPump
 import utils.AppConstants
@@ -80,7 +81,6 @@ class MyApplication : Application() {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
 
         ViewPump.init(RewordInterceptor)
-
         sharedPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(applicationContext)
         sharedPreferencesEditor = sharedPreferences.edit()
         instance =this

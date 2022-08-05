@@ -99,10 +99,6 @@ class ActivitySplash : ActivityCompactBase() {
     }
 
 
-
-
-
-
     private fun checkUpdate(){
         val currConfig: FirebaseUrlItems? = MyApplication.BASE_URLS!!.android.find {
             it.versionName == com.ids.librascan.BuildConfig.VERSION_NAME

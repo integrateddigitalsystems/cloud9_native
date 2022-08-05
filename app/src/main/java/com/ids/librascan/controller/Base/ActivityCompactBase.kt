@@ -45,9 +45,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     lateinit var barcodeAlertDialog: androidx.appcompat.app.AlertDialog
     private lateinit var job: Job
     lateinit var popupBarcodeBinding: PopupBarcodeBinding
-    private var spinnerUnits: ArrayList<Unit> = arrayListOf()
     var spinnerSessions: ArrayList<Sessions> = arrayListOf()
-    lateinit var spinnerAdapter: UnitsSpinnerAdapter
     lateinit var sessionsSpinnerAdapter: SessionsSpinnerAdapter
     lateinit var activitySessionsBinding: ActivitySessionsBinding
     lateinit var activityQrDataBinding: ActivityQrDataBinding
@@ -71,7 +69,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
 
     init {
         AppHelper.setLocal(this)
-        LocaleUtils.updateConfig(this)
+       //  LocaleUtils.updateConfig(this)
     }
 
 
@@ -83,12 +81,13 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         super.onCreate(savedInstanceState)
         AppHelper.setLocal(this)
         job =Job()
-
+        if (MyApplication.languageCode == AppConstants.LANG_ENGLISH) {
+            AppHelper.setLocalStrings(this, "en", Locale("en"))
+        } else if (MyApplication.languageCode == AppConstants.LANG_ARABIC) {
+            AppHelper.setLocalStrings(this, "ar", Locale("ar"))
+        }
 
     }
-
-
-
     override fun attachBaseContext(newBase: Context) {
         var newBase = newBase
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -104,7 +103,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         job.cancel()
     }
 
-    fun showAddBarcodeAlertDialog(c:Activity,isUpdate : Boolean,qrCode: QrCode,onInsUpdate: OnInsertUpdate,onScan : Boolean,sessions: SessionQrcode) {
+    fun showAddBarcodeAlertDialog(isUpdate : Boolean,qrCode: QrCode,onInsUpdate: OnInsertUpdate,onScan : Boolean,sessions: SessionQrcode) {
         spinnerSessions.clear()
         onInsertUpdate = onInsUpdate
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)

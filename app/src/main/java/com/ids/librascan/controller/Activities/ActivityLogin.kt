@@ -48,23 +48,7 @@ class ActivityLogin : ActivityCompactBase() {
 
     @SuppressLint("ResourceAsColor")
     private fun init() {
-        if (MyApplication.languageCode == AppConstants.LANG_ENGLISH) {
-            AppHelper.setLocalStrings(this, "en", Locale("en"))
-        } else if (MyApplication.languageCode == AppConstants.LANG_ARABIC) {
-            AppHelper.setLocalStrings(this, "ar", Locale("ar"))
-        }
-        activityLoginBinding.btApp.setOnClickListener {
-            if (MyApplication.languageCode == AppConstants.LANG_ENGLISH) {
-                AppHelper.setLocalStrings(this, "en", Locale("en"))
-
-            } else if (MyApplication.languageCode == AppConstants.LANG_ARABIC) {
-                AppHelper.setLocalStrings(this, "ar", Locale("ar"))
-
-            }
-        }
-       // AppHelper.setAllTexts(activityLoginBinding.rootLogin, this)
         configureGoogleSignIn()
-
         activityLoginBinding.btLogin.setOnClickListener {
             if (MyApplication.clientKey == "") {
                 startActivity(Intent(this, QrCodeActivity::class.java))

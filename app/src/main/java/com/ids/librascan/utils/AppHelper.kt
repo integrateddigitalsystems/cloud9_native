@@ -12,8 +12,6 @@ import android.graphics.Typeface
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -23,13 +21,12 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
-import com.ids.librascan.model.AppLocaleLocaleProvider
-import dev.b3nedikt.app_locale.AppLocale
+import com.ids.librascan.model.MemoryStringRepository
 import dev.b3nedikt.restring.Restring
+import dev.b3nedikt.restring.toMutableRepository
 import dev.b3nedikt.reword.Reword
 import utils.*
 import java.io.IOException
-import java.nio.charset.StandardCharsets
 import java.util.*
 
 
@@ -89,11 +86,12 @@ class AppHelper {
                     }
                 }
 
+                Restring.stringRepository.toMutableRepository().strings.clear()
                 Restring.putStrings(locale, myStringsMap)
                 Restring.locale = locale
                 Log.wtf("text_value",activity.resources.getString(R.string.scan))
 
-                //updateView(activity)
+                updateView(activity)
             } catch (exception: IOException) {
                 wtf( exception.message.toString() )
             }}

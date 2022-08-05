@@ -19,7 +19,7 @@ class ActivitySettings : AppCompatActivity() {
     }
 
     fun init() {
-        AppHelper.setAllTexts(activitySettingsBinding.rootSettings, this)
+      //  AppHelper.setAllTexts(activitySettingsBinding.rootSettings, this)
         if (MyApplication.enableInsert) activitySettingsBinding.tgEnable.isChecked = true
         if (MyApplication.enableNewLine) activitySettingsBinding.tgNewLine.isChecked = true
         activitySettingsBinding.tvEnable.typeface = AppHelper.getTypeFace(this)

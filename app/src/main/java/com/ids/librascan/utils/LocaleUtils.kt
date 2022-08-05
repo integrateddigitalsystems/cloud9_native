@@ -16,6 +16,7 @@ class LocaleUtils {
             if (sLocale != null) {
                 Locale.setDefault(sLocale)
             }
+
         }
 
         fun updateConfig(wrapper: ContextThemeWrapper) {
