@@ -21,7 +21,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
-import com.ids.librascan.model.MemoryStringRepository
 import dev.b3nedikt.restring.Restring
 import dev.b3nedikt.restring.toMutableRepository
 import dev.b3nedikt.reword.Reword
