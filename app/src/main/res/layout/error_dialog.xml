@@ -1,19 +1,20 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
-
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
             android:id="@+id/llItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-        <com.ids.librascan.custom.CustomTextViewMedium
+            <com.ids.librascan.custom.CustomTextViewMedium
                 android:text="Message"
                 android:layout_width="0dp"
-                 android:id="@+id/tvTitle"
+                android:id="@+id/tvTitle"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center_vertical"
@@ -25,7 +26,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/header_font"/>
 
-        <ImageView
+            <ImageView
                 android:src="@drawable/icon_spinner"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="@dimen/big_margin_padding"
@@ -33,10 +34,10 @@
                 android:tint="@color/black"
                 android:layout_width="@dimen/list_icon_width_height"
                 android:layout_height="@dimen/list_icon_width_height"
-            tools:ignore="UseAppTint" />
-    </LinearLayout>
+                tools:ignore="UseAppTint" />
+        </LinearLayout>
 
-    <com.ids.librascan.custom.CustomTextViewBold
+        <com.ids.librascan.custom.CustomTextViewBold
             android:id="@+id/tvDetails"
             android:visibility="gone"
             android:layout_width="match_parent"
@@ -50,4 +51,5 @@
             android:textColor="@color/red"
             android:textSize="@dimen/header_font"/>
 
-</LinearLayout>
+    </LinearLayout>
+</layout>

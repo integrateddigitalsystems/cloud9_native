@@ -5,22 +5,18 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.Application
 import android.app.DatePickerDialog
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Html
 import android.text.Spannable
 import android.text.SpannableString
-import android.util.Log
 import android.util.SparseArray
 import android.view.Gravity
 import android.view.Menu
@@ -36,15 +32,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ids.librascan.R
 import com.ids.librascan.apis.RetrofitClient
-import com.ids.librascan.apis.RetrofitClientCompanies
-import com.ids.librascan.apis.RetrofitClientCompanies.client
-import com.ids.librascan.apis.RetrofitClientPerson
 import com.ids.librascan.apis.RetrofitInterface
 import com.ids.librascan.controller.Adapters.AdapterSession
 import com.ids.librascan.controller.Adapters.OnInsertUpdate.OnInsertUpdate
@@ -54,18 +45,11 @@ import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.custom.CustomTypeFaceSpan
 import com.ids.librascan.databinding.*
 import com.ids.librascan.db.*
-import com.ids.librascan.model.*
 import com.ids.librascan.utils.AppHelper
 import info.bideens.barcode.BarcodeReader
 import kotlinx.coroutines.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.HttpException
-import retrofit2.Response
 import utils.*
 import java.util.*
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 
 
 class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertUpdate,
@@ -78,8 +62,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     lateinit var warehouseSpinnerAdapter: WarehouseSpinnerAdapter
     lateinit var adapterSession: AdapterSession
     private var arrSession = ArrayList<SessionQrcode>()
-    private var arrCompanies = ArrayList<Companies>()
-    private var arrperson = ArrayList<Person>()
     private var arrApiStatus = ArrayList<ApiStatus>()
     var selectedWarehouse = Warehouse()
     lateinit var barcodeReader: BarcodeReader
@@ -96,6 +78,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     }
     @SuppressLint("ResourceType")
     fun init() {
+
         arrApiStatus.clear()
         db = FirebaseFirestore.getInstance()
         if (MyApplication.isFirst) {
@@ -458,7 +441,11 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                     arrApiStatus.add(ApiStatus("sendData","...NoData","send"))
                     activitySessionsBinding.loadingData.hide()
                 }
-            } else toast(getString(R.string.check_internet_connection))
+            } else{
+                toast(getString(R.string.check_internet_connection))
+                arrApiStatus.add(ApiStatus("sendData","\n"+getString(R.string.check_internet_connection),"send"))
+              arrApiStatus.add(ApiStatus("getWarehouse","\n"+getString(R.string.check_internet_connection),"received"))
+          }
         }
     }
 
@@ -672,7 +659,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         try {
             val responseWarehouse =
                 RetrofitClient.client?.create(RetrofitInterface::class.java)!!.getWarehouses()
-            if (responseWarehouse.isSuccessful) {
+            if (responseWarehouse.isSuccessful && responseWarehouse.body()!!.wareHouses!!.size > 0) {
                 arrApiStatus.add(ApiStatus("getWarehouse","...Done","received"))
                 for (item in responseWarehouse.body()!!.wareHouses!!) {
                     QrCodeDatabase(application).getWarehouse().insertWarehouse(Warehouse(item.id!!, item.name.toString()))
@@ -692,28 +679,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             AppHelper.createDialogError(this,t.toString(),"getWarehouse",false)
         }
 
-    }
-
-    private suspend fun getCompanies() {
-        val responseCompanies = RetrofitClientCompanies.client?.create(RetrofitInterface::class.java)!!.getCompanies()
-        if (responseCompanies.isSuccessful) {
-           arrApiStatus.add(ApiStatus("getCompanies","...done","received"))
-            arrCompanies.clear()
-            arrCompanies.addAll(responseCompanies.body()!!.companies!!)
-        }
-        else  arrApiStatus.add(ApiStatus("getCompanies","...Failed","received"))
-    }
-
-
-   private suspend fun getPersons() {
-        val responseGetPerson = RetrofitClientPerson.client?.create(RetrofitInterface::class.java)!!.getPerson()
-        if (responseGetPerson.isSuccessful) {
-            arrApiStatus.add(ApiStatus("getPersons","...done","received"))
-            arrperson.clear()
-            arrperson.addAll(responseGetPerson.body()!!.person!!)
-
-        }
-        else  arrApiStatus.add(ApiStatus("getPersons","...Failed","received"))
     }
 
 

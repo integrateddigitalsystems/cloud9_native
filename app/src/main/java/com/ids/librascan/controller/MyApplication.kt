@@ -1,19 +1,23 @@
 package com.ids.librascan.controller
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Typeface
+import android.content.res.Resources
 import android.os.Build
-import android.preference.PreferenceManager
-import androidx.fragment.app.FragmentManager
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.auth.FirebaseAuth
+import androidx.appcompat.app.AppCompatDelegate
 import com.ids.librascan.apis.WifiService
+import com.ids.librascan.model.AppLocaleLocaleProvider
 import com.ids.librascan.model.FirebaseBaseUrlsArray
 import com.ids.librascan.model.FirebaseLocalizeArray
+import dev.b3nedikt.app_locale.AppLocale
+import dev.b3nedikt.restring.Restring
+import dev.b3nedikt.reword.RewordInterceptor
+import dev.b3nedikt.viewpump.ViewPump
 import utils.AppConstants
+import utils.AppConstants.LOCALE_ARABIC
+
 import java.util.*
 
 class MyApplication : Application() {
@@ -26,6 +30,7 @@ class MyApplication : Application() {
         var BAS = "https://fakerapi.it"
         var BASE_URLS: FirebaseBaseUrlsArray?= null
         var localizeArray: FirebaseLocalizeArray?= null
+        @SuppressLint("StaticFieldLeak")
         var showLogs: Boolean = true
         var clientKey: String
             get() = sharedPreferences.getString(AppConstants.CLIENT_KEY, "")!!
@@ -63,14 +68,27 @@ class MyApplication : Application() {
             get() = sharedPreferences.getString(AppConstants.SESSION_NAME, "")!!
             set(value) { sharedPreferencesEditor.putString(AppConstants.SESSION_NAME, value).apply() }
 
+
+
+
     }
     override fun onCreate() {
         super.onCreate()
+        AppLocale.supportedLocales = listOf(Locale.ENGLISH, LOCALE_ARABIC)
+        Restring.init(this)
+        Restring.localeProvider = AppLocaleLocaleProvider
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
+
+        ViewPump.init(RewordInterceptor)
+
         sharedPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(applicationContext)
         sharedPreferencesEditor = sharedPreferences.edit()
         instance =this
         setupServices()
+    }
 
+    override fun getResources(): Resources {
+        return Restring.wrapResources(applicationContext, super.getResources())
     }
 
     override fun attachBaseContext(newBase: Context) {

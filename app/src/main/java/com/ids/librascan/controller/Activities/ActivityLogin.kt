@@ -26,10 +26,12 @@ import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityLoginBinding
 import com.ids.librascan.model.ResponseLogin
 import com.ids.librascan.utils.AppHelper
+import dev.b3nedikt.reword.Reword
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import utils.*
+import java.util.*
 
 class ActivityLogin : ActivityCompactBase() {
     lateinit var activityLoginBinding: ActivityLoginBinding
@@ -46,7 +48,21 @@ class ActivityLogin : ActivityCompactBase() {
 
     @SuppressLint("ResourceAsColor")
     private fun init() {
-        AppHelper.setAllTexts(activityLoginBinding.rootLogin, this)
+        if (MyApplication.languageCode == AppConstants.LANG_ENGLISH) {
+            AppHelper.setLocalStrings(this, "en", Locale("en"))
+        } else if (MyApplication.languageCode == AppConstants.LANG_ARABIC) {
+            AppHelper.setLocalStrings(this, "ar", Locale("ar"))
+        }
+        activityLoginBinding.btApp.setOnClickListener {
+            if (MyApplication.languageCode == AppConstants.LANG_ENGLISH) {
+                AppHelper.setLocalStrings(this, "en", Locale("en"))
+
+            } else if (MyApplication.languageCode == AppConstants.LANG_ARABIC) {
+                AppHelper.setLocalStrings(this, "ar", Locale("ar"))
+
+            }
+        }
+       // AppHelper.setAllTexts(activityLoginBinding.rootLogin, this)
         configureGoogleSignIn()
 
         activityLoginBinding.btLogin.setOnClickListener {

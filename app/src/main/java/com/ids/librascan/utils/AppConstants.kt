@@ -1,13 +1,16 @@
 package utils
 
+import java.util.*
+
 
 object AppConstants {
 
     const val LANG_ENGLISH = "en"
     const val LANG_ARABIC = "ar"
-
+    val LOCALE_ARABIC= Locale("ar")
     const val SELECTED_LANGUAGE = "key_language_code"
     const val FIREBASE_LOCALIZE = "localize_msg"
+    const val FIREBASE = "local_key"
     const val FIREBASE_URL_LIST = "configuration"
     const val IS_LOGIN = "is_login"
     const val IS_FIRST = "is_first"

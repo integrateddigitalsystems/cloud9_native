@@ -93,7 +93,6 @@
                             android:layout_height="wrap_content"
                             android:padding="@dimen/small_margin_padding"
                             android:text="@string/sessions"
-                            android:tag="sessions"
                             android:textColor="@color/colorAccent"
                             android:textSize="@dimen/font"/>
 
@@ -176,12 +175,12 @@
                                 android:id="@+id/tvCode"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
                                 android:layout_toStartOf="@+id/ivScan"
                                 android:background="@android:color/transparent"
                                 android:focusable="true"
                                 android:gravity="start|center"
                                 android:hint="@string/name_code"
-                                android:layout_centerVertical="true"
                                 android:importantForAutofill="yes"
                                 android:maxLines="3"
                                 android:minHeight="@dimen/height_40"

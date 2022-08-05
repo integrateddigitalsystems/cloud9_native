@@ -78,7 +78,6 @@
             android:layout_width="@dimen/with_80"
             android:layout_height="@dimen/height_40"
             android:background="@drawable/block_white_border_gray"
-            android:id="@+id/btScan"
             android:layout_gravity="center"
             android:gravity="center"
             android:orientation="vertical">
@@ -87,8 +86,30 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
+                    android:id="@+id/btScan"
                     android:text="@string/scan"
                     android:tag="scan"
+                    android:textColor="@color/black"
+                    android:textDirection="locale"
+                    android:textSize="@dimen/font" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="@dimen/with_80"
+            android:layout_height="@dimen/height_40"
+            android:layout_marginTop="@dimen/size_20"
+            android:background="@drawable/block_white_border_gray"
+            android:id="@+id/btApp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+                <com.ids.librascan.custom.CustomTextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/text_greeting"
                     android:textColor="@color/black"
                     android:textDirection="locale"
                     android:textSize="@dimen/font" />

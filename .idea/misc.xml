@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/m.chhadi/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/auto_complete_list.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/m.chhadi/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_spinner_dropdown_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/m.chhadi/Desktop/LibraScan/app/src/main/res/drawable-v24/bottom_rounded_green.xml" value="0.243" />
         <entry key="..\:/Users/m.chhadi/Desktop/LibraScan/app/src/main/res/drawable-v24/green_circle.xml" value="0.254" />
@@ -50,7 +51,11 @@
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/activity_settings.xml" value="0.23731884057971014" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/activity_splash.xml" value="0.264" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/error_dialog.xml" value="0.23731884057971014" />
+        <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/item.xml" value="0.253125" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/item_dialog.xml" value="0.23731884057971014" />
+        <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/item_dialog_error.xml" value="0.253125" />
+        <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/item_dialog_new.xml" value="0.253125" />
+        <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/item_dialog_new1.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/item_dialog_sync.xml" value="0.253125" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/item_drop_down.xml" value="0.1" />
         <entry key="..\:/Users/m.chhadi/Documents/GitHub/LibraScan/app/src/main/res/layout/item_qr_data.xml" value="0.176" />

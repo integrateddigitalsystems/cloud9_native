@@ -12,21 +12,30 @@ import android.graphics.Typeface
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
 import android.os.Build
-import android.text.Html
-import android.text.Spanned
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
+import com.ids.librascan.model.AppLocaleLocaleProvider
+import dev.b3nedikt.app_locale.AppLocale
+import dev.b3nedikt.restring.Restring
+import dev.b3nedikt.reword.Reword
 import utils.*
+import java.io.IOException
+import java.nio.charset.StandardCharsets
 import java.util.*
 
 
 class AppHelper {
     companion object {
+
         fun changeLanguage(context: Context, language: String) {
             when (language) {
                 AppConstants.LANG_ARABIC -> Locale.setDefault(Locale("ar"))
@@ -58,15 +67,44 @@ class AppHelper {
 
         }
 
-             fun setLocal(context: Context) {
+             fun setLocal(context: Activity) {
 
             if (MyApplication.languageCode == AppConstants.LANG_ENGLISH) {
-                LocaleUtils.setLocale(Locale("en"))
-            } else if (MyApplication.languageCode == AppConstants.LANG_ARABIC) {
+                 LocaleUtils.setLocale(Locale("en"))
+           } else if (MyApplication.languageCode == AppConstants.LANG_ARABIC) {
                 LocaleUtils.setLocale(Locale("ar"))
             }
 
         }
+
+        @RequiresApi(Build.VERSION_CODES.KITKAT)
+        fun setLocalStrings(activity: Activity,language: String,locale: Locale) {
+            if(MyApplication.localizeArray != null){
+            try {
+                val myStringsMap: HashMap<String, String> = HashMap()
+                MyApplication.localizeArray!!.messages!!.forEachIndexed { index, firebaseLocalizeItem ->
+                    run {
+                        myStringsMap[MyApplication.localizeArray!!.messages!![index].localize_Key!!] =
+                            if(language == "en") MyApplication.localizeArray!!.messages!![index].message_en!! else MyApplication.localizeArray!!.messages!![index].message_ar!!
+                    }
+                }
+
+                Restring.putStrings(locale, myStringsMap)
+                Restring.locale = locale
+                Log.wtf("text_value",activity.resources.getString(R.string.scan))
+
+                //updateView(activity)
+            } catch (exception: IOException) {
+                wtf( exception.message.toString() )
+            }}
+
+        }
+
+        private fun updateView(activity: Activity) {
+            val rootView: View = activity.window.decorView.findViewById(android.R.id.content)
+            Reword.reword(rootView)
+        }
+
 
         fun setAllTexts(v: View?, context: Context) {
             if (MyApplication.localizeArray != null) {
@@ -186,7 +224,6 @@ class AppHelper {
         @SuppressLint("ResourceAsColor")
         fun createDialogError(activity: Activity, errorMessage: String, titleMessage:String, isSuccess:Boolean) {
             val builder = android.app.AlertDialog.Builder(activity)
-
             val textView: TextView
             val llItem: LinearLayout
             val textViewtitle: TextView
@@ -225,19 +262,11 @@ class AppHelper {
         }
 
         fun handleCrashes(context: Activity) {
-            Thread.getDefaultUncaughtExceptionHandler()
-            Thread.setDefaultUncaughtExceptionHandler(MyExceptionHandler(context))
+ /*           Thread.getDefaultUncaughtExceptionHandler()
+            Thread.setDefaultUncaughtExceptionHandler(MyExceptionHandler(context))*/
         }
 
     }
 
-    fun htmlString(string: String): Spanned {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return Html.fromHtml(string, Html.FROM_HTML_MODE_LEGACY)
-        } else {
-            return Html.fromHtml(string)
-        }
-    }
 
 }

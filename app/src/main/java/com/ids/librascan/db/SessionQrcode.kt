@@ -14,6 +14,5 @@ data class SessionQrcode (
     var quantity  :Int = 0,
     var sessionId : Int = 0,
     var idQrcode: Int =0
-){
+)
 
-}

@@ -83,4 +83,6 @@
     <string name="session_save">Session Saved</string>
     <string name="delete_message_session">Do you delete this Session!</string>
     <string name="sync_data">Do you want sync this data</string>
+    <string name="text_greeting">new</string>
+
 </resources>

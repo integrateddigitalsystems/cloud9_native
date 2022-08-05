@@ -12,6 +12,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log.wtf
 import android.view.Gravity
+import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
@@ -24,12 +25,15 @@ import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivitySplashBinding
 import com.ids.librascan.databinding.ItemDialogBinding
-import com.ids.librascan.model.FirebaseBaseUrlsArray
-import com.ids.librascan.model.FirebaseLocalizeArray
-import com.ids.librascan.model.FirebaseUrlItems
+import com.ids.librascan.model.*
 import com.ids.librascan.utils.AppHelper
+import dev.b3nedikt.restring.Restring
+import dev.b3nedikt.reword.Reword.reword
 import utils.AppConstants
 import utils.toast
+import java.io.IOException
+import java.nio.charset.StandardCharsets
+import java.util.*
 
 class ActivitySplash : ActivityCompactBase() {
     private lateinit var activitySplashBinding: ActivitySplashBinding
@@ -41,6 +45,9 @@ class ActivitySplash : ActivityCompactBase() {
          super.onCreate(savedInstanceState)
          activitySplashBinding = ActivitySplashBinding.inflate(layoutInflater)
          setContentView(activitySplashBinding.root)
+
+         val rootView: View = window.decorView.findViewById(android.R.id.content)
+         reword(rootView)
          getFirebasePrefs()
     }
     private fun getFirebasePrefs() {
@@ -67,7 +74,8 @@ class ActivitySplash : ActivityCompactBase() {
                             mFirebaseRemoteConfig!!.getString(AppConstants.FIREBASE_LOCALIZE),
                             FirebaseLocalizeArray::class.java
                         )
-                        AppHelper.setAllTexts(activitySplashBinding.rootLayout, this)
+                        wtf("key",mFirebaseRemoteConfig!!.getString(AppConstants.FIREBASE_LOCALIZE))
+
                       checkUpdate()
                     } catch (e: Exception) {
                         wtf("exception_firebase", e.toString())
@@ -89,6 +97,12 @@ class ActivitySplash : ActivityCompactBase() {
 
 
     }
+
+
+
+
+
+
     private fun checkUpdate(){
         val currConfig: FirebaseUrlItems? = MyApplication.BASE_URLS!!.android.find {
             it.versionName == com.ids.librascan.BuildConfig.VERSION_NAME

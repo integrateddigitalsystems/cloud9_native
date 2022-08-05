@@ -23,12 +23,4 @@ interface RetrofitInterface {
    suspend fun getWarehouses(
     ): Response<ResponseGetWareHouse>
 
-    @GET("/api/v1/companies")
-    suspend fun getCompanies(
-    ): Response<ResponseGetCompanies>
-
-    @GET("/api/v1/persons")
-    suspend fun getPerson(
-    ): Response<ResponseGetPerson>
-
 }

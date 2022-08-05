@@ -12,7 +12,10 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
 import android.widget.LinearLayout
+import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.ViewPumpAppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.view.isNotEmpty
 import androidx.core.view.updateLayoutParams
@@ -26,6 +29,8 @@ import com.ids.librascan.db.*
 import com.ids.librascan.db.Unit
 import com.ids.librascan.utils.AppHelper
 import com.ids.librascan.utils.AppHelper.Companion.getRemoteString
+import dev.b3nedikt.restring.Restring
+import dev.b3nedikt.restring.Restring.wrapContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -51,11 +56,24 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     var selectedSession = Sessions()
     lateinit var onInsertUpdate: OnInsertUpdate
     var isShow : Boolean = false
+    private val appCompatDelegate: AppCompatDelegate by lazy {
+        ViewPumpAppCompatDelegate(
+            baseDelegate = super.getDelegate(),
+            baseContext = this,
+            wrapContext = Restring::wrapContext
+        )
+    }
+
+    override fun getDelegate(): AppCompatDelegate {
+        return appCompatDelegate
+    }
+
 
     init {
         AppHelper.setLocal(this)
         LocaleUtils.updateConfig(this)
     }
+
 
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
@@ -65,7 +83,11 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         super.onCreate(savedInstanceState)
         AppHelper.setLocal(this)
         job =Job()
+
+
     }
+
+
 
     override fun attachBaseContext(newBase: Context) {
         var newBase = newBase
