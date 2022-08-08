@@ -47,7 +47,7 @@
     <dimen name="margin_start_end">18dp</dimen>
     <dimen name="size_18">18sp</dimen>
     <dimen name="margin_big">520dp</dimen>
-    <dimen name="min_height">80dp</dimen>
+    <dimen name="min_height">85dp</dimen>
     <dimen name="size_14">14sp</dimen>
     <dimen name="padding_10">10dp</dimen>
     <dimen name="with_toggle">45dp</dimen>

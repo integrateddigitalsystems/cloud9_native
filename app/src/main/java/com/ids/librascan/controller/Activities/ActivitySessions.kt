@@ -78,7 +78,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     }
     @SuppressLint("ResourceType")
     fun init() {
-
         arrApiStatus.clear()
         db = FirebaseFirestore.getInstance()
         if (MyApplication.isFirst) {

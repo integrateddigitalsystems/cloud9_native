@@ -82,4 +82,5 @@
     <string name="delete_message_session">"هل تريد ازالة هذا التقرير؟</string>
     <string name="sync_data">هل تريد ترحيل هذه المعلومات</string>
     <string name="added_failed">لرجاء ادخال المعلومات لترحيلها</string>
+    <string name="update_available">التحديث جاهز</string>
 </resources>

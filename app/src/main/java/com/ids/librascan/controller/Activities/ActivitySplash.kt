@@ -46,8 +46,6 @@ class ActivitySplash : ActivityCompactBase() {
          activitySplashBinding = ActivitySplashBinding.inflate(layoutInflater)
          setContentView(activitySplashBinding.root)
 
-         val rootView: View = window.decorView.findViewById(android.R.id.content)
-         reword(rootView)
          getFirebasePrefs()
     }
     private fun getFirebasePrefs() {
@@ -121,12 +119,12 @@ class ActivitySplash : ActivityCompactBase() {
         val builder = AlertDialog.Builder(activity)
         val itemDialogBinding = ItemDialogBinding.inflate(layoutInflater)
         itemDialogBinding.dialogMsg.gravity = Gravity.CENTER
-        itemDialogBinding.dialogMsg.text = AppHelper.getRemoteString("update_message",this)
-        builder.setTitle(AppHelper.getRemoteString("update_available",this))
+        itemDialogBinding.dialogMsg.text = resources.getString(R.string.update_message)
+        builder.setTitle(resources.getString(R.string.update_available))
         builder.setCancelable(false)
 
         builder.setView(itemDialogBinding.root)
-            .setNegativeButton(AppHelper.getRemoteString("update",this)) { dialog, _ ->
+            .setNegativeButton(resources.getString(R.string.update)) { dialog, _ ->
                 dialog.dismiss()
                 val appPackageName = activity.packageName
                 try {
@@ -163,11 +161,11 @@ class ActivitySplash : ActivityCompactBase() {
         val itemDialogBinding = ItemDialogBinding.inflate(layoutInflater)
         val builder = AlertDialog.Builder(activity)
         itemDialogBinding.dialogMsg.gravity = Gravity.CENTER
-        itemDialogBinding.dialogMsg.text = AppHelper.getRemoteString("update_message",this)
-        builder.setTitle(AppHelper.getRemoteString("update_available",this))
+        itemDialogBinding.dialogMsg.text = resources.getString(R.string.update_message)
+        builder.setTitle(resources.getString(R.string.update_available))
 
         builder.setView(itemDialogBinding.root)
-            .setNegativeButton(AppHelper.getRemoteString("update",this)) { dialog, _ ->
+            .setNegativeButton(resources.getString(R.string.update)) { dialog, _ ->
                 dialog.dismiss()
                 val appPackageName = activity.packageName
                 try {
@@ -180,7 +178,7 @@ class ActivitySplash : ActivityCompactBase() {
 
                 }
             }
-            .setPositiveButton(AppHelper.getRemoteString("cancel",this)) { dialog, _ ->
+            .setPositiveButton(resources.getString(R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
                 goLogin()
             }

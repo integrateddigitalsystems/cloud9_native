@@ -1,5 +1,6 @@
 package com.ids.librascan.controller.Activities
 
+import Base.ActivityCompactBase
 import android.os.Bundle
 import android.view.View
 import android.widget.ToggleButton
@@ -9,7 +10,7 @@ import com.ids.librascan.databinding.ActivitySettingsBinding
 import com.ids.librascan.databinding.ToolbarBinding
 import com.ids.librascan.utils.AppHelper
 
-class ActivitySettings : AppCompatActivity() {
+class ActivitySettings : ActivityCompactBase() {
     lateinit var activitySettingsBinding: ActivitySettingsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -41,25 +41,11 @@ class AppHelper {
                 }
             }
 
-            val configuration = Configuration()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                configuration.setLocale(Locale.getDefault())
-                configuration.setLayoutDirection(Locale.getDefault())
-
-            } else
-                configuration.locale = Locale.getDefault()
-
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                context.createConfigurationContext(configuration)
-            } else {
-                context.resources.updateConfiguration(
-                    configuration,
-                    context.resources.displayMetrics
-                )
-            }
             MyApplication.languageCode = language
-
+            val configuration = Configuration()
+            configuration.setLocale(Locale.getDefault())
+            configuration.setLayoutDirection(Locale.getDefault())
+            context.createConfigurationContext(configuration)
 
         }
 
@@ -88,13 +74,12 @@ class AppHelper {
                 Restring.stringRepository.toMutableRepository().strings.clear()
                 Restring.putStrings(locale, myStringsMap)
                 Restring.locale = locale
-                Log.wtf("text_value",activity.resources.getString(R.string.scan))
 
                 updateView(activity)
             } catch (exception: IOException) {
                 wtf( exception.message.toString() )
-            }}
-
+            }
+            }
         }
 
         private fun updateView(activity: Activity) {

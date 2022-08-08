@@ -51,7 +51,7 @@ class ActivityLogin : ActivityCompactBase() {
         configureGoogleSignIn()
         activityLoginBinding.btLogin.setOnClickListener {
             if (MyApplication.clientKey == "") {
-                startActivity(Intent(this, QrCodeActivity::class.java))
+                startActivity(Intent(this, ActivitySessions::class.java))
             } else {
                 mGoogleSignInClient.signOut()
                 signInGoogle()
@@ -120,25 +120,6 @@ class ActivityLogin : ActivityCompactBase() {
     }
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-        wtf("id token: " + acct.idToken)
-        wtf("acct id : " + acct.id)
-        wtf("displayName: " + acct.displayName)
-        wtf("email: " + acct.email)
-        wtf("photoUrl: " + acct.photoUrl)
-        wtf("serverAuthCode: " + acct.serverAuthCode)
-        wtf("isExpired: " + acct.isExpired)
-        wtf("account : " + acct)
-        wtf("getId : " + acct.id)
-        wtf("getIdToken : " + acct.idToken)
-        wtf("getEmail : " + acct.email)
-        wtf("getDisplayName : " + acct.displayName)
-        wtf("getPhotoUrl : " + acct.photoUrl)
-        wtf("getServerAuthCode : " + acct.serverAuthCode)
-        wtf("isExpired : " + acct.isExpired)
-        wtf("getObfuscatedIdentifier : " + "")
-        wtf("getGivenName : " + acct.givenName)
-        wtf("getFamilyName : " + acct.familyName)
         performGoogleLogin(acct.idToken!!, acct.displayName!!)
     }
 
@@ -174,7 +155,7 @@ class ActivityLogin : ActivityCompactBase() {
                         this@ActivityLogin.runOnUiThread {
                           activityLoginBinding.progressBar.hide()
                           //  AppHelper.createDialogError(this@ActivityLogin,response.errorBody().toString(),"performGoogleLogin",false)
-                            toast(AppHelper.getRemoteString("login_failed",this@ActivityLogin))
+                            toast(resources.getString(R.string.login_failed))
                             try {
 
                             } catch (t: Throwable) {

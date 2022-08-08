@@ -42,6 +42,7 @@
 
         </LinearLayout>
 
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_100"
@@ -50,28 +51,47 @@
             android:layout_marginTop="@dimen/big_margin"/>
 
 
-        <com.ids.librascan.custom.CustomTextViewMedium
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/small_margin_padding"
-            android:text="@string/signIn"
-            android:tag="signIn"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="@dimen/size_20"
-            android:textColor="@color/white"
-            tools:ignore="HardcodedText" />
+                <LinearLayout
+                    android:layout_width="@dimen/height_100"
+                    android:layout_height="@dimen/height_40"
+                    android:background="@drawable/block_white_border_gray"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:orientation="vertical">
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/btLogin"
-            android:layout_margin="@dimen/big_margin_padding"
-            android:text="@string/signIn"
-            android:tag="signIn"
-            android:textAlignment="center"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/height_50" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="@dimen/size_20"
+                                    android:layout_height="@dimen/size_20"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="@dimen/padding_5"
+                                    android:layout_marginTop="@dimen/big_margin"
+                                    android:layout_marginEnd="@dimen/padding_5"
+                                    android:src="@drawable/google" />
+
+                                <com.ids.librascan.custom.CustomTextViewBold
+                                    android:id="@+id/btLogin"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:layout_marginStart="@dimen/size_20"
+                                    android:padding="@dimen/small_margin_padding"
+                                    android:text="@string/signIn"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/font"
+                                    tools:ignore="HardcodedText" />
+
+                        </RelativeLayout>
+                </LinearLayout>
+
+
 
 
         <LinearLayout
@@ -79,6 +99,7 @@
             android:layout_height="@dimen/height_40"
             android:background="@drawable/block_white_border_gray"
             android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_30"
             android:gravity="center"
             android:orientation="vertical">
                 <com.ids.librascan.custom.CustomTextViewBold
@@ -94,26 +115,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="@dimen/with_80"
-            android:layout_height="@dimen/height_40"
-            android:layout_marginTop="@dimen/size_20"
-            android:background="@drawable/block_white_border_gray"
-            android:id="@+id/btApp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical">
-                <com.ids.librascan.custom.CustomTextViewBold
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="@string/sessions"
-                    android:textColor="@color/black"
-                    android:textDirection="locale"
-                    android:textSize="@dimen/font" />
-
-        </LinearLayout>
 
         <ProgressBar
             android:id="@+id/progressBar"

@@ -69,7 +69,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
 
     init {
         AppHelper.setLocal(this)
-       //  LocaleUtils.updateConfig(this)
+        //LocaleUtils.updateConfig(this)
     }
 
 
@@ -108,7 +108,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         onInsertUpdate = onInsUpdate
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
         popupBarcodeBinding = PopupBarcodeBinding.inflate(layoutInflater)
-        AppHelper.setAllTexts(popupBarcodeBinding.llPagerItem, this)
+       // AppHelper.setAllTexts(popupBarcodeBinding.llPagerItem, this)
         sessionsSpinnerAdapter = SessionsSpinnerAdapter(this, spinnerSessions)
 
         launch {
@@ -177,8 +177,8 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
 
     private fun isUpdateChecked(isUpdate:Boolean, qrCode: QrCode){
         if (isUpdate){
-            popupBarcodeBinding.tvInsertClose.text = getRemoteString("update",this)
-            popupBarcodeBinding.tvTitle.text = getRemoteString("update_title",this)
+            popupBarcodeBinding.tvInsertClose.text = resources.getString(R.string.update)
+            popupBarcodeBinding.tvTitle.text = resources.getString(R.string.update_title)
             popupBarcodeBinding.tvInsert.hide()
             popupBarcodeBinding.ivScan.hide()
             barcodeAlertDialog.show()
@@ -206,7 +206,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     fun insert(qrCode: QrCode){
         if (popupBarcodeBinding.tvCode.text.toString().trim() != ""  &&  popupBarcodeBinding.spSession.isNotEmpty() && quantity != 0) {
             launch {
-                if (popupBarcodeBinding.tvInsertClose.text == (getRemoteString("insert_and_close",this@ActivityCompactBase))) {
+                if (popupBarcodeBinding.tvInsertClose.text == resources.getString(R.string.insert_and_close)) {
                     var qrCode = QrCode()
                     qrCode = QrCodeDatabase(application).getCodeDao().getCode(popupBarcodeBinding.tvCode.text.toString().trim(),selectedSession.idSession)
                     if (qrCode!=null){
@@ -232,8 +232,8 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
 
     private fun checkIsNotEmpty(){
         when {
-            popupBarcodeBinding.tvCode.text.toString().trim() == "" -> AppHelper.createDialogPositive(this@ActivityCompactBase, getRemoteString("error_filled_barcode",this))
-            quantity == 0 -> AppHelper.createDialogPositive(this@ActivityCompactBase, getRemoteString("error_filled_qty",this))
+            popupBarcodeBinding.tvCode.text.toString().trim() == "" -> AppHelper.createDialogPositive(this@ActivityCompactBase,resources.getString(R.string.error_filled_barcode))
+            quantity == 0 -> AppHelper.createDialogPositive(this@ActivityCompactBase, resources.getString(R.string.error_filled_qty))
         }
     }
     fun listeners(){
@@ -315,7 +315,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             popupBarcodeBinding.etQty.setText("1")
 
         onInsertUpdate.onInsertUpdate(true)
-        toast(getRemoteString("message_update",this@ActivityCompactBase))
+        toast(resources.getString(R.string.message_update))
         barcodeAlertDialog.cancel()
             }
     }
@@ -329,7 +329,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             QrCodeDatabase(application).getCodeDao().updateCode(qrCode.quantity +quantity,qrCode.idQrcode)
             popupBarcodeBinding.tvCode.setText("")
             popupBarcodeBinding.etQty.setText("1")
-            toast(getRemoteString("item_save", this@ActivityCompactBase))
+            toast(resources.getString(R.string.item_save))
             onInsertUpdate.onInsertUpdate(true)
 
         }
@@ -339,7 +339,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             QrCodeDatabase(application).getCodeDao().insertCode(QrCode(popupBarcodeBinding.tvCode.text.toString().trim(),selectedUnit.id,quantity,selectedSession.idSession))
             popupBarcodeBinding.tvCode.setText("")
             popupBarcodeBinding.etQty.setText("1")
-            toast(getRemoteString("item_save", this@ActivityCompactBase))
+            toast(resources.getString(R.string.item_save))
             onInsertUpdate.onInsertUpdate(true)
         }
     }
@@ -352,12 +352,12 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             if (qrCodeScan != null) {
                 QrCodeDatabase(application).getCodeDao().updateCode(qrCodeScan.quantity+1,qrCodeScan.idQrcode)
                 onInsertUpdate.onInsertUpdate(true)
-                toast(getRemoteString("item_save", this@ActivityCompactBase))
+                toast(resources.getString(R.string.item_save))
             }
             else{
                 QrCodeDatabase(application).getCodeDao().insertCode(QrCode(qrCode.code,0,qrCode.quantity,qrCode.sessionId))
                 onInsertUpdate.onInsertUpdate(true)
-                toast(getRemoteString("item_save", this@ActivityCompactBase))
+                toast(resources.getString(R.string.item_save))
 
             }
         }
@@ -368,7 +368,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         launch {
             QrCodeDatabase(application).getCodeDao().insertCode(qrCode)
             onInsertUpdate.onInsertUpdate(true)
-            toast(getRemoteString("item_save", this@ActivityCompactBase))
+            toast(resources.getString(R.string.item))
         }
     }
 }

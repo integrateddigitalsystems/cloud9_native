@@ -62,7 +62,7 @@ class QrCodeActivity : ActivityCompactBase(), BarcodeReader.BarcodeReaderListene
     }
 
     override fun onCameraPermissionDenied() {
-        toast(AppHelper.getRemoteString("camera_error",this))
+        toast(resources.getString(R.string.camera_error))
     }
 
     override fun onScanned(barcode: Barcode?) {

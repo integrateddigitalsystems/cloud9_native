@@ -189,56 +189,49 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:weightSum="10"
         android:layout_marginTop="@dimen/margin_100">
 
-        <RelativeLayout
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rVSessions"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="55dp"
+            android:layout_weight="9.8"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/normal_margin_padding"
+            android:paddingEnd="@dimen/normal_margin_padding" />
+
+        <com.ids.librascan.custom.CustomTextViewMedium
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/tvNodata"
+            android:text="@string/no_data"
+            android:gravity="center"
+            android:visibility="gone"
+            android:tag="no_data"
+            android:textSize="@dimen/size_14"
+            android:textColor="@color/white"/>
+
+
+        <LinearLayout
+            android:id="@+id/llSync"
+            android:layout_width="@dimen/width_150"
+            android:layout_height="@dimen/button_height"
+            android:visibility="gone"
+            android:layout_marginTop="5dp"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/big_margin"
+            android:focusable="true"
+            android:clickable="true"
+            android:background="@drawable/rounded_primary_layout"
             android:gravity="center">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rVSessions"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/height_500"
-                android:layout_marginTop="@dimen/small_margin_padding"
-                android:orientation="vertical"
-                android:paddingStart="@dimen/normal_margin_padding"
-                android:paddingEnd="@dimen/normal_margin_padding" />
-
-            <com.ids.librascan.custom.CustomTextViewMedium
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/tvNodata"
-                android:text="@string/no_data"
-                android:gravity="center"
-                android:visibility="gone"
-                android:tag="no_data"
-                android:layout_centerInParent="true"
-                android:textSize="@dimen/size_14"
-                android:textColor="@color/white"/>
-
-
-            <LinearLayout
-                android:id="@+id/llSync"
-                android:layout_width="@dimen/width_150"
-                android:layout_height="@dimen/button_height"
-                android:visibility="gone"
-                android:layout_alignParentTop="true"
-                android:layout_centerInParent="true"
+                android:background="?android:attr/selectableItemBackground"
                 android:layout_gravity="center"
-                android:focusable="true"
-                android:clickable="true"
-                android:layout_marginTop="@dimen/margin_big"
-                android:background="@drawable/rounded_primary_layout"
-                android:gravity="center">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_height="wrap_content">
+                android:gravity="center"
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:layout_width="@dimen/size_20"
@@ -249,17 +242,19 @@
                     android:layout_height="@dimen/size_20"
                     android:src="@drawable/sync" />
 
-                    <com.ids.librascan.custom.CustomTextViewBold
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="@string/syncAll"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/font" />
-                </RelativeLayout>
-            </LinearLayout>
+                <com.ids.librascan.custom.CustomTextViewBold
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/syncAll"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font" />
+            </RelativeLayout>
 
-        </RelativeLayout>
+
+        </LinearLayout>
+
+
             <Button
                 android:id="@+id/btShowScan"
                 android:onClick="checkCameraPermissions"

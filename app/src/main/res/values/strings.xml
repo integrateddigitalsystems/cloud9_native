@@ -84,5 +84,5 @@
     <string name="delete_message_session">Do you delete this Session!</string>
     <string name="sync_data">Do you want sync this data</string>
     <string name="added_failed">Please Add Data to upload</string>
-
+    <string name="update_available">Update Available</string>
 </resources>

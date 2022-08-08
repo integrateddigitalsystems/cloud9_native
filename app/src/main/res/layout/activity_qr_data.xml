@@ -128,6 +128,7 @@
                         android:layout_marginStart="@dimen/small_margin_padding"
                         android:layout_marginTop="@dimen/small_margin_padding"
                         android:layout_marginEnd="@dimen/small_margin_padding"
+                        android:visibility="gone"
                         android:layout_marginBottom="@dimen/small_margin_padding"
                         android:src="@drawable/scan" />
 
@@ -205,20 +206,21 @@
 
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:layout_height="0dp">
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rVQrData"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/height_500"
+                        android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/small_margin_padding"
+                        android:layout_marginBottom="@dimen/size_image_60"
                         android:orientation="vertical"
                         android:paddingStart="@dimen/normal_margin_padding"
                         android:paddingEnd="@dimen/normal_margin_padding" />
@@ -227,47 +229,39 @@
                         android:id="@+id/tvNodata"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_alignBottom="@+id/rVQrData"
                         android:gravity="center"
                         android:tag="no_data"
                         android:text="@string/no_data"
                         android:textColor="@color/white"
                         android:textSize="@dimen/size_14"
                         android:visibility="gone" />
+                </RelativeLayout>
 
+                <LinearLayout
+                    android:id="@+id/llScan"
+                    android:layout_width="@dimen/height_100"
+                    android:layout_height="@dimen/height_40"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="-50dp"
+                    android:background="@drawable/rounded_primary_layout"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center">
 
-                    <LinearLayout
+                    <com.ids.librascan.custom.CustomTextViewBold
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginEnd="5dp"
-                        android:layout_weight="1"
-                        android:layout_below="@+id/rVQrData"
-                        android:gravity="center">
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:text="@string/scan"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
 
-                        <LinearLayout
-                            android:id="@+id/llScan"
-                            android:layout_width="@dimen/height_100"
-                            android:layout_height="@dimen/height_40"
-                            android:layout_gravity="center"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:background="@drawable/rounded_primary_layout"
-                            android:gravity="center">
+                </LinearLayout>
 
-                            <com.ids.librascan.custom.CustomTextViewBold
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center_vertical|center_horizontal"
-                                android:text="@string/scan"
-                                android:gravity="center"
-                                android:background="?android:attr/selectableItemBackground"
-                                android:textColor="@color/white"
-                                android:textSize="14sp" />
 
-                        </LinearLayout>
-                    </LinearLayout>
-
-                </RelativeLayout>
             </LinearLayout>
 
         </LinearLayout>
