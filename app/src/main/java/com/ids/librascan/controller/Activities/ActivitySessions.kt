@@ -142,8 +142,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             val menu: Menu = popupMenu.menu
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N_MR1){
                 for (i in 0 until menu.size()) {
-                    menu[i].actionView.tag
-                  //  menu.getItem(i).title = AppHelper.getRemoteString(menu[i].actionView.tag.toString(),this)
+                    menu.getItem(i).title = AppHelper.getRemoteString(menu[i].titleCondensed.toString(),this)
                 }
             }
 

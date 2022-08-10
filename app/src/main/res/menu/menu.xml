@@ -3,14 +3,14 @@
     <item
         android:id="@+id/action_language"
         android:title="@string/change"
-        android:tag="change"/>
+        android:titleCondensed="change"/>
     <item
         android:id="@+id/action_settings"
         android:title="@string/scan_settings"
-        android:tag="scan_settings"/>
+        android:titleCondensed="scan_settings"/>
     <item
         android:id="@+id/action_logout"
         android:title="@string/logout_menu"
-        android:tag="logout_menu"/>
+        android:titleCondensed="logout_menu"/>
 
 </menu>
