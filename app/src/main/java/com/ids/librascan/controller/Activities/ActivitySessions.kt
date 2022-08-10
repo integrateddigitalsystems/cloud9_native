@@ -2,6 +2,7 @@ package com.ids.librascan.controller.Activities
 
 import Base.ActivityCompactBase
 import android.Manifest
+import android.R.attr.tag
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
@@ -25,6 +26,7 @@ import android.view.View
 import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import androidx.core.view.isEmpty
 import androidx.core.view.isNotEmpty
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,6 +35,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.vision.barcode.Barcode
+import com.google.android.material.internal.ContextUtils.getActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ids.librascan.R
 import com.ids.librascan.apis.RetrofitClient
@@ -86,7 +89,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 MyApplication.isFirst = false
             }
         }
-       // AppHelper.setAllTexts(activitySessionsBinding.rootSessions, this)
+
 
         activitySessionsBinding.llAddSession.setOnClickListener {
             showAddSessionAlertDialog()
@@ -114,6 +117,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
 
         activitySessionsBinding.iVMore.setOnClickListener {
             val popupMenu = PopupMenu(this, it)
+
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.action_logout -> {
@@ -131,9 +135,18 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                     else -> false
                 }
             }
+
+
             popupMenu.inflate(R.menu.menu)
             popupMenu.show()
             val menu: Menu = popupMenu.menu
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N_MR1){
+                for (i in 0 until menu.size()) {
+                    menu[i].actionView.tag
+                  //  menu.getItem(i).title = AppHelper.getRemoteString(menu[i].actionView.tag.toString(),this)
+                }
+            }
+
             for (i in 0 until menu.size()) {
                 val mi: MenuItem = menu.getItem(i)
                 applyFontToMenuItem(mi)
@@ -593,7 +606,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     private fun createDialogLanguage() {
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
         popupLanguageBinding = PopupLanguageBinding.inflate(layoutInflater)
-       // AppHelper.setAllTexts(popupLanguageBinding.llLanguage, this)
         builder.setView(popupLanguageBinding.root)
         if (MyApplication.languageCode == "en")
             popupLanguageBinding.rbEnglish.isChecked = true

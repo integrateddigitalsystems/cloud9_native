@@ -20,7 +20,7 @@ object AppConstants {
     const val SESSION_ID = "session_id"
     const val SESSION_NAME = "session_name"
     const val IS_SCAN = "is_scan"
-    const val SHOW_SYNC = "show_sync"
+    const val UPDATE_CONFIG = "update_config"
     const val ADD_SUCCESS = "add_success"
     const val IS_DONE_ADD = "is_done_add"
     const val IS_DONE_GET = "is_done_get"

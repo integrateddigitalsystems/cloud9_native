@@ -1,10 +1,11 @@
 package Base
 
 
-import android.app.Activity
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -12,7 +13,6 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
 import android.widget.LinearLayout
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.ViewPumpAppCompatDelegate
@@ -20,27 +20,27 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isNotEmpty
 import androidx.core.view.updateLayoutParams
 import com.ids.librascan.R
+import com.ids.librascan.apis.WifiService
 import com.ids.librascan.controller.Adapters.OnInsertUpdate.OnInsertUpdate
 import com.ids.librascan.controller.Adapters.SessionsSpinnerAdapter
-import com.ids.librascan.controller.Adapters.UnitsSpinnerAdapter
 import com.ids.librascan.controller.MyApplication
-import com.ids.librascan.databinding.*
+import com.ids.librascan.databinding.ActivityQrDataBinding
+import com.ids.librascan.databinding.ActivitySessionsBinding
+import com.ids.librascan.databinding.PopupBarcodeBinding
 import com.ids.librascan.db.*
 import com.ids.librascan.db.Unit
 import com.ids.librascan.utils.AppHelper
-import com.ids.librascan.utils.AppHelper.Companion.getRemoteString
 import dev.b3nedikt.restring.Restring
-import dev.b3nedikt.restring.Restring.wrapContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import utils.*
-
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.coroutines.CoroutineContext
 
+
+@SuppressLint("ObsoleteSdkInt")
 open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     lateinit var barcodeAlertDialog: androidx.appcompat.app.AlertDialog
     private lateinit var job: Job
@@ -61,17 +61,16 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             wrapContext = Restring::wrapContext
         )
     }
-
     override fun getDelegate(): AppCompatDelegate {
         return appCompatDelegate
     }
-
-
     init {
         AppHelper.setLocal(this)
-        //LocaleUtils.updateConfig(this)
-    }
+        if (!WifiService.instance.isOnline() && MyApplication.localizeArray==null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.N_MR1){
+            LocaleUtils.updateConfig(this)
+        }
 
+    }
 
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
@@ -81,11 +80,14 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         super.onCreate(savedInstanceState)
         AppHelper.setLocal(this)
         job =Job()
+        try{
         if (MyApplication.languageCode == AppConstants.LANG_ENGLISH) {
             AppHelper.setLocalStrings(this, "en", Locale("en"))
         } else if (MyApplication.languageCode == AppConstants.LANG_ARABIC) {
             AppHelper.setLocalStrings(this, "ar", Locale("ar"))
-        }
+        }}catch (e:Exception){}
+
+
 
     }
     override fun attachBaseContext(newBase: Context) {

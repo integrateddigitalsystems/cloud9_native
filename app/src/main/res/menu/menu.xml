@@ -2,12 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_language"
-        android:title="@string/change_language"/>
+        android:title="@string/change"
+        android:tag="change"/>
     <item
         android:id="@+id/action_settings"
-        android:title="@string/scan_settings" />
+        android:title="@string/scan_settings"
+        android:tag="scan_settings"/>
     <item
         android:id="@+id/action_logout"
-        android:title="@string/logout_menu" />
+        android:title="@string/logout_menu"
+        android:tag="logout_menu"/>
 
 </menu>

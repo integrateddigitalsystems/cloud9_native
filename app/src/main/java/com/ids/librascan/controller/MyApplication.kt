@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
@@ -11,9 +12,9 @@ import com.ids.librascan.apis.WifiService
 import com.ids.librascan.model.AppLocaleLocaleProvider
 import com.ids.librascan.model.FirebaseBaseUrlsArray
 import com.ids.librascan.model.FirebaseLocalizeArray
+import com.ids.librascan.utils.AppHelper
 import dev.b3nedikt.app_locale.AppLocale
 import dev.b3nedikt.restring.Restring
-import dev.b3nedikt.restring.Restring.wrapContext
 import dev.b3nedikt.reword.RewordInterceptor
 import dev.b3nedikt.viewpump.ViewPump
 import utils.AppConstants
@@ -70,8 +71,6 @@ class MyApplication : Application() {
             set(value) { sharedPreferencesEditor.putString(AppConstants.SESSION_NAME, value).apply() }
 
 
-
-
     }
     override fun onCreate() {
         super.onCreate()
@@ -98,10 +97,14 @@ class MyApplication : Application() {
             config.setLocale(Locale.getDefault())
             newBase = newBase.createConfigurationContext(config)
         }
+
         super.attachBaseContext(newBase)
     }
+
+
     private fun setupServices() {
         WifiService.instance.initializeWithApplicationContext(this)
     }
+
 
 }

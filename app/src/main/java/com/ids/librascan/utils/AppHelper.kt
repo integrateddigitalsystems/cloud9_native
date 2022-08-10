@@ -52,15 +52,15 @@ class AppHelper {
              fun setLocal(context: Activity) {
 
             if (MyApplication.languageCode == AppConstants.LANG_ENGLISH) {
-                 LocaleUtils.setLocale(Locale("en"))
+                LocaleUtils.setLocale(Locale("en"))
            } else if (MyApplication.languageCode == AppConstants.LANG_ARABIC) {
                 LocaleUtils.setLocale(Locale("ar"))
             }
 
         }
 
-        @RequiresApi(Build.VERSION_CODES.KITKAT)
         fun setLocalStrings(activity: Activity,language: String,locale: Locale) {
+            Restring.stringRepository.toMutableRepository().strings.clear()
             if(MyApplication.localizeArray != null){
             try {
                 val myStringsMap: HashMap<String, String> = HashMap()
@@ -70,11 +70,8 @@ class AppHelper {
                             if(language == "en") MyApplication.localizeArray!!.messages!![index].message_en!! else MyApplication.localizeArray!!.messages!![index].message_ar!!
                     }
                 }
-
-                Restring.stringRepository.toMutableRepository().strings.clear()
                 Restring.putStrings(locale, myStringsMap)
                 Restring.locale = locale
-
                 updateView(activity)
             } catch (exception: IOException) {
                 wtf( exception.message.toString() )
@@ -86,7 +83,6 @@ class AppHelper {
             val rootView: View = activity.window.decorView.findViewById(android.R.id.content)
             Reword.reword(rootView)
         }
-
 
         fun setAllTexts(v: View?, context: Context) {
             if (MyApplication.localizeArray != null) {

@@ -22,6 +22,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.gson.Gson
 import com.ids.librascan.R
+import com.ids.librascan.apis.WifiService
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivitySplashBinding
 import com.ids.librascan.databinding.ItemDialogBinding
@@ -49,7 +50,7 @@ class ActivitySplash : ActivityCompactBase() {
          getFirebasePrefs()
     }
     private fun getFirebasePrefs() {
-        if (AppHelper.isNetworkAvailable(this)){
+      if (WifiService.instance.isOnline()){
             auth = FirebaseAuth.getInstance()
             mFirebaseRemoteConfig = Firebase.remoteConfig
             val configSettings = remoteConfigSettings {
@@ -90,7 +91,6 @@ class ActivitySplash : ActivityCompactBase() {
         }
         else {
             goLogin()
-           // toast(getString(R.string.check_internet_connection))
         }
 
 
