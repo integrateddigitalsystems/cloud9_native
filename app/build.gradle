@@ -21,6 +21,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+
+    flavorDimensions "app"
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -28,6 +32,32 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    productFlavors {
+        scan{
+            applicationId "com.ids.librascan"
+            buildConfigField 'String', "label", "\"scan\""
+            buildConfigField "boolean", "isLibraScan", "true"
+            dimension "app"
+            minSdk 21
+            targetSdk 32
+            versionCode 1
+            versionName "1.0"
+        }
+
+        scan_prime{
+            applicationId "com.ids.scanprime"
+            buildConfigField 'String', "label", "\"scan_prime\""
+            buildConfigField "boolean", "isLibraScan", "false"
+            dimension "app"
+            minSdk 21
+            targetSdk 32
+            versionCode 1
+            versionName "1.0"
+        }
+    }
+
+
 
     signingConfigs {
         debug {
@@ -64,10 +94,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:21.1.0'
     implementation 'com.google.firebase:firebase-config-ktx:21.1.1'
     implementation 'com.google.firebase:firebase-core:21.1.0'
-    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.6'
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.2.1'
-    implementation 'com.google.firebase:firebase-auth-ktx:21.0.6'
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.2.1'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.7'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.2.2'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.0.7'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.2.2'
 
 
     //noinspection GradleCompatible

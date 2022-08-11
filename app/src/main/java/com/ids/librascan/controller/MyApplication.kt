@@ -8,7 +8,9 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
+import com.ids.librascan.BuildConfig
 import com.ids.librascan.apis.WifiService
+import com.ids.librascan.controller.MyApplication.Companion.isLibraScan
 import com.ids.librascan.model.AppLocaleLocaleProvider
 import com.ids.librascan.model.FirebaseBaseUrlsArray
 import com.ids.librascan.model.FirebaseLocalizeArray
@@ -32,6 +34,7 @@ class MyApplication : Application() {
         var BAS = "https://fakerapi.it"
         var BASE_URLS: FirebaseBaseUrlsArray?= null
         var localizeArray: FirebaseLocalizeArray?= null
+        var isLibraScan : Boolean = false
         @SuppressLint("StaticFieldLeak")
         var showLogs: Boolean = true
         var clientKey: String

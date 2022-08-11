@@ -37,6 +37,39 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43913368539:android:2ad5a099527bedfe718dfe",
+        "android_client_info": {
+          "package_name": "com.ids.scanprime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "43913368539-jfp7lt1agnq58hrlfhri89akl9t12ve0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ids.scanprime",
+            "certificate_hash": "99cfef12d300a124c08d17db42c1c27781dad555"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0TZ_yCjf7lQn8LRzbMc4TLRDfdIHscmo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "43913368539-7g9ndhiv91n9dt40pu2gc1fvfa4q3eqg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

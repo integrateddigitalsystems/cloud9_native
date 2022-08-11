@@ -140,11 +140,9 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             popupMenu.inflate(R.menu.menu)
             popupMenu.show()
             val menu: Menu = popupMenu.menu
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N_MR1){
-                for (i in 0 until menu.size()) {
-                    menu.getItem(i).title = AppHelper.getRemoteString(menu[i].titleCondensed.toString(),this)
+            for (i in 0 until menu.size()) {
+                menu.getItem(i).title = AppHelper.getRemoteString(menu[i].titleCondensed.toString(),this)
                 }
-            }
 
             for (i in 0 until menu.size()) {
                 val mi: MenuItem = menu.getItem(i)

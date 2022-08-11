@@ -51,7 +51,7 @@ class ActivityLogin : ActivityCompactBase() {
         configureGoogleSignIn()
         activityLoginBinding.btLogin.setOnClickListener {
             if (MyApplication.clientKey == "") {
-                startActivity(Intent(this, ActivitySessions::class.java))
+                startActivity(Intent(this, QrCodeActivity::class.java))
             } else {
                 mGoogleSignInClient.signOut()
                 signInGoogle()
