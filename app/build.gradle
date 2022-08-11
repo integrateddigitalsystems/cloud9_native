@@ -37,7 +37,6 @@ android {
         scan{
             applicationId "com.ids.librascan"
             buildConfigField 'String', "label", "\"scan\""
-            buildConfigField "boolean", "isLibraScan", "true"
             dimension "app"
             minSdk 21
             targetSdk 32
@@ -48,7 +47,6 @@ android {
         scan_prime{
             applicationId "com.ids.scanprime"
             buildConfigField 'String', "label", "\"scan_prime\""
-            buildConfigField "boolean", "isLibraScan", "false"
             dimension "app"
             minSdk 21
             targetSdk 32
