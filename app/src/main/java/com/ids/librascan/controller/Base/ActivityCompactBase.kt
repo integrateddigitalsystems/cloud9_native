@@ -368,7 +368,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         launch {
             QrCodeDatabase(application).getCodeDao().insertCode(qrCode)
             onInsertUpdate.onInsertUpdate(true)
-            toast(resources.getString(R.string.item))
+            toast(resources.getString(R.string.item_save))
         }
     }
 }

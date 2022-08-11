@@ -71,7 +71,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     private var db: FirebaseFirestore? = null
     var arrayQrcode = ArrayList<QrCode>()
     lateinit var mGoogleSignInClient: GoogleSignInClient
-    private var show: Boolean? = true
+    private var show: Boolean? = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activitySessionsBinding = ActivitySessionsBinding.inflate(layoutInflater)
