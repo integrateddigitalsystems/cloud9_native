@@ -31,7 +31,6 @@ import java.util.*
 
 class AppHelper {
     companion object {
-
         fun changeLanguage(context: Context, language: String) {
             when (language) {
                 AppConstants.LANG_ARABIC -> Locale.setDefault(Locale("ar"))
@@ -178,16 +177,6 @@ class AppHelper {
 
         }
 
-        fun closeKeyboard(context: Activity) {
-
-            val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputManager.hideSoftInputFromWindow(
-                context.currentFocus!!.windowToken,
-                InputMethodManager.HIDE_NOT_ALWAYS
-            )
-        }
-
-
         fun createDialogPositive(c: Activity, message: String) {
 
             val builder = AlertDialog.Builder(c)
@@ -240,11 +229,12 @@ class AppHelper {
         }
 
         fun handleCrashes(context: Activity) {
- /*           Thread.getDefaultUncaughtExceptionHandler()
-            Thread.setDefaultUncaughtExceptionHandler(MyExceptionHandler(context))*/
+            Thread.getDefaultUncaughtExceptionHandler()
+            Thread.setDefaultUncaughtExceptionHandler(MyExceptionHandler(context))
         }
 
     }
+
 
 
 }

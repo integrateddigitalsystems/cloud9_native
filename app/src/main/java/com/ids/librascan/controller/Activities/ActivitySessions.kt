@@ -90,7 +90,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             }
         }
 
-
         activitySessionsBinding.llAddSession.setOnClickListener {
             showAddSessionAlertDialog()
         }
@@ -135,8 +134,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                     else -> false
                 }
             }
-
-
             popupMenu.inflate(R.menu.menu)
             popupMenu.show()
             val menu: Menu = popupMenu.menu
@@ -170,8 +167,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     private fun showAddSessionAlertDialog() {
         spinnerWarehouse.clear()
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
-        //AppHelper.setAllTexts(popupSessionBinding.llPagerSession, this)
-
         popupSessionBinding = PopupSessionBinding.inflate(layoutInflater)
 
         warehouseSpinnerAdapter = WarehouseSpinnerAdapter(this, spinnerWarehouse)
@@ -210,7 +205,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         }
         popupSessionBinding.tvName.typeface = AppHelper.getTypeFace(this)
         popupSessionBinding.tvInsert.setOnClickListener {
-            insertSession(this)
+            insertSession()
         }
         popupSessionBinding.btClose.setOnClickListener {
             sessionAlertDialog.cancel()
@@ -230,7 +225,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun insertSession(c: Activity) {
+    fun insertSession() {
         if (popupSessionBinding.tvName.text.toString().trim() != "" && popupSessionBinding.spWarehouse.isNotEmpty() && popupSessionBinding.tvDescription.text.toString().trim() != "" && popupSessionBinding.tvDate.text.toString().trim() != "") {
             launch {
                 var sessions = Sessions()
@@ -672,7 +667,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 for (item in responseWarehouse.body()!!.wareHouses!!) {
                     QrCodeDatabase(application).getWarehouse().insertWarehouse(Warehouse(item.id!!, item.name.toString()))
                 }
-             //   toast(AppHelper.getRemoteString("warehouse_added", this@ActivitySessions))
                 if (show!!)
                 AppHelper.createDialogError(this,responseWarehouse.body()!!.message.toString(),"getWarehouse",true)
             }
@@ -688,34 +682,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         }
 
     }
-
-
-   /* private suspend fun getWarehouses() {
-        RetrofitClient.client?.create(RetrofitInterface::class.java)
-            ?.getWarehouse()?.enqueue(object :
-                Callback<ResponseGetWareHouse> {
-                override fun onResponse(
-                    call: Call<ResponseGetWareHouse>,
-                    response: Response<ResponseGetWareHouse>
-                ) {
-                    if (response.isSuccessful && response.body()!!.wareHouses!!.size>0) {
-                        arrApiStatus.add(ApiStatus("getWarehouse","...done","received"))
-                        for (item in response.body()!!.wareHouses!!) {
-                            launch {
-                                    QrCodeDatabase(application).getWarehouse().insertWarehouse(Warehouse(item.id!!,item.name.toString()))
-                            }
-                        }
-                        toast(AppHelper.getRemoteString("warehouse_added", this@ActivitySessions))
-                    } else{
-                        arrApiStatus.add(ApiStatus("getWarehouse","...failed","received"))
-                        toast(response.errorBody().toString())
-                    }
-                }
-                override fun onFailure(call: Call<ResponseGetWareHouse>, t: Throwable) {
-                    toast(t.toString())
-                }
-            })
-    }*/
 
     private fun createDialogDelete(position: Int) {
         val builder = AlertDialog.Builder(this)
@@ -776,7 +742,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         d.setCancelable(false)
         d.show()
     }
-
 
 }
 

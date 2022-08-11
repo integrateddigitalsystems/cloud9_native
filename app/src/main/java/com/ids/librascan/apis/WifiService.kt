@@ -19,7 +19,6 @@ class WifiService {
         connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 
-    // Helper that detects if online
     @SuppressLint("NewApi")
     fun isOnline(): Boolean {
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)

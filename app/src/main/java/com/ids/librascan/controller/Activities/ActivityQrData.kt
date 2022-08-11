@@ -47,7 +47,6 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         init()
     }
     private fun init() {
-       //  AppHelper.setAllTexts(activityQrDataBinding.rootData, this)
          activityQrDataBinding.ivScan.setOnClickListener {
              checkCameraPermissions(view = activityQrDataBinding.btShowScan)
              MyApplication.isScan = false
@@ -96,8 +95,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         }
      }
 
-
-        @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint("NotifyDataSetChanged")
     private fun filter(text: String) {
         arrFilter.clear()
         arrFilter.addAll(arrQrCode.filter {

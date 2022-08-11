@@ -92,10 +92,7 @@ class ActivitySplash : ActivityCompactBase() {
         else {
             goLogin()
         }
-
-
     }
-
 
     private fun checkUpdate(){
         val currConfig: FirebaseUrlItems? = MyApplication.BASE_URLS!!.android.find {
@@ -188,10 +185,6 @@ class ActivitySplash : ActivityCompactBase() {
             d.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, R.color.gray_bg))
             d.getButton(AlertDialog.BUTTON_NEGATIVE).transformationMethod = null
             d.getButton(AlertDialog.BUTTON_NEGATIVE).isAllCaps = false
-
-            d.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, R.color.gray_bg))
-            d.getButton(AlertDialog.BUTTON_POSITIVE).transformationMethod = null
-            d.getButton(AlertDialog.BUTTON_POSITIVE).isAllCaps = false
         }
         d.setCancelable(false)
         d.show()

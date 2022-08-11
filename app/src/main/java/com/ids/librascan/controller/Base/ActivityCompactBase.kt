@@ -110,7 +110,6 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         onInsertUpdate = onInsUpdate
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
         popupBarcodeBinding = PopupBarcodeBinding.inflate(layoutInflater)
-       // AppHelper.setAllTexts(popupBarcodeBinding.llPagerItem, this)
         sessionsSpinnerAdapter = SessionsSpinnerAdapter(this, spinnerSessions)
 
         launch {
@@ -149,7 +148,6 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
                 }
             }
             listeners()
-          //  popupBarcodeBinding.tvCode.setText(qrCode.code!!.ifEmpty { "" })
             popupBarcodeBinding.tvInsertClose.setOnClickListener {
                 isShow = false
                 insert(qrCode)

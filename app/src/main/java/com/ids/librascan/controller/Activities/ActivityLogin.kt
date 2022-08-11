@@ -45,7 +45,6 @@ class ActivityLogin : ActivityCompactBase() {
         setContentView(activityLoginBinding.root)
         init()
     }
-
     @SuppressLint("ResourceAsColor")
     private fun init() {
         configureGoogleSignIn()
@@ -141,25 +140,20 @@ class ActivityLogin : ActivityCompactBase() {
                             }
                             activityLoginBinding.progressBar.hide()
                             wtf("after progressBar ")
-                           // toast(response.body()!!.message!!)
                             startActivity(Intent(this@ActivityLogin, ActivitySessions::class.java))
                             wtf("after startActivity ")
                             finish()
                             wtf("after finish ")
                         } catch (t: Throwable) {
                             wtf("ex:: " + t.message)
-
                         }
 
                     } else {
                         this@ActivityLogin.runOnUiThread {
                           activityLoginBinding.progressBar.hide()
-                          //  AppHelper.createDialogError(this@ActivityLogin,response.errorBody().toString(),"performGoogleLogin",false)
                             toast(resources.getString(R.string.login_failed))
                             try {
-
                             } catch (t: Throwable) {
-
                                 activityLoginBinding.progressBar.hide()
                             }
 
