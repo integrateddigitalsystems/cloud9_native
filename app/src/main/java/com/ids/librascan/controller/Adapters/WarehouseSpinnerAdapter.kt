@@ -5,12 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.LinearLayout
 import android.widget.TextView
 import com.ids.librascan.R
-import com.ids.librascan.db.Unit
 import com.ids.librascan.db.Warehouse
-import com.ids.librascan.model.WareHouse
 
 class WarehouseSpinnerAdapter (val mContext: Context, private var items:MutableList<Warehouse>): ArrayAdapter<Warehouse>(mContext, 0, items){
 

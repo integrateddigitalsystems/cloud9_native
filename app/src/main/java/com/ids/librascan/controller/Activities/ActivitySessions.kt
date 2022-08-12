@@ -2,7 +2,6 @@ package com.ids.librascan.controller.Activities
 
 import Base.ActivityCompactBase
 import android.Manifest
-import android.R.attr.tag
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
@@ -12,7 +11,6 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -35,7 +33,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.vision.barcode.Barcode
-import com.google.android.material.internal.ContextUtils.getActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ids.librascan.R
 import com.ids.librascan.apis.RetrofitClient
@@ -662,11 +659,9 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         try {
             val responseWarehouse =
                 RetrofitClient.client?.create(RetrofitInterface::class.java)!!.getWarehouses()
-            if (responseWarehouse.isSuccessful && responseWarehouse.body()!!.wareHouses!!.size > 0) {
+            if (responseWarehouse.isSuccessful && responseWarehouse.body()!!.warehouse!!.size > 0) {
                 arrApiStatus.add(ApiStatus("getWarehouse","...Done","received"))
-                for (item in responseWarehouse.body()!!.wareHouses!!) {
-                    QrCodeDatabase(application).getWarehouse().insertWarehouse(Warehouse(item.id!!, item.name.toString()))
-                }
+                QrCodeDatabase(application).getWarehouse().insertWarehouse(responseWarehouse.body()!!.warehouse!!)
                 if (show!!)
                 AppHelper.createDialogError(this,responseWarehouse.body()!!.message.toString(),"getWarehouse",true)
             }

@@ -2,8 +2,9 @@ package com.ids.librascan.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.ids.librascan.db.Warehouse
 
- class ResponseGetWareHouse {
+class ResponseGetWareHouse {
      @SerializedName("message")
      @Expose
      var message: String? = ""
@@ -18,5 +19,5 @@ import com.google.gson.annotations.SerializedName
 
      @SerializedName("body")
      @Expose
-     var wareHouses:ArrayList<WareHouse>? = arrayListOf()
+     var warehouse:ArrayList<Warehouse>? = arrayListOf()
  }

@@ -6,7 +6,7 @@ import androidx.room.*
 @Dao
 interface WarehouseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertWarehouse (warehouse: Warehouse)
+    suspend fun insertWarehouse(warehouse: ArrayList<Warehouse>)
     @Query("SELECT * FROM warehouse_table")
     suspend fun getWarehouse(): List<Warehouse>
 
