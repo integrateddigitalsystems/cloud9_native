@@ -53,7 +53,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     var selectedUnit = Unit()
     var selectedSession = Sessions()
     lateinit var onInsertUpdate: OnInsertUpdate
-    var isShow : Boolean = false
+    var closeDialog : Boolean = false
     private val appCompatDelegate: AppCompatDelegate by lazy {
         ViewPumpAppCompatDelegate(
             baseDelegate = super.getDelegate(),
@@ -149,11 +149,11 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             }
             listeners()
             popupBarcodeBinding.tvInsertClose.setOnClickListener {
-                isShow = false
+                closeDialog = true
                 insert(qrCode)
             }
             popupBarcodeBinding.tvInsert.setOnClickListener {
-                isShow = true
+                closeDialog = false
                 insert(qrCode)
             }
 
@@ -216,11 +216,11 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
                             insertCodeNew()
                     }
                     else insertCodeNew()
-                    if (!isShow) barcodeAlertDialog.cancel()
-                    if (!MyApplication.isScan){
-                        activitySessionsBinding.llSync.show()
+                    if (closeDialog) barcodeAlertDialog.cancel()
+                    if (MyApplication.isScan){
+                        activityQrDataBinding.ivScan.show()
                     }
-                    else activityQrDataBinding.ivScan.show()
+                    else activitySessionsBinding.llSync.show()
 
                 //Update QrCode
                 }else updateQrcode(qrCode)
