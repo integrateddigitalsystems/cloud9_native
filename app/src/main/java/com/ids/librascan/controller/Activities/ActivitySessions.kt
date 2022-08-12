@@ -610,8 +610,8 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         launch {
             QrCodeDatabase(application).getSessions().deleteAll(arrSession[position].idSession)
             arrSession.remove(arrSession[position])
-            checkQrcodeData()
             adapterSession.notifyDataSetChanged()
+            checkQrcodeData()
         }
     }
 

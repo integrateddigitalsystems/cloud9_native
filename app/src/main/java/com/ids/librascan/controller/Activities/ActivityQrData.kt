@@ -130,8 +130,6 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     @SuppressLint("NotifyDataSetChanged")
     private fun deleteQrData(position: Int){
         launch {
-                arrFilter.clear()
-                arrFilter.addAll(QrCodeDatabase(application).getCodeDao().getCodes(MyApplication.sessionId))
                 QrCodeDatabase(application).getCodeDao().deleteCode(arrFilter[position].idQrcode)
                 arrQrCode.remove(arrFilter[position])
                 adapterQrCode.notifyDataSetChanged()
