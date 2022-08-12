@@ -450,84 +450,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         }
     }
 
-    fun checkCameraPermissions(view: View) {
-        if (ContextCompat.checkSelfPermission(
-                this@ActivitySessions,
-                Manifest.permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this@ActivitySessions,
-                arrayOf(Manifest.permission.CAMERA),
-                1
-            )
-        } else { //permissions granted
-            //show barcode
-            activitySessionsBinding.rlBarcode.show()
-            barcodeReader.resumeScanning()
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 1) {
-            if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) { //GRANTED
-                activitySessionsBinding.rlBarcode.show()
-                barcodeReader.resumeScanning()
-            } else {
-                toast(resources.getString(R.string.camera_error))
-            }
-        }
-    }
-
-    override fun onScanned(barcode: Barcode?) {
-        val value = barcode.let { it!!.displayValue }
-        barcodeReader.playBeep()
-        barcodeReader.pauseScanning()
-        this.runOnUiThread {
-            activitySessionsBinding.rlBarcode.hide()
-            if (MyApplication.enableInsert && !MyApplication.enableNewLine) {
-                insertScanAuto(QrCode(value, 0, 1, MyApplication.sessionId), this)
-                activitySessionsBinding.llSync.show()
-            } else if (MyApplication.enableInsert && MyApplication.enableNewLine) {
-                insertScan(QrCode(value, 0, 1, MyApplication.sessionId), this)
-                activitySessionsBinding.llSync.show()
-            } else {
-                barcodeAlertDialog.show()
-                popupBarcodeBinding.tvCode.setText(value)
-            }
-        }
-    }
-
-    override fun onScannedMultiple(barcodes: MutableList<Barcode>?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onBitmapScanned(sparseArray: SparseArray<Barcode>?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onScanError(errorMessage: String?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onCameraPermissionDenied() {
-        toast(resources.getString(R.string.camera_error))
-    }
-
-    override fun onBackPressed() {
-        if (activitySessionsBinding.rlBarcode.visibility == View.VISIBLE) {
-            barcodeReader.pauseScanning()
-            activitySessionsBinding.rlBarcode.hide()
-        } else {
-            super.onBackPressed()
-        }
-    }
-
     private fun createDialSync(message: String, position: Int) {
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
             .setMessage(message)
@@ -591,7 +513,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         alert.setCanceledOnTouchOutside(false)
     }
 
-
     private fun createDialogLanguage() {
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
         popupLanguageBinding = PopupLanguageBinding.inflate(layoutInflater)
@@ -643,7 +564,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         readData.await()
 
         showDialogSync()
-
     }
 
     private suspend fun sendData() {
@@ -652,7 +572,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
 
     private suspend fun getData() {
         getWarehouse()
-
     }
 
     private suspend fun getWarehouse() {
@@ -736,6 +655,84 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         val d = builder.create()
         d.setCancelable(false)
         d.show()
+    }
+
+    fun checkCameraPermissions(view: View) {
+        if (ContextCompat.checkSelfPermission(
+                this@ActivitySessions,
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this@ActivitySessions,
+                arrayOf(Manifest.permission.CAMERA),
+                1
+            )
+        } else { //permissions granted
+            //show barcode
+            activitySessionsBinding.rlBarcode.show()
+            barcodeReader.resumeScanning()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1) {
+            if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) { //GRANTED
+                activitySessionsBinding.rlBarcode.show()
+                barcodeReader.resumeScanning()
+            } else {
+                toast(resources.getString(R.string.camera_error))
+            }
+        }
+    }
+
+    override fun onScanned(barcode: Barcode?) {
+        val value = barcode.let { it!!.displayValue }
+        barcodeReader.playBeep()
+        barcodeReader.pauseScanning()
+        this.runOnUiThread {
+            activitySessionsBinding.rlBarcode.hide()
+            if (MyApplication.enableInsert && !MyApplication.enableNewLine) {
+                insertScanAuto(QrCode(value, 0, 1, MyApplication.sessionId), this)
+                activitySessionsBinding.llSync.show()
+            } else if (MyApplication.enableInsert && MyApplication.enableNewLine) {
+                insertScan(QrCode(value, 0, 1, MyApplication.sessionId), this)
+                activitySessionsBinding.llSync.show()
+            } else {
+                barcodeAlertDialog.show()
+                popupBarcodeBinding.tvCode.setText(value)
+            }
+        }
+    }
+
+    override fun onScannedMultiple(barcodes: MutableList<Barcode>?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onBitmapScanned(sparseArray: SparseArray<Barcode>?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onScanError(errorMessage: String?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onCameraPermissionDenied() {
+        toast(resources.getString(R.string.camera_error))
+    }
+
+    override fun onBackPressed() {
+        if (activitySessionsBinding.rlBarcode.visibility == View.VISIBLE) {
+            barcodeReader.pauseScanning()
+            activitySessionsBinding.rlBarcode.hide()
+        } else {
+            super.onBackPressed()
+        }
     }
 
 }
