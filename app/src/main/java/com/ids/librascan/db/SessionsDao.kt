@@ -1,8 +1,10 @@
 package com.ids.librascan.db
 
 
-import androidx.room.*
-import java.util.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Transaction
 
 
 @Dao
@@ -25,7 +27,13 @@ interface SessionsDao {
     @Query("DELETE FROM sessions_table ")
     suspend fun deleteAllSession()
 
-    @Query("UPDATE sessions_table SET count=:count WHERE idSession=:id")
-    suspend fun updateCount(count : Int?,id : Int?)
+    @Query("DELETE  FROM codeScan_table WHERE sessionId=:sessionId ")
+    suspend fun deleteCodes(sessionId:Int?)
+
+    @Transaction
+    suspend fun deleteAll(id:Int?) {
+        deleteCodes(id)
+        deleteSession(id)
+    }
 
 }

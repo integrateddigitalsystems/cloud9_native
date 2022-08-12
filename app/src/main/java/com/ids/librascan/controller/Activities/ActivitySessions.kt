@@ -369,15 +369,8 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                     Handler(Looper.getMainLooper()).postDelayed({
                         activitySessionsBinding.loadingData.hide()
                     }, 500)
-                    QrCodeDatabase(application).getCodeDao()
-                        .deleteCodes(arrSession[position].idSession)
-                    QrCodeDatabase(application).getSessions()
-                        .deleteSession(arrSession[position].idSession)
+                    QrCodeDatabase(application).getSessions().deleteAll(arrSession[position].idSession)
                     arrSession.remove(arrSession[position])
-                    arrayQrcode.clear()
-                    arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
-                    if (arrayQrcode.isEmpty())
-                        activitySessionsBinding.llSync.hide()
                     adapterSession.notifyDataSetChanged()
                     checkQrcodeData()
                 } else {
@@ -427,9 +420,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                         )
                         if (array.isNotEmpty()) {
                             QrCodeDatabase(application).getSessions()
-                                .deleteSession(arrSession[item].idSession)
-                            QrCodeDatabase(application).getCodeDao()
-                                .deleteCodes(arrSession[item].idSession)
+                                .deleteAll(arrSession[item].idSession)
                         }
                     }
                     arrSession.clear()
@@ -617,8 +608,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     @SuppressLint("NotifyDataSetChanged")
     fun deleteSession(position: Int) {
         launch {
-            QrCodeDatabase(application).getCodeDao().deleteCodes(arrSession[position].idSession)
-            QrCodeDatabase(application).getSessions().deleteSession(arrSession[position].idSession)
+            QrCodeDatabase(application).getSessions().deleteAll(arrSession[position].idSession)
             arrSession.remove(arrSession[position])
             checkQrcodeData()
             adapterSession.notifyDataSetChanged()
