@@ -648,11 +648,11 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         val itemDialogSyncBinding = ItemDialogSyncBinding.inflate(layoutInflater)
         val builder = AlertDialog.Builder(this)
         itemDialogSyncBinding.dialogMsg.gravity = Gravity.START
-        var txt = ""
+        var message = ""
         for (item in 0 until arrApiStatus.size) {
-            txt +=  arrApiStatus[item].apiName + "  " + arrApiStatus[item].type + arrApiStatus[item].status +"\n"
+            message +=  arrApiStatus[item].apiName + "  " + arrApiStatus[item].type + arrApiStatus[item].status +"\n"
         }
-        itemDialogSyncBinding.dialogMsg.text = txt
+        itemDialogSyncBinding.dialogMsg.text = message
         itemDialogSyncBinding.dialogMsg.setTextColor(ContextCompat.getColor(this, R.color.gray_bg))
         builder.setView(itemDialogSyncBinding.root)
             .setPositiveButton(resources.getString(R.string.ok)) { dialog, _ ->
