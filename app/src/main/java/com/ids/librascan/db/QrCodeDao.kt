@@ -29,5 +29,4 @@ interface QrCodeDao {
     @Query("DELETE  FROM codeScan_table WHERE idQrcode=:id ")
     suspend fun deleteCode(id:Int?)
 
-
 }
