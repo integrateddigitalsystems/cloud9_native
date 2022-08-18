@@ -69,7 +69,6 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         if (!WifiService.instance.isOnline() && MyApplication.localizeArray==null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.N_MR1){
             LocaleUtils.updateConfig(this)
         }
-
     }
 
     override val coroutineContext: CoroutineContext

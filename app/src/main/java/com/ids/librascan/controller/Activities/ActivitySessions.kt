@@ -453,7 +453,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             } else{
                 toast(getString(R.string.check_internet_connection))
                 arrApiStatus.add(ApiStatus("sendData","\n"+getString(R.string.check_internet_connection),"send"))
-              arrApiStatus.add(ApiStatus("getWarehouse","\n"+getString(R.string.check_internet_connection),"received"))
+                arrApiStatus.add(ApiStatus("getWarehouse","\n"+getString(R.string.check_internet_connection),"received"))
           }
         }
     }
