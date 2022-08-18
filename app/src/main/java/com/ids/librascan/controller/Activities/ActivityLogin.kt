@@ -47,7 +47,16 @@ class ActivityLogin : ActivityCompactBase() {
     }
     @SuppressLint("ResourceAsColor")
     private fun init() {
+        if (MyApplication.languageCode ==AppConstants.LANG_ENGLISH)
+            activityLoginBinding.btEn.background = ContextCompat.getDrawable(this@ActivityLogin, R.drawable.rounded)
+        else
+            activityLoginBinding.btAr.background = ContextCompat.getDrawable(this@ActivityLogin, R.drawable.rounded)
+
         configureGoogleSignIn()
+        listener()
+    }
+
+    fun listener(){
         activityLoginBinding.btLogin.setOnClickListener {
             if (MyApplication.clientKey == "") {
                 startActivity(Intent(this, QrCodeActivity::class.java))
@@ -57,30 +66,24 @@ class ActivityLogin : ActivityCompactBase() {
             }
         }
         activityLoginBinding.btScan.setOnClickListener {
-                if (MyApplication.clientKey != "") {
-                    startActivity(Intent(this, QrCodeActivity::class.java))
-                } else {
-                    signInGoogle()
-                }
+            if (MyApplication.clientKey != "") {
+                startActivity(Intent(this, QrCodeActivity::class.java))
+            } else {
+                signInGoogle()
             }
+        }
         activityLoginBinding.btEn.setOnClickListener {
-                AppHelper.changeLanguage(this, "en")
-                startActivity(Intent(this@ActivityLogin, ActivityLogin::class.java))
-                finish()
+            AppHelper.changeLanguage(this, "en")
+            startActivity(Intent(this@ActivityLogin, ActivityLogin::class.java))
+            finish()
 
         }
         activityLoginBinding.btAr.setOnClickListener {
-                AppHelper.changeLanguage(this, "ar")
-                startActivity(Intent(this@ActivityLogin, ActivityLogin::class.java))
-                finish()
+            AppHelper.changeLanguage(this, "ar")
+            startActivity(Intent(this@ActivityLogin, ActivityLogin::class.java))
+            finish()
         }
 
-        if (MyApplication.languageCode ==AppConstants.LANG_ENGLISH){
-            activityLoginBinding.btEn.background = ContextCompat.getDrawable(this@ActivityLogin, R.drawable.rounded)
-        }
-        else{
-            activityLoginBinding.btAr.background = ContextCompat.getDrawable(this@ActivityLogin, R.drawable.rounded)
-        }
     }
 
     private fun configureGoogleSignIn() {
@@ -166,7 +169,5 @@ class ActivityLogin : ActivityCompactBase() {
                 }
             })
     }
-
-
-
+    
 }
