@@ -65,7 +65,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     }
     init {
         AppHelper.setLocal()
-        if (!WifiService.instance.isOnline() && MyApplication.localizeArray==null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.N_MR1){
+        if ((!WifiService.instance.isOnline() && MyApplication.localizeArray==null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.N_MR1) ||(WifiService.instance.isOnline() && MyApplication.localizeArray==null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.N_MR1)){
             AppHelper.setLocal()
             LocaleUtils.updateConfig(this)
         }
