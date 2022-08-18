@@ -54,20 +54,20 @@ import java.util.*
 
 class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertUpdate,
     BarcodeReader.BarcodeReaderListener, DatePickerDialog.OnDateSetListener,CompoundButton.OnCheckedChangeListener {
-    lateinit var popupSessionBinding: PopupSessionBinding
-    lateinit var popupLanguageBinding: PopupLanguageBinding
+    private lateinit var popupSessionBinding: PopupSessionBinding
+    private lateinit var popupLanguageBinding: PopupLanguageBinding
     private lateinit var sessionAlertDialog: androidx.appcompat.app.AlertDialog
     private lateinit var languageAlertDialog: androidx.appcompat.app.AlertDialog
     private var spinnerWarehouse: ArrayList<Warehouse> = arrayListOf()
-    lateinit var warehouseSpinnerAdapter: WarehouseSpinnerAdapter
-    lateinit var adapterSession: AdapterSession
+    private lateinit var warehouseSpinnerAdapter: WarehouseSpinnerAdapter
+    private lateinit var adapterSession: AdapterSession
     private var arrSession = ArrayList<SessionQrcode>()
     private var arrApiStatus = ArrayList<ApiStatus>()
     var selectedWarehouse = Warehouse()
-    lateinit var barcodeReader: BarcodeReader
+    private lateinit var barcodeReader: BarcodeReader
     private var db: FirebaseFirestore? = null
-    var arrayQrcode = ArrayList<QrCode>()
-    lateinit var mGoogleSignInClient: GoogleSignInClient
+    private var arrayQrcode = ArrayList<QrCode>()
+    private lateinit var mGoogleSignInClient: GoogleSignInClient
     private var show: Boolean? = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +96,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
     }
 
-    fun getAllData(){
+    private fun getAllData(){
         if (MyApplication.isFirst) {
             launch {
                 apiRequest()
@@ -121,7 +121,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         activitySessionsBinding.rVSessions.adapter = adapterSession
     }
 
-    fun listener(){
+    private fun listener(){
         activitySessionsBinding.llAddSession.setOnClickListener {
             showAddSessionAlertDialog()
         }
@@ -249,8 +249,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     fun insertSession() {
         if (popupSessionBinding.tvName.text.toString().trim() != "" && popupSessionBinding.spWarehouse.isNotEmpty() && popupSessionBinding.tvDescription.text.toString().trim() != "" && popupSessionBinding.tvDate.text.toString().trim() != "") {
             launch {
-                var sessions = Sessions()
-                sessions = QrCodeDatabase(application).getSessions()
+                val sessions: Sessions = QrCodeDatabase(application).getSessions()
                     .getSession(selectedWarehouse.name, popupSessionBinding.tvDate.text.toString().trim())
                 if (sessions != null) {
                     AppHelper.createDialogPositive(
@@ -306,7 +305,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         }
     }
 
-    fun datePickerDialog() {
+    private fun datePickerDialog() {
         val datePickerDialog = DatePickerDialog(
             this,
             this,
@@ -373,7 +372,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             if (AppHelper.isNetworkAvailable(this@ActivitySessions)) {
                 if (arrayQrcode.isNotEmpty()) {
                     activitySessionsBinding.loadingData.show()
-                    docData.put("QrCode", arrayQrcode)
+                    docData["QrCode"] = arrayQrcode
                     db!!.collection("Data")
                         .add(docData)
                         .addOnSuccessListener { documentReference ->
@@ -411,7 +410,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 if (arrayQrcode.isNotEmpty()) {
                     arrApiStatus.add(ApiStatus(resources.getString(R.string.send_data),resources.getString(R.string.is_done),resources.getString(R.string.send)))
                     activitySessionsBinding.loadingData.show()
-                    docData.put("QrCode", arrayQrcode)
+                    docData["QrCode"] = arrayQrcode
                     db!!.collection("Data")
                         .add(docData)
                         .addOnSuccessListener { documentReference ->
@@ -631,7 +630,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         }
     }
 
-    fun checkQrcodeData() {
+    private fun checkQrcodeData() {
         launch {
             arrayQrcode.clear()
             arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())

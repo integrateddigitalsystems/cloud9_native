@@ -5,12 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.LinearLayout
 import android.widget.TextView
 import com.ids.librascan.R
-import com.ids.librascan.db.SessionQrcode
 import com.ids.librascan.db.Sessions
-import com.ids.librascan.db.Unit
 
 class SessionsSpinnerAdapter (val mContext: Context, private var items:MutableList<Sessions>): ArrayAdapter<Sessions>(mContext, 0, items){
 

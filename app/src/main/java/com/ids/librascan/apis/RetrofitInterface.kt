@@ -5,7 +5,7 @@ import com.ids.librascan.model.*
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
-import java.util.*
+
 
 
 interface RetrofitInterface {
@@ -14,10 +14,6 @@ interface RetrofitInterface {
     fun getLogin(
         @Query("idToken") idToken: String?,
     ): Call<ResponseLogin>
-
-    @GET("api/WareHouses")
-    fun getWarehouse(
-    ): Call<ResponseGetWareHouse>
 
     @GET("api/WareHouses")
    suspend fun getWarehouses(

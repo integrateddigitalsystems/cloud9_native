@@ -14,7 +14,7 @@ class LocaleUtils {
         fun setLocale(locale: Locale) {
             sLocale = locale
             if (sLocale != null) {
-                Locale.setDefault(sLocale)
+                Locale.setDefault(sLocale!!)
             }
 
         }

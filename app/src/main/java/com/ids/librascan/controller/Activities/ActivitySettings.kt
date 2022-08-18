@@ -3,15 +3,12 @@ package com.ids.librascan.controller.Activities
 import Base.ActivityCompactBase
 import android.os.Bundle
 import android.view.View
-import android.widget.ToggleButton
-import androidx.appcompat.app.AppCompatActivity
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivitySettingsBinding
-import com.ids.librascan.databinding.ToolbarBinding
 import com.ids.librascan.utils.AppHelper
 
 class ActivitySettings : ActivityCompactBase() {
-    lateinit var activitySettingsBinding: ActivitySettingsBinding
+    private lateinit var activitySettingsBinding: ActivitySettingsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activitySettingsBinding = ActivitySettingsBinding.inflate(layoutInflater)
@@ -27,7 +24,7 @@ class ActivitySettings : ActivityCompactBase() {
         activitySettingsBinding.tvToolBarTitle.typeface = AppHelper.getTypeFace(this)
     }
 
-    fun back(v: View) {
+    fun back(view: View) {
         onBackPressed()
     }
 

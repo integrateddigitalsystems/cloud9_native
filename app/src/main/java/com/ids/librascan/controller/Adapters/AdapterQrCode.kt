@@ -4,7 +4,6 @@ package com.ids.librascan.controller.Adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.daimajia.swipe.SwipeLayout
 import com.ids.librascan.controller.Adapters.RVOnItemClickListener.RVOnItemClickListener

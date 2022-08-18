@@ -12,7 +12,6 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log.wtf
 import android.view.Gravity
-import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
@@ -27,14 +26,7 @@ import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivitySplashBinding
 import com.ids.librascan.databinding.ItemDialogBinding
 import com.ids.librascan.model.*
-import com.ids.librascan.utils.AppHelper
-import dev.b3nedikt.restring.Restring
-import dev.b3nedikt.reword.Reword.reword
 import utils.AppConstants
-import utils.toast
-import java.io.IOException
-import java.nio.charset.StandardCharsets
-import java.util.*
 
 class ActivitySplash : ActivityCompactBase() {
     private lateinit var activitySplashBinding: ActivitySplashBinding

@@ -11,13 +11,9 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
-import android.os.Build
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
@@ -48,7 +44,7 @@ class AppHelper {
 
         }
 
-             fun setLocal(context: Activity) {
+          fun setLocal() {
 
             if (MyApplication.languageCode == AppConstants.LANG_ENGLISH) {
                 LocaleUtils.setLocale(Locale("en"))
@@ -63,7 +59,7 @@ class AppHelper {
             if(MyApplication.localizeArray != null){
             try {
                 val myStringsMap: HashMap<String, String> = HashMap()
-                MyApplication.localizeArray!!.messages!!.forEachIndexed { index, firebaseLocalizeItem ->
+                MyApplication.localizeArray!!.messages!!.forEachIndexed { index, _ ->
                     run {
                         myStringsMap[MyApplication.localizeArray!!.messages!![index].localize_Key!!] =
                             if(language == "en") MyApplication.localizeArray!!.messages!![index].message_en!! else MyApplication.localizeArray!!.messages!![index].message_ar!!
@@ -83,13 +79,12 @@ class AppHelper {
             Reword.reword(rootView)
         }
 
-        fun setAllTexts(v: View?, context: Context) {
+        private fun setAllTexts(v: View?, context: Context) {
             if (MyApplication.localizeArray != null) {
                 try {
                     if (v is ViewGroup) {
-                        val vg = v
-                        for (i in 0 until vg.childCount) {
-                            val child = vg.getChildAt(i)
+                        for (i in 0 until v.childCount) {
+                            val child = v.getChildAt(i)
                             setAllTexts(child, context)
                         }
                     } else if (v is TextView && v !is EditText) {
@@ -112,7 +107,7 @@ class AppHelper {
             return capabilities?.hasCapability(NET_CAPABILITY_INTERNET) == true
         }
 
-        fun setHintTag(view: View, tag: String, context: Context) {
+        private fun setHintTag(view: View, tag: String, context: Context) {
             val edit = view as EditText
             if (MyApplication.localizeArray != null) {
                 try {
@@ -133,15 +128,15 @@ class AppHelper {
 
         fun getRemoteString(key: String, con: Context): String {
             if (MyApplication.localizeArray != null) {
-                try {
-                    return MyApplication.localizeArray!!.messages!!.find { it.localize_Key == key }!!
+                return try {
+                    MyApplication.localizeArray!!.messages!!.find { it.localize_Key == key }!!
                         .getMessage()!!
                 } catch (e: Exception) {
                     try {
                         val resId = con.resources.getIdentifier(key, "string", con.packageName)
-                        return con.resources.getString(resId)
+                        con.resources.getString(resId)
                     } catch (e: Exception) {
-                        return ""
+                        ""
                     }
                 }
 
@@ -190,19 +185,19 @@ class AppHelper {
 
         @SuppressLint("ResourceAsColor")
         fun createDialogError(activity: Activity, errorMessage: String, titleMessage:String, isSuccess:Boolean) {
-            val builder = android.app.AlertDialog.Builder(activity)
+            val builder = AlertDialog.Builder(activity)
             val textView: TextView
             val llItem: LinearLayout
-            val textViewtitle: TextView
+            val textViewTitle: TextView
 
             val inflater = activity.layoutInflater
             val textEntryView = inflater.inflate(R.layout.error_dialog, null)
             textView = textEntryView.findViewById(R.id.tvDetails)
-            textViewtitle = textEntryView.findViewById(R.id.tvTitle)
+            textViewTitle = textEntryView.findViewById(R.id.tvTitle)
             llItem = textEntryView.findViewById(R.id.llItem)
 
             textView.text = errorMessage
-            textViewtitle.text = titleMessage
+            textViewTitle.text = titleMessage
 
             if (isSuccess) textView.setTextColor(Color.parseColor("#009688"))
 
@@ -214,15 +209,15 @@ class AppHelper {
             }
 
             builder.setView(textEntryView)
-                .setNegativeButton(activity.resources.getString(R.string.done)) { dialog, _ ->
+                .setNegativeButton(activity.resources.getString(R.string.ok)) { dialog, _ ->
                     dialog.dismiss()
                 }
             val d = builder.create()
             d.setOnShowListener {
                 d.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE)
                     .setTextColor(ContextCompat.getColor(activity, R.color.colorPrimaryDark))
-                d.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).transformationMethod = null
-                d.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).isAllCaps = false
+                d.getButton(AlertDialog.BUTTON_NEGATIVE).transformationMethod = null
+                d.getButton(AlertDialog.BUTTON_NEGATIVE).isAllCaps = false
             }
             d.setCancelable(false)
             d.show()

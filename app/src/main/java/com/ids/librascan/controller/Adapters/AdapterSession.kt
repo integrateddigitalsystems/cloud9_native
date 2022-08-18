@@ -4,17 +4,12 @@ package com.ids.librascan.controller.Adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.daimajia.swipe.SwipeLayout
 import com.ids.librascan.controller.Adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.librascan.controller.MyApplication
-import com.ids.librascan.databinding.ItemQrDataBinding
 import com.ids.librascan.databinding.ItemSessionBinding
-import com.ids.librascan.db.QrCode
 import com.ids.librascan.db.SessionQrcode
-import com.ids.librascan.db.Sessions
-import kotlinx.coroutines.launch
 import utils.hide
 import utils.show
 import java.util.*

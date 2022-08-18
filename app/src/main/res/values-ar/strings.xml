@@ -89,4 +89,5 @@
     <string name="no_data_app">لا يوجد معلومات...</string>
     <string name="received">تحميل</string>
     <string name="get_warehouse"> اضافة المخازن</string>
+
 </resources>

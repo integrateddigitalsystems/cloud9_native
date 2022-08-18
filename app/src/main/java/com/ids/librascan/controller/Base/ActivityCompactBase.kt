@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -45,15 +44,15 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     lateinit var barcodeAlertDialog: androidx.appcompat.app.AlertDialog
     private lateinit var job: Job
     lateinit var popupBarcodeBinding: PopupBarcodeBinding
-    var spinnerSessions: ArrayList<Sessions> = arrayListOf()
-    lateinit var sessionsSpinnerAdapter: SessionsSpinnerAdapter
+    private var spinnerSessions: ArrayList<Sessions> = arrayListOf()
+    private lateinit var sessionsSpinnerAdapter: SessionsSpinnerAdapter
     lateinit var activitySessionsBinding: ActivitySessionsBinding
     lateinit var activityQrDataBinding: ActivityQrDataBinding
     var quantity = 1
-    var selectedUnit = Unit()
+    private var selectedUnit = Unit()
     var selectedSession = Sessions()
-    lateinit var onInsertUpdate: OnInsertUpdate
-    var closeDialog : Boolean = false
+    private lateinit var onInsertUpdate: OnInsertUpdate
+    private var closeDialog : Boolean = false
     private val appCompatDelegate: AppCompatDelegate by lazy {
         ViewPumpAppCompatDelegate(
             baseDelegate = super.getDelegate(),
@@ -65,7 +64,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         return appCompatDelegate
     }
     init {
-        AppHelper.setLocal(this)
+        AppHelper.setLocal()
         if (!WifiService.instance.isOnline() && MyApplication.localizeArray==null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.N_MR1){
             LocaleUtils.updateConfig(this)
         }
@@ -77,7 +76,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         AppHelper.handleCrashes(this)
         super.onCreate(savedInstanceState)
-        AppHelper.setLocal(this)
+        AppHelper.setLocal()
         job =Job()
         try{
         if (MyApplication.languageCode == AppConstants.LANG_ENGLISH) {
@@ -203,8 +202,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         if (popupBarcodeBinding.tvCode.text.toString().trim() != ""  &&  popupBarcodeBinding.spSession.isNotEmpty() && quantity != 0) {
             launch {
                 if (popupBarcodeBinding.tvInsertClose.text == resources.getString(R.string.insert_and_close)) {
-                    var qrCode = QrCode()
-                    qrCode = QrCodeDatabase(application).getCodeDao().getCode(popupBarcodeBinding.tvCode.text.toString().trim(),selectedSession.idSession)
+                    val qrCode: QrCode = QrCodeDatabase(application).getCodeDao().getCode(popupBarcodeBinding.tvCode.text.toString().trim(),selectedSession.idSession)
                     if (qrCode!=null){
                         if(!MyApplication.enableInsert && !MyApplication.enableNewLine)
                             insertCode(qrCode)
@@ -232,7 +230,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             quantity == 0 -> AppHelper.createDialogPositive(this@ActivityCompactBase, resources.getString(R.string.error_filled_qty))
         }
     }
-    fun listeners(){
+    private fun listeners(){
         popupBarcodeBinding.ivBarcode.setOnClickListener {
             popupBarcodeBinding.btShowScan.performClick()
             barcodeAlertDialog.cancel()
@@ -261,7 +259,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             override fun afterTextChanged(arg0: Editable) {
             }
         })
-        popupBarcodeBinding.etQty.setOnFocusChangeListener { v, hasFocus ->
+        popupBarcodeBinding.etQty.setOnFocusChangeListener {_, hasFocus ->
             if (!hasFocus) {
                 when {
                     popupBarcodeBinding.etQty.text.isEmpty() -> {
@@ -341,8 +339,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     fun insertScanAuto(qrCode: QrCode,onInsUpdate: OnInsertUpdate) {
         onInsertUpdate=onInsUpdate
         launch {
-            var qrCodeScan = QrCode()
-            qrCodeScan = QrCodeDatabase(application).getCodeDao().getCode(qrCode.code, qrCode.sessionId)
+            val qrCodeScan: QrCode =QrCodeDatabase(application).getCodeDao().getCode(qrCode.code, qrCode.sessionId)
             if (qrCodeScan != null) {
                 QrCodeDatabase(application).getCodeDao().updateCode(qrCodeScan.quantity+1,qrCodeScan.idQrcode)
                 onInsertUpdate.onInsertUpdate(true)

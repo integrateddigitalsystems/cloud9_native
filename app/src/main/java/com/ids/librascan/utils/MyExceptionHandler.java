@@ -1,11 +1,12 @@
 package com.ids.librascan.utils;
 
+
 import android.app.Activity;
 import android.content.Intent;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.ids.librascan.controller.Activities.ActivitySplash;
 import com.ids.librascan.controller.MyApplication;
+import com.ids.librascan.controller.Activities.ActivitySplash;
 import com.jakewharton.processphoenix.ProcessPhoenix;
 
 

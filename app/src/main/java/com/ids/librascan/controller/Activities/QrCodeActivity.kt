@@ -2,23 +2,16 @@ package com.ids.librascan.controller.Activities
 
 import Base.ActivityCompactBase
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.SparseArray
 import android.view.View
-import android.widget.RelativeLayout
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.vision.barcode.Barcode
 import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityQrCodeBinding
-import com.ids.librascan.databinding.ActivityQrDataBinding
-import com.ids.librascan.db.QrCode
-import com.ids.librascan.utils.AppHelper
 import info.bideens.barcode.BarcodeReader
 import utils.hide
 import utils.show
@@ -26,7 +19,7 @@ import utils.toast
 
 lateinit var barcodeReader: BarcodeReader
 class QrCodeActivity : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener {
-    lateinit var qrCodeBinding: ActivityQrCodeBinding
+    private lateinit var qrCodeBinding: ActivityQrCodeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         qrCodeBinding = ActivityQrCodeBinding.inflate(layoutInflater)

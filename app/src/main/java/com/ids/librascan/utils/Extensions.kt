@@ -5,21 +5,12 @@ package utils
 
 import android.app.Activity
 import android.content.Context
-import android.content.res.Resources
 import android.util.Log
 import android.view.View
 import android.widget.*
 import com.ids.librascan.controller.MyApplication
 
 
-fun CompoundButton.setCustomChecked(
-    value: Boolean,
-    listener: CompoundButton.OnCheckedChangeListener
-) {
-    setOnCheckedChangeListener(null)
-    isChecked = value
-    setOnCheckedChangeListener(listener)
-}
 fun Any.wtf(message: String) {
     if (MyApplication.showLogs)
         Log.wtf(this::class.java.simpleName, message)

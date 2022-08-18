@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.util.SparseArray
 import android.view.View
 import androidx.core.app.ActivityCompat
@@ -25,7 +24,6 @@ import com.ids.librascan.databinding.ActivityQrDataBinding
 import com.ids.librascan.db.QrCode
 import com.ids.librascan.db.QrCodeDatabase
 import com.ids.librascan.db.SessionQrcode
-import com.ids.librascan.db.Sessions
 import com.ids.librascan.utils.AppHelper
 import info.bideens.barcode.BarcodeReader
 import kotlinx.coroutines.launch
@@ -39,7 +37,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     private lateinit var adapterQrCode: AdapterQrCode
     private var arrQrCode = ArrayList<QrCode>()
     private var arrFilter = ArrayList<QrCode>()
-    lateinit var barcodeReader: BarcodeReader
+    private lateinit var barcodeReader: BarcodeReader
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityQrDataBinding = ActivityQrDataBinding.inflate(layoutInflater)
@@ -53,7 +51,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         listener()
     }
 
-    fun getAllData(){
+    private fun getAllData(){
         activityQrDataBinding.loading.show()
         launch {
             arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getCodes(MyApplication.sessionId))
@@ -73,7 +71,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
 
     }
 
-    fun listener(){
+    private fun listener(){
         activityQrDataBinding.ivScan.setOnClickListener {
             checkCameraPermissions(view = activityQrDataBinding.btShowScan)
             MyApplication.isScan = false
@@ -267,7 +265,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         }
     }
 
-    fun checkQrcodeData(){
+    private fun checkQrcodeData(){
         launch {
             arrQrCode.clear()
             arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getCodes(MyApplication.sessionId))

@@ -5,9 +5,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -18,7 +15,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import com.ids.librascan.R
 import com.ids.librascan.apis.RetrofitClient
 import com.ids.librascan.apis.RetrofitInterface
@@ -26,12 +22,10 @@ import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityLoginBinding
 import com.ids.librascan.model.ResponseLogin
 import com.ids.librascan.utils.AppHelper
-import dev.b3nedikt.reword.Reword
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import utils.*
-import java.util.*
 
 class ActivityLogin : ActivityCompactBase() {
     lateinit var activityLoginBinding: ActivityLoginBinding
@@ -56,7 +50,7 @@ class ActivityLogin : ActivityCompactBase() {
         listener()
     }
 
-    fun listener(){
+    private fun listener(){
         activityLoginBinding.btLogin.setOnClickListener {
             if (MyApplication.clientKey == "") {
                 startActivity(Intent(this, QrCodeActivity::class.java))
@@ -122,10 +116,10 @@ class ActivityLogin : ActivityCompactBase() {
     }
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        performGoogleLogin(acct.idToken!!, acct.displayName!!)
+        performGoogleLogin(acct.idToken!!)
     }
 
-    private fun performGoogleLogin(idToken: String, displayName: String) {
+    private fun performGoogleLogin(idToken: String) {
         activityLoginBinding.progressBar.show()
         RetrofitClient.client?.create(RetrofitInterface::class.java)
             ?.getLogin(idToken)?.enqueue(object :
@@ -169,5 +163,5 @@ class ActivityLogin : ActivityCompactBase() {
                 }
             })
     }
-    
+
 }

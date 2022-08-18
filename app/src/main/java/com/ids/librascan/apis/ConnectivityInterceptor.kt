@@ -1,5 +1,6 @@
 package com.ids.librascan.apis
 
+import android.content.Context
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
@@ -16,5 +17,6 @@ class ConnectivityInterceptor: Interceptor {
 
 class NoConnectivityException : IOException() {
     override val message: String
-        get() = "No network available, please check your WiFi or Data connection"
+    get() = "No network available, please check your WiFi or Data connection"
+
 }
