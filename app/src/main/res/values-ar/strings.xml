@@ -48,7 +48,7 @@
     <string name="english">الانجليزية</string>
     <string name="change">تغير اللغة</string>
     <string name="loading"> …جاري التحميل</string>
-    <string name="done">تم</string>
+    <string name="is_done">تم...</string>
     <string name="login_failed">فشل عملية الدخول</string>
     <string name="scan_settings">اعدادات البحث</string>
     <string name="settings">اعدادات</string>
@@ -83,4 +83,10 @@
     <string name="sync_data">هل تريد ترحيل هذه المعلومات</string>
     <string name="added_failed">لرجاء ادخال المعلومات لترحيلها</string>
     <string name="update_available">التحديث جاهز</string>
+    <string name="send_data">ارسال المعلومات</string>
+    <string name="send">ارسال</string>
+    <string name="is_failed">فشل...</string>
+    <string name="no_data_app">لا يوجد معلومات...</string>
+    <string name="received">تحميل</string>
+    <string name="get_warehouse"> اضافة المخازن</string>
 </resources>

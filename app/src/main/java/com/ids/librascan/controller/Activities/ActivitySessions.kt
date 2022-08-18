@@ -409,21 +409,20 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             arrayQrcode.addAll(QrCodeDatabase(application).getCodeDao().getAllCode())
           if (AppHelper.isNetworkAvailable(this@ActivitySessions)) {
                 if (arrayQrcode.isNotEmpty()) {
-                    arrApiStatus.add(ApiStatus("sendData","...Done","send"))
+                    arrApiStatus.add(ApiStatus(resources.getString(R.string.send_data),resources.getString(R.string.is_done),resources.getString(R.string.send)))
                     activitySessionsBinding.loadingData.show()
                     docData.put("QrCode", arrayQrcode)
                     db!!.collection("Data")
                         .add(docData)
                         .addOnSuccessListener { documentReference ->
                             toast(resources.getString(R.string.success_added))
-                          //  arrApiStatus.add(ApiStatus("sendData","...done","send"))
                             wtf("DocumentSnapshot written with ID: ${documentReference.id}")
 
                         }
                         .addOnFailureListener { e ->
                             wtf("Error adding document$e")
                             toast(e.toString())
-                            arrApiStatus.add(ApiStatus("sendData","...Failed","send"))
+                            arrApiStatus.add(ApiStatus(resources.getString(R.string.send_data),getString(R.string.is_failed),resources.getString(R.string.send)))
                         }
                     Handler(Looper.getMainLooper()).postDelayed({
                         activitySessionsBinding.loadingData.hide()
@@ -447,13 +446,13 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                     checkQrcodeData()
                 } else {
                     toast(resources.getString(R.string.added_failed))
-                    arrApiStatus.add(ApiStatus("sendData","...NoData","send"))
+                    arrApiStatus.add(ApiStatus(resources.getString(R.string.send_data),resources.getString(R.string.no_data_app),resources.getString(R.string.send)))
                     activitySessionsBinding.loadingData.hide()
                 }
             } else{
                 toast(getString(R.string.check_internet_connection))
-                arrApiStatus.add(ApiStatus("sendData","\n"+getString(R.string.check_internet_connection),"send"))
-                arrApiStatus.add(ApiStatus("getWarehouse","\n"+getString(R.string.check_internet_connection),"received"))
+                arrApiStatus.add(ApiStatus(resources.getString(R.string.send_data),"\n"+getString(R.string.check_internet_connection),resources.getString(R.string.send)))
+                arrApiStatus.add(ApiStatus(resources.getString(R.string.get_warehouse),"\n"+getString(R.string.check_internet_connection),resources.getString(R.string.received)))
           }
         }
     }
@@ -587,20 +586,20 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             val responseWarehouse =
                 RetrofitClient.client?.create(RetrofitInterface::class.java)!!.getWarehouses()
             if (responseWarehouse.isSuccessful && responseWarehouse.body()!!.warehouse!!.size > 0) {
-                arrApiStatus.add(ApiStatus("getWarehouse","...Done","received"))
+                arrApiStatus.add(ApiStatus(resources.getString(R.string.get_warehouse),resources.getString(R.string.is_done),resources.getString(R.string.received)))
                 QrCodeDatabase(application).getWarehouse().insertWarehouse(responseWarehouse.body()!!.warehouse!!)
                 if (show!!)
-                AppHelper.createDialogError(this,responseWarehouse.body()!!.message.toString(),"getWarehouse",true)
+                AppHelper.createDialogError(this,responseWarehouse.body()!!.message.toString(),resources.getString(R.string.get_warehouse),true)
             }
             else{
-                arrApiStatus.add(ApiStatus("getWarehouse","...Failed","received"))
+                arrApiStatus.add(ApiStatus(resources.getString(R.string.get_warehouse),resources.getString(R.string.is_failed),resources.getString(R.string.received)))
                 if (show!!)
-                AppHelper.createDialogError(this,responseWarehouse.body()!!.errorMessage.toString(),"getWarehouse",false)
+                AppHelper.createDialogError(this,responseWarehouse.body()!!.errorMessage.toString(),resources.getString(R.string.get_warehouse),false)
             }
 
         }catch (t: Throwable) {
             if (show!!)
-            AppHelper.createDialogError(this,t.toString(),"getWarehouse",false)
+            AppHelper.createDialogError(this,t.toString(),resources.getString(R.string.get_warehouse),false)
         }
 
     }
