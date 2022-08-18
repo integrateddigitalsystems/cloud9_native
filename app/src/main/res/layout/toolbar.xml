@@ -1,22 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llBackButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/margin_start_end">
 
-
-    <LinearLayout
-        android:id="@+id/llBackButton"
-        android:layout_width="wrap_content"
-        android:layout_marginStart="@dimen/margin_start_end"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/btBackTool"
-            android:layout_width="@dimen/back_width_height"
-            android:layout_height="@dimen/back_width_height"
-            android:src="@drawable/back"
-            android:onClick="back"
-            android:tint="@color/white" />
-
+    <ImageView
+        android:id="@+id/btBackTool"
+        android:layout_width="@dimen/back_width_height"
+        android:layout_height="@dimen/back_width_height"
+        android:onClick="back"
+        android:src="@drawable/back"
+        android:tint="@color/white" />
 
 
 </LinearLayout>
-</layout>

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <com.daimajia.swipe.SwipeLayout
+   <com.daimajia.swipe.SwipeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/swipe">
@@ -137,4 +136,3 @@
 
     </LinearLayout>
     </com.daimajia.swipe.SwipeLayout>
-</layout>
