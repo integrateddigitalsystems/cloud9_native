@@ -23,13 +23,6 @@ class AdapterQrCode(private var items:ArrayList<QrCode>, private val itemClickLi
         holder.itemQrDataBinding.tvTitleQrCode.text = items[position].code
         holder.itemQrDataBinding.tvQuantityCode.text = items[position].quantity.toString()
 
-        if (items[position].unitId == 1 )
-           holder.itemQrDataBinding.tvUnitCode.text = "Kg"
-        if (items[position].unitId == 2)
-            holder.itemQrDataBinding.tvUnitCode.text = "box"
-        if (items[position].unitId == 3)
-            holder.itemQrDataBinding.tvUnitCode.text = "item"
-
         if(MyApplication.languageCode =="en"){
             holder.itemQrDataBinding.swipe.showMode = SwipeLayout.ShowMode.LayDown
             holder.itemQrDataBinding.swipe.addDrag(SwipeLayout.DragEdge.Right,holder.itemQrDataBinding.llSwipe)

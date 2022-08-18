@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.ids.librascan.R
+import com.ids.librascan.databinding.ItemDropDownBinding
 import com.ids.librascan.db.Unit
 
 class UnitsSpinnerAdapter (val mContext: Context, private var items:MutableList<Unit>): ArrayAdapter<Unit>(mContext, 0, items){
@@ -27,17 +28,9 @@ class UnitsSpinnerAdapter (val mContext: Context, private var items:MutableList<
 
     private fun createItemView(position: Int, convertView: View?, parent: ViewGroup): View {
 
-        val view = LayoutInflater.from(mContext).inflate(R.layout.item_drop_down, parent, false)
-
+        val itemDropDownBinding = ItemDropDownBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         val sector = items[position]
-        val tvItem = view.findViewById<TextView>(R.id.tvItem)
-
-        tvItem.text = sector.toString()
-
-
-
-       // Actions.overrideFonts(context, llItem)
-
-        return view
+        itemDropDownBinding.tvItem.text = sector.toString()
+        return itemDropDownBinding.root
     }
 }

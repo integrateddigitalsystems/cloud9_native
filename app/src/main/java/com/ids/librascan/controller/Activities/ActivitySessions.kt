@@ -219,7 +219,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         }
     }
 
-    fun listenersPopupSession(){
+    private fun listenersPopupSession(){
         popupSessionBinding.ivReloadWarehouse.setOnClickListener {
             popupSessionBinding.loadingData.show()
             launch {
