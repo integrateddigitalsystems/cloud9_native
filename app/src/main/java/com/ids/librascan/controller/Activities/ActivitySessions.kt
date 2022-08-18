@@ -74,12 +74,29 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         activitySessionsBinding = ActivitySessionsBinding.inflate(layoutInflater)
         setContentView(activitySessionsBinding.root)
         popupSessionBinding = PopupSessionBinding.inflate(layoutInflater)
+
         init()
     }
     @SuppressLint("ResourceType")
     fun init() {
         arrApiStatus.clear()
         db = FirebaseFirestore.getInstance()
+        barcodeReader = supportFragmentManager.findFragmentById(R.id.barcodeReader) as BarcodeReader
+
+        configureGoogleSignIn()
+        getAllData()
+        listener()
+    }
+
+    private fun configureGoogleSignIn(){
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id_auth))
+            .requestEmail()
+            .build()
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+    }
+
+    fun getAllData(){
         if (MyApplication.isFirst) {
             launch {
                 apiRequest()
@@ -87,15 +104,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             }
         }
 
-        activitySessionsBinding.llAddSession.setOnClickListener {
-            showAddSessionAlertDialog()
-        }
-
-        activitySessionsBinding.llSync.setOnClickListener {
-            arrApiStatus.clear()
-            createDialSyncAllData(resources.getString(R.string.sync_all))
-
-        }
         activitySessionsBinding.loading.show()
         launch {
             arrSession.addAll(QrCodeDatabase(application).getSessions().getSessions())
@@ -103,13 +111,25 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             activitySessionsBinding.loading.hide()
             setData()
         }
-        barcodeReader = supportFragmentManager.findFragmentById(R.id.barcodeReader) as BarcodeReader
 
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id_auth))
-            .requestEmail()
-            .build()
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+    }
+
+    private fun setData() {
+        val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        activitySessionsBinding.rVSessions.layoutManager = layoutManager
+        adapterSession = AdapterSession(arrSession, this)
+        activitySessionsBinding.rVSessions.adapter = adapterSession
+    }
+
+    fun listener(){
+        activitySessionsBinding.llAddSession.setOnClickListener {
+            showAddSessionAlertDialog()
+        }
+
+        activitySessionsBinding.llSync.setOnClickListener {
+            arrApiStatus.clear()
+            createDialSyncAllData(resources.getString(R.string.sync_all))
+        }
 
         activitySessionsBinding.iVMore.setOnClickListener {
             val popupMenu = PopupMenu(this, it)
@@ -131,22 +151,21 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                     else -> false
                 }
             }
+
             popupMenu.inflate(R.menu.menu)
             popupMenu.show()
             val menu: Menu = popupMenu.menu
+
+            //set title
             for (i in 0 until menu.size()) {
                 menu.getItem(i).title = AppHelper.getRemoteString(menu[i].titleCondensed.toString(),this)
-                }
-
+            }
+            //set font
             for (i in 0 until menu.size()) {
                 val mi: MenuItem = menu.getItem(i)
                 applyFontToMenuItem(mi)
             }
         }
-    }
-
-    fun back(v: View) {
-        onBackPressed()
     }
 
     private fun applyFontToMenuItem(mi: MenuItem) {
@@ -187,18 +206,32 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 }
         }
 
+        listenersPopupSession()
+
+        builder.setView(popupSessionBinding.root)
+        sessionAlertDialog = builder.create()
+        sessionAlertDialog.setCanceledOnTouchOutside(false)
+        try {
+            sessionAlertDialog.show()
+            sessionAlertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        } catch (e: Exception) {
+
+        }
+    }
+
+    fun listenersPopupSession(){
         popupSessionBinding.ivReloadWarehouse.setOnClickListener {
-                popupSessionBinding.loadingData.show()
-                launch {
-                    show = true
-                    getWarehouse()
-                    spinnerWarehouse.clear()
-                    spinnerWarehouse.addAll(QrCodeDatabase(application).getWarehouse().getWarehouse())
-                    popupSessionBinding.spWarehouse.adapter = warehouseSpinnerAdapter
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        popupSessionBinding.loadingData.hide()
-                    }, 500)
-                }
+            popupSessionBinding.loadingData.show()
+            launch {
+                show = true
+                getWarehouse()
+                spinnerWarehouse.clear()
+                spinnerWarehouse.addAll(QrCodeDatabase(application).getWarehouse().getWarehouse())
+                popupSessionBinding.spWarehouse.adapter = warehouseSpinnerAdapter
+                Handler(Looper.getMainLooper()).postDelayed({
+                    popupSessionBinding.loadingData.hide()
+                }, 500)
+            }
         }
         popupSessionBinding.tvName.typeface = AppHelper.getTypeFace(this)
         popupSessionBinding.tvInsert.setOnClickListener {
@@ -209,15 +242,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         }
         popupSessionBinding.tvDate.setOnClickListener {
             datePickerDialog()
-        }
-        builder.setView(popupSessionBinding.root)
-        sessionAlertDialog = builder.create()
-        sessionAlertDialog.setCanceledOnTouchOutside(false)
-        try {
-            sessionAlertDialog.show()
-            sessionAlertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        } catch (e: Exception) {
-
         }
     }
 
@@ -303,13 +327,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         popupSessionBinding.spWarehouse.performClick()
     }
 
-    private fun setData() {
-        val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        activitySessionsBinding.rVSessions.layoutManager = layoutManager
-        adapterSession = AdapterSession(arrSession, this)
-        activitySessionsBinding.rVSessions.adapter = adapterSession
-    }
-
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.llScan) {
@@ -383,7 +400,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     }
 
     @SuppressLint("NotifyDataSetChanged")
-  suspend fun addAllDataToFirestore() {
+    suspend fun addAllDataToFirestore() {
         show = false
         launch {
             val arrayQrcode = ArrayList<QrCode>()
@@ -691,7 +708,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 insertScanAuto(QrCode(value, 0, 1, MyApplication.sessionId), this)
                 activitySessionsBinding.llSync.show()
             } else if (MyApplication.enableInsert && MyApplication.enableNewLine) {
-                insertScan(QrCode(value, 0, 1, MyApplication.sessionId), this)
+                insertNewLineAuto(QrCode(value, 0, 1, MyApplication.sessionId), this)
                 activitySessionsBinding.llSync.show()
             } else {
                 barcodeAlertDialog.show()
@@ -724,6 +741,11 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             super.onBackPressed()
         }
     }
+
+    fun back(v: View) {
+        onBackPressed()
+    }
+
 
 }
 

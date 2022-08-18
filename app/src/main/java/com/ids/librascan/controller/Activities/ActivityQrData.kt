@@ -47,36 +47,55 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         init()
     }
     private fun init() {
-         activityQrDataBinding.ivScan.setOnClickListener {
-             checkCameraPermissions(view = activityQrDataBinding.btShowScan)
-             MyApplication.isScan = false
-             activityQrDataBinding.tvNameSession.text = MyApplication.sessionName
-         }
-         activityQrDataBinding.loading.show()
-         launch {
-             arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getCodes(MyApplication.sessionId))
+        barcodeReader = supportFragmentManager.findFragmentById(R.id.barcodeReader) as BarcodeReader
+
+        getAllData()
+        listener()
+    }
+
+    fun getAllData(){
+        activityQrDataBinding.loading.show()
+        launch {
+            arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getCodes(MyApplication.sessionId))
             checkQrcodeData()
-             activityQrDataBinding.loading.hide()
-             setData()
-         }
-         barcodeReader = supportFragmentManager.findFragmentById(R.id.barcodeReader) as BarcodeReader
+            activityQrDataBinding.loading.hide()
+            setData()
+        }
+    }
 
-         activityQrDataBinding.tvBarcode.addTextChangedListener(object : TextWatcher {
-             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-             }
+    private fun setData() {
+        val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        activityQrDataBinding.rVQrData.layoutManager = layoutManager
+        arrFilter.clear()
+        arrFilter.addAll(arrQrCode)
+        adapterQrCode = AdapterQrCode(arrFilter, this)
+        activityQrDataBinding.rVQrData.adapter = adapterQrCode
 
-             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-             }
+    }
 
-             override fun afterTextChanged(editable: Editable) {
-                 if (editable.toString() ==""){
-                     activityQrDataBinding.ivClear.hide()
-                 }
-                 else  activityQrDataBinding.ivClear.show()
-                 filter(editable.toString())
+    fun listener(){
+        activityQrDataBinding.ivScan.setOnClickListener {
+            checkCameraPermissions(view = activityQrDataBinding.btShowScan)
+            MyApplication.isScan = false
+            activityQrDataBinding.tvNameSession.text = MyApplication.sessionName
+        }
 
-             }
-         })
+        activityQrDataBinding.tvBarcode.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+            }
+
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+            }
+
+            override fun afterTextChanged(editable: Editable) {
+                if (editable.toString() ==""){
+                    activityQrDataBinding.ivClear.hide()
+                }
+                else  activityQrDataBinding.ivClear.show()
+                filter(editable.toString())
+
+            }
+        })
 
         activityQrDataBinding.llScan.setOnClickListener {
             MyApplication.isScan = true
@@ -93,7 +112,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
         activityQrDataBinding.ivClear.setOnClickListener {
             activityQrDataBinding.tvBarcode.setText("")
         }
-     }
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun filter(text: String) {
@@ -102,15 +121,6 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
             it.code!!.lowercase().replaceFirstChar(Char::lowercase).contains(text.lowercase().replaceFirstChar(Char::lowercase))
         })
         adapterQrCode.notifyDataSetChanged()
-
-    }
-    private fun setData() {
-        val layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        activityQrDataBinding.rVQrData.layoutManager = layoutManager
-        arrFilter.clear()
-        arrFilter.addAll(arrQrCode)
-        adapterQrCode = AdapterQrCode(arrFilter, this)
-        activityQrDataBinding.rVQrData.adapter = adapterQrCode
 
     }
 
@@ -150,6 +160,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
               adapterQrCode.notifyDataSetChanged()
         }
     }
+
     fun back(v: View) {
         startActivity(Intent(this@ActivityQrData, ActivitySessions::class.java))
         finish()
@@ -217,7 +228,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
                 }
 
                 else  if (MyApplication.enableInsert && MyApplication.enableNewLine){
-                    insertScan(QrCode(value,0,1,MyApplication.sessionId),this)
+                    insertNewLineAuto(QrCode(value,0,1,MyApplication.sessionId),this)
                     activityQrDataBinding.ivScan.show()
                 }
                 else{
@@ -255,6 +266,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
             finish()
         }
     }
+
     fun checkQrcodeData(){
         launch {
             arrQrCode.clear()
@@ -269,5 +281,4 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
             }
         }
     }
-
 }

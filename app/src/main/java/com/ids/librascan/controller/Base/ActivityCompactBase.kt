@@ -87,8 +87,6 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             AppHelper.setLocalStrings(this, "ar", Locale("ar"))
         }}catch (e:Exception){}
 
-
-
     }
     override fun attachBaseContext(newBase: Context) {
         var newBase = newBase
@@ -172,7 +170,6 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             popupBarcodeBinding.tvIncrement.background = ContextCompat.getDrawable(this, R.drawable.rounded_left_gray)
             popupBarcodeBinding.tvDecrement.background = ContextCompat.getDrawable(this, R.drawable.rounded_right_gray)
         }
-
     }
 
     private fun isUpdateChecked(isUpdate:Boolean, qrCode: QrCode){
@@ -313,11 +310,10 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             QrCodeDatabase(application).getCodeDao().updateCode(quantity,qrCode.idQrcode)
             popupBarcodeBinding.tvCode.setText("")
             popupBarcodeBinding.etQty.setText("1")
-
-        onInsertUpdate.onInsertUpdate(true)
-        toast(resources.getString(R.string.message_update))
-        barcodeAlertDialog.cancel()
-            }
+            onInsertUpdate.onInsertUpdate(true)
+            toast(resources.getString(R.string.message_update))
+            barcodeAlertDialog.cancel()
+        }
     }
 
     fun showSession(view: View){
@@ -331,7 +327,6 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             popupBarcodeBinding.etQty.setText("1")
             toast(resources.getString(R.string.item_save))
             onInsertUpdate.onInsertUpdate(true)
-
         }
     }
     private fun insertCodeNew (){
@@ -363,7 +358,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         }
     }
 
-    fun insertScan(qrCode: QrCode,onInsUpdate: OnInsertUpdate){
+    fun insertNewLineAuto(qrCode: QrCode,onInsUpdate: OnInsertUpdate){
         onInsertUpdate=onInsUpdate
         launch {
             QrCodeDatabase(application).getCodeDao().insertCode(qrCode)
