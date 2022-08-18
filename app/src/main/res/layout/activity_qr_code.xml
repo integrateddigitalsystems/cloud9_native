@@ -14,7 +14,8 @@
         android:onClick="checkCameraPermissions"
         android:layout_width="0dp"
         android:visibility="gone"
-        android:layout_height="0dp"/>
+        android:layout_height="0dp"
+        tools:ignore="UsingOnClickInXml" />
 
     <RelativeLayout
         android:id="@+id/rlBarcode"
@@ -22,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <fragment
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/barcodeReader"
             android:name="info.bideens.barcode.BarcodeReader"
             android:layout_width="match_parent"

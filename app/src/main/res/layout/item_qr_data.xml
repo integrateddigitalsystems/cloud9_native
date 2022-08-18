@@ -2,7 +2,8 @@
    <com.daimajia.swipe.SwipeLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
+       xmlns:tools="http://schemas.android.com/tools"
+       android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/swipe">
 
@@ -24,7 +25,8 @@
                 android:clickable="true"
                 android:background="@color/gray_bg"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:focusable="true" />
 
 
             <com.ids.librascan.custom.CustomTextViewMedium
@@ -55,7 +57,8 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:background="@color/white"
-            android:layout_height="60dp">
+            android:layout_height="60dp"
+            tools:ignore="UselessParent">
 
 
             <LinearLayout
@@ -102,7 +105,8 @@
                     android:gravity="end|center"
                     android:layout_gravity="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/small_font"/>
+                    android:textSize="@dimen/small_font"
+                    tools:ignore="NestedWeights" />
 
                 <com.ids.librascan.custom.CustomTextViewMedium
                     android:id="@+id/tvUnitCode"
@@ -110,7 +114,6 @@
                     android:padding="@dimen/normal_margin_padding"
                     android:layout_width="0dp"
                     android:layout_marginHorizontal="@dimen/margin_30"
-                    android:text="123"
                     android:visibility="gone"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
@@ -126,7 +129,8 @@
                     android:layout_width="@dimen/size_20"
                     android:visibility="gone"
                     android:layout_height="@dimen/size_20"
-                    app:tint="@color/red" />
+                    app:tint="@color/red"
+                    tools:ignore="ContentDescription" />
 
             </LinearLayout>
 

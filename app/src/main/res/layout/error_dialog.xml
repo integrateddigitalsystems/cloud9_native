@@ -24,7 +24,8 @@
                 android:layout_marginEnd="@dimen/big_margin_padding"
                 android:gravity="start"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/header_font"/>
+                android:textSize="@dimen/header_font"
+                tools:ignore="HardcodedText" />
 
             <ImageView
                 android:src="@drawable/icon_spinner"
@@ -34,7 +35,7 @@
                 android:tint="@color/black"
                 android:layout_width="@dimen/list_icon_width_height"
                 android:layout_height="@dimen/list_icon_width_height"
-                tools:ignore="UseAppTint" />
+                tools:ignore="ContentDescription,UseAppTint" />
         </LinearLayout>
 
         <com.ids.librascan.custom.CustomTextViewBold

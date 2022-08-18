@@ -9,9 +9,9 @@
         android:id="@+id/dialogMsg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:height="50dp"
+        android:height="@dimen/height_50"
         android:layout_gravity="center"
-        android:textSize="15dp"
+        android:textSize="@dimen/size_15"
         android:layout_margin="8dp"
         android:gravity="center"
         android:textColor="@android:color/black"/>

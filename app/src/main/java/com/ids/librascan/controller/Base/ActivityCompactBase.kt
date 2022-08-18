@@ -66,6 +66,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     init {
         AppHelper.setLocal()
         if (!WifiService.instance.isOnline() && MyApplication.localizeArray==null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.N_MR1){
+            AppHelper.setLocal()
             LocaleUtils.updateConfig(this)
         }
     }
@@ -76,7 +77,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         AppHelper.handleCrashes(this)
         super.onCreate(savedInstanceState)
-        AppHelper.setLocal()
+       // AppHelper.setLocal()
         job =Job()
         try{
         if (MyApplication.languageCode == AppConstants.LANG_ENGLISH) {

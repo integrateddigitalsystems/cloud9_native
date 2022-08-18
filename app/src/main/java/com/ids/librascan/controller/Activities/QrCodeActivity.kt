@@ -88,4 +88,6 @@ class QrCodeActivity : ActivityCompactBase(), BarcodeReader.BarcodeReaderListene
     override fun onScanError(errorMessage: String?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+    fun checkCameraPermissions(view: View) {}
 }

@@ -19,7 +19,8 @@
         android:gravity="bottom"
         android:background="@drawable/rounded_gray_edit_text"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+    android:focusable="true">
 
         <ProgressBar
             android:layout_width="wrap_content"
@@ -47,7 +48,8 @@
         android:gravity="center"
         android:background="@drawable/background"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:focusable="true">
 
         <ProgressBar
             android:layout_width="wrap_content"
@@ -122,7 +124,8 @@
                     android:layout_height="@dimen/size_30"
                     android:layout_gravity="center_vertical|center_horizontal"
                     android:src="@drawable/add_session"
-                    app:tint="@color/white" />
+                    app:tint="@color/white"
+                    tools:ignore="ContentDescription" />
             </LinearLayout>
 
 
@@ -205,7 +208,7 @@
         <com.ids.librascan.custom.CustomTextViewMedium
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/tvNodata"
+            android:id="@+id/tvNoData"
             android:text="@string/no_data"
             android:gravity="center"
             android:visibility="gone"
@@ -239,7 +242,8 @@
                     android:layout_marginStart="@dimen/size_20"
                     android:layout_marginEnd="@dimen/size_20"
                     android:layout_height="@dimen/size_20"
-                    android:src="@drawable/sync" />
+                    android:src="@drawable/sync"
+                    tools:ignore="ContentDescription" />
 
                 <com.ids.librascan.custom.CustomTextViewBold
                     android:layout_width="match_parent"
@@ -259,7 +263,8 @@
                 android:onClick="checkCameraPermissions"
                 android:layout_width="0dp"
                 android:visibility="gone"
-                android:layout_height="0dp"/>
+                android:layout_height="0dp"
+                tools:ignore="UsingOnClickInXml" />
 
         </LinearLayout>
 
@@ -277,7 +282,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:auto_focus="true"
-            app:use_flash="false" />
+            app:use_flash="false"
+            tools:ignore="FragmentTagUsage" />
 
         <com.ids.librascan.custom.CustomTextViewBold
             android:layout_width="match_parent"
@@ -288,7 +294,7 @@
             android:layout_marginEnd="@dimen/small_margin"
             android:layout_marginTop="@dimen/small_margin"
             android:textColor="@color/white"
-            android:text="Session 1"/>
+            android:text=""/>
 
         <info.bideens.barcode.ScannerOverlay
             android:layout_width="match_parent"
@@ -298,7 +304,8 @@
             app:line_speed="6"
             app:line_width="4"
             app:square_height="@integer/m3_sys_motion_duration_100"
-            app:square_width="@integer/material_motion_duration_long_1"/>
+            app:square_width="@integer/material_motion_duration_long_1"
+            tools:ignore="PrivateResource" />
 
     </RelativeLayout>
 

@@ -49,7 +49,8 @@
             android:layout_height="@dimen/height_100"
             android:layout_gravity="center"
             android:src="@drawable/logo"
-            android:layout_marginTop="@dimen/big_margin"/>
+            android:layout_marginTop="@dimen/big_margin"
+            tools:ignore="ContentDescription" />
 
 
                 <LinearLayout
@@ -63,7 +64,8 @@
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            tools:ignore="UselessParent">
 
                                 <ImageView
                                     android:layout_width="@dimen/size_20"
@@ -74,7 +76,8 @@
                                     android:layout_marginStart="@dimen/padding_5"
                                     android:layout_marginTop="@dimen/big_margin"
                                     android:layout_marginEnd="@dimen/padding_5"
-                                    android:src="@drawable/google" />
+                                    android:src="@drawable/google"
+                                    tools:ignore="ContentDescription" />
 
                                 <com.ids.librascan.custom.CustomTextViewBold
                                     android:id="@+id/btLogin"

@@ -15,13 +15,15 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
 
             <ImageView
                 android:id="@+id/ivLogo"
                 android:layout_width="@dimen/splash_image_width_height"
                 android:layout_height="@dimen/splash_image_width_height"
-                android:src="@drawable/logo" />
+                android:src="@drawable/logo"
+                tools:ignore="ContentDescription" />
 
             <com.ids.librascan.custom.CustomTextViewMedium
                 android:id="@+id/tvAppName"

@@ -275,7 +275,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                     sessionAlertDialog.cancel()
                     arrSession.clear()
                     arrSession.addAll(QrCodeDatabase(application).getSessions().getSessions())
-                    activitySessionsBinding.tvNodata.hide()
+                    activitySessionsBinding.tvNoData.hide()
                     adapterSession.notifyDataSetChanged()
                     toast(resources.getString(R.string.session_save))
                 }
@@ -638,8 +638,8 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 activitySessionsBinding.llSync.hide()
             else activitySessionsBinding.llSync.show()
             if (arrSession.isEmpty())
-                activitySessionsBinding.tvNodata.show()
-            else activitySessionsBinding.tvNodata.hide()
+                activitySessionsBinding.tvNoData.show()
+            else activitySessionsBinding.tvNoData.hide()
         }
     }
 

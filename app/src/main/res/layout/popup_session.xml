@@ -20,7 +20,8 @@
             android:id="@+id/btClose"
             android:scaleType="centerInside"
             android:layout_gravity="top|end"
-            android:background="@drawable/green_circle"/>
+            android:background="@drawable/green_circle"
+            tools:ignore="HardcodedText" />
 
 
         <FrameLayout
@@ -113,7 +114,8 @@
                             android:layout_marginStart="@dimen/big_margin_padding"
                             android:layout_marginEnd="@dimen/big_margin_padding"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:baselineAligned="false">
 
                             <RelativeLayout
                                 android:layout_width="0dp"
@@ -140,7 +142,7 @@
                                     android:layout_marginTop="@dimen/margin_10"
                                     android:src="@drawable/sync"
                                     android:tint="@color/gray_bg"
-                                    tools:ignore="UseAppTint" />
+                                    tools:ignore="ContentDescription,UseAppTint" />
                             </RelativeLayout>
 
                             <RelativeLayout
@@ -178,7 +180,8 @@
                                     android:onClick="showWarehouse"
                                     android:rotation="270"
                                     android:src="@drawable/icon_spinner"
-                                    app:tint="@color/colorPrimaryDark" />
+                                    app:tint="@color/colorPrimaryDark"
+                                    tools:ignore="ContentDescription,UsingOnClickInXml" />
 
                             </RelativeLayout>
 
@@ -311,7 +314,8 @@
                     android:clickable="true"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    android:focusable="true">
 
                     <ProgressBar
                         android:layout_width="wrap_content"

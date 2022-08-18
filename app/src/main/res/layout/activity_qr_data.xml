@@ -21,7 +21,8 @@
             android:gravity="center"
             android:background="@drawable/background"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:focusable="true">
 
             <ProgressBar
                 android:layout_width="wrap_content"
@@ -43,8 +44,7 @@
                 android:layout_width="@dimen/back_width_height"
                 android:layout_height="@dimen/back_width_height"
                 android:src="@drawable/back"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:id="@+id/ivBack"
                 android:paddingTop="@dimen/normal_margin_padding"
                 android:tint="@color/white"
@@ -55,7 +55,7 @@
                 android:contentDescription="@string/app_name"
                 android:onClick="back"
                 app:tint="@color/white"
-                tools:ignore="UseAppTint" />
+                tools:ignore="ObsoleteLayoutParam,UseAppTint,UsingOnClickInXml" />
 
 
         </LinearLayout>
@@ -119,7 +119,7 @@
                         android:src="@drawable/icon_clear"
                         android:tint="@color/white"
                         android:visibility="gone"
-                        tools:ignore="UseAppTint" />
+                        tools:ignore="ContentDescription,UseAppTint" />
 
 
                     <ImageView
@@ -132,7 +132,8 @@
                         android:layout_marginEnd="@dimen/small_margin_padding"
                         android:visibility="gone"
                         android:layout_marginBottom="@dimen/small_margin_padding"
-                        android:src="@drawable/scan" />
+                        android:src="@drawable/scan"
+                        tools:ignore="ContentDescription" />
 
                 </LinearLayout>
 
@@ -173,7 +174,8 @@
                     android:paddingEnd="1dp"
                     android:text="@string/barcode"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/small_font" />
+                    android:textSize="@dimen/small_font"
+                    tools:ignore="RtlSymmetry" />
 
                 <com.ids.librascan.custom.CustomTextViewBold
                     android:id="@+id/tvQuantity"
@@ -228,7 +230,7 @@
                         android:paddingEnd="@dimen/normal_margin_padding" />
 
                     <com.ids.librascan.custom.CustomTextViewMedium
-                        android:id="@+id/tvNodata"
+                        android:id="@+id/tvNoData"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignBottom="@+id/rVQrData"
@@ -273,7 +275,8 @@
             android:onClick="checkCameraPermissions"
             android:layout_width="0dp"
             android:visibility="gone"
-            android:layout_height="0dp"/>
+            android:layout_height="0dp"
+            tools:ignore="UsingOnClickInXml" />
         <RelativeLayout
             android:id="@+id/rlBarcode"
             android:visibility="gone"
@@ -286,7 +289,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:auto_focus="true"
-                app:use_flash="false" />
+                app:use_flash="false"
+                tools:ignore="FragmentTagUsage" />
 
             <com.ids.librascan.custom.CustomTextViewBold
                 android:layout_width="match_parent"
@@ -307,7 +311,8 @@
                 app:line_speed="6"
                 app:line_width="4"
                 app:square_height="@integer/m3_sys_motion_duration_100"
-                app:square_width="@integer/material_motion_duration_long_1"/>
+                app:square_width="@integer/material_motion_duration_long_1"
+                tools:ignore="PrivateResource" />
 
         </RelativeLayout>
     </FrameLayout>

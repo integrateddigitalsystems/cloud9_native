@@ -154,7 +154,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
               arrFilter.clear()
               arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getCodes(MyApplication.sessionId))
               arrFilter.addAll(arrQrCode)
-              activityQrDataBinding.tvNodata.hide()
+              activityQrDataBinding.tvNoData.hide()
               adapterQrCode.notifyDataSetChanged()
         }
     }
@@ -270,11 +270,11 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
             arrQrCode.clear()
             arrQrCode.addAll(QrCodeDatabase(application).getCodeDao().getCodes(MyApplication.sessionId))
             if (arrQrCode.isEmpty()){
-                activityQrDataBinding.tvNodata.show()
+                activityQrDataBinding.tvNoData.show()
                 activityQrDataBinding.ivScan.hide()
             }
             else{
-                activityQrDataBinding.tvNodata.hide()
+                activityQrDataBinding.tvNoData.hide()
                 activityQrDataBinding.ivScan.show()
             }
         }
