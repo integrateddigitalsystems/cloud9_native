@@ -33,9 +33,26 @@ android {
         jvmTarget = '1.8'
     }
 
+    signingConfigs {
+        debug{
+            storeFile file('librascan.jks')
+            keyAlias 'librakey'
+            keyPassword 'aa112233'
+            storePassword 'aa112233'
+        }
+
+        debug_prime{
+            storeFile file('librascanprime.jks')
+            keyAlias 'libraprimealias'
+            keyPassword 'aa112233'
+            storePassword 'aa112233'
+        }
+    }
+
     productFlavors {
         scan{
             applicationId "com.ids.librascan"
+            signingConfig signingConfigs.debug
             buildConfigField 'String', "label", "\"scan\""
             dimension "app"
             minSdk 21
@@ -46,6 +63,7 @@ android {
 
         scan_prime{
             applicationId "com.ids.scanprime"
+            signingConfig signingConfigs.debug_prime
             buildConfigField 'String', "label", "\"scan_prime\""
             dimension "app"
             minSdk 21
@@ -54,18 +72,6 @@ android {
             versionName "1.0"
         }
     }
-
-
-
-    signingConfigs {
-        debug {
-            storeFile file('librascan.jks')
-            keyAlias 'librakey'
-            keyPassword 'aa112233'
-            storePassword 'aa112233'
-        }
-    }
-
    buildFeatures {
        viewBinding true
 

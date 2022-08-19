@@ -14,7 +14,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "43913368539-mgncndf07jkulqbno5heatar8573kp4t.apps.googleusercontent.com",
+          "client_id": "43913368539-bf7h87ud0j1iqtcjtt60jf6t6oqbl5or.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ids.librascan",
@@ -47,7 +47,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "43913368539-jfp7lt1agnq58hrlfhri89akl9t12ve0.apps.googleusercontent.com",
+          "client_id": "43913368539-f97pmrbud77ofetimeb4j8l5dut6r4g1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ids.scanprime",
+            "certificate_hash": "59ad7640a29ea562c19508ceb03b27956ce5046a"
+          }
+        },
+        {
+          "client_id": "43913368539-u344ngnlbg7jqpk8vadurmqe9e9otbfh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ids.scanprime",
