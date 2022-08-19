@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -17,10 +18,7 @@ import android.os.Looper
 import android.text.Spannable
 import android.text.SpannableString
 import android.util.SparseArray
-import android.view.Gravity
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -133,7 +131,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
 
         activitySessionsBinding.iVMore.setOnClickListener {
             val popupMenu = PopupMenu(this, it)
-
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.action_logout -> {
@@ -179,6 +176,8 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         )
         mi.title = mNewTitle
     }
+
+
 
     private fun showAddSessionAlertDialog() {
         spinnerWarehouse.clear()
