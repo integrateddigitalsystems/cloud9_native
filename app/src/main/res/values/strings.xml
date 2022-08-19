@@ -92,4 +92,5 @@
     <string name="no_data_app">...NoData</string>
     <string name="received">Received</string>
     <string name="get_warehouse">GetWarehouse</string>
+    <string name="font" translatable="false">fonts/HelveticaNeueLTArabic-Bold.ttf</string>
 </resources>

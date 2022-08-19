@@ -166,7 +166,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     }
 
     private fun applyFontToMenuItem(mi: MenuItem) {
-        val font = Typeface.createFromAsset(this.assets, "fonts/HelveticaNeueLTArabic-Bold.ttf")
+        val font = Typeface.createFromAsset(this.assets, getString(R.string.font))
         val mNewTitle = SpannableString(mi.title)
         mNewTitle.setSpan(
             CustomTypeFaceSpan("", font, Color.BLACK),
@@ -176,8 +176,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
         )
         mi.title = mNewTitle
     }
-
-
 
     private fun showAddSessionAlertDialog() {
         spinnerWarehouse.clear()
