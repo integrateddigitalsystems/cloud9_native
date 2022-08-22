@@ -315,9 +315,12 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
 
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        val sdf: SimpleDateFormat
         val calendar = Calendar.getInstance()
         calendar[year, month] = dayOfMonth
-        val sdf = SimpleDateFormat("dd/MM/yyyy")
+        sdf = if (MyApplication.languageCode == "ar")
+             SimpleDateFormat("yyyy/MM/dd")
+        else SimpleDateFormat("dd/MM/yyyy")
         val formatDate = sdf.format(calendar.time)
         popupSessionBinding.tvDate.text = formatDate
     }
