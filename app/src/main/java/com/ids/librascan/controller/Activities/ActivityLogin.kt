@@ -60,7 +60,7 @@ class ActivityLogin : ActivityCompactBase() {
             }
         }
         activityLoginBinding.btScan.setOnClickListener {
-            if (MyApplication.clientKey != "") {
+            if (MyApplication.clientKey != "" || MyApplication.clientKey =="") {
                 startActivity(Intent(this, QrCodeActivity::class.java))
             }
         }
