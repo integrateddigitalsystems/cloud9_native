@@ -28,13 +28,12 @@ import com.ids.librascan.databinding.ActivitySessionsBinding
 import com.ids.librascan.databinding.PopupBarcodeBinding
 import com.ids.librascan.db.*
 import com.ids.librascan.db.Unit
-import com.ids.librascan.utils.AppHelper
+import com.ids.librascan.utils.*
 import dev.b3nedikt.restring.Restring
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import utils.*
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 

@@ -2,7 +2,7 @@ package com.ids.librascan.model
 
 import com.google.gson.annotations.SerializedName
 import com.ids.librascan.controller.MyApplication
-import utils.AppConstants
+import com.ids.librascan.utils.AppConstants
 
 
 class FirebaseLocalizeItem {

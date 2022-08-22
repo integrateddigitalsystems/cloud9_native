@@ -42,10 +42,9 @@ import com.ids.librascan.controller.adapters.WarehouseSpinnerAdapter
 import com.ids.librascan.custom.CustomTypeFaceSpan
 import com.ids.librascan.databinding.*
 import com.ids.librascan.db.*
-import com.ids.librascan.utils.AppHelper
+import com.ids.librascan.utils.*
 import info.bideens.barcode.BarcodeReader
 import kotlinx.coroutines.*
-import utils.*
 import java.text.SimpleDateFormat
 import java.util.*
 

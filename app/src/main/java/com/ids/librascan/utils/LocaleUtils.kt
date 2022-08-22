@@ -1,4 +1,4 @@
-package utils
+package com.ids.librascan.utils
 
 import android.content.res.Configuration
 import android.view.ContextThemeWrapper

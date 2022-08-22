@@ -13,9 +13,9 @@ import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityQrCodeBinding
 import info.bideens.barcode.BarcodeReader
-import utils.hide
-import utils.show
-import utils.toast
+import com.ids.librascan.utils.hide
+import com.ids.librascan.utils.show
+import com.ids.librascan.utils.toast
 
 lateinit var barcodeReader: BarcodeReader
 class QrCodeActivity : ActivityCompactBase(), BarcodeReader.BarcodeReaderListener {

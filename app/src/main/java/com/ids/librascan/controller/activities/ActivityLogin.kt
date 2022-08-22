@@ -21,11 +21,10 @@ import com.ids.librascan.apis.RetrofitInterface
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityLoginBinding
 import com.ids.librascan.model.ResponseLogin
-import com.ids.librascan.utils.AppHelper
+import com.ids.librascan.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import utils.*
 
 class ActivityLogin : ActivityCompactBase() {
     lateinit var activityLoginBinding: ActivityLoginBinding
@@ -41,7 +40,7 @@ class ActivityLogin : ActivityCompactBase() {
     }
     @SuppressLint("ResourceAsColor")
     private fun init() {
-        if (MyApplication.languageCode ==AppConstants.LANG_ENGLISH)
+        if (MyApplication.languageCode == AppConstants.LANG_ENGLISH)
             activityLoginBinding.btEn.background = ContextCompat.getDrawable(this@ActivityLogin, R.drawable.rounded)
         else
             activityLoginBinding.btAr.background = ContextCompat.getDrawable(this@ActivityLogin, R.drawable.rounded)

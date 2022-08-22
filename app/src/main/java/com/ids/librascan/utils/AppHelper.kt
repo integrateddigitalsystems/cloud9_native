@@ -18,11 +18,9 @@ import androidx.core.content.ContextCompat
 import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ErrorDialogBinding
-import com.ids.librascan.databinding.ItemDialogSyncBinding
 import dev.b3nedikt.restring.Restring
 import dev.b3nedikt.restring.toMutableRepository
 import dev.b3nedikt.reword.Reword
-import utils.*
 import java.io.IOException
 import java.util.*
 

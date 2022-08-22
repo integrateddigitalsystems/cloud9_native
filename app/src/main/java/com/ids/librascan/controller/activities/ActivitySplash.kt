@@ -26,7 +26,7 @@ import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivitySplashBinding
 import com.ids.librascan.databinding.ItemDialogBinding
 import com.ids.librascan.model.*
-import utils.AppConstants
+import com.ids.librascan.utils.AppConstants
 
 class ActivitySplash : ActivityCompactBase() {
     private lateinit var activitySplashBinding: ActivitySplashBinding

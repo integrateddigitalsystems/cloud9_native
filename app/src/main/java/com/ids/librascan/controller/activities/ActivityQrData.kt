@@ -27,9 +27,9 @@ import com.ids.librascan.db.SessionQrcode
 import com.ids.librascan.utils.AppHelper
 import info.bideens.barcode.BarcodeReader
 import kotlinx.coroutines.launch
-import utils.hide
-import utils.show
-import utils.toast
+import com.ids.librascan.utils.hide
+import com.ids.librascan.utils.show
+import com.ids.librascan.utils.toast
 import java.util.*
 
 class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeReader.BarcodeReaderListener ,

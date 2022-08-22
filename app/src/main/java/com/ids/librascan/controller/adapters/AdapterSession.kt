@@ -10,8 +10,8 @@ import com.ids.librascan.controller.adapters.RVOnItemClickListener.RVOnItemClick
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ItemSessionBinding
 import com.ids.librascan.db.SessionQrcode
-import utils.hide
-import utils.show
+import com.ids.librascan.utils.hide
+import com.ids.librascan.utils.show
 import java.util.*
 
 class AdapterSession(private var items:ArrayList<SessionQrcode>, private val itemClickListener: RVOnItemClickListener) : RecyclerView.Adapter<AdapterSession.MyViewHolder>(){
