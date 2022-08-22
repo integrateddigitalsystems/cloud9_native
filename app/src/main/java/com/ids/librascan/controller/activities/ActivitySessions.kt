@@ -315,10 +315,9 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
 
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        val sdf: SimpleDateFormat
         val calendar = Calendar.getInstance()
         calendar[year, month] = dayOfMonth
-        sdf = if (MyApplication.languageCode == "ar")
+        val sdf: SimpleDateFormat = if (MyApplication.languageCode == "ar")
              SimpleDateFormat("yyyy/MM/dd")
         else SimpleDateFormat("dd/MM/yyyy")
         val formatDate = sdf.format(calendar.time)
