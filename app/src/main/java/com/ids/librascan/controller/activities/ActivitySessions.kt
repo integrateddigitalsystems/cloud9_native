@@ -5,7 +5,6 @@ package com.ids.librascan.controller.activities
 import com.ids.librascan.controller.base.ActivityCompactBase
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -278,25 +277,25 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
                 }
 
             }
-        } else checkValid(this)
+        } else checkValid()
     }
 
-    private fun checkValid(c: Activity) {
+    private fun checkValid() {
         when {
             popupSessionBinding.tvName.text.toString().trim() == "" -> AppHelper.createDialogPositive(
-                c,
+               this,
               resources.getString(R.string.error_filled_session_name)
             )
             popupSessionBinding.spWarehouse.isEmpty() -> AppHelper.createDialogPositive(
-                c,
+                this,
                 resources.getString(R.string.error_filled_warehouse)
             )
             popupSessionBinding.tvDate.text.toString().trim() == "" -> AppHelper.createDialogPositive(
-                c,
+                this,
                 resources.getString(R.string.error_filled_date)
             )
             popupSessionBinding.tvDescription.text.toString().trim() == "" -> AppHelper.createDialogPositive(
-                c,
+                this,
                resources.getString(R.string.error_filled_description)
             )
         }
