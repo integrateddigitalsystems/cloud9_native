@@ -1,3 +1,5 @@
+@file:Suppress("SENSELESS_COMPARISON")
+
 package com.ids.librascan.controller.activities
 
 import com.ids.librascan.controller.base.ActivityCompactBase
@@ -246,7 +248,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             launch {
                 val sessions: Sessions = QrCodeDatabase(application).getSessions()
                     .getSession(selectedWarehouse.name, popupSessionBinding.tvDate.text.toString().trim())
-                if (sessions.idSession != 0) {
+                if (sessions != null) {
                     AppHelper.createDialogPositive(
                         this@ActivitySessions,
                         resources.getString(R.string.warehouse_session_exist)
