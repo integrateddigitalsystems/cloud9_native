@@ -301,7 +301,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     }
 
     private fun datePickerDialog() {
-
         val datePickerDialog = DatePickerDialog(
             this,
             this,
@@ -309,7 +308,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             Calendar.getInstance()[Calendar.MONTH],
             Calendar.getInstance()[Calendar.DAY_OF_MONTH]
         )
-
         datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
         datePickerDialog.show()
     }
