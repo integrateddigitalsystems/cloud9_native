@@ -1,6 +1,6 @@
 package com.ids.librascan.controller.activities
 
-import Base.ActivityCompactBase
+import com.ids.librascan.controller.base.ActivityCompactBase
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle

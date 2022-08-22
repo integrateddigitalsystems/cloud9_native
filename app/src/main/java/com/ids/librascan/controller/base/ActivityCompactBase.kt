@@ -1,4 +1,4 @@
-package Base
+package com.ids.librascan.controller.base
 
 
 import android.annotation.SuppressLint
@@ -203,10 +203,10 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         if (popupBarcodeBinding.tvCode.text.toString().trim() != ""  &&  popupBarcodeBinding.spSession.isNotEmpty() && quantity != 0) {
             launch {
                 if (popupBarcodeBinding.tvInsertClose.text == resources.getString(R.string.insert_and_close)) {
-                    val qrCode: QrCode = QrCodeDatabase(application).getCodeDao().getCode(popupBarcodeBinding.tvCode.text.toString().trim(),selectedSession.idSession)
-                    if (qrCode !=null){
+                    val qrCodes: QrCode = QrCodeDatabase(application).getCodeDao().getCode(popupBarcodeBinding.tvCode.text.toString().trim(),selectedSession.idSession)
+                    if (qrCodes !=null){
                         if(!MyApplication.enableInsert && !MyApplication.enableNewLine)
-                            insertCode(qrCode)
+                            insertCode(qrCodes)
                         else if (!MyApplication.enableInsert && MyApplication.enableNewLine)
                             insertCodeNew()
                     }

@@ -1,6 +1,6 @@
 package com.ids.librascan.controller.activities
 
-import Base.ActivityCompactBase
+import com.ids.librascan.controller.base.ActivityCompactBase
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -30,7 +30,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.vision.barcode.Barcode
-import com.google.android.material.datepicker.MaterialDatePicker.Builder.datePicker
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ids.librascan.R
 import com.ids.librascan.apis.RetrofitClient

@@ -1,6 +1,6 @@
 package com.ids.librascan.controller.activities
 
-import Base.ActivityCompactBase
+import com.ids.librascan.controller.base.ActivityCompactBase
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
