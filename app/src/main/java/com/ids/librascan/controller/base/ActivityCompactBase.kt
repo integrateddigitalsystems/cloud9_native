@@ -218,7 +218,6 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
 
                 //Update QrCode
                 }else updateQrcode(qrCode)
-
             }
         }
         else checkIsNotEmpty()
