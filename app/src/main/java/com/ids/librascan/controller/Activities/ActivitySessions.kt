@@ -159,8 +159,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             }
             //set font
             for (i in 0 until menu.size()) {
-                val mi: MenuItem = menu.getItem(i)
-                applyFontToMenuItem(mi)
+                applyFontToMenuItem(menu.getItem(i))
             }
         }
     }

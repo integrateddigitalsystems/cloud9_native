@@ -17,6 +17,8 @@ import android.widget.*
 import androidx.core.content.ContextCompat
 import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
+import com.ids.librascan.databinding.ErrorDialogBinding
+import com.ids.librascan.databinding.ItemDialogSyncBinding
 import dev.b3nedikt.restring.Restring
 import dev.b3nedikt.restring.toMutableRepository
 import dev.b3nedikt.reword.Reword
@@ -173,7 +175,6 @@ class AppHelper {
         }
 
         fun createDialogPositive(c: Activity, message: String) {
-
             val builder = AlertDialog.Builder(c)
             builder
                 .setMessage(message)
@@ -185,30 +186,21 @@ class AppHelper {
 
         @SuppressLint("ResourceAsColor")
         fun createDialogError(activity: Activity, errorMessage: String, titleMessage:String, isSuccess:Boolean) {
+            val errorDialogBinding = ErrorDialogBinding.inflate(activity.layoutInflater)
             val builder = AlertDialog.Builder(activity)
-            val textView: TextView
-            val llItem: LinearLayout
-            val textViewTitle: TextView
 
-            val inflater = activity.layoutInflater
-            val textEntryView = inflater.inflate(R.layout.error_dialog, null)
-            textView = textEntryView.findViewById(R.id.tvDetails)
-            textViewTitle = textEntryView.findViewById(R.id.tvTitle)
-            llItem = textEntryView.findViewById(R.id.llItem)
+            errorDialogBinding.tvDetails.text = errorMessage
+            errorDialogBinding.tvTitle.text = titleMessage
 
-            textView.text = errorMessage
-            textViewTitle.text = titleMessage
-
-            if (isSuccess) textView.setTextColor(Color.parseColor("#009688"))
-
-            llItem.setOnClickListener {
-                if (textView.visibility == View.VISIBLE)
-                    textView.hide()
+            if (isSuccess)  errorDialogBinding.tvDetails.setTextColor(Color.parseColor("#009688"))
+            errorDialogBinding.llItem.setOnClickListener {
+                if (errorDialogBinding.tvDetails.visibility == View.VISIBLE)
+                    errorDialogBinding.tvDetails.hide()
                 else
-                    textView.show()
+                    errorDialogBinding.tvDetails.show()
             }
 
-            builder.setView(textEntryView)
+            builder.setView(errorDialogBinding.root)
                 .setNegativeButton(activity.resources.getString(R.string.ok)) { dialog, _ ->
                     dialog.dismiss()
                 }
