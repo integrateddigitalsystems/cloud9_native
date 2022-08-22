@@ -30,15 +30,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.vision.barcode.Barcode
+import com.google.android.material.datepicker.MaterialDatePicker.Builder.datePicker
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ids.librascan.R
 import com.ids.librascan.apis.RetrofitClient
 import com.ids.librascan.apis.RetrofitInterface
+import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.controller.adapters.AdapterSession
 import com.ids.librascan.controller.adapters.OnInsertUpdate.OnInsertUpdate
 import com.ids.librascan.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.librascan.controller.adapters.WarehouseSpinnerAdapter
-import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.custom.CustomTypeFaceSpan
 import com.ids.librascan.databinding.*
 import com.ids.librascan.db.*
@@ -46,6 +47,7 @@ import com.ids.librascan.utils.AppHelper
 import info.bideens.barcode.BarcodeReader
 import kotlinx.coroutines.*
 import utils.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -301,6 +303,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
     }
 
     private fun datePickerDialog() {
+
         val datePickerDialog = DatePickerDialog(
             this,
             this,
@@ -308,13 +311,18 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             Calendar.getInstance()[Calendar.MONTH],
             Calendar.getInstance()[Calendar.DAY_OF_MONTH]
         )
+
         datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
         datePickerDialog.show()
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "SimpleDateFormat")
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        popupSessionBinding.tvDate.text = "" + dayOfMonth + "/" + (month + 1) + "/" + year
+        val calendar = Calendar.getInstance()
+        calendar[year, month] = dayOfMonth
+        val sdf = SimpleDateFormat("dd/MM/yyyy")
+        val formatDate = sdf.format(calendar.time)
+        popupSessionBinding.tvDate.text = formatDate
     }
 
     fun showWarehouse(view: View) {
