@@ -62,8 +62,6 @@ class ActivityLogin : ActivityCompactBase() {
         activityLoginBinding.btScan.setOnClickListener {
             if (MyApplication.clientKey != "") {
                 startActivity(Intent(this, QrCodeActivity::class.java))
-            } else {
-                signInGoogle()
             }
         }
         activityLoginBinding.btEn.setOnClickListener {
