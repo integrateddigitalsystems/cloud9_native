@@ -1,4 +1,4 @@
-package com.ids.librascan.controller.Activities
+package com.ids.librascan.controller.activities
 
 import Base.ActivityCompactBase
 import android.Manifest
@@ -6,7 +6,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -35,10 +34,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.ids.librascan.R
 import com.ids.librascan.apis.RetrofitClient
 import com.ids.librascan.apis.RetrofitInterface
-import com.ids.librascan.controller.Adapters.AdapterSession
-import com.ids.librascan.controller.Adapters.OnInsertUpdate.OnInsertUpdate
-import com.ids.librascan.controller.Adapters.RVOnItemClickListener.RVOnItemClickListener
-import com.ids.librascan.controller.Adapters.WarehouseSpinnerAdapter
+import com.ids.librascan.controller.adapters.AdapterSession
+import com.ids.librascan.controller.adapters.OnInsertUpdate.OnInsertUpdate
+import com.ids.librascan.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
+import com.ids.librascan.controller.adapters.WarehouseSpinnerAdapter
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.custom.CustomTypeFaceSpan
 import com.ids.librascan.databinding.*
@@ -247,7 +246,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             launch {
                 val sessions: Sessions = QrCodeDatabase(application).getSessions()
                     .getSession(selectedWarehouse.name, popupSessionBinding.tvDate.text.toString().trim())
-                if (sessions != null) {
+                if (sessions.idSession != 0) {
                     AppHelper.createDialogPositive(
                         this@ActivitySessions,
                         resources.getString(R.string.warehouse_session_exist)

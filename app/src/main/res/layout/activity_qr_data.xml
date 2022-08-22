@@ -10,7 +10,7 @@
         android:orientation="vertical"
 
         android:id="@+id/rootData"
-        tools:context=".controller.Activities.ActivityQrData">
+        tools:context=".controller.activities.ActivityQrData">
 
         <LinearLayout
             android:id="@+id/loading"

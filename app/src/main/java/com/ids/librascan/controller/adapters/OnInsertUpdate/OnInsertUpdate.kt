@@ -1,4 +1,4 @@
-package com.ids.librascan.controller.Adapters.OnInsertUpdate
+package com.ids.librascan.controller.adapters.OnInsertUpdate
 
 interface OnInsertUpdate {
     fun onInsertUpdate(boolean: Boolean)

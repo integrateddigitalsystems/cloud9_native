@@ -1,4 +1,4 @@
-package com.ids.librascan.controller.Activities
+package com.ids.librascan.controller.activities
 
 import Base.ActivityCompactBase
 import android.os.Bundle

@@ -20,8 +20,8 @@ import androidx.core.view.isNotEmpty
 import androidx.core.view.updateLayoutParams
 import com.ids.librascan.R
 import com.ids.librascan.apis.WifiService
-import com.ids.librascan.controller.Adapters.OnInsertUpdate.OnInsertUpdate
-import com.ids.librascan.controller.Adapters.SessionsSpinnerAdapter
+import com.ids.librascan.controller.adapters.OnInsertUpdate.OnInsertUpdate
+import com.ids.librascan.controller.adapters.SessionsSpinnerAdapter
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityQrDataBinding
 import com.ids.librascan.databinding.ActivitySessionsBinding
@@ -88,11 +88,11 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
 
     }
     override fun attachBaseContext(newBase: Context) {
-        var newBase = newBase
+       // var newBases = newBase
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val config = newBase.resources.configuration
             config.setLocale(Locale.getDefault())
-            newBase = newBase.createConfigurationContext(config)
+          // newBases = newBase.createConfigurationContext(config)
         }
         super.attachBaseContext(newBase)
     }
@@ -204,7 +204,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
             launch {
                 if (popupBarcodeBinding.tvInsertClose.text == resources.getString(R.string.insert_and_close)) {
                     val qrCode: QrCode = QrCodeDatabase(application).getCodeDao().getCode(popupBarcodeBinding.tvCode.text.toString().trim(),selectedSession.idSession)
-                    if (qrCode!=null){
+                    if (qrCode !=null){
                         if(!MyApplication.enableInsert && !MyApplication.enableNewLine)
                             insertCode(qrCode)
                         else if (!MyApplication.enableInsert && MyApplication.enableNewLine)
@@ -341,7 +341,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
         onInsertUpdate=onInsUpdate
         launch {
             val qrCodeScan: QrCode =QrCodeDatabase(application).getCodeDao().getCode(qrCode.code, qrCode.sessionId)
-            if (qrCodeScan != null) {
+            if (qrCodeScan !=null) {
                 QrCodeDatabase(application).getCodeDao().updateCode(qrCodeScan.quantity+1,qrCodeScan.idQrcode)
                 onInsertUpdate.onInsertUpdate(true)
                 toast(resources.getString(R.string.item_save))

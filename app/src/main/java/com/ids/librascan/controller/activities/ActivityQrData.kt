@@ -1,4 +1,4 @@
-package com.ids.librascan.controller.Activities
+package com.ids.librascan.controller.activities
 
 import Base.ActivityCompactBase
 import android.Manifest
@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.vision.barcode.Barcode
 import com.ids.librascan.R
-import com.ids.librascan.controller.Adapters.AdapterQrCode
-import com.ids.librascan.controller.Adapters.OnInsertUpdate.OnInsertUpdate
-import com.ids.librascan.controller.Adapters.RVOnItemClickListener.RVOnItemClickListener
+import com.ids.librascan.controller.adapters.AdapterQrCode
+import com.ids.librascan.controller.adapters.OnInsertUpdate.OnInsertUpdate
+import com.ids.librascan.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.librascan.controller.MyApplication
 import com.ids.librascan.databinding.ActivityQrDataBinding
 import com.ids.librascan.db.QrCode

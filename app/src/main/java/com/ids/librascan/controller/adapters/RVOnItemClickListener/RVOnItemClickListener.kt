@@ -1,4 +1,4 @@
-package com.ids.librascan.controller.Adapters.RVOnItemClickListener
+package com.ids.librascan.controller.adapters.RVOnItemClickListener
 
 import android.view.View
 
