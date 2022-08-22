@@ -58,8 +58,10 @@
                     android:background="@drawable/block_white_border_gray"
                     android:layout_gravity="center"
                     android:gravity="center"
+                    android:focusable="true"
+                    android:clickable="true"
                     android:layout_marginTop="@dimen/margin_10"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -83,8 +85,8 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_gravity="center"
+                                    android:background="?android:attr/selectableItemBackground"
                                     android:gravity="center"
-                                    android:layout_marginStart="@dimen/size_20"
                                     android:padding="@dimen/small_margin_padding"
                                     android:text="@string/signIn"
                                     android:textColor="@color/black"
@@ -104,15 +106,18 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/margin_30"
             android:gravity="center"
+            android:focusable="true"
+            android:clickable="true"
             android:orientation="vertical">
                 <com.ids.librascan.custom.CustomTextViewBold
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:id="@+id/btScan"
                     android:text="@string/scan"
                     android:textColor="@color/black"
+                    android:background="?android:attr/selectableItemBackground"
                     android:textDirection="locale"
                     android:textSize="@dimen/font" />
 
