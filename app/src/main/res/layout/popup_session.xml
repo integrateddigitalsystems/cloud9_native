@@ -136,10 +136,13 @@
                                 <ImageView
                                     android:id="@+id/ivReloadWarehouse"
                                     android:layout_width="@dimen/size_20"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:background="?android:attr/selectableItemBackground"
                                     android:layout_height="@dimen/size_20"
-                                    android:layout_marginEnd="@dimen/margin_10"
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginTop="@dimen/margin_10"
+                                    android:layout_marginEnd="@dimen/margin_10"
                                     android:src="@drawable/sync"
                                     android:tint="@color/gray_bg"
                                     tools:ignore="ContentDescription,UseAppTint" />
