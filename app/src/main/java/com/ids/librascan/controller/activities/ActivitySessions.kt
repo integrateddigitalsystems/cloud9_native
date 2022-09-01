@@ -345,7 +345,7 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
             createDialSync(resources.getString(R.string.sync_data), position)
         }
         if (view.id == R.id.tVDelete) {
-            createDialogDelete(position)
+            AppHelper.createYesNoDialog(this,resources.getString(R.string.delete_message_session),position,{ deleteSession(position)})
             adapterSession.notifyDataSetChanged()
         }
         if (view.id == R.id.llItem) {
@@ -605,22 +605,6 @@ class ActivitySessions : ActivityCompactBase(), RVOnItemClickListener, OnInsertU
 
     }
 
-    private fun createDialogDelete(position: Int) {
-        val builder = AlertDialog.Builder(this)
-            .setMessage(resources.getString(R.string.delete_message_session))
-            .setCancelable(true)
-            .setPositiveButton(resources.getString(R.string.yes))
-            { dialog, _ ->
-                deleteSession(position)
-                dialog.cancel()
-            }
-            .setNegativeButton(resources.getString(R.string.no))
-            { dialog, _ ->
-                dialog.cancel()
-            }
-        val alert = builder.create()
-        alert.show()
-    }
 
     @SuppressLint("NotifyDataSetChanged")
     fun deleteSession(position: Int) {

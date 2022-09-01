@@ -1,10 +1,12 @@
 package com.ids.librascan.controller.activities
 
-import com.ids.librascan.controller.base.ActivityCompactBase
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.LocaleSpan
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -19,12 +21,14 @@ import com.ids.librascan.R
 import com.ids.librascan.apis.RetrofitClient
 import com.ids.librascan.apis.RetrofitInterface
 import com.ids.librascan.controller.MyApplication
+import com.ids.librascan.controller.base.ActivityCompactBase
 import com.ids.librascan.databinding.ActivityLoginBinding
 import com.ids.librascan.model.ResponseLogin
 import com.ids.librascan.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class ActivityLogin : ActivityCompactBase() {
     lateinit var activityLoginBinding: ActivityLoginBinding
@@ -36,6 +40,7 @@ class ActivityLogin : ActivityCompactBase() {
         super.onCreate(savedInstanceState)
         activityLoginBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(activityLoginBinding.root)
+
         init()
     }
     @SuppressLint("ResourceAsColor")
@@ -47,6 +52,7 @@ class ActivityLogin : ActivityCompactBase() {
 
         configureGoogleSignIn()
         listener()
+
     }
 
     private fun listener(){

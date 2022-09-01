@@ -125,7 +125,7 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     @SuppressLint("NotifyDataSetChanged")
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.tVDelete){
-            createDialogDelete(position)
+            AppHelper.createYesNoDialog(this,resources.getString(R.string.delete_message),position,{deleteQrData(position)})
             adapterQrCode.notifyDataSetChanged()
         }
         else if (view.id == R.id.tVUpdate) {
@@ -162,23 +162,6 @@ class ActivityQrData : ActivityCompactBase(), RVOnItemClickListener, BarcodeRead
     fun back(v: View) {
         startActivity(Intent(this@ActivityQrData, ActivitySessions::class.java))
         finish()
-    }
-
-    private fun createDialogDelete(position: Int) {
-        val builder = android.app.AlertDialog.Builder(this)
-            .setMessage(resources.getString(R.string.delete_message))
-            .setCancelable(true)
-            .setPositiveButton(resources.getString(R.string.yes))
-            { dialog, _ ->
-                deleteQrData(position)
-                dialog.cancel()
-            }
-            .setNegativeButton(resources.getString(R.string.no))
-            { dialog, _ ->
-                dialog.cancel()
-            }
-        val alert = builder.create()
-        alert.show()
     }
 
     fun checkCameraPermissions(view: View) {

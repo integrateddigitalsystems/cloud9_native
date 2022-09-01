@@ -78,7 +78,7 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         AppHelper.handleCrashes(this)
         super.onCreate(savedInstanceState)
-       // AppHelper.setLocal()
+        AppHelper.setLocal()
         job =Job()
         try{
         if (MyApplication.languageCode == AppConstants.LANG_ENGLISH) {
@@ -89,11 +89,9 @@ open class ActivityCompactBase : AppCompatActivity(),CoroutineScope {
 
     }
     override fun attachBaseContext(newBase: Context) {
-       // var newBases = newBase
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val config = newBase.resources.configuration
             config.setLocale(Locale.getDefault())
-          // newBases = newBase.createConfigurationContext(config)
         }
         super.attachBaseContext(newBase)
     }

@@ -11,9 +11,14 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
+import android.text.SpannableString
+import android.text.style.LocaleSpan
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.RadioButton
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.ids.librascan.R
 import com.ids.librascan.controller.MyApplication
@@ -79,51 +84,12 @@ class AppHelper {
             Reword.reword(rootView)
         }
 
-        private fun setAllTexts(v: View?, context: Context) {
-            if (MyApplication.localizeArray != null) {
-                try {
-                    if (v is ViewGroup) {
-                        for (i in 0 until v.childCount) {
-                            val child = v.getChildAt(i)
-                            setAllTexts(child, context)
-                        }
-                    } else if (v is TextView && v !is EditText) {
-                        v.textRemote(v.tag.toString(), context)
-                    } else if (v is Button) {
-                        v.textRemote(v.tag.toString(), context)
-                    } else if (v is EditText) {
-                        setHintTag(v, v.tag.toString(), context)
-                    }
-                } catch (e: java.lang.Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
 
         @SuppressLint("NewApi")
         fun isNetworkAvailable(context: Context): Boolean {
             val cm = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
             val capabilities = cm.getNetworkCapabilities(cm.activeNetwork)
             return capabilities?.hasCapability(NET_CAPABILITY_INTERNET) == true
-        }
-
-        private fun setHintTag(view: View, tag: String, context: Context) {
-            val edit = view as EditText
-            if (MyApplication.localizeArray != null) {
-                try {
-                    edit.hint =
-                        MyApplication.localizeArray!!.messages!!.find { it.localize_Key == tag }!!
-                            .getMessage()
-                } catch (e: Exception) {
-                    try {
-                        val resId =
-                            context.resources.getIdentifier(tag, "string", context.packageName)
-                        edit.hint = context.resources.getString(resId)
-                    } catch (e: Exception) {
-                    }
-                }
-
-            }
         }
 
         fun getRemoteString(key: String, con: Context): String {
@@ -218,8 +184,22 @@ class AppHelper {
             Thread.setDefaultUncaughtExceptionHandler(MyExceptionHandler(context))
         }
 
+        fun createYesNoDialog(c: Activity, message: String,position: Int, doAction: (position: Int) -> Unit) {
+
+            val builder = AlertDialog.Builder(c)
+            builder
+                .setMessage(message)
+                .setCancelable(true)
+                .setNegativeButton(c.getString(R.string.no)) { dialog, _ ->
+                    dialog.cancel()
+                }
+                .setPositiveButton(c.getString(R.string.yes)) { dialog, _ ->
+                    doAction(position)
+                }
+            val alert = builder.create()
+            alert.show()
+        }
+
     }
-
-
 
 }
