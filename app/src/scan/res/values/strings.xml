@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">LibraScan</string>
+    <string name="app_name" translatable="false">Cloud9</string>
     <string name="default_web_client_id_auth" translatable="false">43913368539-7g9ndhiv91n9dt40pu2gc1fvfa4q3eqg.apps.googleusercontent.com</string>
     <string name="signIn">Sign In</string>
     <string name="scan">Scan</string>

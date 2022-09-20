@@ -7,7 +7,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.ids.librascan"
+        applicationId "com.ids.cloud9"
         minSdk 21
         targetSdk 32
         versionCode 1
@@ -33,7 +33,7 @@ android {
         jvmTarget = '1.8'
     }
 
-    signingConfigs {
+   /* signingConfigs {
         debug{
             storeFile file('librascan.jks')
             keyAlias 'librakey'
@@ -71,21 +71,23 @@ android {
             versionCode 1
             versionName "1.0"
         }
-    }
-   buildFeatures {
-       viewBinding true
+    }*/
+    buildFeatures {
+        viewBinding true
+        dataBinding true
 
-   }
+    }
 
 
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.21"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.0"
     implementation "androidx.room:room-runtime:2.4.3"
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.12'
-    implementation 'com.google.firebase:firebase-analytics-ktx:21.1.0'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.13'
+    implementation 'com.google.firebase:firebase-analytics-ktx:21.1.1'
     implementation 'junit:junit:4.12'
+    implementation 'androidx.databinding:databinding-runtime:7.3.0'
     kapt "androidx.room:room-compiler:2.4.3"
     implementation "androidx.room:room-ktx:2.4.3"
 
@@ -98,13 +100,15 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.preference:preference-ktx:1.2.0'
 
-    implementation 'com.google.firebase:firebase-analytics:21.1.0'
-    implementation 'com.google.firebase:firebase-config-ktx:21.1.1'
-    implementation 'com.google.firebase:firebase-core:21.1.0'
-    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.7'
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.2.2'
-    implementation 'com.google.firebase:firebase-auth-ktx:21.0.7'
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.2.2'
+    implementation 'com.google.firebase:firebase-analytics:21.1.1'
+    implementation 'com.google.firebase:firebase-config-ktx:21.1.2'
+    implementation 'com.google.firebase:firebase-core:21.1.1'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.8'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.3.0'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.0.8'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.3.0'
+
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 
 
     //noinspection GradleCompatible

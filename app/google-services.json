@@ -1,78 +1,33 @@
 {
   "project_info": {
-    "project_number": "43913368539",
-    "project_id": "librascan-dbfb4",
-    "storage_bucket": "librascan-dbfb4.appspot.com"
+    "project_number": "746438272784",
+    "project_id": "cloud9-c49c6",
+    "storage_bucket": "cloud9-c49c6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:43913368539:android:6889956757c5d76a718dfe",
+        "mobilesdk_app_id": "1:746438272784:android:8ed0d4a277d74e93f2e795",
         "android_client_info": {
-          "package_name": "com.ids.librascan"
+          "package_name": "com.ids.cloud9"
         }
       },
       "oauth_client": [
         {
-          "client_id": "43913368539-bf7h87ud0j1iqtcjtt60jf6t6oqbl5or.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ids.librascan",
-            "certificate_hash": "99cfef12d300a124c08d17db42c1c27781dad555"
-          }
+          "client_id": "746438272784-s597filrcm35nbdjdcm225q8saff5k1o.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD0TZ_yCjf7lQn8LRzbMc4TLRDfdIHscmo"
+          "current_key": "AIzaSyAQbSReSKbKshUzPSuh2jGjYvXePwuOULg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "43913368539-7g9ndhiv91n9dt40pu2gc1fvfa4q3eqg.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:43913368539:android:2ad5a099527bedfe718dfe",
-        "android_client_info": {
-          "package_name": "com.ids.scanprime"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "43913368539-f97pmrbud77ofetimeb4j8l5dut6r4g1.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ids.scanprime",
-            "certificate_hash": "59ad7640a29ea562c19508ceb03b27956ce5046a"
-          }
-        },
-        {
-          "client_id": "43913368539-u344ngnlbg7jqpk8vadurmqe9e9otbfh.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ids.scanprime",
-            "certificate_hash": "99cfef12d300a124c08d17db42c1c27781dad555"
-          }
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyD0TZ_yCjf7lQn8LRzbMc4TLRDfdIHscmo"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "43913368539-7g9ndhiv91n9dt40pu2gc1fvfa4q3eqg.apps.googleusercontent.com",
+              "client_id": "746438272784-s597filrcm35nbdjdcm225q8saff5k1o.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
