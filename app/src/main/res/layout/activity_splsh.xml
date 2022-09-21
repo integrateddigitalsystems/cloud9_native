@@ -13,12 +13,13 @@
 
         <com.github.ybq.android.spinkit.SpinKitView
             android:id="@+id/spinKit"
-            android:layout_centerInParent="true"
-            style="@style/SpinKitView.Large.Circle"
+            android:layout_marginTop="450dp"
+            android:layout_centerHorizontal="true"
+            style="@style/SpinKitView.Large.Wave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="visible"
-            app:SpinKit_Color="@color/red" />
+            app:SpinKit_Color="@color/colorPrimary" />
 
 
 
