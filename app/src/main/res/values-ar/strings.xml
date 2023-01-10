@@ -6,4 +6,5 @@
     <string name="no">لا</string>
     <string name="yes">نعم</string>
     <string name="try_again">اعادة المحاولة</string>
+    <string name="login">Login</string>
 </resources>

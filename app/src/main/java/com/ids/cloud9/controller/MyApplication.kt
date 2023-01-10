@@ -24,8 +24,10 @@ class MyApplication : Application() {
     companion object {
         internal lateinit var instance: MyApplication
         var selectedFragmentTag : String ?=""
-        var BASE_URL ="https://crmtest.ids.com.lb/api"
+        var BASE_URL ="https://crmtest.ids.com.lb/api/"
         var selectedFragment  : Fragment?=null
+        var token : String ?=""
+        var userItem : JWTResponse ?=null
         var mobileConfig : MobileConfig?=null
         var languageCode : String ?="en"
         var locMessages : ArrayList<LocalisedMessage> = arrayListOf()

@@ -1,6 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/splash_bg">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_marginStart="@dimen/height_toggle"
+        android:layout_marginEnd="@dimen/height_toggle"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        app:cardCornerRadius="@dimen/margin_10"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:layout_marginBottom="@dimen/normal_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="@dimen/scan_height"
+                android:layout_height="@dimen/scan_height"
+                android:src="@drawable/logo"/>
+
+            <RelativeLayout
+                android:layout_marginTop="@dimen/home_radius"
+                android:layout_marginStart="@dimen/normal_margin"
+                android:layout_marginEnd="@dimen/normal_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <com.ids.molilo.custom.CustomEditText
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/home_radius"
+                android:layout_width="match_parent"
+                android:hint="Email"
+                android:id="@+id/etEmail"
+                android:textSize="@dimen/normal_font"
+                android:paddingStart="@dimen/small_margin"
+                android:background="@drawable/rounded_primary_border"
+                android:layout_height="@dimen/edit_text_height" />
+
+                <ImageView
+                    android:layout_marginEnd="@dimen/settings_item_height"
+                    android:layout_width="@dimen/button_radius"
+                    android:layout_height="@dimen/button_radius"
+                    android:layout_centerVertical="true"
+                    android:tint="@color/colorPrimaryDark"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/user"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_marginStart="@dimen/normal_margin"
+                android:layout_marginEnd="@dimen/normal_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ids.molilo.custom.CustomEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edit_text_height"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/etPassword"
+                    android:inputType="textPassword"
+                    android:layout_marginBottom="@dimen/normal_margin_padding"
+                    android:background="@drawable/rounded_primary_border"
+                    android:hint="Password"
+                    android:paddingStart="@dimen/small_margin"
+                    android:textSize="@dimen/normal_font" />
+
+                <ImageView
+                    android:id="@+id/btShowPassword"
+                    android:layout_marginEnd="@dimen/settings_item_height"
+                    android:layout_width="@dimen/button_radius"
+                    android:layout_height="@dimen/button_radius"
+                    android:layout_centerVertical="true"
+                    android:tint="@color/colorPrimaryDark"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/lock"/>
+
+            </RelativeLayout>
+           <RelativeLayout
+               android:layout_marginTop="@dimen/home_radius"
+               android:layout_marginStart="@dimen/normal_margin"
+               android:layout_marginEnd="@dimen/normal_margin"
+               android:layout_height="@dimen/edit_text_height"
+               android:background="@color/colorPrimary"
+               android:layout_width="match_parent">
+
+               <com.github.ybq.android.spinkit.SpinKitView
+                   android:id="@+id/loadingLogin"
+                   style="@style/SpinKitView.ThreeBounce"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_centerInParent="true" />
+            <com.ids.cloud9.custom.CustomButton
+                android:text="@string/login"
+                android:textColor="@color/white"
+                android:id="@+id/btLogin"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:background="@color/colorPrimary"/>
+
+
+           </RelativeLayout>
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

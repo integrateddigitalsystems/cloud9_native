@@ -24,20 +24,30 @@ import com.ids.cloud9.databinding.ActivitySplashBinding
 import com.ids.cloud9.databinding.ActivitySplshBindingImpl
 import com.ids.cloud9.model.LocMessages
 import com.ids.cloud9.model.MobileConfigTypes
-import com.ids.cloud9.utils.AppConstants
-import com.ids.cloud9.utils.AppHelper
+import com.ids.cloud9.model.RequestLogin
+import com.ids.cloud9.model.ResponseLogin
+import com.ids.cloud9.utils.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ActivitySplash : Activity() {
 
     var mFirebaseRemoteConfig: FirebaseRemoteConfig? = null
     private lateinit var binding: ActivitySplshBindingImpl
+    var token : String ?=""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splsh)
         startFirebase()
 
+
+
+
     }
+
+
 
     fun startFirebase() {
 
@@ -95,13 +105,13 @@ class ActivitySplash : Activity() {
 
             } else {
                 Handler(Looper.getMainLooper()).postDelayed({
-                    AppHelper.createDialogPositive(this, "SUCCESS")
+                    startActivity(Intent(this,ActivityLogin::class.java))
                 }, 2000)
             }
         }
     }
 
-   /* private fun showDialogUpdate(activity: Activity) {
+    private fun showDialogUpdate(activity: Activity) {
 
         val builder = AlertDialog.Builder(activity)
         val textView: TextView
@@ -129,7 +139,7 @@ class ActivitySplash : Activity() {
             }
             .setNegativeButton(AppHelper.getRemoteString("update_cancel",this)) { dialog, _ ->
                 dialog.dismiss()
-                nextStep()
+
 
             }
 
@@ -203,6 +213,6 @@ class ActivitySplash : Activity() {
 
         d.setCancelable(false)
         d.show()
-    }*/
+    }
 
 }

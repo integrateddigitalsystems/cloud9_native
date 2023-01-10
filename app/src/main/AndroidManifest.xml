@@ -29,6 +29,14 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".controller.activities.ActivityLogin">
+
+        </activity>
+
+        <activity android:name=".controller.activities.ActivityMain">
+
+        </activity>
+
     </application>
 
 </manifest>

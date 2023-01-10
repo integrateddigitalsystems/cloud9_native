@@ -124,7 +124,9 @@ dependencies {
 
     implementation 'com.jakewharton:process-phoenix:2.1.2'
 
-    implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
+    implementation 'com.github.shrikanth7698:Custom-Navigation-Drawer:v0.0.1'
+
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     api 'com.squareup.okhttp3:okhttp:4.7.2'
 

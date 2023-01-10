@@ -123,29 +123,42 @@ class AppHelper {
 
 
         }
-        fun getTypeFace(context: Context): Typeface {
-             return if (Locale.getDefault().language == "ar")
-                Typeface.createFromAsset(
-                    context.applicationContext.assets,
-                    "fonts/HelveticaNeueLTArabic-Bold.ttf"
-                )
-            else
-           return Typeface.createFromAsset(context.applicationContext.assets, "fonts/HelveticaNeueLTArabic-Bold.ttf")
+        fun getTypeFace(context: Context): Typeface? {
+            return if (MyApplication.languageCode.equals(AppConstants.LANG_ENGLISH)) Typeface.createFromAsset(
+                context.applicationContext.assets,
+                "fonts/Poppins-Regular.ttf"
+            ) else Typeface.createFromAsset(
+                context.applicationContext.assets,
+                "fonts/GESSTwoMedium-Medium.ttf"
+            )
+        }
+        fun getTypeFaceItalic(context: Context): Typeface? {
+            return if (MyApplication.languageCode.equals(AppConstants.LANG_ENGLISH)) Typeface.createFromAsset(
+                context.applicationContext.assets,
+                "fonts/Poppins-Italic.ttf"
+            ) else Typeface.createFromAsset(
+                context.applicationContext.assets,
+                "fonts/Poppins-Italic.ttf"
+            )
+        }
 
+        fun getTypeFaceExtraBold(context: Context): Typeface? {
+            return if (MyApplication.languageCode.equals(AppConstants.LANG_ENGLISH)) Typeface.createFromAsset(
+                context.applicationContext.assets,
+                "fonts/Poppins-SemiBold.ttf"
+            ) else Typeface.createFromAsset(
+                context.applicationContext.assets,
+                "fonts/GESSTwoBold-Bold.ttf"
+            )
         }
         fun getTypeFaceBold(context: Context): Typeface {
-            return if (Locale.getDefault().language == "ar")
-                Typeface.createFromAsset(
-                    context.applicationContext.assets,
-                    "fonts/HelveticaNeueLTArabic-Bold.ttf"
-                )
-
-            else
-              return  Typeface.createFromAsset(
-                    context.applicationContext.assets,
-                    "fonts/HelveticaNeue_bold.ttf"
-                )
-
+            return if (MyApplication.languageCode.equals(AppConstants.LANG_ENGLISH)) Typeface.createFromAsset(
+                context.applicationContext.assets,
+                "fonts/Poppins-SemiBold.ttf"
+            ) else Typeface.createFromAsset(
+                context.applicationContext.assets,
+                "fonts/GESSTwoBold-Bold.ttf"
+            )
         }
 
         fun createDialogPositive(c: Activity, message: String) {
