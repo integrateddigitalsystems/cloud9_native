@@ -39,7 +39,7 @@
         android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/back_width_height"
+        android:layout_height="wrap_content"
         android:background="@color/white">
 
         <com.ids.cloud9.custom.CustomTextViewMedium
@@ -70,14 +70,47 @@
         </LinearLayout>
 
         <LinearLayout
+            android:gravity="center"
+            android:paddingTop="@dimen/normal_margin_padding"
+            android:paddingBottom="@dimen/normal_margin_padding"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/btDatePrevious"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center"
+                android:paddingTop="@dimen/small_margin_padding"
+                android:paddingBottom="@dimen/small_margin_padding"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="@color/colorPrimaryDark"/>
+                android:background="@drawable/rounded_dark_left">
+                <ImageView
+                    android:layout_marginStart="@dimen/normal_margin_padding"
+                    android:layout_marginEnd="@dimen/normal_margin_padding"
+                    android:tint="@color/white"
+                    android:layout_width="@dimen/icon_medium"
+                    android:layout_height="@dimen/icon_medium"
+                    android:src="@drawable/back"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btDateNext"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/rounded_dark_right">
+                <ImageView
+                    android:layout_marginStart="@dimen/normal_margin_padding"
+                    android:layout_marginEnd="@dimen/normal_margin_padding"
+                    android:rotation="180"
+                    android:tint="@color/white"
+                    android:layout_width="@dimen/icon_medium"
+                    android:layout_height="@dimen/icon_medium"
+                    android:src="@drawable/back"/>
+            </LinearLayout>
 
 
         </LinearLayout>

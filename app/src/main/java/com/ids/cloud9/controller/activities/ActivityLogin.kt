@@ -2,10 +2,12 @@ package com.ids.cloud9.controller.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
 import android.text.method.PasswordTransformationMethod
+import androidx.annotation.RequiresApi
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.databinding.ActivityLoginBinding
@@ -22,6 +24,7 @@ class ActivityLogin : Activity() {
 
     var binding : ActivityLoginBinding?=null
     var showPass = true
+    var selectedField = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +38,23 @@ class ActivityLogin : Activity() {
         listeners()
     }
 
+
     fun listeners(){
 
+        binding!!.etEmail.setOnFocusChangeListener { view, b ->
+            if(selectedField !=1){
+                selectedField = 1
+                binding!!.etEmail.setBackgroundResource(R.drawable.rounded_primary_black)
+                binding!!.etPassword.setBackgroundResource(R.drawable.rounded_primary_border)
+            }
+        }
+        binding!!.etPassword.setOnFocusChangeListener { view, b ->
+            if(selectedField !=2){
+                selectedField = 2
+                binding!!.etPassword.setBackgroundResource(R.drawable.rounded_primary_black)
+                binding!!.etEmail.setBackgroundResource(R.drawable.rounded_primary_border)
+            }
+        }
         binding!!.btLogin.setOnClickListener {
             if(!binding!!.etEmail.text.toString().isNullOrEmpty() && !binding!!.etPassword.text.toString().isNullOrEmpty())
                 login(binding!!.etEmail.text.toString(),binding!!.etPassword.text.toString())
@@ -44,12 +62,12 @@ class ActivityLogin : Activity() {
 
         binding!!.btShowPassword.setOnClickListener {
                 if(showPass){
-                    binding!!.btShowPassword.setImageResource(R.drawable.lock)
+                    binding!!.btShowPassword.setImageResource(R.drawable.lock_open)
                     binding!!.etPassword.inputType= InputType.TYPE_CLASS_TEXT or
                             InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
                     showPass = false
                 }else{
-                    binding!!.btShowPassword.setImageResource(R.drawable.lock_open)
+                    binding!!.btShowPassword.setImageResource(R.drawable.lock)
                     binding!!.etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     showPass = true
                 }
@@ -71,7 +89,7 @@ class ActivityLogin : Activity() {
                        MyApplication.token = response.body()!!.token
                        MyApplication.userItem = JWTDecoding.decoded(MyApplication.token!!)
                        binding!!.loadingLogin.hide()
-
+                       binding!!.btLogin.show()
                        startActivity(Intent(this@ActivityLogin,ActivityMain::class.java))
                    }catch (ex:Exception){
                        binding!!.btLogin.show()

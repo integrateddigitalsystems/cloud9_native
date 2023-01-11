@@ -12,8 +12,8 @@
     <color name="homepage_color">#4D02b2a5</color>
     <color name="colorPrimary">#5abaac</color>
     <color name="color_primary_trans">#CC5abaac</color>
-    <color name="colorPrimaryDark">#215e7d</color>
-    <color name="darker_primary">#3a9181</color>
+    <color name="colorPrimaryDark">#379281</color>
+    <color name="darker_primary">#2a6c60</color>
     <color name="card_bg">#e6e6e6</color>
     <color name="dark_blue">#1f356a</color>
     <color name="colorAccent">#1C232D</color>

@@ -3,6 +3,7 @@ package com.ids.cloud9.controller.activities
 import android.app.Activity
 import android.os.Bundle
 import androidx.core.view.GravityCompat
+import com.ids.cloud9.R
 import com.ids.cloud9.databinding.ActivityMainBinding
 import com.ids.cloud9.utils.AppHelper
 import com.shrikanthravi.customnavigationdrawer2.data.MenuItem
@@ -26,6 +27,17 @@ class ActivityMain: Activity() {
     fun listeners(){
         binding!!.llHomeMain.ivDrawer.setOnClickListener {
             binding!!.drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+
+        binding!!.llHomeMain.btDatePrevious.setOnClickListener {
+           binding!!.llHomeMain.btDatePrevious.setBackgroundResource(R.drawable.rounded_darker_left)
+            binding!!.llHomeMain.btDateNext.setBackgroundResource(R.drawable.rounded_dark_right)
+        }
+
+        binding!!.llHomeMain.btDateNext.setOnClickListener {
+            binding!!.llHomeMain.btDateNext.setBackgroundResource(R.drawable.rounded_dark_right)
+            binding!!.llHomeMain.btDatePrevious.setBackgroundResource(R.drawable.rounded_dark_left)
         }
     }
 
