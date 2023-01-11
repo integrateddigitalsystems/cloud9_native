@@ -20,6 +20,7 @@ class CustomTextViewBold : AppCompatTextView {
     }
 
     private fun init() {
+        this.includeFontPadding = false
         if (!isInEditMode)
             typeface = AppHelper.getTypeFaceBold(context)
 

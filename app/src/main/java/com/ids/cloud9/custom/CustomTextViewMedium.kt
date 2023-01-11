@@ -22,6 +22,7 @@ class CustomTextViewMedium : AppCompatTextView {
     }
 
     private fun init() {
+        this.includeFontPadding = false
         if (!isInEditMode)
             typeface = AppHelper.getTypeFace(context)
 

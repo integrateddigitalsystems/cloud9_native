@@ -1,8 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     android:orientation="vertical"
+    android:layout_marginTop="@dimen/normal_margin"
+    android:layout_marginBottom="@dimen/width_250"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:layout_marginTop="@dimen/normal_margin"
+        android:id="@+id/btClose"
+        android:tint="@color/white"
+        android:layout_marginStart="@dimen/margin_start_end"
+        android:layout_width="@dimen/huge_margin"
+        android:layout_height="@dimen/huge_margin"
+        android:src="@drawable/close_x"/>
+
+    <com.ids.cloud9.custom.CustomTextViewMedium
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/normal_margin"
+        android:layout_marginStart="@dimen/margin_30"
+        android:id="@+id/tvWelcome"
+        android:textSize="@dimen/title_font"
+        android:textColor="@color/gray_text_color"
+        android:layout_height="wrap_content"
+        android:text="Welcome, "/>
+
+
+    <com.ids.cloud9.custom.CustomTextViewMedium
+        android:layout_width="match_parent"
+        android:text="Home"
+        android:layout_marginTop="@dimen/normal_margin"
+        android:layout_marginStart="@dimen/button_height"
+        android:textColor="@color/white"
+        android:layout_height="wrap_content"/>
+
+    <com.ids.cloud9.custom.CustomTextViewMedium
+        android:layout_width="match_parent"
+        android:text="All tasks"
+        android:layout_marginTop="@dimen/normal_margin"
+        android:layout_marginStart="@dimen/button_height"
+        android:textColor="@color/white"
+        android:layout_height="wrap_content"/>
+
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/normal_margin"
+        android:layout_marginStart="@dimen/button_height"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:tint="@color/white"
+            android:layout_width="@dimen/list_icon_width_height"
+            android:layout_height="@dimen/list_icon_width_height"
+            android:src="@drawable/power_off"/>
+
+        <com.ids.cloud9.custom.CustomTextViewMedium
+            android:layout_width="match_parent"
+            android:text="Log out"
+            android:gravity="center_vertical"
+            android:layout_marginStart="@dimen/mini_radius"
+            android:textColor="@color/white"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
 
 </LinearLayout>

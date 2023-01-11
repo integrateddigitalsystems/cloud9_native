@@ -64,8 +64,10 @@
     <dimen name="card_radius">4dp</dimen>
     <dimen name="barcode_big_width">200dp</dimen>
     <dimen name="size_15">15sp</dimen>
+    <dimen name="size_35">35dp</dimen>
 
   <!-- Text Sizes-->
 
+    <dimen name="title_font">18sp</dimen>
     <dimen name="normal_font">16sp</dimen>
 </resources>

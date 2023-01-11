@@ -6,16 +6,20 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
+    <color name="text_color">#262827</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00000000 </color>
     <color name="gray_trans">#88e1e6e8 </color>
     <color name="homepage_color">#4D02b2a5</color>
     <color name="colorPrimary">#5abaac</color>
     <color name="color_primary_trans">#CC5abaac</color>
+    <color name="medium_blue">#1f356a</color>
+    <color name="medium_blue_trans">#881f356a</color>
+    <color name="medium_primary">#397688</color>
     <color name="colorPrimaryDark">#379281</color>
     <color name="darker_primary">#2a6c60</color>
     <color name="card_bg">#e6e6e6</color>
-    <color name="dark_blue">#1f356a</color>
+    <color name="dark_blue">#100c3f</color>
     <color name="colorAccent">#1C232D</color>
     <color name="hint_search">#B35a5f66</color>
     <color name="gray_bg">#009688</color>
@@ -25,4 +29,5 @@
     <color name="new_night_blue">#262046</color>
     <color name="gray_app_bg">#f2f2f2</color>
     <color name="new_yellow">#d6e237</color>
+    <color name="gray_text_color">#8d9fc7</color>
 </resources>

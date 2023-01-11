@@ -24,7 +24,7 @@
 
         <com.ids.cloud9.custom.CustomTextViewMedium
             android:layout_width="match_parent"
-            android:text="Test"
+            android:text="Visits"
             android:textSize="@dimen/normal_font"
             android:textColor="@color/white"
             android:gravity="center"
@@ -43,39 +43,44 @@
         android:background="@color/white">
 
         <com.ids.cloud9.custom.CustomTextViewMedium
+            android:id="@+id/tvDate"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Jan 8 - 14, 2023"
+            android:textColor="@color/text_color" />
 
         <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_marginEnd="@dimen/small_margin_padding"
             android:gravity="center"
-            android:layout_weight="1"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent" >
 
 
         <com.ids.cloud9.custom.CustomTextViewMedium
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/min_height"
             android:textColor="@color/white"
             android:text="today"
-            android:paddingStart="@dimen/normal_margin"
-            android:paddingEnd="@dimen/normal_margin"
-            android:paddingTop="@dimen/normal_margin_padding"
-            android:paddingBottom="@dimen/normal_margin_padding"
             android:gravity="center"
             android:background="@drawable/rounded_dark_blue"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/size_35"
            />
 
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginEnd="@dimen/normal_margin_padding"
+            android:layout_marginTop="@dimen/small_margin_padding"
+            android:layout_marginBottom="@dimen/small_margin_padding"
             android:gravity="center"
-            android:paddingTop="@dimen/normal_margin_padding"
-            android:paddingBottom="@dimen/normal_margin_padding"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/with_toggle">
 
             <LinearLayout
                 android:id="@+id/btDatePrevious"
@@ -112,6 +117,8 @@
                     android:src="@drawable/back"/>
             </LinearLayout>
 
+
+        </LinearLayout>
 
         </LinearLayout>
 

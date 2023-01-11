@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
@@ -86,7 +87,9 @@ class ActivityLogin : Activity() {
                override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
 
                    try {
+
                        MyApplication.token = response.body()!!.token
+                       Log.wtf("TOKEN",MyApplication.token)
                        MyApplication.userItem = JWTDecoding.decoded(MyApplication.token!!)
                        binding!!.loadingLogin.hide()
                        binding!!.btLogin.show()
