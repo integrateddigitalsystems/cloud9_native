@@ -3,6 +3,7 @@ package com.ids.cloud9.utils
 import com.ids.cloud9.model.ApplicationUserList
 import com.ids.cloud9.model.RequestLogin
 import com.ids.cloud9.model.ResponseLogin
+import com.ids.cloud9.model.VisitList
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -25,6 +26,6 @@ interface RetrofitInterface {
     fun getVisits(
         @Query("statusId") statusId : Int ,
         @Query("userId") userId : Int
-    ):Call<ArrayList<Any>>
+    ):Call<VisitList>
 
 }

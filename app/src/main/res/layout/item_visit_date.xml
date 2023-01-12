@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/gray_border_item"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/small_margin"
+        android:paddingBottom="@dimen/small_margin"
+        android:background="@color/gray_app_bg">
+
+
+        <com.ids.cloud9.custom.CustomTextViewBold
+            android:layout_width="0dp"
+            android:layout_marginStart="@dimen/margin_start_end"
+            android:layout_weight="1"
+            android:id="@+id/tvDay"
+            android:textSize="@dimen/normal_font"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"/>
+
+
+        <com.ids.cloud9.custom.CustomTextViewBold
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/tvDate"
+            android:gravity="end"
+            android:layout_marginEnd="@dimen/margin_start_end"
+            android:textSize="@dimen/normal_font"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"/>
+
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/gray_border_item"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:id="@+id/rvVisits"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

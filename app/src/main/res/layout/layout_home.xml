@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical"
+<RelativeLayout android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <RelativeLayout
         android:elevation="@dimen/small_margin"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/back_width_height"
+        android:layout_height="@dimen/barcode_width_height"
         android:background="@drawable/gradient_bg">
 
         <ImageView
@@ -39,7 +44,7 @@
         android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/barcode_width_height"
         android:background="@color/white">
 
         <com.ids.cloud9.custom.CustomTextViewMedium
@@ -57,7 +62,7 @@
             android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_marginEnd="@dimen/small_margin_padding"
+            android:layout_marginEnd="@dimen/normal_margin_padding"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" >
@@ -68,8 +73,9 @@
             android:textColor="@color/white"
             android:text="today"
             android:gravity="center"
+            android:textSize="@dimen/title_font"
             android:background="@drawable/rounded_dark_blue"
-            android:layout_height="@dimen/size_35"
+            android:layout_height="@dimen/with_toggle"
            />
 
         </LinearLayout>
@@ -129,6 +135,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/gray_app_bg"/>
+        android:background="@color/gray_app_bg">
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rvVisits"/>
 
-</LinearLayout>
+    </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:visibility="gone">
+
+        <include
+            layout="@layout/loading" />
+
+    </LinearLayout>
+
+</RelativeLayout>

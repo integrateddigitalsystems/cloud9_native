@@ -126,7 +126,7 @@ class AppHelper {
         fun getTypeFace(context: Context): Typeface? {
             return if (MyApplication.languageCode.equals(AppConstants.LANG_ENGLISH)) Typeface.createFromAsset(
                 context.applicationContext.assets,
-                "fonts/Poppins-Regular.ttf"
+                "fonts/Raleway-Medium.ttf"
             ) else Typeface.createFromAsset(
                 context.applicationContext.assets,
                 "fonts/GESSTwoMedium-Medium.ttf"
@@ -135,7 +135,7 @@ class AppHelper {
         fun getTypeFaceItalic(context: Context): Typeface? {
             return if (MyApplication.languageCode.equals(AppConstants.LANG_ENGLISH)) Typeface.createFromAsset(
                 context.applicationContext.assets,
-                "fonts/Poppins-Italic.ttf"
+                "fonts/Raleway-Italic.ttf"
             ) else Typeface.createFromAsset(
                 context.applicationContext.assets,
                 "fonts/Poppins-Italic.ttf"
@@ -145,7 +145,7 @@ class AppHelper {
         fun getTypeFaceExtraBold(context: Context): Typeface? {
             return if (MyApplication.languageCode.equals(AppConstants.LANG_ENGLISH)) Typeface.createFromAsset(
                 context.applicationContext.assets,
-                "fonts/Poppins-SemiBold.ttf"
+                "fonts/Raleway-ExtraBold.ttf"
             ) else Typeface.createFromAsset(
                 context.applicationContext.assets,
                 "fonts/GESSTwoBold-Bold.ttf"
@@ -154,7 +154,7 @@ class AppHelper {
         fun getTypeFaceBold(context: Context): Typeface {
             return if (MyApplication.languageCode.equals(AppConstants.LANG_ENGLISH)) Typeface.createFromAsset(
                 context.applicationContext.assets,
-                "fonts/Poppins-SemiBold.ttf"
+                "fonts/Raleway-Bold.ttf"
             ) else Typeface.createFromAsset(
                 context.applicationContext.assets,
                 "fonts/GESSTwoBold-Bold.ttf"
