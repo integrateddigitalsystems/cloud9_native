@@ -1,7 +1,7 @@
 package com.ids.cloud9.controller.activities
 
+import HeaderDecoration
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,29 +9,34 @@ import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.core.view.GravityCompat
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
-import com.ids.cloud9.Adapters.AdapterVisitDate
-import com.ids.cloud9.Adapters.AdapterVisits
+import com.ids.cloud9.Adapters.StickyAdapter
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.databinding.ActivityMainBinding
 import com.ids.cloud9.model.*
 import com.ids.cloud9.utils.*
-import com.shrikanthravi.customnavigationdrawer2.data.MenuItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
+import java.util.Calendar
 
 
 class ActivityMain: Activity() , RVOnItemClickListener{
 
     var simp = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss")
+    var half = SimpleDateFormat("MMM dd")
+    var secondHalf = SimpleDateFormat("MMM dd yyyy")
     var binding : ActivityMainBinding?=null
-    var array : ArrayList<VisitDates> = arrayListOf()
+    var fromDefault = Calendar.getInstance()
+    var toDefault = Calendar.getInstance()
+    var editingFrom = Calendar.getInstance()
+    var editingTo = Calendar.getInstance()
+    var tempArray : ArrayList<VisitListItem> = arrayListOf()
+    var mainArray : ArrayList<VisitListItem> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,32 +46,129 @@ class ActivityMain: Activity() , RVOnItemClickListener{
         listeners()
         setUpSliding()
         getVisits()
+        setUpDate()
 
+    }
+
+    fun editDate(isNext : Boolean ){
+        if(isNext){
+            var oldEdge = editingTo.time
+            editingFrom.time = oldEdge
+            editingTo.time = oldEdge
+            editingFrom.add(Calendar.DAY_OF_MONTH,1)
+            editingTo.add(Calendar.DAY_OF_MONTH,7)
+
+        }else{
+            var oldEdge = editingFrom.time
+            editingFrom.time = oldEdge
+            editingTo.time = oldEdge
+            editingFrom.add(Calendar.DAY_OF_MONTH,-7)
+            editingTo.add(Calendar.DAY_OF_MONTH,-1)
+        }
+
+        var vl = VisitList()
+        binding!!.llHomeMain.loading.show()
+        filterDate(mainArray)
+        binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondHalf.format(editingTo.time)
+    }
+
+
+    fun setUpDate(){
+        var from = Calendar.getInstance()
+        var to = Calendar.getInstance()
+
+        from.add(Calendar.DAY_OF_MONTH,-2)
+        to.add(Calendar.DAY_OF_MONTH,3)
+
+        fromDefault = from
+        toDefault = to
+        editingFrom = from
+        editingTo = to
+
+        binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondHalf.format(editingTo.time)
     }
 
 
 
-    fun setUpData(list: VisitList){
-        for(item in list){
-            var date = simp.parse(item.visitDate)
-            var itm = array.find { it.dateMill == date.time }
-            if(itm!=null){
-                array[array.indexOf(itm)].visits!!.add(item)
-            }else{
-                array.add(VisitDates(date.time,VisitList()))
-                array.get(array.size - 1 ).visits!!.add(item)
-            }
 
+    fun filterDate(arrayList: ArrayList<VisitListItem>){
+
+        tempArray.clear()
+        tempArray.addAll(arrayList.filter {
+
+            Log.wtf("TAG_ARRAY","FROM--- "+simp.parse(it.visitDate).after(editingFrom.time).toString())
+            Log.wtf("TAG_ARRAY","TO--- "+simp.parse(it.visitDate).before(editingTo.time).toString())
+
+            simp.parse(it.visitDate).after(editingFrom.time)&& simp.parse(it.visitDate).before(editingTo.time)
+        }
+        )
+        Log.wtf("TAG_ARRAY",tempArray.size.toString())
+        var vl = VisitList()
+        vl.addAll(tempArray)
+        setUpData(vl)
+    }
+
+
+    fun setUpData(list: VisitList){
+        if(list.size >0) {
+            tempArray.clear()
+            var headers = 0
+            for (item in list) {
+                var date = simp.parse(item.visitDate)
+                Log.wtf("TAG_VISIT", item.title + " ---DATE: " + date.time)
+                var itm = tempArray.find { it.dateMill == date.time }
+                if (itm != null) {
+                    var nextHead = tempArray.find {
+                        it.headerOrder == (itm.headerOrder + 1)
+                    }
+                    if (nextHead == null)
+                        tempArray.add(item)
+                    else {
+                        var indx = tempArray.indexOf(nextHead)
+                        tempArray.add(indx, item)
+                    }
+                } else {
+                    var visHeader = VisitListItem()
+                    visHeader.isHeader = true
+                    visHeader.visitDate = item.visitDate
+                    visHeader.dateMill = date.time
+                    visHeader.headerOrder = headers
+                    headers++
+                    tempArray.add(visHeader)
+                    tempArray.add(item)
+
+                }
+
+            }
+        }else{
+            tempArray.clear()
         }
 
 
 
-        var adapter = AdapterVisitDate(array,this,this)
-        binding!!.llHomeMain.rvVisits.layoutManager = LinearLayoutManager(this)
-        binding!!.llHomeMain.rvVisits.adapter = adapter
 
-        Log.wtf("Visitors",Gson().toJson(array))
-        binding!!.llHomeMain.loading.hide()
+
+
+        if(tempArray.size > 0) {
+
+            var adapter = StickyAdapter(this, tempArray)
+            binding!!.llHomeMain.rvVisits.layoutManager = LinearLayoutManager(this)
+            binding!!.llHomeMain.rvVisits.adapter = adapter
+            binding!!.llHomeMain.rvVisits.addItemDecoration(
+                HeaderDecoration(
+                    binding!!.llHomeMain.rvVisits,
+                    adapter
+                )
+            );
+
+            Log.wtf("Visitors", Gson().toJson(tempArray))
+            binding!!.llHomeMain.loading.hide()
+            binding!!.llHomeMain.rvVisits.show()
+        }else{
+            binding!!.llHomeMain.loading.hide()
+            binding!!.llHomeMain.rvVisits.hide()
+
+        }
     }
 
 
@@ -78,7 +180,9 @@ class ActivityMain: Activity() , RVOnItemClickListener{
                 MyApplication.userItem!!.applicationUserId!!.toInt()
             )?.enqueue(object : Callback<VisitList> {
                 override fun onResponse(call: Call<VisitList>, response: Response<VisitList>) {
-                   setUpData(response.body()!!)
+                    mainArray.clear()
+                    mainArray.addAll(response.body()!!)
+                    filterDate(response.body()!!)
 
                 }
                 override fun onFailure(call: Call<VisitList>, throwable: Throwable) {
@@ -106,13 +210,22 @@ class ActivityMain: Activity() , RVOnItemClickListener{
         }
 
         binding!!.llHomeMain.btDatePrevious.setOnClickListener {
-           binding!!.llHomeMain.btDatePrevious.setBackgroundResource(R.drawable.rounded_darker_left)
+            binding!!.llHomeMain.btDatePrevious.setBackgroundResource(R.drawable.rounded_darker_left)
             binding!!.llHomeMain.btDateNext.setBackgroundResource(R.drawable.rounded_dark_right)
+            editDate(false)
         }
 
         binding!!.llHomeMain.btDateNext.setOnClickListener {
             binding!!.llHomeMain.btDateNext.setBackgroundResource(R.drawable.rounded_darker_right)
             binding!!.llHomeMain.btDatePrevious.setBackgroundResource(R.drawable.rounded_dark_left)
+            editDate(true)
+        }
+
+        binding!!.llHomeMain.tvToday.setOnClickListener {
+            setUpDate()
+            binding!!.llHomeMain.btDateNext.setBackgroundResource(R.drawable.rounded_dark_right)
+            binding!!.llHomeMain.btDatePrevious.setBackgroundResource(R.drawable.rounded_dark_left)
+
         }
     }
 

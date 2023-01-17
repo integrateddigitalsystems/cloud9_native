@@ -1,20 +1,15 @@
 package com.ids.cloud9.Adapters
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
-import com.ids.cloud9.databinding.ItemVisitBinding
 import com.ids.cloud9.databinding.ItemVisitDateBinding
 import com.ids.cloud9.model.VisitDates
-import com.ids.cloud9.model.VisitListItem
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class AdapterVisitDate(
     var items : ArrayList<VisitDates>,
@@ -52,9 +47,11 @@ class AdapterVisitDate(
             binding.tvDate.text = SimpleDateFormat("MMMM dd, yyyy").format(Date(item.dateMill!!))
 
             var adapter = AdapterVisits(item.visits!!,con,clickListener)
-            binding.rvVisits.layoutManager = LinearLayoutManager(con)
-            binding.rvVisits.adapter = adapter
+           // binding.rvVisits.layoutManager = LinearLayoutManager(con)
+           // binding.rvVisits.adapter = adapter
 
+
+           // binding.rvVisits.addItemDecoration(HeaderDecoration(adapter as HeaderDecoration.StickyHeaderInterface?))
 
 
         }

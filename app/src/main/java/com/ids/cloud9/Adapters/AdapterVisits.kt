@@ -1,31 +1,48 @@
 package com.ids.cloud9.Adapters
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
+
 import com.ids.cloud9.databinding.ItemVisitBinding
+import com.ids.cloud9.databinding.ItemVisitDateBinding
 import com.ids.cloud9.model.VisitListItem
 import com.ids.cloud9.utils.hide
+import com.ids.cloud9.utils.show
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
+import java.util.*
+
 
 class AdapterVisits(
     var items : ArrayList<VisitListItem>,
     var con: Activity,
     private var clickListener: RVOnItemClickListener
-) : RecyclerView.Adapter<AdapterVisits.VhItem>() {
+)/* : RecyclerView.Adapter<AdapterVisits.VhItem>() ,HeaderDecoration.StickyHeaderInterface*/ {
+
+   /* private val VIEW_HEADER = 1
+    private val VIEW_DETAIL = 0
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterVisits.VhItem {
-        val binding = ItemVisitBinding.inflate(con.layoutInflater,parent,false)
-        return VhItem(binding, clickListener)
+
+        if(viewType == VIEW_HEADER){
+            val binding = ItemVisitDateBinding.inflate(con.layoutInflater, parent, false)
+            return VhItem(binding, clickListener)
+        }else {
+            val binding = ItemVisitBinding.inflate(con.layoutInflater, parent, false)
+            return VhItem(binding, clickListener)
+        }
     }
 
-    override fun onBindViewHolder(holder: AdapterVisits.VhItem, position: Int) {
-        holder.bind(items[position])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+      *//*  if (holder is HeaderViewHolder) {
+            (holder as HeaderViewHolder).bind(getItem(position))
+        } else {
+            (holder as DetailViewHolder).bind(getItem(position))
+        }*//*
     }
 
     override fun getItemCount(): Int {
@@ -42,6 +59,13 @@ class AdapterVisits(
 
 
         fun bind(item: VisitListItem) {
+
+
+           *//* if(layoutPosition%4==0){
+                binding.llSticky.show()
+            }else{
+                binding.llSticky.hide()
+            }*//*
 
             binding.tvVisitName.text = item.title
             binding.tvCompany.text = item.company.companyName
@@ -88,4 +112,30 @@ class AdapterVisits(
         }
     }
 
+    override fun getHeaderPositionForItem(itemPosition: Int): Int {
+        var headerPosition = 0
+        var itmPos = itemPosition
+        do {
+            if (isHeader(itemPosition)) {
+                headerPosition = itmPos
+                break
+            }
+            itmPos -= 1
+        } while (itmPos >= 0)
+        return headerPosition
+    }
+
+    override fun getHeaderLayout(headerPosition: Int): Int {
+        return R.layout.item_visit_date
+    }
+
+    override fun bindHeaderData(header: View?, headerPosition: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun isHeader(itemPosition: Int): Boolean {
+       return items.get(itemPosition).isHeader!!
+    }
+
+*/
 }

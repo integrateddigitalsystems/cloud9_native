@@ -6,6 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 
 
     <com.ids.cloud9.custom.CustomTextViewBold
@@ -75,5 +80,9 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/gray_border_item"/>
+
+    </LinearLayout>
+
+
 
 </LinearLayout>

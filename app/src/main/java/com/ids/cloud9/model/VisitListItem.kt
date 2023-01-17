@@ -5,105 +5,113 @@ import com.google.gson.annotations.SerializedName
 
 data class VisitListItem(
     @SerializedName("account")
-    val account: Any,
+    var account: Any?=null,
     @SerializedName("accountId")
-    val accountId: Int,
+    var accountId: Int?=0,
     @SerializedName("actualArrivalTime")
-    val actualArrivalTime: String,
+    var actualArrivalTime: String?="",
     @SerializedName("actualCompletedTime")
-    val actualCompletedTime: String,
+    var actualCompletedTime: String?="",
     @SerializedName("actualDuration")
-    val actualDuration: Double,
+    var actualDuration: Double?=0.0,
     @SerializedName("assignedTo")
-    val assignedTo: Any,
+    var assignedTo: Any?=null,
     @SerializedName("assignedToId")
-    val assignedToId: Any,
+    var assignedToId: Any?=null,
     @SerializedName("company")
-    val company: Company,
+    var company: Company?=null,
     @SerializedName("companyAddress")
-    val companyAddress: CompanyAddress,
+    var companyAddress: CompanyAddress?=null,
     @SerializedName("companyAddressId")
-    val companyAddressId: Int,
+    var companyAddressId: Int?=0,
     @SerializedName("companyId")
-    val companyId: Int,
+    var companyId: Int?=0,
     @SerializedName("contact")
-    val contact: Contact,
+    var contact: Contact?=null,
     @SerializedName("contactId")
-    val contactId: Int,
+    var contactId: Int?=0,
     @SerializedName("contract")
-    val contract: Any,
+    var contract: Any?=null,
     @SerializedName("contractId")
-    val contractId: Any,
+    var contractId: Any?=null,
     @SerializedName("creationDate")
-    val creationDate: String,
+    var creationDate: String?="",
     @SerializedName("duration")
-    val duration: Double,
+    var duration: Double?=0.0,
     @SerializedName("email")
-    val email: String,
+    var email: String?="",
     @SerializedName("fromTime")
-    val fromTime: String,
+    var fromTime: String?="",
     @SerializedName("id")
-    val id: Int,
+    var id: Int?=0,
     @SerializedName("inverseParentVisit")
-    val inverseParentVisit: List<Any>,
+    var inverseParentVisit: ArrayList<Any>?= arrayListOf(),
     @SerializedName("isDeleted")
-    val isDeleted: Boolean,
+    var isDeleted: Boolean?=false,
     @SerializedName("modificationDate")
-    val modificationDate: String,
+    var modificationDate: String?="",
     @SerializedName("number")
-    val number: String,
+    var number: String?="",
     @SerializedName("opportunity")
-    val opportunity: Any,
+    var opportunity: Any?=null,
     @SerializedName("opportunityId")
-    val opportunityId: Any,
+    var opportunityId: Any?=null,
     @SerializedName("order")
-    val order: Any,
+    var order: Any?=null,
     @SerializedName("orderId")
-    val orderId: Any,
+    var orderId: Any?=null,
     @SerializedName("owner")
-    val owner: Any,
+    var owner: Any?=null,
     @SerializedName("ownerId")
-    val ownerId: Int,
+    var ownerId: Int?=0,
     @SerializedName("parentVisit")
-    val parentVisit: Any,
+    var parentVisit: Any?=null,
     @SerializedName("parentVisitId")
-    val parentVisitId: Any,
+    var parentVisitId: Any?=null,
     @SerializedName("phoneNumber")
-    val phoneNumber: String,
+    var phoneNumber: String ?="",
     @SerializedName("priority")
-    val priority: Any,
+    var priority: Any?=null,
     @SerializedName("priorityId")
-    val priorityId: Any,
+    var priorityId: Any?=null,
     @SerializedName("reason")
-    val reason: Any,
+    var reason: Any?=null,
     @SerializedName("reasonId")
-    val reasonId: Int,
+    var reasonId: Int?=0,
     @SerializedName("remark")
-    val remark: Any,
+    var remark: Any?=null,
     @SerializedName("resource")
-    val resource: Any,
+    var resource: Any?=null,
     @SerializedName("resourceId")
-    val resourceId: Any,
+    var resourceId: Any?=null,
     @SerializedName("status")
-    val status: Any,
+    var status: Any?=null,
     @SerializedName("statusId")
-    val statusId: Int,
+    var statusId: Int?=0,
     @SerializedName("timeStamp")
-    val timeStamp: String,
+    var timeStamp: String ?="",
     @SerializedName("title")
-    val title: String,
+    var title: String ?="",
     @SerializedName("toTime")
-    val toTime: String,
+    var toTime: String ?="",
     @SerializedName("type")
-    val type: Any,
+    var type: Any?=null,
     @SerializedName("typeId")
-    val typeId: Int,
+    var typeId: Int?=0,
     @SerializedName("visitDate")
-    val visitDate: String,
+    var visitDate: String ?="",
     @SerializedName("visitLocations")
-    val visitLocations: List<Any>,
+    var visitLocations: ArrayList<Any>?= arrayListOf(),
     @SerializedName("visitProducts")
-    val visitProducts: List<Any>,
+    var visitProducts: ArrayList<Any>?= arrayListOf(),
     @SerializedName("visitResources")
-    val visitResources: List<VisitResource>
-)
+    var visitResources: ArrayList<VisitResource>?= arrayListOf(),
+
+    var isHeader :Boolean ?=false,
+
+    var dateMill : Long =0,
+
+    var headerOrder : Int = -1 
+){
+
+}

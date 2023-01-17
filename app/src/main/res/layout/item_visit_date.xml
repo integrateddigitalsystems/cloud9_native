@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:background="@color/gray_border_item"/>
 
     <LinearLayout
@@ -25,7 +25,7 @@
             android:layout_marginStart="@dimen/margin_start_end"
             android:layout_weight="1"
             android:id="@+id/tvDay"
-            android:textSize="@dimen/normal_font"
+            android:textSize="@dimen/title_font"
             android:textColor="@color/black"
             android:layout_height="wrap_content"/>
 
@@ -47,13 +47,19 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:background="@color/gray_border_item"/>
 
+    <!--<me.didik.component.StickyNestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:id="@+id/rvVisits"
         android:layout_height="match_parent"/>
+
+
+    </me.didik.component.StickyNestedScrollView>-->
 
 </LinearLayout>

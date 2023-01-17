@@ -1,0 +1,2242 @@
+const appStore = {
+    apiURL,
+    mediaURL,
+    isForeground: true,
+    alertErrors: true,
+    currentPage: "home",
+    reasonsList: [],
+    visitsList: [],
+    companiesList: [],
+    calendar: null,
+    selectedVisit: {},
+    selectedCalendarEvent: null,
+    selectedVisitCompany: {},
+    selectedJobReport: null,
+    selectedJobReportName: "",
+    selectedProduct: null,
+    selectedTempProduct: null,
+    selectedTask: {},
+    entitiesList: [],
+    isLoggedIn: null,
+    isOnline: navigator.online,
+    user: {},
+    allUsers: [],
+    allProducts: [],
+    allUnits: [],
+    activeVisitTab: "visit",
+    notification: { mainClass: { active: false }, iconClass: {} },
+    visitCompleted: false,
+    visitArrived: false,
+    fetchDataTO: null,
+    trackUserLocation: false,
+    removingRow: false,
+    eventsList: [],
+    eventsLoaded: false,
+    watchPositionId: null,
+    deviceToken: null
+}
+
+//main page, calendar view
+const Calendar = {
+    name: "calendar",
+    mounted() {
+        this.setupCalendar();
+        emitter.on("visitReasonUpdated", () => {
+            this.calendar.getEventById(this.$root.selectedVisit.id).setExtendedProp("reasonCode", this.$root.selectedVisit.reasonCode)
+        })
+        emitter.on("eventsUpdated", () => this.renderVisits());
+        emitter.on("visitsListRefreshed", visitId => this.selectVisit(visitId))
+    },
+    async activated() {
+        const that = this;
+        PullToRefresh.init({
+            mainElement: '#calendar',
+            shouldPullToRefresh() {
+                return !this.mainElement.scrollTop
+            },
+            refreshTimeout: 200,
+            onRefresh() {
+                that.$root.fetchDataFromServer();
+            }
+        });
+    },
+    deactivated() {
+        PullToRefresh.destroyAll();
+    },
+    methods: {
+        setupCalendar() {
+            //render visits calendar
+            const calendarEl = document.querySelector("#calendar");
+            this.calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: "listWeek",
+                eventClick: info => this.selectVisit(info.event.id),
+                events: [],
+                noEventsContent: "Checking for visits...",
+                loading: function (bool) {
+                    // document.getElementById('loading').style.display = bool ? 'block' : 'none';
+                },
+                eventTextColor: "red",
+                eventContent: arg => {
+                    const e = arg.event;
+
+                    let div = document.createElement("div");
+                    div.classList.add("event-desc");
+
+                    let evtTitle = document.createElement("div");
+                    evtTitle.classList.add("event-title");
+                    evtTitle.innerHTML = e.title;
+
+                    let evtCompany = document.createElement("div");
+                    evtCompany.classList.add("event-company");
+                    evtCompany.innerHTML = this.$root.companiesList.find(c => c.id == e.extendedProps.companyId)?.companyName || "fetching...";
+
+                    let evtReason = document.createElement("small");
+                    evtReason.classList.add("event-reason");
+                    const reason = this.$root.reasonsList.find(r => e.extendedProps.reasonCode == r.lookupCode).name.toLowerCase();
+                    evtReason.dataset.reason = reason;
+                    evtReason.innerHTML = reason;
+
+                    let evtTime = document.createElement("div");
+                    evtTime.classList.add("event-time");
+                    const timeStart = e.start.toLocaleTimeString(["en-LB"], { timeStyle: "short" });
+                    const timeEnd = e.end.toLocaleTimeString(["en-LB"], { timeStyle: "short" });
+                    evtTime.innerHTML = `${timeStart} - ${timeEnd}`;
+
+                    let evtDuration = document.createElement("div");
+                    evtDuration.classList.add("event-duration");
+                    const duration = this.$root.getFormattedTimeFromMs(e.end.getTime() - e.start.getTime());
+                    evtDuration.innerHTML = `(${duration})`;
+
+                    evtTime.append(evtDuration);
+
+                    div.append(evtTitle, evtCompany, evtTime, evtReason)
+
+                    let arrayOfDomNodes = [div]
+                    return { domNodes: arrayOfDomNodes }
+                },
+                headerToolbar: {
+                    start: "title", // will normally be on the left. if RTL, will be on the right
+                    center: "today",
+                    end: "prev,next" // will normally be on the right. if RTL, will be on the left
+                }
+            });
+            this.calendar.render();
+            this.renderVisits();
+        },
+        renderVisits() {
+            this.calendar.setOption("noEventsContent", "No visits set for this week!");
+            this.calendar.getEventSources().forEach(e => e.remove());
+            this.calendar.addEventSource(this.$root.eventsList);
+        },
+        async selectVisit(visitId) {
+            //get visit by event id
+            this.$root.selectedVisit = this.$root.getVisitById(visitId);
+            this.$root.selectedVisitCompany = this.$root.companiesList.find(c => c.id == this.$root.selectedVisit.companyId);
+            router.push(`/visit-details/${visitId}`)
+            // const timeDiff = this.$root.selectedVisit.actualArrivalTime ? new Date().getTime() - this.$root.selectedVisit.actualArrivalTime.getTime() : 0;
+            // const hoursDiff = timeDiff / (1000 * 60 * 60);
+
+        }
+    },
+    template: /*html*/`
+        <div data-page="calendar" :class="{'events-loaded': $root.eventsLoaded}">
+            <div id="calendar"></div>
+        </div>
+    `
+}
+
+//visit tabs
+const VisitDetails = {
+    data() {
+        return { currentTab: "Visit", tabs: ["Visit", "Company", "Products", "Recommendations", "Signature", "Media"] }
+    },
+    name: "visitDetails",
+    mounted() {
+        emitter.on("switchToTab", tab => this.switchToTab(tab))
+    },
+    activated() {
+        // this.getVisitProductsReports();
+    },
+    template: /*html*/`
+        <div data-page="visit-details" class="page">
+            <div id="visit-tabs-nav">
+                <button v-for="tab in tabs" :key="tab" :class="['tab-button', { active: currentTab === tab }]" @click="currentTab = tab">
+                    {{ tab }}
+                </button>
+            </div>
+            <keep-alive>
+                <component :is="currentTabComponent" id="visit-tabs-content" />
+            </keep-alive>
+        </div>`
+    ,
+    computed: {
+        currentTabComponent() {
+            return "tab-" + this.currentTab.toLowerCase()
+        }
+    },
+    methods: {
+        switchToTab(tab = "Visit") {
+            this.currentTab = tab
+        }
+    }
+}
+
+//all tasks list
+const AllTasks = {
+    data() {
+        return { tasks: [] }
+    },
+    async activated() {
+        this.tasks = [];
+        this.tasks = await this.getAllTasks();
+        this.$root.currentPage = "All tasks"
+    },
+    template: /*html*/`
+        <div data-page="all-tasks">
+            <div id="tasks-list" class="list-page p-3">
+                <div class="task box-with-shadow" v-for="(task, idx) in tasks" :key="task.id" @click="showTask(task)">
+                    <strong class="task-subject">{{task.subject}}</strong>
+                    <div class="task-desc">{{task.description}}</div>
+                    <div class="task-date">{{new Date(task.dueDate).toLocaleDateString('en-GB')}}</div>
+                    <i class="bi bi-arrow-bar-right"></i>
+                    <div class="task-owner">{{task.owner}}</div>
+                    <div class="task-assigned-to">{{task.assignedTo}}</div>
+                    <span class="task-status badge" :class="{'badge-success': task.statusReasonCode == 'AC_REASON_IP'}">{{task.reason}}</span>
+                </div>
+            </div>
+        </div>`,
+    methods: {
+        async getAllTasks() {
+            const resp = await this.$root.get("/Activity/GetActivitiesToUserMobile", { loggedUser: this.$root.user.ApplicationUserId });
+            return resp.map(task => Object.assign({}, task, { creationDate: this.$root.localDate(task.creationDate) }));
+        },
+        showTask(task = null) {
+            this.$root.selectedTask = task || { ownerId: null, subject: null, description: null, assignedToId: null, manyAssigned: [], entityId: this.$root.selectedVisit.id, dueDate: this.$root.localDate(new Date()) };
+            router.push(`/task/edit`)
+        }
+    }
+}
+
+//task form
+const Task = {
+    data() {
+        return { mode: "create" }
+    },
+    activated() {
+        this.mode = this.$route.params.mode;
+        $(this.$refs.s2).val(this.$root.selectedTask[this.mode == 'create' ? 'manyAssigned' : 'assignedToId']).trigger("change")
+    },
+    directives: {
+        select2: {
+            // directive definition
+            mounted(el) {
+                $(el).select2();
+                $(el).on("select2:select", () => {
+                    const event = new Event("change", { bubbles: true, cancelable: true });
+                    el.dispatchEvent(event);
+                });
+
+                $(el).on("select2:unselect", () => {
+                    const event = new Event("change", { bubbles: true, cancelable: true })
+                    el.dispatchEvent(event)
+                })
+            }
+        }
+    },
+    template: /*html*/`
+        <form data-page="task" class="page p-3" @submit.prevent="saveTask" ref="sendTaskForm">
+            <label>Subject:
+                <input type="text" v-model="$root.selectedTask.subject" :disabled="$root.visitCompleted" required minlength="5" maxlength="255">
+            </label>
+            <label>Description:
+                <textarea v-model="$root.selectedTask.description" style="block-size: 80px" :disabled="$root.visitCompleted" required></textarea>
+            </label>
+            <label>Assign to:
+                <select v-model="$root.selectedTask[mode=='create'?'manyAssigned':'assignedToId']" :disabled="$root.visitCompleted || mode=='edit'" required :multiple="mode=='create'" v-select2 ref="s2">
+                    <option v-for="user in $root.allUsers" :value="user.id">{{user.firstName + " " + user.lastName}}</option>
+                </select>
+            </label>
+            <label>Due date:
+                <input type="date" :value="$root.customDateISOString($root.selectedTask.dueDate)" @change="updateDueDate" :disabled="$root.visitCompleted" ref="dueDate" required />
+            </label>
+            <button class="btn btn-wide" type="submit">Save</button>
+            <button class="btn btn-wide btn-red" type="button" @click="delTask" style="margin-block-start: 15px"><i class="bi bi-trash" style="margin-inline-end: 5px"></i> Delete</button>
+        </form>
+    `,
+    methods: {
+        async saveTask() {
+            let resp;
+            if (this.$root.selectedTask.id) {
+                const task = Object.assign({}, this.$root.selectedTask, { dueDate: this.$root.customDateTimeISOString(this.$root.localDate(this.$root.selectedTask.dueDate)) })
+                console.log(task);
+                resp = await this.$root.post("/Activity/UpdateActivityMobile", task)
+            } else {
+                const data = {
+                    ownerId: this.$root.user.ApplicationUserId,
+                    subject: this.$root.selectedTask.subject,
+                    description: this.$root.selectedTask.description,
+                    assignedToId: null,
+                    manyAssigned: this.$root.selectedTask.manyAssigned,
+                    entityId: this.$root.selectedVisit.id,
+                    dueDate: this.$root.customDateTimeISOString(this.$root.localDate(this.$root.selectedTask.dueDate))
+                };
+                console.log("data:", data)
+                resp = await this.$root.post("/Activity/createActivityMobile", data);
+            }
+            if (resp.success) {
+                emitter.emit("tasksUpdated");
+                this.$refs.sendTaskForm.reset();
+                this.$router.go(-1);
+            } else {
+                console.error(resp)
+            }
+        },
+        async delTask() {
+            if (confirm("Are you sure you want to delete this task?")) {
+                const resp = await this.$root.post(`/Activity/DeleteActivity?id=${this.$root.selectedTask.id}`);
+                if (resp.success) {
+                    emitter.emit("tasksUpdated");
+                    this.$refs.sendTaskForm.reset();
+                    this.$router.go(-1);
+                    this.$root.showToast("Task deleted!", "success");
+                } else {
+                    console.error("failed to delete task:", resp.message)
+                }
+            }
+        },
+        updateDueDate() {
+            this.$root.selectedTask.dueDate = this.$root.customDateTimeISOString(this.$refs.dueDate.value)
+        }
+    }
+}
+
+//product form
+const ProductForm = {
+    data() {
+        return {
+            selectedTempProduct: {
+                id: 0,
+                visitId: this.$root.selectedVisit.id,
+                productId: "",
+                visitNumber: this.$root.selectedVisit.number,
+                unitId: 58,
+                notes: null,
+                serialNumber: "",
+                serialNumbers: [],
+                creationDate: null,
+                modificationDate: null,
+                isDeleted: null,
+                formId: 0,
+                customProductName: "",
+                customProductDescription: "",
+                quantity: 1,
+            },
+            othersTypeId: 4172
+        }
+    },
+    activated() {
+        this.selectedTempProduct = {
+            id: 0,
+            visitId: this.$root.selectedVisit.id,
+            productId: "",
+            visitNumber: this.$root.selectedVisit.number,
+            unitId: 58,
+            notes: null,
+            serialNumber: "",
+            serialNumbers: [],
+            creationDate: null,
+            modificationDate: null,
+            isDeleted: null,
+            formId: 0,
+            customProductName: "",
+            customProductDescription: "",
+            quantity: 1,
+        }
+        //we create a temp product to be used for saving to api
+        if (!isNaN(+this.$route.params.id)) {
+            const prod = this.$root.selectedVisit.products.find(p => p.id == this.$route.params.id);
+            this.selectedTempProduct = { ...prod }
+        }
+        $(this.$refs.s2).val(this.selectedTempProduct.productId).trigger("change")
+    },
+    directives: {
+        select2: {
+            // directive definition
+            mounted(el) {
+                $(el).select2();
+                $(el).on("select2:select", () => {
+                    const event = new Event("change", { bubbles: true, cancelable: true });
+                    el.dispatchEvent(event);
+                });
+
+                $(el).on("select2:unselect", () => {
+                    const event = new Event("change", { bubbles: true, cancelable: true })
+                    el.dispatchEvent(event)
+                })
+            },
+        }
+    },
+    mounted() {
+        // $("[data-use-select2]").select2();
+    },
+    template: /*html*/`
+        <form data-page="product" class="page p-3" @submit.prevent="saveProduct" ref="saveProductForm">
+            <div class="box-with-shadow">
+                <label>
+                    <strong>Name:</strong>
+                    <select v-model="selectedTempProduct.productId" required v-select2 ref="s2">
+                        <option value="">-- Product --</option>
+                        <option v-for="p in $root.allProducts" :key="p.id" :value="p.id">{{p.name}}</option>
+                    </select>
+                </label>
+                <label v-if="!selectedTempProduct.productId == othersTypeId">
+                    <strong>Description:</strong>
+                    {{description}}
+                </label>
+                <label v-if="selectedTempProduct.productId == othersTypeId">
+                    <strong>Custom Product Name:</strong>
+                    <input type="text" v-model="selectedTempProduct.customProductName">
+                </label>
+                <label v-if="selectedTempProduct.productId == othersTypeId">
+                    <strong>Custom Product Description:</strong>
+                    <input type="text" v-model="selectedTempProduct.customProductDescription">
+                </label>
+                <label>
+                    <strong>Unit:</strong>
+                    <select v-model="selectedTempProduct.unitId">
+                        <option v-for="u in $root.allUnits" :key="u.id" :value="u.id" :selected="true">{{u.name}}</option>
+                    </select>
+                </label>
+                <label>
+                    <strong>Quantity:</strong>
+                    <input type="number" min="1" v-model="selectedTempProduct.quantity" required>
+                </label>
+                <label v-for="idx in selectedTempProduct.quantity" :key="idx">
+                    <strong>Serial Number {{idx}}:</strong>
+                    <input type="text" v-model="selectedTempProduct.serialNumbers[idx-1]">
+                </label>
+                <button class="btn btn-wide" type="submit" :disabled="!selectedTempProduct.productId">{{selectedTempProduct.id==0?"Add":"Save"}}</button>
+                <button class="btn btn-wide btn-red" type="button" :disabled="selectedTempProduct.id==0" v-if="this.$route.params.id" @click="delProduct"><i class="bi bi-trash" style="margin-inline-end: 5px"></i> Delete</button>
+            </div>
+        </form>
+    `,
+    methods: {
+        async saveProduct() {
+            this.selectedTempProduct.creationDate = new Date();
+            const update = this.$root.selectedVisit.products.find(p => p.id == this.selectedTempProduct.id);
+            console.log(this.selectedTempProduct)
+            const resp = await this.$root.post(`/VisitProduct/${update ? "Update" : "Create"}Mobile`, this.selectedTempProduct);
+
+            if (resp.success) {
+                this.$refs.saveProductForm.reset();
+                this.$root.showToast(`Product ${update ? "saved" : "added"} successfully!`, "success");
+                this.$router.go(-1)
+            } else {
+                console.error(resp)
+            }
+        },
+        async delProduct() {
+            if (confirm("Are you sure you want to delete this product?")) {
+                this.selectedTempProduct.creationDate = new Date();
+                const resp = await this.$root.post(`/VisitProduct/Delete?id=${this.selectedTempProduct.id}`, {});
+                if (resp.success) {
+                    this.$refs.saveProductForm.reset();
+                    this.$router.go(-1)
+                } else {
+                    console.error(resp)
+                }
+            }
+        }
+    },
+    computed: {
+        description: function () {
+            return this.$root.allProducts.find(p => this.selectedTempProduct.productId == p.id)?.description;
+        }
+    },
+    watch: {
+        "selectedTempProduct.productId": newVal => console.log("new product id:", newVal)
+    }
+}
+
+//job report
+const JobReport = {
+    data() {
+        return { removingRow: false, jobReport: {}, formId: null, visitProductId: null, recordId: null }
+    },
+    name: "jobReport",
+    async activated() {
+        this.formId = this.$route.params.formId;
+        this.visitProductId = this.$route.params.visitProductId;
+        this.recordId = +this.$route.params.recordId || 0;
+        this.$root.selectedJobReport = {};
+        this.$root.selectedJobReport = await (this.recordId ? this.getJobReportRecord() : this.getJobReport());
+    },
+    template: /*html*/`
+        <form data-page="job-report" class="page p-3" @submit.prevent="saveReport" ref="submitJobReportForm">
+            <header class="box-with-shadow">
+                <h5 class="visit-title">{{$root.selectedVisit.title}}</h5>
+                <div><strong>Product Name:</strong> {{$root.selectedVisit.products.find(p=>p.id == this.visitProductId)?.product.name || "N/A"}}</div>
+                <div><strong>Client Name:</strong> {{$root.selectedVisitCompany.companyName || "N/A"}}</div>
+                <div><strong>Contact Name:</strong> {{$root.selectedVisit?.contact.firstName +" "+ $root.selectedVisit.contact.lastName|| "N/A"}}</div>
+                <div><strong>Contact Number:</strong> {{$root.selectedVisit.contact.personalPhoneNumber || "N/A"}}</div>
+                <div><strong>Contract Number:</strong> {{$root.selectedVisit.contract?.number || "N/A"}}</div>
+                <div><strong>Fax:</strong> {{$root.selectedVisitCompany.fax || "N/A"}}</div>
+                <div><strong>Site Location:</strong> {{$root.selectedVisitCompany.address || "N/A"}}</div>
+                <div><strong>Date:</strong> {{new Date().toLocaleDateString('en-GB')}}</div>
+                <div><strong>Opportunity:</strong> {{$root.selectedVisit.opportunity?.name || "N/A"}}</div>
+                <div><strong>Matco Eng:</strong> {{$root.user.FirstName+" "+$root.user.LastName}}</div>
+            </header>
+            <div id="job-report-form-grid" class="box-with-shadow">
+                <fieldset class="wrap" :disabled="$root.visitCompleted">
+                    <div v-for="field in $root.selectedJobReport?.fields" :key="field.identity" class="ctrl" :data-ctrl-type="field.ctrlType">
+                        <h1 v-if="field.ctrlType === 'heading'" :data-type="field.type" :data-width="field.width" v-html="field.textEn"></h1>
+                        <label :data-width="field.width" v-if="field.ctrlType === 'text-input'">
+                            <span v-html="field.labelEn"></span>
+                            <input type="text" v-model="field.value">
+                        </label>
+                        <label :data-width="field.width" v-if="field.ctrlType === 'numeric'">
+                            <span v-html="field.labelEn"></span>
+                            <input type="number" v-model="field.value">
+                        </label>
+                        <label :data-width="field.width" v-if="field.ctrlType === 'date-time'">
+                            <span v-html="field.labelEn"></span>
+                            <input v-if="field.type == 'date'" type="date" v-model="field.value">
+                            <input v-if="field.type == 'time'" type="time" v-model="field.value">
+                            <input v-if="field.type == 'date-time'" type="datetime-local" v-model="field.value">
+                        </label>
+                        <label :data-width="field.width" v-if="field.ctrlType === 'boolean'">
+                            <span v-html="field.labelEn"></span>
+                            <input type="checkbox" v-model="field.value">
+                        </label>
+                        <div :data-width="field.width" v-if="field.ctrlType === 'list'" :data-list-type="field.displayType">
+                            <span v-html="field.labelEn"></span>
+                            <label v-if="field.displayType=='dropdown'">
+                                <select v-model="field.value">
+                                    <option value="null">None</option>
+                                    <option v-for="o in field.srcObj.data" :key="o[0]" :value="o[0]">{{o[2]}}</option>
+                                </select>
+                            </label>
+                            <div v-if="field.displayType=='radio-buttons'">
+                                <label v-for="o in field.srcObj.data" :key="o[0]">
+                                    <input type="radio" :value="o[0]" :name="field.identity" v-model="field.value" /> {{o[2]}}
+                                </label>
+                            </div>
+                        </div>
+                        <div :data-width="field.width" v-if="field.ctrlType === 'grid'">
+                            <span v-html="field.labelEn"></span>
+                            <table class="related-ctrls" cellpadding="5">
+                                <thead>
+                                    <tr>
+                                        <th v-for="ctrl in field.relatedCtrls">{{ctrl.labelEn}}</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(rec, i) in field.value">
+                                        <td v-for="(ctrl,idx) in rec" :key="ctrl['data-id']" :data-id="ctrl['data-id']" v-show="ctrl['data-type'] !== ''">
+                                            <label v-if="ctrl['data-type'] === 'text-input'" :data-label="ctrl?.['data-label-en']">
+                                                <input type="text" v-model="ctrl['data-value']">
+                                            </label>
+                                            <label v-if="ctrl['data-type'] === 'numeric'" :data-label="ctrl?.['data-label-en']">
+                                                <input type="number" v-model="ctrl['data-value']">
+                                            </label>
+                                            <label v-if="ctrl['data-type'] === 'date-time'" :data-label="ctrl?.['data-label-en']">
+                                                <input v-if="ctrl['data-type'] == 'date-time'" type="datetime-local" v-model="ctrl['data-value']">
+                                            </label>
+                                            <label v-if="ctrl['data-type'] === 'boolean'" :data-label="ctrl?.['data-label-en']">
+                                                <input type="checkbox" v-model="ctrl['data-value']">
+                                            </label>
+                                        </td>
+                                        <td><button type="button" class="btn btn-red" @click="gridRemoveRow(field, i)"><i class="bi bi-trash"></i></button></td>
+                                    </tr>
+                                    <tr v-if="!field.value.length" style="text-align: center; grid-template: auto/1fr">
+                                        <td :colspan="field.relatedCtrls.length+1">No data to display</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" class="btn add-row-btn" @click="gridAddRow(field)"><i class="bi bi-plus"></i></button>
+                        </div>
+                    </div>
+                </fieldset>
+                <button type="button" class="btn" @click="saveReport" :disabled="$root.visitCompleted"><i class="bi bi-cloud-upload"></i> Save</button>
+                <button type="button" class="btn" @click="deleteRecord"  style="background-color: var(--red)" :disabled="$root.visitCompleted"><i class="bi bi-trash"></i> Delete</button>
+            </div>
+        </form>`
+    ,
+    methods: {
+        async getJobReport() {
+            let resp = await this.$root.get("/Form/GetFormWithFields", { id: this.formId });
+            resp.fields = resp.fields.map(f => {
+                if (f.objType == "grid") f.value = [];
+                return f;
+            })
+            return resp;
+        },
+        async getJobReportRecord() {
+            let resp = await this.$root.get("/Form/GetFormWithFieldsAndValues", { id: this.formId, recordId: this.recordId });
+            console.log(resp);
+            resp.fields = resp.fields.map(f => {
+                if (f.objType == "grid") f.value = JSON.parse(f.value)?.map(r => r.filter((d, i) => !i || d["data-type"]))?.map((r, i) => {
+                    r.forEach((e, idx, ar) => {
+                        if (idx) ar[idx]["data-label-en"] = f.relatedCtrls[idx - 1].labelEn
+                    })
+                    return r;
+                }) || [];
+                return f;
+            })
+            return resp;
+        },
+        gridAddRow(ctrl) {
+            if (this.removingRow) return;
+            //add generic object with value = new length, in the beginning, as per Suha's team request
+            const obj = { "data-id": "", "data-type": "", "data-value": ctrl.value.length + 1 };
+            ctrl.value.push([obj, ...ctrl.relatedCtrls.map(c => ({ "data-id": "", "data-type": c.objType, "data-value": "", "data-label-en": c.labelEn }))]);
+            console.log(ctrl);
+        },
+        gridRemoveRow(ctrl, idx) {
+            //we need this flag to prevent button action overlap
+            //(add row button and remove row button in mobile view)
+            this.removingRow = true;
+            //first we check if the target row has values
+            if (!ctrl.value[idx].some(o => o.value) || confirm("This row has values. Are you sure you want to delete it?")) {
+                ctrl.value.splice(idx, 1);
+                setTimeout(() => this.removingRow = false, 1);
+            } else {
+                this.removeRow = false;
+            }
+        },
+        generateFormJSON() {
+            const formCntrs = this.$root.selectedJobReport.fields.map(f => {
+                if (f.dbId < 0) f.dbId = 0;
+
+                const obj = {
+                    FieldId: f.dbId,
+                    srcId: 0,
+                    value: "",
+                    objType: f.objType,
+                    allowReservedNumber: "",
+                    layout: "",
+                    textvalue: "",
+                };
+
+                if (["text-input", "numeric", "boolean", "list"].includes(obj.objType)) obj.value = f.value;
+
+                if (["list", "grid"].includes(obj.objType)) {
+                    obj.value = f.value;
+                    obj.textvalue = f.textEn;
+                }
+
+                if (obj.objType === "grid") {
+                    //we filter out rows with missing values
+                    // obj.value = f.value;
+                    // obj.value = f.value.filter(row => row.every(o => o.value));
+                    //we stringify the value array
+                    obj.value = JSON.stringify(f.value);
+                }
+
+                if (f.objType == "auto-number") {
+                    obj.srcId = f.src.ID;
+                    obj.value = f.value;
+                    obj.allowReservedNumber = f.allowReserved;
+                }
+
+                if (f.objType == "date-time") {
+                    obj.format = f.format;
+                    obj.value = f.value;
+                }
+
+                return obj;
+            })
+            return formCntrs
+        },
+        async saveReport() {
+            const formCntrs = this.generateFormJSON();
+            // console.log(formCntrs.filter(i => i.objType === "grid"));
+            // return;
+
+            const recordObj = {
+                ID: this.recordId || 0,
+                FormId: this.$route.params.formId,
+                formCntrs
+            }
+
+            const resp = await this.$root.post(`/RecordField/CreateRecordWithFieldValues?submit=false&visitProductId=${this.visitProductId}`, recordObj)
+
+            if (resp.success) {
+                this.$root.showToast("Record saved!", "success");
+                router.go(-1)
+            }
+        },
+        async deleteRecord() {
+            if (confirm("Are you sure you want to delete this record?")) {
+                const resp = await this.$root.post(`/Record/Delete?id=${this.recordId}`);
+                console.log(resp)
+                this.$root.showToast("Record deleted", "success");
+                router.go(-1)
+            }
+        }
+    }
+}
+
+//reports list
+const ProductReports = {
+    data() {
+        return { visitProductId: null, catId: null, reports: [], allForms: [], empty: false }
+    },
+    mounted() {
+        emitter.on("productReportsUpdated", () => this.getProductReports())
+    },
+    activated() {
+        this.visitProductId = this.$route.params.visitProductId;
+        this.catId = this.$route.params.catId;
+        this.reports = [];
+        this.getProductReports(this.visitProductId, this.catId).then(records => this.reports = records).then(() => this.empty = !this.reports.length)
+    },
+    template: /*html*/`
+        <div id="records-list" data-page="records" class="p-3 list-page" :class="{empty}">
+            <div class="record box-with-shadow" v-for="(rec, idx) in reports" :key="rec.id" @click="showReport(rec)">
+                <strong class="rec-name">{{rec.name}}</strong>
+                <div class="rec-code">{{rec.code}}</div>
+                <div class="rec-date">{{new Date(rec.creationDate).toLocaleDateString('en-GB')}}</div>
+            </div>
+        </div>`,
+    methods: {
+        async getProductReports() {
+            this.empty = false;
+            // const reports = await this.productReports(this.catId);
+            // return this.$root.drafts.filter(draft => draft.visitProductId == this.visitProductId);
+            return await this.$root.get(`/Record/GetRecordsForProductVisit`, { visitProductId: this.visitProductId })
+        },
+        async getAllForms() {
+            return await this.$root.get("/Form/getAll");
+        },
+        async productReports(catId) {
+            //check if we have a custom proeduct, in which case we return all reports
+            return catId == 1018 ? await this.getAllForms() : this.$root.selectedVisit.reportsByCategory?.find(c => c.id == catId)?.forms
+        },
+        showReport(report) {
+            if (!this.$root.visitArrived && !this.$root.visitCompleted) return;
+            vm.selectedJobReportName = report.name;
+            router.push(`/job-report/${report.recordFormId}/${this.visitProductId}/${report.recordId}`);
+        }
+    }
+}
+
+//login page
+const LoginPage = {
+    data() {
+        return { loginError: "" }
+    },
+    template: /*html*/`
+        <div id="login-page">
+            <form action="" method="post" id="login-form" autocomplete="off" @submit.prevent="handleLogin">
+                <img src="img/logo.svg" alt="Cloud 9 logo" id="login-logo">
+                <div v-if="loginError" class="err-msg">{{loginError}}</div>
+                    <div class="input-wrap">
+                        <input type="email" placeholder="Email" minlength="3" maxlength="64" title="Enter your email" required ref="loginEmail" />
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="input-wrap">
+                        <input type="password" placeholder="Password" required ref="loginPass" />
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <button type="submit" id="btn-login" class="btn btn-loader" ref="submitBtn">
+                    <span>LOGIN</span>
+                    <div class="loader lds-ellipsis">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </button>
+            </form>
+        </div>`,
+    methods: {
+        handleLogin() {
+            //show loader in button
+            const submitBtn = this.$refs.submitBtn;
+            buttonToggleLoading(submitBtn, true);
+            this.loginError = "";
+            //validate the form
+            const email = this.$refs.loginEmail.value.trim(),
+                pass = this.$refs.loginPass.value.trim();
+
+            this.$root.post("/Auth/SignIn", { email: email, password: pass, fromMobile: true })
+                .then(data => {
+                    buttonToggleLoading(submitBtn, false);
+                    if (!data.success) {
+                        this.loginError = `⚠️ ${data.message}`;
+                        return false;
+                    }
+                    this.$root.user = { ...parseJwt(data.token) };
+                    this.$root.isLoggedIn = true;
+                    ls.userToken = data.token;
+                    console.log("%cUser logged in", "color: purple")
+                    this.$root.saveDeviceToken();
+                })
+                .catch(error => {
+                    buttonToggleLoading(submitBtn, false);
+                    console.error('Error:', error);
+                });
+        },
+    }
+}
+
+const router = VueRouter.createRouter({
+    history: VueRouter.createWebHashHistory(),
+    routes: [
+        { path: "/", component: Calendar, name: "home" },
+        { path: "/visit-details/:id", component: VisitDetails, name: "visitDetails" },
+        { path: "/all-tasks", component: AllTasks },
+        { path: "/task/:mode", component: Task, name: "task" },
+        { path: "/product/:id", component: ProductForm, name: "product" },
+        { path: "/product-reports/:catId/:visitProductId", component: ProductReports, name: "productReports" },
+        // { path: "/product-draft/:formId/:visitProductId/:idx", component: ProductDraft, name: "productDraft" },
+        { path: "/job-report/:formId/:visitProductId/:recordId", component: JobReport, name: "jobReport" },
+        { path: "/login", component: LoginPage }
+    ]
+})
+
+router.afterEach((to, from) => {
+    switch (to.name) {
+        case "home":
+            vm.currentPage = "Visits";
+            break;
+        case "visitDetails":
+            vm.currentPage = vm.selectedVisit?.title;
+            break;
+        case "product":
+            vm.currentPage = "Product";
+            break;
+        case "jobReport":
+            vm.currentPage = vm.selectedJobReportName;
+            break;
+        case "productReports":
+            break;
+        case "task":
+            vm.currentPage = "Task";
+            break;
+        default:
+            vm.currentPage = "";
+    }
+});
+
+//app global object
+const app = Vue.createApp({
+    data() {
+        return appStore
+    },
+    mounted() {
+        //check if user is logged in
+        //we check if user has localStorage data
+        if (ls.user && JSON.parse(ls.user)?.UserId) {
+            this.isLoggedIn = true;
+            this.user = JSON.parse(ls.user);
+            //TODO: verify authenticated user in background
+        } else {
+            this.isLoggedIn = false;
+        }
+
+        emitter.on("tokenRefreshed", token => {
+            console.log("Token refreshed: ", token)
+            this.deviceToken = token;
+        })
+
+        emitter.on("notification", async obj => {
+            console.log("new visit id:", obj.visitId)
+            await this.getVisitsList();
+            emitter.emit("eventsUpdated");
+            console.log(obj.visitId)
+            emitter.emit("visitsListRefreshed", obj.visitId)
+        })
+
+        this.queryGeoLocationPermission();
+    },
+    methods: {
+        queryGeoLocationPermission() {
+            if (navigator.permissions) {
+                navigator.permissions.query({ name: "geolocation" })
+                    .then(result => {
+                        result.state === "granted" ? this.watchMyLocation() : result.state === "prompt" ? this.watchMyLocation() : this.promptUserForLocation();
+                        result.onchange = e => {
+                            const newState = e.target.state;
+                            if (newState == "granted") this.watchMyLocation();
+                            if (newState == "denied") this.promptUserForLocation();
+                        }
+                    });
+            } else {
+                this.watchMyLocation()
+            }
+        },
+        watchMyLocation() {
+            console.log("%cstarting watch location", "color: green;font-weight: bold")
+            if (this.locationTO) clearTimeout(this.locationTO);
+            const success = position => {
+                if (!this.user || !this.trackUserLocation) return;
+                const newPos = { lat: position.coords.latitude, lng: position.coords.longitude };
+                // console.info("got user position:", newPos)
+                //we only update the location if the user's location actually changed
+                // if (JSON.stringify(newPos) === JSON.stringify(this.user.location)) return;
+                this.user.location = { lat: position.coords.latitude, lng: position.coords.longitude };
+                const currentOnTheWayVisitId = this.visitsList.find(v => ["V_STTSR_A", "V_STTSR_OTW"].includes(v.reasonCode))?.id;
+                if (!currentOnTheWayVisitId) return;
+                this
+                    .post("/VisitLocation/CreateVisitLocation", {
+                        id: 0,
+                        applicationUserId: this.user.ApplicationUserId,
+                        visitId: currentOnTheWayVisitId,
+                        long: this.user.location.lng,
+                        lat: this.user.location.lat,
+                        isDeleted: true
+                    })
+                    // .then(res => console.log("user location changed:", this.user.location))
+                    .catch(err => console.error(err))
+            }
+
+            const error = err => {
+                console.error("Unable to retrieve your location:", err);
+                if (err.code == 2) {
+                    //TODO this should be automatically fixed by later android versions, but we have to use cordova.plugins.diagnostic plugin
+                }
+            }
+
+            this.watchPositionId = navigator.geolocation.watchPosition(success, error);
+        },
+        promptUserForLocation() {
+            alert("This app requires permission to track your location. Enable this permission from the app settings")
+        },
+        fetchDataFromServer() {
+            console.log("%cFetching data from server", "color:green");
+            if (this.fetchDataTO) clearTimeout(this.fetchDataTO);
+            //fetch data from server
+            return this.getReasonsLookup()
+                .then(() => this.getVisitsList())
+                .then(() => this.getActiveCompanies())
+                .then(() => this.getAppUsers())
+                .then(() => this.getAllProducts())
+                .then(() => this.getAllUnits())
+                .then(() => {
+                    emitter.emit("eventsUpdated");
+                    this.eventsLoaded = true
+                })
+                .catch(err => {
+                    console.error("error:", err);
+                    this.fetchDataTO = setTimeout(() => this.fetchDataFromServer(), 10000);
+                })
+        },
+        async getReasonsLookup() {
+            this.reasonsList = await this.get("/Lookups/GetLookupByParantCode", { code: "V_STTSR" });
+            this.reasonsList = this.reasonsList.filter(r => r.lookupCode != "V_STTSR_U" && r.lookupCode != "V_STTSR_CAN");
+            this.entitiesList = await this.get("/Lookups/GetLookupByParantCode", { code: "A_EntityType" });
+        },
+        async getVisitStatusList() {
+            return await this.get("/Lookups/GetLookupByParantCode", { code: "V_STTS" });
+        },
+        async getVisitsList() {
+            let visits = await this.get("/visit/GetVisitsListMobile", { statusId: -1, userId: this.user.ApplicationUserId });
+            visits = visits.filter(v => this.reasonsList.find(r => r.id == v.reasonId)).map(v => {
+                v.reasonCode = this.reasonsList.find(r => r.id === v.reasonId).lookupCode;
+                return v;
+            });
+
+            this.visitsList = this.formatVisitDates(visits).map(v => {
+                //make resources id = 0, required for updateVisit
+                v.visitResources = v.visitResources.map(r => {
+                    r.id = 0;
+                    return r;
+                })
+                return v;
+            });
+            this.eventsList = this.visitsList.map(v => {
+                return {
+                    id: v.id,
+                    title: v.title,
+                    start: v.fromTime,
+                    end: v.toTime,
+                    vDate: v.visitDate,
+                    reasonCode: v.reasonCode,
+                    vDuration: v.duration,
+                    companyId: v.companyId
+                }
+            })
+            return "done"
+        },
+        async getActiveCompanies() {
+            this.companiesList = await this.get("/Companies/GetActiveCompanies")
+        },
+        async getAppUsers() {
+            this.allUsers = await this.get("/ApplicationUsers/GetAllApplicationUsers", { statusId: 1 })
+        },
+        async getAllProducts() {
+            this.allProducts = await this.get("/Products/GetAllActiveProductsMobile")
+        },
+        async getAllUnits() {
+            this.allUnits = await this.get("/Lookups/GetLookupByParantCode", { code: "PROD_UNIT" })
+        },
+        handleLogout() {
+            // document.querySelector(".menu-icon").click();
+            this.user = {};
+            router.push("/login")
+            navigator.geolocation.clearWatch(this.watchPositionId);
+            console.log("%cUser logged out", "color: purple")
+        },
+        async saveDeviceToken() {
+            const resp = await this.post("/Tokens/SaveToken", { name: this.deviceToken, userId: this.user.ApplicationUserId });
+            if (resp.success) console.log("%cDevice token updated successfully", "color: green;font-weight: bold")
+        },
+        getFormattedTimeFromMs(ms) {
+            if (isNaN(ms)) return "0h 0m";
+            let totalSecs = (ms / 1000).toFixed(0);
+            let secs = totalSecs % 60;
+            let totalMins = (totalSecs / 60).toFixed(0);
+            let mins = totalMins % 60;
+            let hours = (totalSecs / 3600).toFixed(0);
+            return `${hours} hrs ${mins} mins`;
+        },
+        async get(uri, data) {
+            //we use URLSearchParams to to convert data to query string
+            const url = new URL(`${this.apiURL}${uri}`);
+            url.search = new URLSearchParams(data).toString();
+
+            //abortController aborts the fetch request after a certain timeout
+            const controller = new AbortController();
+            const id = setTimeout(() => controller.abort(), 10000);
+            const headers = new Headers();
+            if (this.user.UserId) {
+                headers.set("Authorization", `Bearer ${ls.userToken}`);
+                headers.set("Content-Type", `application/json`);
+            }
+
+            const resp = await fetch(url, { signal: controller.signal, headers });
+
+            //if fetch is done before the timeout, clear the timeout
+            clearTimeout(id);
+            const s = await resp.json();
+            return s;
+        },
+        async post(uri, data) {
+            // this.isLoading = true;
+            // console.log("post data:", uri, data)
+            //abortController aborts the fetch request after a certain timeout
+            // const controller = new AbortController();
+            // const id = setTimeout(() => controller.abort(), 10000);
+
+            const headers = new Headers({
+                "Content-Type": "application/json",
+                "charset": "utf-8"
+            })
+            //add the authentication to the header once the user is logged in
+            if (this.user.UserId) {
+                headers.set("Authorization", `Bearer ${ls.userToken}`);
+                // headers.set("Content-Type", `application/x-www-form-urlencoded`);
+            }
+
+            const resp = await fetch(`${this.apiURL}${uri}`, {
+                method: "POST",
+                cache: "no-cache",
+                mode: "cors",
+                headers,
+                body: JSON.stringify(data)
+            }).catch(err => console.error(err));
+
+            //if fetch is done before the timeout, clear the timeout
+            // clearTimeout(id);
+            return await resp.json();
+        },
+        getVisitById(id) {
+            return this.visitsList.find(v => v.id == id)
+        },
+        formatVisitDates(visits) {
+            return visits.map(v => {
+                v.fromTime = this.convertToDate(v.fromTime);
+                v.toTime = this.convertToDate(v.toTime);
+                v.visitDate = this.convertToDate(v.visitDate);
+                v.actualArrivalTime = this.convertToDate(v.actualArrivalTime);
+                v.actualCompletedTime = this.convertToDate(v.actualCompletedTime);
+                return v;
+            })
+        },
+        unformatVisitDates(v) {
+            v = { ...v };
+            v.fromTime = this.customDateTimeISOString(v.fromTime);
+            v.toTime = this.customDateTimeISOString(v.toTime);
+            v.visitDate = this.customDateTimeISOString(v.visitDate);
+            v.actualArrivalTime = this.customDateTimeISOString(v.actualArrivalTime);
+            v.actualCompletedTime = this.customDateTimeISOString(v.actualCompletedTime);
+            return v;
+        },
+        customDateISOString(d) {
+            if (!d) return null;
+            d = typeof d === "string" ? new Date(d) : d;
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
+        },
+        customDateTimeISOString(d) {
+            //this function eliminates problems that we have with timezone offsets when using toISOString
+            if (!d) return null;
+            d = typeof d === "string" ? new Date(d) : d;
+            return `${this.customDateISOString(d)}T${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}:${String(d.getSeconds()).padStart(2, "0")}`
+        },
+        localDate(d = null) {
+            d = typeof d === "string" ? new Date(d) : d;
+            return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0);
+        },
+        convertToDate(d) {
+            return d ? new Date(d) : null;
+        },
+        showToast(text, theme) {
+            this.notification.mainClass.active = true;
+            this.notification.mainClass[theme] = true;
+            this.notification.iconClass[theme == "success" ? "bi-check" : theme == "error" ? "bi-x" : "bi-info"] = true;
+            this.notification.text = text;
+            setTimeout(() => this.hideToast(), 5000)
+        },
+        hideToast() {
+            this.notification.mainClass = { active: false };
+        },
+        isValidDate(d) {
+            return d instanceof Date && !isNaN(d);
+        }
+    },
+    watch: {
+        deviceToken: async function (newToken) {
+            console.log("newToken:", newToken)
+            this.saveDeviceToken();
+        },
+        user: {
+            // This will let Vue know to look inside the array
+            deep: true,
+            // We have to move our method to a handler field
+            async handler(newVal, oldVal) {
+                ls.user = JSON.stringify(this.user);
+            }
+        },
+        isLoggedIn(newLoginStatus, oldLoginStatus) {
+            if (newLoginStatus === true) {
+                router.push({ name: "home" });
+                this.fetchDataFromServer()
+            } else {
+                this.handleLogout()
+            }
+        },
+        visitsList: {
+            deep: true,
+            handler(newVal) {
+                this.trackUserLocation = newVal.find(v => ["V_STTSR_S", "V_STTSR_COM"].includes(v.reasonCode))
+            }
+        },
+        selectedTask: {
+            deep: true,
+            handler(newVal) {
+                // if (!newVal.manyAssigned.length) return;
+                // const user = this.allUsers.find(u => u.id == newVal.assignedToId);
+                // newVal.assignedTo = user.firstName + " " + user.lastName;
+            }
+        },
+        selectedVisit: {
+            deep: true,
+            handler(newVal, oldVal) {
+                if (newVal.reasonCode != oldVal.reasonCode) {
+                    this.visitCompleted = newVal?.reasonCode == "V_STTSR_COM";
+                    this.visitArrived = newVal?.reasonCode == "V_STTSR_A";
+                }
+            }
+        }
+    },
+});
+
+app.use(router)
+
+//mobile menu
+app.component("mobile-menu", {
+    template: /*html*/`
+        <div class="menu" :class="{back: $route.name!='home'}">
+            <div class="menu-icon">
+                <div class="menu-icon-top"></div>
+                <div class="menu-icon-middle"></div>
+                <div class="menu-icon-bottom"></div>
+                <div class="menu-icon-cross-top"></div>
+                <div class="menu-icon-cross-bottom"></div>
+            </div>
+            <ul class="menu-list">
+                <li class="menu-item welcome">Welcome, <span>{{$root.user.FirstName}}</span></li>
+                <li class="menu-item">
+                    <router-link class="menu-link" to="/">Home</router-link>
+                </li>
+                <li class="menu-item">
+                    <router-link class="menu-link" to="/all-tasks">All tasks</router-link>
+                </li>
+                <li class="menu-item"><a class="menu-link" @click="$root.isLoggedIn=false"><i class="bi bi-power"></i> Log out</a></li>
+            </ul>
+            <div class="menu-bg"></div>
+        </div>
+    `,
+    mounted() {
+        //menu part
+        var $menuIcon = $('.menu-icon');
+        var $menuHamburger = $('.menu-icon-top').add('.menu-icon-middle').add('.menu-icon-bottom');
+        var $menuCrossTop = $('.menu-icon-cross-top');
+        var $menuCrossBottom = $('.menu-icon-cross-bottom');
+        var $menu = $('.menu');
+        var $menuBg = $('.menu-bg');
+        var $menuList = $('.menu-list');
+
+        //content part
+        var $overlay = $('.overlay');
+
+        //delays
+        var delayForNextElement;
+        var sumDelays = 0;
+
+        $menuList.on("click", ".menu-link", closeMenu);
+
+        function closeMenu() {
+            //reset delays sum
+            sumDelays = 0;
+            //menu part
+            $menu.removeClass('menu-active');
+            $menuHamburger.each(function () {
+                var $this = $(this);
+                var spacePos = $this.attr('class').indexOf(' ');
+                var neededClass = $this.attr('class').slice(spacePos);
+                $this.removeClass(neededClass);
+            });
+            $menuCrossTop.removeClass('menu-icon-cross-top-show');
+            $menuCrossBottom.removeClass('menu-icon-cross-bottom-show');
+            $menuBg.removeClass('menu-bg-show');
+            $menuList.removeClass('menu-list-show');
+
+            //content part
+            $overlay.removeClass('overlay-show');
+        }
+        const that = this;
+        $("body").on("click", ".menu-icon", function () {
+            if ($menu.hasClass("back")) {
+                router.go(-1);
+                return;
+            }
+            if (!$menu.hasClass('menu-active')) {
+                //reset delays sum
+                sumDelays = 0;
+                //menu part
+                $menu.addClass('menu-active');
+                $menuHamburger.each(function () {
+                    var $this = $(this);
+                    var currentClass = $this.attr('class');
+                    $this.addClass(currentClass + '-hide');
+                });
+                $menuCrossTop.addClass('menu-icon-cross-top-show');
+                $menuCrossBottom.addClass('menu-icon-cross-bottom-show');
+                $menuBg.addClass('menu-bg-show');
+                $menuList.addClass('menu-list-show');
+
+
+                //content part
+                $overlay.addClass('overlay-show');
+
+            } else {
+                closeMenu();
+            }
+        });
+    }
+})
+
+//visit tab
+app.component("tab-visit", {
+    data() {
+        return { visit: {} }
+    },
+    activated() {
+        this.visit = { ...this.$root.selectedVisit };
+    },
+    template: /*html*/`
+    <div>
+        <form id="visit-details" @submit.prevent="updateVisit" class="p-3">
+            <div class="box">
+                <label>Status-Reason:</label>
+                <select @change="handleReasonChange" v-model="visit.reasonCode" :disabled="$root.visitCompleted">
+                    <option v-for="reason in $root.reasonsList" :value="reason.lookupCode" :disabled="isDisabled(reason.lookupCode)">{{reason.name}}</option>
+                </select>
+            </div>
+            <div class="box">
+                <label>Visit Date:</label>
+                <span>{{visit?.visitDate?.toLocaleDateString('en-GB')}}</span>
+            </div>
+            <div class="box">
+                <label>From time:</label>
+                <span>{{visit?.fromTime?.toLocaleTimeString(['en-GB'], { timeStyle: 'short' })}}</span>
+            </div>
+            <div class="box">
+                <label>To time:</label>
+                <span>{{visit?.toTime?.toLocaleTimeString(['en-GB'], { timeStyle: 'short' })}}</span>
+            </div>
+            <div class="box">
+                <label>Duration:</label>
+                <span>{{visit.duration}}h</span>
+            </div>
+            <div class="box">
+                <label>Company:</label>
+                <span>{{$root.selectedVisitCompany?.companyName}}</span>
+            </div>
+            <div class="box">
+                <label>Actual arrival time:</label>
+                <input type="time" :value="actualArrivalTimeFormatted" :disabled="$root.visitCompleted" readonly />
+            </div>
+            <div class="box">
+                <label>Actual completed time:</label>
+                <input type="time" :class="{err: completedEarlierThanArrival}" :value="actualCompletedTimeFormatted" readonly />
+                <span class="err" style="grid-column: 1/-1" v-if="completedEarlierThanArrival">Actual completed time cannot be earlier than actual arrival time</span>
+            </div>
+            <div class="box">
+                <label>Actual duration time:</label>
+                <span :class="{err: visit?.actualDuration < 0}">{{$root.getFormattedTimeFromMs($root.selectedVisit?.actualDuration)}}</span>
+            </div>
+            <div class="box">
+                <label class="btn-wide">Remark:</label>
+                <textarea v-model="visit.remark" class="btn-wide" style="block-size: 80px" :disabled="$root.visitCompleted"></textarea>
+            </div>
+            <div class="box">
+                <button class="btn btn-wide" type="submit" :disabled="$root.visitCompleted">Save</button>
+            </div>
+        </form>
+    </div>
+    `,
+    methods: {
+        updateArrivalTime(e) {
+            const vDate = this.visit.visitDate;
+            const vTime = e.target.value.split(":");
+            this.visit.actualArrivalTime = new Date(vDate.getFullYear(), vDate.getMonth(), vDate.getDate(), vTime[0], vTime[1], 0);
+            this.updateActualDuration();
+        },
+        updateCompletedTime(e) {
+            const vDate = this.visit.visitDate;
+            const vTime = e.target.value.split(":");
+            this.visit.actualCompletedTime = new Date(vDate.getFullYear(), vDate.getMonth(), vDate.getDate(), vTime[0], vTime[1], 0);
+            console.log(this.visit.actualCompletedTime)
+            this.updateActualDuration();
+        },
+        updateActualDuration() {
+            this.visit.actualDuration = this.visit.actualCompletedTime?.getTime() - this.visit.actualArrivalTime?.getTime();
+        },
+        handleReasonChange(e) {
+            const vDate = this.visit.visitDate; console.log(this.visit);
+            this.visit.reasonId = this.$root.reasonsList.find(r => r.lookupCode === this.visit.reasonCode).id;
+            const newDate = new Date();
+
+            switch (this.visit.reasonCode) {
+                case "V_STTSR_A":
+                    //arrived
+                    this.visit.actualArrivalTime = newDate;
+                    this.visit.actualCompletedTime = null;
+                    break;
+                case "V_STTSR_COM":
+                    //completed
+                    this.visit.actualCompletedTime = newDate;
+                    break;
+
+                case "V_STTSR_S":
+                //scheduled
+                case "V_STTSR_OTW":
+                //on the way
+                case "V_STTSR_P":
+                    //pending
+                    this.visit.actualArrivalTime = null;
+                    this.visit.actualCompletedTime = null;
+                    break;
+
+            }
+            this.updateActualDuration();
+        },
+        async updateVisit() {
+            const openVisit = this.$root.visitsList.find(v => ["V_STTSR_A", "V_STTSR_OTW"].includes(v.reasonCode));
+            //check for open visits ("on the way" or "arrived") before opening a new one
+            if (["V_STTSR_A", "V_STTSR_OTW", "V_STTSR_COM"].includes(this.visit.reasonCode) && openVisit && openVisit.id != this.visit.id) {
+                this.$root.showToast("You have to complete open visits before starting a new one", "error");
+                return;
+            }
+            if (this.visit.reasonCode == "V_STTSR_A") {
+                if (!this.$root.isValidDate(this.visit.actualArrivalTime)) {
+                    this.$root.showToast("Invalid actual arrival time", "error");
+                    return;
+                }
+            }
+            if (this.visit.reasonCode == "V_STTSR_COM") {
+                if (!this.$root.isValidDate(this.visit.actualArrivalTime)) {
+                    this.$root.showToast("Invalid actual arrival time", "error");
+                    return;
+                }
+                if (!this.$root.isValidDate(this.visit.actualCompletedTime)) {
+                    this.$root.showToast("Invalid actual completed time", "error");
+                    return;
+                }
+            }
+            if ((this.visit.reasonCode == "V_STTSR_COM" && confirm("After a visit is set as completed you can no longer modify it. Are you sure?")) || this.visit.reasonCode != "V_STTSR_COM") {
+                const visitToSave = this.$root.unformatVisitDates(this.visit);
+                console.log("visitToSave:", visitToSave)
+                const obj = await this.$root.post("/visit/UpdateVisit", visitToSave);
+
+                if (obj.success) {
+                    this.$root.showToast(obj.message, "success")
+                    this.$root.selectedVisit = { ...this.visit };
+                    this.$root.visitsList.forEach((v, idx, ar) => v.id == this.visit.id ? ar[idx] = { ...this.visit } : null);
+                    //update event on calendar (without re-rendering)
+                    emitter.emit("visitReasonUpdated");
+                } else {
+                    console.log(obj)
+                    this.$root.showToast(obj.message, "error")
+                }
+                return;
+            }
+        },
+        isDisabled(reasonCode) {
+            const originalReasonCode = this.$root.selectedVisit?.reasonCode;
+            //enable scheduled only if original reason is scheduled
+            return (reasonCode == "V_STTSR_S" && originalReasonCode != "V_STTSR_S") ||
+                //enable on the way only if original reason is scheduled or pending or on the way
+                (reasonCode == "V_STTSR_OTW" && !["V_STTSR_S", "V_STTSR_P", "V_STTSR_OTW"].includes(originalReasonCode)) ||
+                //enable pending only if original reason is on the way or pending
+                (reasonCode == "V_STTSR_P" && !["V_STTSR_P", "V_STTSR_OTW"].includes(originalReasonCode)) ||
+                //enable arrived only if original reason is scheduled or on the way or arrived
+                (reasonCode == "V_STTSR_A" && !["V_STTSR_S", "V_STTSR_A", "V_STTSR_OTW"].includes(originalReasonCode)) ||
+                //enable completed only if original reason is arrived or completed
+                (reasonCode == "V_STTSR_COM" && !["V_STTSR_COM", "V_STTSR_A"].includes(originalReasonCode))
+
+        }
+    },
+    watch: {
+        "$root.selectedVisit": {
+            deep: true,
+            handler(newVal) {
+                this.updateActualDuration();
+            }
+        }
+    },
+    computed: {
+        actualArrivalTimeFormatted() {
+            return this.visit?.actualArrivalTime?.toLocaleTimeString(["en-GB"], { timeStyle: "short" });
+        },
+        actualCompletedTimeFormatted() {
+            return this.visit?.actualCompletedTime?.toLocaleTimeString(["en-GB"], { timeStyle: "short" });
+        },
+        completedEarlierThanArrival() {
+            return this.visit?.actualCompletedTime?.getTime() < this.visit?.actualArrivalTime?.getTime()
+        }
+    }
+})
+
+//company tab
+app.component("tab-company", {
+    template: /*html*/`
+    <div>
+        <div id="company-details" class="p-3">
+            <div class="box">
+                <label>Company name:</label>
+                <span>{{$root.selectedVisitCompany?.companyName}}</span>
+            </div>
+            <div class="box">
+                <label>Email:</label>
+                <span><a v-if="$root.selectedVisitCompany?.email" v-html="getEmailLink($root.selectedVisitCompany?.email)"></a></span>
+            </div>
+            <div class="box">
+                <label>Website:</label>
+                <span><a v-if="$root.selectedVisitCompany?.website" v-html="getURLLink($root.selectedVisitCompany?.website)"></a></span>
+            </div>
+            <div class="box">
+                <label>Phone:</label>
+                <span><a v-if="$root.selectedVisitCompany?.phoneNumber" v-html="getPhoneLink($root.selectedVisitCompany?.phoneNumber)"></a></span>
+            </div>
+            <div class="box">
+                <label>Fax:</label>
+                <span><a v-if="$root.selectedVisitCompany?.fax" v-html="getPhoneLink($root.selectedVisitCompany?.fax)"></a></span>
+            </div>
+            <div class="box">
+                <label>Contact name:</label>
+                <span>{{$root.selectedVisit?.contact ? $root.selectedVisit?.contact.firstName+" "+$root.selectedVisit?.contact.lastName : "N/A" }}</span>
+            </div>
+            <div class="box">
+                <label>Contact number:</label>
+                <span><a v-if="$root.selectedVisit?.contact?.personalPhoneNumber" v-html="getPhoneLink($root.selectedVisit?.contact?.personalPhoneNumber)"></a></span>
+            </div>
+            <div class="box">
+                <label>Address:</label>
+                <span v-html="companyAddress"></span>
+            </div>
+            <div class="box">
+                <a class="btn btn-icon btn-wide" v-html="geoLink"></a>
+            </div>
+        </div>
+    </div>`,
+    methods: {
+        // async getCompanyData(id) {
+        //     const resp = await fetch(`${this.apiURL}/Companies/GetCompany?id=${id}`);
+        //     return await resp.json();
+        // },
+        getEmailLink(email) {
+            return `<a href="mailto:${email}">${email}</a>`
+        },
+        getPhoneLink(phone) {
+            return `<a href="tel:${phone}">${phone}</a>`
+        },
+        getURLLink(url) {
+            return `<a href="http://${url}" target="_blank">${url}</a>`
+        },
+    },
+    computed: {
+        geoLink() {
+            const lat = this.$root.selectedVisit?.companyAddress?.lat || this.$root.selectedVisitCompany?.lat;
+            const lng = this.$root.selectedVisit?.companyAddress?.long || this.$root.selectedVisitCompany?.long;
+            return `<a class="btn btn-icon btn-wide" href="geo://?q=${lat},${lng}"><i class="bi bi-pin-map"></i> Get directions</a>`
+        },
+        companyAddress() {
+            console.log(this.$root.selectedVisit.companyAddress)
+            return this.$root.selectedVisit ? (this.$root.selectedVisit?.companyAddress?.address || this.$root.selectedVisitCompany?.address || "") : "loading..."
+        },
+    }
+})
+
+//products tab
+app.component("tab-products", {
+    data() {
+        return { allForms: [], products: [], isLoading: false }
+    },
+    mounted() {
+        emitter.on("productsUpdated", () => this.updateProductsList())
+    },
+    async activated() {
+        this.products = [];
+        this.updateProductsList();
+        const that = this;
+        PullToRefresh.init({
+            mainElement: '#products-list',
+            shouldPullToRefresh() {
+                return !this.mainElement.scrollTop
+            },
+            refreshTimeout: 200,
+            onRefresh() {
+                that.updateProductsList();
+            }
+        });
+    },
+    deactivated() {
+        PullToRefresh.destroyAll();
+    },
+    template: /*html*/`
+        <div>
+            <div id="products-list" class="p-3 list-page">
+                <div class="wrap" :class="{empty: !products?.length && !isLoading}">
+                    <product v-for="(p, idx) in products" :key="p.productId" :id="p.id" :productId="p.productId" :name="p.product.name" :description="p.product.description" :type-others="p.product.typeOthers" :custom-product-name="p.customProductName" :custom-product-description="p.customProductDescription" :unit-name="p.product.unit.name" :quantity="p.quantity" :serial-numbers="p.serialNumbers" :category-id="p.product.categoryId" :all-forms="allForms" :products="products" />
+                </div>
+            </div>
+            <button class="add-btn" @click="showProduct" :disabled="!$root.visitArrived"><i class="bi bi-plus-circle-fill"></i></button>
+        </div>`,
+    methods: {
+        async getProducts() {
+            this.isLoading = true;
+            const resp = await this.$root.get("/VisitProduct/GetByVisitId", { VisitId: this.$root.selectedVisit.id });
+            this.isLoading = false;
+            return resp.map(p => {
+                p.unit = this.$root.allUnits.find(u => u.id == p.unitId);
+                return p;
+            });
+        },
+        async getVisitProductsReports() {
+            //create product category IDs set (must be unique)
+            const prodCategories = new Set(this.products.map(p => p.product?.categoryId));
+            //call this.get on each product id, return the resulting promises
+            this.$root.selectedVisit.reportsByCategory = await Promise.all(Array.from(prodCategories).map(async catId => {
+                return { id: catId, forms: await this.$root.get("/Form/GetFormsByProductCategoryId", { productCategoryId: catId }) };
+            }))
+        },
+        async getAllForms() {
+            this.allForms = await this.$root.get("/Form/getAll");
+        },
+        showProduct() {
+            this.$router.push(`/product/${this.id || "new"}`)
+        },
+        async updateProductsList() {
+            this.products = await this.getProducts();
+            this.$root.selectedVisit.products = this.products;
+            this.getVisitProductsReports().then(() => this.getAllForms());
+        }
+    }
+})
+
+//single product item
+app.component("product", {
+    data() {
+        return { formId: "" }
+    },
+    props: {
+        id: Number,
+        productId: Number,
+        description: String,
+        typeOthers: Boolean,
+        name: String,
+        customProductName: String,
+        customProductDescription: String,
+        unitName: String,
+        quantity: Number,
+        serialNumbers: Array,
+        categoryId: Number,
+        allForms: Array,
+        products: Array,
+    },
+    template: /*html*/`
+        <div class="product box-with-shadow">
+            <strong class="product-title">{{typeOthers?customProductName:name}}</strong>
+            <div class="product-desc" v-if="description">{{typeOthers?customProductDescription:description}}</div>
+            <div class="product-unit">
+                <strong>Unit:</strong>
+                {{unitName}}
+            </div>
+            <div class="product-qty">
+                <strong>Quantity:</strong>
+                {{quantity || "N/A"}}
+            </div>
+            <div class="product-sn">
+                <strong>SN:</strong>
+                {{serialNumbers.join(" ") || "N/A"}}
+            </div>
+            <select class="product-job-report" v-model="formId" :disabled="!($root.visitArrived || $root.visitCompleted)">
+                <option value="">-- Job Report --</option>
+                <option v-for="form in productReports()" :value="form.id">{{form.name}}</option>
+            </select>
+            <button class="action-open-report" @click="openReport" :disabled="!formId || $root.visitCompleted"><i class="cloud9-open-report"></i></button>
+            <button class="action-view-records" @click="showReports"><i class="cloud9-records"></i></button>
+            <button class="action-edit" @click="showProduct" :disabled="!$root.visitArrived"><i class="cloud9-pencil"></i></button>
+            <button class="action-delete" @click="delProduct(id)" :disabled="!$root.visitArrived"><i class="cloud9-x-lg"></i></button>
+        </div>`,
+    methods: {
+        productReports() {
+            return this.typeOthers ? this.allForms : this.$root.selectedVisit.reportsByCategory?.find(c => c.id == this.categoryId)?.forms
+        },
+        openReport() {
+            vm.selectedJobReportName = this.allForms.find(f => f.id == this.formId).name;
+            router.push(`/job-report/${this.formId}/${this.id}/null`);
+        },
+        showProduct() {
+            this.$router.push(`/product/${this.id || "new"}`)
+        },
+        async delProduct() {
+            if (confirm("Are you sure you want to delete this product?")) {
+                const resp = await this.$root.post(`/VisitProduct/Delete?id=${this.id}`, {});
+                if (resp.success) {
+                    this.$root.showToast("Product deleted!", "success");
+                    this.$router.push(`/visit-details/${this.$root.selectedVisit.id}`);
+                    emitter.emit("productsUpdated")
+                } else {
+                    console.error(resp)
+                }
+            }
+        },
+        showReports() {
+            vm.currentPage = this.name;
+            this.$router.push({ name: "productReports", params: { visitProductId: this.id, productName: this.name, catId: this.categoryId } })
+        }
+    }
+})
+
+app.component("tab-recommendations", {
+    data() {
+        return { isLoading: false }
+    },
+    async mounted() {
+        emitter.on("tasksUpdated", async () => this.$root.selectedVisit.tasks = await this.getVisitTasks());
+    },
+    async activated() {
+        this.refresh();
+        const that = this;
+        PullToRefresh.init({
+            mainElement: '#tasks-list',
+            // ptrElement: "karim",
+            shouldPullToRefresh() {
+                return !this.mainElement.scrollTop
+            },
+            refreshTimeout: 200,
+            onRefresh() {
+                that.refresh();
+            }
+        });
+    },
+    deactivated() {
+        PullToRefresh.destroyAll();
+    },
+    template: /*html*/`
+    <div>
+        <div id="tasks-list" class="list-page p-3" :class="{empty: !$root.selectedVisit.tasks?.length && !isLoading}">
+            <div class="task box-with-shadow" v-for="(task, idx) in $root.selectedVisit.tasks" :key="task.id" @click="showTask(task)">
+                <strong class="task-subject">{{task.subject}}</strong>
+                <div class="task-desc">{{task.description}}</div>
+                <div class="task-date">{{new Date(task.dueDate).toLocaleDateString('en-GB')}}</div>
+                <i class="bi bi-arrow-bar-right"></i>
+                <div class="task-assigned-to">{{task.assignedTo}}</div>
+                <span class="task-status badge" :class="{'badge-success': task.reasonId == 125}">{{task.statusReason}}</span>
+            </div>
+        </div>
+        <button class="add-btn" @click="showTask()" :disabled="!$root.visitArrived"><i class="bi bi-plus-circle-fill"></i></button>
+    </div>`,
+    methods: {
+        async getVisitTasks() {
+            this.isLoading = true;
+            const resp = await this.$root.get("/Activity/GetActivitiesMobile", { entityId: this.$root.selectedVisit.id, statusId: -1 });
+            this.isLoading = false;
+            return resp.map(task => Object.assign({}, task, { creationDate: this.$root.localDate(task.creationDate) }));
+        },
+        showTask(task = null) {
+            if (!this.$root.visitArrived) return;
+            this.$root.selectedTask = task || { ownerId: null, subject: null, description: null, assignedToId: null, manyAssigned: [], entityId: this.$root.selectedVisit.id, dueDate: this.$root.localDate(new Date()) };
+            router.push(`/task/${task ? "edit" : "create"}`)
+        },
+        async refresh() {
+            this.$root.selectedVisit.tasks = [];
+            this.$root.selectedVisit.tasks = await this.getVisitTasks();
+        }
+    }
+})
+
+app.component("tab-signature", {
+    data() {
+        return {}
+    },
+    template: /*html*/`
+        <div>
+            <signature-pad title="Client signature" type="client"></signature-pad>
+            <signature-pad title="Employee signature" type="employee"></signature-pad>
+        </div>
+    `,
+    computed: {
+        canSign() {
+            return this.$root.visitArrived;
+        }
+    }
+})
+
+app.component("signature-pad", {
+    data() {
+        return { sp: null, signature: null, empty: true, dirty: false, currentPath: null }
+    },
+    props: ["title", "type"],
+    mounted() {
+        this.setup();
+        // emitter.on("signatureSaved", () => this.empty = true);
+    },
+    async activated() {
+        this.$root.visitArrived ? this.sp.on() : this.sp.off();
+        await this.getSignature();
+        this.currentPath = this.$route.path;
+        // console.log(this.signature);
+    },
+    deactivated() {
+        if (this.$root.visitArrived && this.dirty) {
+            Swal.fire({
+                title: "You haven't saved your signature!",
+                text: `Click "Go Back" to go back and save it, or click cancel to discard it`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: "Go Back"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.$router.push(this.currentPath);
+                    emitter.emit("switchToTab", "Signature")
+                }
+            })
+        }
+    },
+    template: /*html*/`
+        <div>
+            <div class="signature p-3" ref="signature">
+                <h2 class="signature-title">{{title}}</h2>
+                <canvas ref="canvas"></canvas>
+                <img v-if="signature" :src="getSource(signature?.fileName)"/>
+                <div class="signature-actions">
+                    <button class="signature-clear" @click="clear" :disabled="!($root.visitArrived && !empty)">Clear</button>
+                    <button class="signature-save" @click="save" :disabled="!($root.visitArrived && dirty)">Save</button>
+                </div>
+            </div>
+        </div>
+    `,
+    methods: {
+        setup() {
+            const canvas = this.$refs.canvas,
+                el = this.$refs.signature;
+
+            const resizeObserver = new ResizeObserver(entries => {
+                for (let entry of entries) {
+                    // console.log(entry);
+                }
+                //make the canvas full width and height
+                //first we get computedStyle for #visit-tabs-content (it has padding of 1rem)
+                //then we make the canvas width and height equal to #visit-tabs-content minus the padding
+                const computedStyle = getComputedStyle(el);
+                canvas.width = el.offsetWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight);
+                canvas.height = canvas.width / 2;
+
+                const ctx = canvas.getContext("2d");
+                ctx.fillStyle = "white";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                this.clear();
+            });
+
+            resizeObserver.observe(el);
+
+            //paint the background white
+            const ctx = canvas.getContext("2d");
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            //init the signature pad
+            this.sp = new SignaturePad(canvas, { backgroundColor: "white" });
+            this.sp.onEnd = () => {
+                this.empty = this.sp.isEmpty();
+                this.dirty = !this.empty
+            }
+        },
+        async save() {
+            const imgData = this.sp.toDataURL("image/jpeg"); // save image as JPEG
+            const opts = [{
+                id: 0,
+                entityId: this.$root.selectedVisit.id,
+                fileName: `${this.$root.user.UserName}_signature.jpg`,
+                ownerId: this.$root.user.ApplicationUserId,
+                isDeleted: false,
+                fileString: imgData,
+                isSignature: true,
+                signatureType: this.type === "employee" ? true : false,
+            }];
+            console.log(opts)
+            const resp = await this.$root.post("/Attachments/CreateAttachmentSignatureMobile", opts);
+            if (resp.success) {
+                this.dirty = false;
+                this.empty = false;
+                this.$root.showToast("Signature saved!", "success");
+                // emitter.emit("signatureSaved");
+            }
+        },
+        async getSignature() {
+            if (this.dirty) return;
+            const attachments = await this.$root.get("/Attachments/GetAttachmentsMobile", { entityTypeCode: "A_EntityType_V", entityId: this.$root.selectedVisit.id });
+            this.signature = attachments.filter(a => a.isSignature && a.signatureType === !!(this.type === "employee")).sort((a, b) => a.id < b.id).pop();
+            this.empty = !this.signature;
+        },
+        getSource(fileName) {
+            return `${this.$root.mediaURL}/Attachments/${fileName}`
+        },
+        clear() {
+            this.sp.clear();
+            this.signature = null;
+            this.empty = true;
+            this.dirty = false;
+        }
+    },
+    computed: {
+        canSign() {
+            return this.$root.visitArrived;
+        }
+    }
+})
+
+app.component("media-file", {
+    props: ["src", "id", "loading"],
+    template: /*html*/`
+        <a :href="mediaURL" :data-loading="loading" :data-media-type="mediaType" class="media">
+            <img v-if="!loading && mediaType == 'img'" :src="mediaURL" />
+            <video v-if="!loading && mediaType == 'vid'" :src="mediaURL" playsinline muted autoplay></video>
+            <button v-if="!loading" class="delete" :disabled="$root.visitCompleted" @click="deleteMedia"><i class="bi bi-x"></i></button>
+        </a>`,
+    computed: {
+        mediaType: function () {
+            if (!this.src) return "";
+            const ext = this.src?.split(".").pop();
+            return ["jpg", "png", "gif"].includes(ext) ? "img" : "vid"
+        },
+        mediaURL: function () {
+            return this.src
+        }
+    },
+    methods: {
+        async deleteMedia(e) {
+            e.preventDefault();
+            if (confirm("Are you sure you want to delete this attachment?")) {
+                const resp = await this.$root.post(`/Attachments/DeleteAttachment?id=${this.id}`, { id: this.id });
+                console.log(resp)
+                if (resp.success) {
+                    this.$root.showToast("Attachment deleted!", "success");
+                    emitter.emit("mediaUpdated")
+                }
+            }
+        }
+    }
+})
+
+app.component("tab-media", {
+    data() {
+        return { attachments: [], dataURI: null, isApp: false, empty: false }
+    },
+    mounted() {
+        //first we check if we are inside cordova, or in browser
+        if (navigator.camera) this.isApp = true;
+
+        Fancybox.bind("#media-list a", {
+            groupAll: true, // Group all items
+            on: {
+                ready: (fancybox) => {
+                    console.log(`fancybox #${fancybox.id} is ready!`);
+                }
+            }
+        });
+        emitter.on("mediaUpdated", () => this.getAttachments())
+    },
+    activated() {
+        this.getAttachments();
+    },
+    template: /*html*/`
+    <div>
+    <div class="p-3">
+        <div id="media-list" class="list-page" :class="{empty}">
+            <media-file v-for="file in attachments" :loading="file.loading" :key="file.id" :src="file.fileName ? getSource(file.fileName) : null" :id="file.id" />
+        </div>
+        <div id="media-actions">
+            <label v-if="!isApp && $root.visitArrived">
+                <i class="bi bi-camera"></i>
+                <input type="file" id="imageFile" capture="user" accept="image/*" @change="readMediaURL($event, 'img')">
+            </label>
+            <label v-if="!isApp && $root.visitArrived">
+                <i class="bi bi-camera-video"></i>
+                <input type="file" id="videoFile" capture="environment" accept="video/*" @change="readMediaURL($event, 'vid')">
+            </label>
+            <label v-if="!isApp && $root.visitArrived">
+                <i class="bi bi-images"></i>
+                <input type="file" id="galleryFile" accept="image/*,video/*" @change="readMediaURL($event, 'mixed')">
+            </label>
+            <button v-if="isApp && $root.visitArrived" class="media-clear" @click="showCamera('image')"><i class="bi bi-camera"></i></button>
+            <button v-if="isApp && $root.visitArrived" class="media-clear" @click="showCamera('video')"><i class="bi bi-camera-video"></i></button>
+            <button v-if="isApp && $root.visitArrived" class="media-clear" @click="showCamera('gallery')"><i class="bi bi-images"></i></button>
+        </div>
+    </div>
+    </div>
+    `,
+    methods: {
+        showCamera(mode = "camera") {
+            const options = {
+                // Some common settings are 20, 50, and 100
+                quality: 65,
+                destinationType: Camera.DestinationType.DATA_URL,
+                // In this app, dynamically set the picture source, Camera or photo gallery
+                sourceType: Camera.PictureSourceType.CAMERA,
+                encodingType: Camera.EncodingType.JPEG,
+                mediaType: Camera.MediaType.PICTURE,
+                // allowEdit: true,
+                correctOrientation: true
+            }
+
+            if (navigator.camera) {
+                console.log("From cordova")
+                // start image capture
+                if (mode == "image") {
+                    options.sourceType = Camera.PictureSourceType.CAMERA;
+                    navigator.camera.getPicture(imageUri => {
+                        this.dataURI = `data:image/jpeg;base64,${imageUri}`;
+                        this.saveAttachment();
+                    }, error => console.error("Unable to obtain picture: " + error, "app"), options);
+                } else if (mode == "video") {
+                    var captureSuccess = mediaFiles => {
+                        mediaFiles.forEach(file => {
+                            window.resolveLocalFileSystemURL(file.fullPath, evt => {
+                                console.log("file.fullpath:", file.fullPath);
+                                evt.file(file => {
+                                    var reader = new FileReader();
+                                    reader.onloadend = e => {
+                                        console.log("Read complete!");
+                                        this.dataURI = e.target.result;
+                                        this.saveAttachment("video");
+                                    };
+                                    reader.readAsDataURL(file);
+                                }, err => console.error(err));
+                                // reader.readAsDataURL(evt.target);
+                            }, err => console.error(err));
+                        })
+                    };
+
+                    // capture error callback
+                    var captureError = err => console.error('Error code: ' + error.code, null, 'Capture Error');
+                    navigator.device.capture.captureVideo(captureSuccess, captureError, { limit: 1 });
+                } else if (mode == "gallery") {
+                    //update options values
+                    options.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
+                    options.mediaType = Camera.MediaType.ALLMEDIA;
+                    //capture
+                    navigator.camera.getPicture(media => {
+                        const ext = media.split(".").pop();
+                        const mType = ext == "mp4" ? "video" : "image";
+                        if (mType == "image") {
+                            this.dataURI = `data:image/jpeg;base64,${media}`;
+                            this.saveAttachment();
+                        } else {
+                            window.resolveLocalFileSystemURL(`file:///${media}`, evt => {
+                                evt.file(file => {
+                                    var reader = new FileReader();
+                                    reader.onloadend = e => {
+                                        console.log("Read complete!");
+                                        this.dataURI = e.target.result;
+                                        this.saveAttachment("video");
+                                    };
+                                    reader.readAsDataURL(file);
+                                }, err => console.error(err));
+                            }, err => console.error(err));
+                        }
+                    }, error => console.error("Unable to obtain picture: " + error, "app"), options);
+                }
+            }
+        },
+        async getAttachments() {
+            const attachments = await this.$root.get("/Attachments/GetAttachmentsMobile", { entityTypeCode: "A_EntityType_V", entityId: this.$root.selectedVisit.id });
+            this.attachments = attachments.filter(a => !a.isSignature);
+            this.empty = !this.attachments.length;
+        },
+        getSource(fileName) {
+            return `${this.$root.mediaURL}/Attachments/${fileName}`
+        },
+        //mobile web only, not cordova
+        readMediaURL(event, type) {
+            const input = event.target;
+            if (input.files && input.files[0]) {
+                console.log(input.files[0])
+                if (type === "mixed") type = input.files[0].name.split(".").pop().toLowerCase() === "mp4" ? "vid" : "img";
+                var reader = new FileReader();
+                reader.onload = e => {
+                    this.dataURI = e.target.result;
+                    this.saveAttachment(type);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        },
+        async saveAttachment(type = "img") {
+            this.attachments.push({ loading: true })
+            const opts = [{
+                id: 0,
+                entityId: this.$root.selectedVisit.id,
+                fileName: `${this.$root.user.UserName}_image.${type == "img" ? "jpg" : "mp4"}`,
+                ownerId: this.$root.user.ApplicationUserId,
+                isDeleted: false,
+                fileString: this.dataURI
+            }];
+            console.log(type, opts)
+            const resp = await this.$root.post("/Attachments/CreateAttachmentMobile", opts);
+            console.log(resp)
+            this.getAttachments();
+        }
+    }
+})
+
+const vm = app.mount("#app");
+
+if (app.alertErrors) {
+    window.onerror = function (msg, url, lineNo, columnNo, error) {
+        alert(`${msg}\n${url}\n${lineNo}\n${columnNo}\n${error}`)
+        return false;
+    }
+}
+
+function buttonToggleLoading(btn, bool) {
+    btn.classList.toggle("loading", bool);
+    btn.disabled = bool;
+}
+
+function parseJwt(token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+};
+
+// document.querySelector("#back-btn").addEventListener("click", () => window.history.back());
+
+window.addEventListener("online", () => vm.isOnline = true);
+window.addEventListener("offline", () => vm.isOnline = false);
+
+
+// function BindRegardingToType() {
+
+//     var Url = ApiURL + "api/Lookups/GetLookupByParantCode?code=A_EntityType";
+//     $.ajax({
+//         url: Url,
+//         type: "GET",
+//         async: false,
+//         success: function (result) {
+
+//             _EntityType = result;
+//         },
+//     });
+
+// }
+
+function getLookupByCode(code, arr) {
+    var _item = $.grep(arr, function (e) {
+        return e.lookupCode == code;
+    });
+    return _item[0];
+}
+
+// Init
+function onDeviceReady() {
+    console.log("Deviceready")
+    emitter.emit("deviceReady");
+
+    // Set global error handler to catch uncaught JS exceptions
+    var appRootURL = window.location.href.replace("index.html", "");
+
+    window.onerror = function (errorMsg, url, line, col, error) {
+        var logMessage = errorMsg;
+        var stackTrace = null;
+
+        var sendError = function () {
+            FirebasePlugin.logError(logMessage, stackTrace, function () {
+                log("Sent JS exception trace");
+            }, function (error) {
+                logError("Failed to send JS exception trace", error);
+            });
+        };
+
+        logMessage += `: url=${url.replace(appRootURL, '')}; line="${line}; col=${col}`;
+
+        if (error && typeof error === "object") {
+            StackTrace.fromError(error).then(function (trace) {
+                stackTrace = trace;
+                sendError()
+            });
+        } else {
+            sendError();
+        }
+    };
+
+    console.log(`%cRunning cordova-${cordova.platformId}@${cordova.version}`, "color: green");
+}
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+/*=======================================================
+  SERVICE WORKER
+  =====================================================*/
+
+//---register the Service Worker---
+// window.addEventListener('load', e => {
+//     if (!('serviceWorker' in navigator)) {
+//         console.log('Service worker not supported');
+//         return;
+//     }
+//     navigator.serviceWorker.register('sw.js', { scrop: "./" })
+//         .then(function () {
+//             console.log('Service Worker Registered');
+//         })
+//         .catch(function (error) {
+//             console.error('Service Worker Registration failed:', error);
+//         });
+// });
+
+//---Update the Push Notification Status---
+
+
+
+
+
+
+/*===================================================
+// below is for PWA  demo, do not use
+===================================================*/
+
+
+function updatePushNotificationStatus(status) {
+    pushElement.dataset.checked = status;
+    if (status) {
+        pushImage.src = 'button_on.png';
+    }
+    else {
+        pushImage.src = 'button_off.png';
+    }
+}
+
+function checkIfPushIsEnabled() {
+    //---check if push notification permission has been denied by the user---
+    if (Notification.permission === 'denied') {
+        alert('User has blocked push notification.');
+        return;
+    }
+    //---check if push notification is supported or not---
+    if (!('PushManager' in window)) {
+        alert('Sorry, Push notification is ' + 'not supported on this browser.');
+        return;
+    }
+    //---get push notification subscription if serviceWorker is registered and ready---
+    navigator.serviceWorker.ready
+        .then(function (registration) {
+            registration.pushManager.getSubscription()
+                .then(function (subscription) {
+                    if (subscription) {
+                        //---user is currently subscribed to push---
+                        updatePushNotificationStatus(true);
+                    }
+                    else {
+                        //---user is not subscribed to push---
+                        updatePushNotificationStatus(false);
+                    }
+                })
+                .catch(function (error) {
+                    console.error('Error occurred enabling push ', error);
+                });
+        });
+}
+
+//---subscribe to push notification---
+function subscribeToPushNotification() {
+    navigator.serviceWorker.ready
+        .then(function (registration) {
+            if (!registration.pushManager) {
+                alert('This browser does not ' + 'support push notification.');
+                return false;
+            }
+            //---to subscribe push notification using pushmanager---
+            registration.pushManager.subscribe(
+                //---always show notification when received---
+                { userVisibleOnly: true }
+            )
+                .then(function (subscription) {
+                    console.log('Push notification subscribed.');
+                    console.log(subscription);
+                    updatePushNotificationStatus(true);
+                })
+                .catch(function (error) {
+                    updatePushNotificationStatus(false);
+                    console.error('Push notification subscription error: ', error);
+                });
+        })
+}
+
+//---unsubscribe from push notification---
+function unsubscribeFromPushNotification() {
+    navigator.serviceWorker.ready
+        .then(function (registration) {
+            registration.pushManager.getSubscription()
+                .then(function (subscription) {
+                    if (!subscription) {
+                        alert('Unable to unsubscribe from push ' + 'notification.');
+                        return;
+                    }
+                    subscription.unsubscribe()
+                        .then(function () {
+                            console.log('Push notification unsubscribed.');
+                            console.log(subscription);
+                            updatePushNotificationStatus(false);
+                        })
+                        .catch(function (error) {
+                            console.error(error);
+                        });
+                })
+                .catch(function (error) {
+                    console.error('Failed to unsubscribe push ' + 'notification.');
+                });
+        })
+}

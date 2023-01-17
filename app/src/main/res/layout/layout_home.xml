@@ -15,7 +15,7 @@
         android:elevation="@dimen/small_margin"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/barcode_width_height"
+        android:layout_height="67dp"
         android:background="@drawable/gradient_bg">
 
         <ImageView
@@ -44,7 +44,7 @@
         android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/barcode_width_height"
+        android:layout_height="72dp"
         android:background="@color/white">
 
         <com.ids.cloud9.custom.CustomTextViewMedium
@@ -52,6 +52,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textSize="@dimen/normal_font"
             android:gravity="center"
             android:text="Jan 8 - 14, 2023"
             android:textColor="@color/text_color" />
@@ -69,9 +70,10 @@
 
 
         <com.ids.cloud9.custom.CustomTextViewMedium
-            android:layout_width="@dimen/min_height"
+            android:layout_width="@dimen/with_80"
             android:textColor="@color/white"
             android:text="today"
+            android:id="@+id/tvToday"
             android:gravity="center"
             android:textSize="@dimen/title_font"
             android:background="@drawable/rounded_dark_blue"

@@ -79,6 +79,7 @@ class ActivityLogin : Activity() {
 
        binding!!.btLogin.hide()
        binding!!.loadingLogin.show()
+       Log.wtf("TAG_URL",MyApplication.BASE_URL)
        var newReq = RequestLogin(email , password , true )
        RetrofitClient.client?.create(RetrofitInterface::class.java)
            ?.logIn(
@@ -96,11 +97,13 @@ class ActivityLogin : Activity() {
                        startActivity(Intent(this@ActivityLogin,ActivityMain::class.java))
                    }catch (ex:Exception){
                        binding!!.btLogin.show()
+                       Log.wtf("TAG_URL",ex.toString())
                    }
 
                }
                override fun onFailure(call: Call<ResponseLogin>, throwable: Throwable) {
                    binding!!.btLogin.show()
+                   Log.wtf("TAG_URL",throwable.toString())
                }
            })
    }
