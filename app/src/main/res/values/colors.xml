@@ -28,9 +28,17 @@
     <color name="gray_border">#757579</color>
     <color name="new_night_blue">#262046</color>
     <color name="gray_app_bg">#f2f2f2</color>
-    <color name="gray_border_item">#d8d8d8</color>
-    <color name="neon_background">#d1fafc</color>
-    <color name="neon_text">#1d807d</color>
+    <color name="gray_border_item">#dbdbdb</color>
+    <color name="pending_bg">#cafff9</color>
+    <color name="pending_text">#2d8786</color>
     <color name="new_yellow">#d6e237</color>
     <color name="gray_text_color">#8d9fc7</color>
+    <color name="arrived_bg">#d3fcd2</color>
+    <color name="arrived_text">#2fa52d</color>
+    <color name="on_the_way_bg">#f7f8f3</color>
+    <color name="otw_text">#928d87</color>
+    <color name="comp_bg">#cbf0df</color>
+    <color name="comp_text">#148f62</color>
+
+
 </resources>

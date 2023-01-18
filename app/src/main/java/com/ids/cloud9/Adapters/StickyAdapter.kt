@@ -16,6 +16,9 @@ import com.ids.cloud9.databinding.ItemVisitBinding
 import com.ids.cloud9.databinding.ItemVisitDateBinding
 import com.ids.cloud9.model.VisitDates
 import com.ids.cloud9.model.VisitListItem
+import com.ids.cloud9.utils.AppConstants
+import com.ids.cloud9.utils.AppHelper
+import com.ids.cloud9.utils.hide
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -92,10 +95,41 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<VisitListIte
 
             binding.tvVisitName.text = child.title
             binding.tvCompany.text = child.company!!.companyName
-            if(child.company!!.active)
-                binding.tvStatus.text = "active"
-            else
-                binding.tvStatus.text = "pending"
+            when (child.reasonId){
+
+                AppConstants.COMPLETED_REASON_ID -> {
+                    binding.tvStatus.setBackgroundResource(R.color.comp_bg)
+                    AppHelper.setTextColor(mContext,binding.tvStatus,R.color.comp_text)
+                    binding.tvStatus.text = AppConstants.COMPLETED_REASON
+                }
+
+                AppConstants.SCHEDULED_REASON_ID -> {
+                    binding.tvStatus.setBackgroundResource(R.color.comp_bg)
+                    AppHelper.setTextColor(mContext,binding.tvStatus,R.color.comp_text)
+                    binding.tvStatus.text = AppConstants.SCHEDULED_REASON
+                }
+
+                AppConstants.ON_THE_WAY_REASON_ID -> {
+                    binding.tvStatus.setBackgroundResource(R.color.on_the_way_bg)
+                    AppHelper.setTextColor(mContext,binding.tvStatus,R.color.otw_text)
+                    binding.tvStatus.text = AppConstants.ON_THE_WAY_REASON
+                }
+
+                AppConstants.ARRIVED_REASON_ID -> {
+                    binding.tvStatus.setBackgroundResource(R.color.arrived_bg)
+                    AppHelper.setTextColor(mContext,binding.tvStatus,R.color.arrived_text)
+                    binding.tvStatus.text = AppConstants.ARRIVED_REASON
+                }
+
+                AppConstants.PENDING_REASON_ID -> {
+                    binding.tvStatus.setBackgroundResource(R.color.pending_bg)
+                    AppHelper.setTextColor(mContext,binding.tvStatus,R.color.pending_text)
+                    binding.tvStatus.text = AppConstants.PENDING_REASON
+                }
+
+            }
+
+
 
             var calFrom = Calendar.getInstance()
             var calTo = Calendar.getInstance()
@@ -115,9 +149,14 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<VisitListIte
             var min = mins%60
 
 
-            binding.tvDuration.text = SimpleDateFormat("hh:mm aa").format(Date(millFrom)) +"-\n"+SimpleDateFormat("hh:mm aa").format(Date(millTo))+"\n("+hours+"hrs"+min+"mins"+")"
+            binding.tvDuration.text = SimpleDateFormat("hh:mm aa").format(Date(millFrom)) +"-\n"+SimpleDateFormat("hh:mm aa").format(Date(millTo))+"\n("+if(hours>0) {hours.toString()+"hrs"+min+"mins"+")"}else {min.toString()+" mins"+")"}
 
-
+            if(layoutPosition+1 < mList.size) {
+                if (mList.get(layoutPosition + 1).isHeader!!)
+                    binding.llUnderLine.hide()
+            }else{
+                binding.llUnderLine.hide()
+            }
 
         }
 
@@ -164,6 +203,7 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<VisitListIte
 
         day.text = SimpleDateFormat("EEEE").format(Date(dateMil))
         date.text = SimpleDateFormat("MMMM dd, yyyy").format(Date(dateMil))
+
 
     }
 

@@ -11,6 +11,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
+import android.os.Build
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -122,6 +123,14 @@ class AppHelper {
             }
 
 
+        }
+        fun setTextColor(context: Context, view: TextView, color: Int) {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                view.setTextColor(ContextCompat.getColor(context, color))
+            } else {
+                view.setTextColor(context.resources.getColor(color))
+            }
         }
         fun getTypeFace(context: Context): Typeface? {
             return if (MyApplication.languageCode.equals(AppConstants.LANG_ENGLISH)) Typeface.createFromAsset(

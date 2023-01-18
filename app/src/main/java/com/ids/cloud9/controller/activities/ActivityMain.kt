@@ -30,9 +30,11 @@ class ActivityMain: Activity() , RVOnItemClickListener{
     var simp = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss")
     var half = SimpleDateFormat("MMM dd")
     var secondHalf = SimpleDateFormat("MMM dd yyyy")
+    var secondNoMonthHalf = SimpleDateFormat("dd, yyyy")
     var binding : ActivityMainBinding?=null
     var fromDefault = Calendar.getInstance()
     var toDefault = Calendar.getInstance()
+    var prevHeaders : ArrayList<Int> = arrayListOf()
     var editingFrom = Calendar.getInstance()
     var editingTo = Calendar.getInstance()
     var tempArray : ArrayList<VisitListItem> = arrayListOf()
@@ -69,7 +71,10 @@ class ActivityMain: Activity() , RVOnItemClickListener{
         var vl = VisitList()
         binding!!.llHomeMain.loading.show()
         filterDate(mainArray)
-        binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondHalf.format(editingTo.time)
+        if(editingFrom.get(Calendar.MONTH) != editingTo.get(Calendar.MONTH))
+            binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondHalf.format(editingTo.time)
+        else
+            binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondNoMonthHalf.format(editingTo.time)
     }
 
 
@@ -85,7 +90,10 @@ class ActivityMain: Activity() , RVOnItemClickListener{
         editingFrom = from
         editingTo = to
 
-        binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondHalf.format(editingTo.time)
+        if(editingFrom.get(Calendar.MONTH) != editingTo.get(Calendar.MONTH))
+            binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondHalf.format(editingTo.time)
+        else
+            binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondNoMonthHalf.format(editingTo.time)
     }
 
 
@@ -132,10 +140,34 @@ class ActivityMain: Activity() , RVOnItemClickListener{
                     visHeader.isHeader = true
                     visHeader.visitDate = item.visitDate
                     visHeader.dateMill = date.time
-                    visHeader.headerOrder = headers
-                    headers++
-                    tempArray.add(visHeader)
-                    tempArray.add(item)
+                    var wentThrough = true
+                    var ind = -1
+                   for(itm in tempArray){
+                       if(itm.isHeader!!){
+                           if(itm.dateMill > date.time ){
+                               ind = tempArray.indexOf(itm)
+                               visHeader.headerOrder = itm.headerOrder
+
+                               wentThrough = false
+                           }
+                       }
+                   }
+                    if(wentThrough) {
+                        visHeader.headerOrder = headers
+                        headers++
+                        tempArray.add(visHeader)
+                        tempArray.add(item)
+                    }else{
+                        headers++
+                        tempArray.forEach {
+                            if(it.isHeader!! && it!!.dateMill > date.time )
+                                it.headerOrder++
+                        }
+                        tempArray.add(ind , item)
+                        tempArray.add(ind  , visHeader)
+
+                    }
+
 
                 }
 
@@ -164,9 +196,11 @@ class ActivityMain: Activity() , RVOnItemClickListener{
             Log.wtf("Visitors", Gson().toJson(tempArray))
             binding!!.llHomeMain.loading.hide()
             binding!!.llHomeMain.rvVisits.show()
+            binding!!.llHomeMain.tvNoVisits.hide()
         }else{
             binding!!.llHomeMain.loading.hide()
             binding!!.llHomeMain.rvVisits.hide()
+            binding!!.llHomeMain.tvNoVisits.show()
 
         }
     }

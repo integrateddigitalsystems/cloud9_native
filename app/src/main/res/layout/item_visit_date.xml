@@ -25,7 +25,7 @@
             android:layout_marginStart="@dimen/margin_start_end"
             android:layout_weight="1"
             android:id="@+id/tvDay"
-            android:textSize="@dimen/title_font"
+            android:textSize="@dimen/medium_font"
             android:textColor="@color/black"
             android:layout_height="wrap_content"/>
 
@@ -36,7 +36,7 @@
             android:id="@+id/tvDate"
             android:gravity="end"
             android:layout_marginEnd="@dimen/margin_start_end"
-            android:textSize="@dimen/normal_font"
+            android:textSize="@dimen/medium_font"
             android:textColor="@color/black"
             android:layout_height="wrap_content"/>
 

@@ -24,6 +24,7 @@
 
 
     <LinearLayout
+        android:layout_marginBottom="@dimen/margin_start_end"
         android:layout_marginTop="@dimen/small_margin_padding"
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -34,6 +35,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:id="@+id/tvCompany"
+            android:layout_marginEnd="@dimen/small_margin_padding"
             android:textSize="@dimen/normal_font"
             android:layout_marginStart="@dimen/margin_start_end"
             android:layout_height="wrap_content" />
@@ -46,9 +48,8 @@
             android:layout_height="wrap_content" />
 
         <LinearLayout
+            android:paddingEnd="@dimen/normal_margin"
             android:gravity="end"
-            android:layout_marginStart="@dimen/normal_margin"
-            android:layout_marginEnd="@dimen/margin_start_end"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1">
@@ -56,12 +57,14 @@
         <com.ids.cloud9.custom.CustomTextViewMedium
             android:layout_width="wrap_content"
             android:text="pending"
-            android:textSize="@dimen/small_font"
+            android:textSize="@dimen/smaller_font"
             android:id="@+id/tvStatus"
             android:padding="@dimen/mini_radius"
             android:background="@drawable/neon_background"
-            android:textColor="@color/neon_text"
+            android:textColor="@color/pending_text"
             android:layout_height="wrap_content" />
+
+
 
         </LinearLayout>
 
@@ -75,10 +78,9 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/margin_start_end"
         android:id="@+id/llUnderLine"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:background="@color/gray_border_item"/>
 
     </LinearLayout>
