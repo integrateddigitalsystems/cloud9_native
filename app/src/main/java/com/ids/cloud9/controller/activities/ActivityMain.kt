@@ -2,6 +2,7 @@ package com.ids.cloud9.controller.activities
 
 import HeaderDecoration
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.ids.cloud9.Adapters.StickyAdapter
@@ -22,7 +24,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
-import java.util.Calendar
+import java.util.*
 
 
 class ActivityMain: Activity() , RVOnItemClickListener{
@@ -49,6 +51,7 @@ class ActivityMain: Activity() , RVOnItemClickListener{
         setUpSliding()
         getVisits()
         setUpDate()
+        setUpDrawer()
 
     }
 
@@ -67,6 +70,32 @@ class ActivityMain: Activity() , RVOnItemClickListener{
             editingFrom.add(Calendar.DAY_OF_MONTH,-7)
             editingTo.add(Calendar.DAY_OF_MONTH,-1)
         }
+
+        editingFrom.set(Calendar.HOUR,0)
+        editingFrom.set(Calendar.HOUR_OF_DAY,0)
+        editingFrom.set(Calendar.MINUTE,0)
+        editingFrom.set(Calendar.SECOND,0)
+        editingFrom.set(Calendar.MILLISECOND,0)
+
+        editingTo.set(Calendar.HOUR,0)
+        editingTo.set(Calendar.HOUR_OF_DAY,0)
+        editingTo.set(Calendar.MINUTE,0)
+        editingTo.set(Calendar.SECOND,0)
+        editingTo.set(Calendar.MILLISECOND,0)
+
+        var curr = Calendar.getInstance()
+        curr.set(Calendar.HOUR,0)
+        curr.set(Calendar.HOUR_OF_DAY,0)
+        curr.set(Calendar.MINUTE,0)
+        curr.set(Calendar.SECOND,0)
+        curr.set(Calendar.MILLISECOND,0)
+
+        if(curr.time.time >= editingFrom.time.time && curr.time.time <= editingTo.time.time){
+            binding!!.llHomeMain.tvToday.setBackgroundResource(R.drawable.rounded_selected)
+        }else{
+            binding!!.llHomeMain.tvToday.setBackgroundResource(R.drawable.rounded_dark_blue)
+        }
+
 
         var vl = VisitList()
         binding!!.llHomeMain.loading.show()
@@ -90,6 +119,20 @@ class ActivityMain: Activity() , RVOnItemClickListener{
         editingFrom = from
         editingTo = to
 
+        editingFrom.set(Calendar.HOUR,0)
+        editingFrom.set(Calendar.HOUR_OF_DAY,0)
+        editingFrom.set(Calendar.MINUTE,0)
+        editingFrom.set(Calendar.SECOND,0)
+        editingFrom.set(Calendar.MILLISECOND,0)
+
+        editingTo.set(Calendar.HOUR,0)
+        editingTo.set(Calendar.HOUR_OF_DAY,0)
+        editingTo.set(Calendar.MINUTE,0)
+        editingTo.set(Calendar.SECOND,0)
+        editingTo.set(Calendar.MILLISECOND,0)
+
+        filterDate(mainArray)
+
         if(editingFrom.get(Calendar.MONTH) != editingTo.get(Calendar.MONTH))
             binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondHalf.format(editingTo.time)
         else
@@ -102,12 +145,10 @@ class ActivityMain: Activity() , RVOnItemClickListener{
     fun filterDate(arrayList: ArrayList<VisitListItem>){
 
         tempArray.clear()
+
         tempArray.addAll(arrayList.filter {
 
-            Log.wtf("TAG_ARRAY","FROM--- "+simp.parse(it.visitDate).after(editingFrom.time).toString())
-            Log.wtf("TAG_ARRAY","TO--- "+simp.parse(it.visitDate).before(editingTo.time).toString())
-
-            simp.parse(it.visitDate).after(editingFrom.time)&& simp.parse(it.visitDate).before(editingTo.time)
+            simp.parse(it.visitDate).time >= editingFrom.time.time && simp.parse(it.visitDate).time <= editingTo.time.time
         }
         )
         Log.wtf("TAG_ARRAY",tempArray.size.toString())
@@ -116,9 +157,15 @@ class ActivityMain: Activity() , RVOnItemClickListener{
         setUpData(vl)
     }
 
+    fun setUpDrawer(){
+        binding!!.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
 
     fun setUpData(list: VisitList){
         if(list.size >0) {
+            list.sortBy {
+                simp.parse(it.visitDate).time
+            }
             tempArray.clear()
             var headers = 0
             for (item in list) {
@@ -140,33 +187,11 @@ class ActivityMain: Activity() , RVOnItemClickListener{
                     visHeader.isHeader = true
                     visHeader.visitDate = item.visitDate
                     visHeader.dateMill = date.time
-                    var wentThrough = true
-                    var ind = -1
-                   for(itm in tempArray){
-                       if(itm.isHeader!!){
-                           if(itm.dateMill > date.time ){
-                               ind = tempArray.indexOf(itm)
-                               visHeader.headerOrder = itm.headerOrder
+                    visHeader.headerOrder = headers
+                    headers++
+                    tempArray.add(visHeader)
+                    tempArray.add(item)
 
-                               wentThrough = false
-                           }
-                       }
-                   }
-                    if(wentThrough) {
-                        visHeader.headerOrder = headers
-                        headers++
-                        tempArray.add(visHeader)
-                        tempArray.add(item)
-                    }else{
-                        headers++
-                        tempArray.forEach {
-                            if(it.isHeader!! && it!!.dateMill > date.time )
-                                it.headerOrder++
-                        }
-                        tempArray.add(ind , item)
-                        tempArray.add(ind  , visHeader)
-
-                    }
 
 
                 }
@@ -183,7 +208,7 @@ class ActivityMain: Activity() , RVOnItemClickListener{
 
         if(tempArray.size > 0) {
 
-            var adapter = StickyAdapter(this, tempArray)
+            var adapter = StickyAdapter(this, tempArray,this)
             binding!!.llHomeMain.rvVisits.layoutManager = LinearLayoutManager(this)
             binding!!.llHomeMain.rvVisits.adapter = adapter
             binding!!.llHomeMain.rvVisits.addItemDecoration(
@@ -257,6 +282,7 @@ class ActivityMain: Activity() , RVOnItemClickListener{
 
         binding!!.llHomeMain.tvToday.setOnClickListener {
             setUpDate()
+            binding!!.llHomeMain.tvToday.setBackgroundResource(R.drawable.rounded_selected)
             binding!!.llHomeMain.btDateNext.setBackgroundResource(R.drawable.rounded_dark_right)
             binding!!.llHomeMain.btDatePrevious.setBackgroundResource(R.drawable.rounded_dark_left)
 
@@ -288,6 +314,6 @@ class ActivityMain: Activity() , RVOnItemClickListener{
     }
 
     override fun onItemClicked(view: View, position: Int) {
-
+        startActivity(Intent(this,ActivtyVisitDetails::class.java))
     }
 }

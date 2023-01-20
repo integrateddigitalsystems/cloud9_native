@@ -9,13 +9,14 @@
 
 
     <ImageView
-        android:layout_marginTop="@dimen/normal_margin"
+        android:foreground="?android:attr/selectableItemBackground"
         android:id="@+id/btClose"
-        android:tint="@color/white"
-        android:layout_marginStart="@dimen/margin_start_end"
         android:layout_width="@dimen/huge_margin"
         android:layout_height="@dimen/huge_margin"
-        android:src="@drawable/close_x"/>
+        android:layout_marginStart="@dimen/margin_start_end"
+        android:layout_marginTop="@dimen/normal_margin"
+        android:src="@drawable/close_x"
+        android:tint="@color/white" />
 
     <com.ids.cloud9.custom.CustomTextViewMedium
         android:layout_width="match_parent"
@@ -31,6 +32,7 @@
     <com.ids.cloud9.custom.CustomTextViewMedium
         android:layout_width="match_parent"
         android:text="Home"
+        android:foreground="?android:attr/selectableItemBackground"
         android:layout_marginTop="@dimen/normal_margin"
         android:layout_marginStart="@dimen/button_height"
         android:textColor="@color/white"
@@ -39,6 +41,7 @@
     <com.ids.cloud9.custom.CustomTextViewMedium
         android:layout_width="match_parent"
         android:text="All tasks"
+        android:foreground="?android:attr/selectableItemBackground"
         android:layout_marginTop="@dimen/normal_margin"
         android:layout_marginStart="@dimen/button_height"
         android:textColor="@color/white"
@@ -46,6 +49,7 @@
 
 
     <LinearLayout
+        android:foreground="?android:attr/selectableItemBackground"
         android:layout_marginTop="@dimen/normal_margin"
         android:layout_marginStart="@dimen/button_height"
         android:layout_width="match_parent"

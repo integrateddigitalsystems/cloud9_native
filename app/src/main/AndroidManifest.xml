@@ -38,6 +38,10 @@
 
         </activity>
 
+        <activity android:name=".controller.activities.ActivtyVisitDetails">
+
+        </activity>
+
     </application>
 
 </manifest>

@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:elevation="@dimen/small_margin"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tab_height"
+        android:background="@drawable/gradient_bg">
+
+        <ImageView
+            android:id="@+id/btBack"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_marginStart="@dimen/small_margin"
+            android:tint="@color/white"
+            android:layout_centerVertical="true"
+            android:layout_width="@dimen/height_toggle"
+            android:layout_height="@dimen/height_toggle"
+            android:src="@drawable/arrow_left"/>
+
+        <ImageView
+            android:layout_toEndOf="@id/btBack"
+            android:id="@+id/ivCalendar"
+            android:layout_marginStart="@dimen/small_margin"
+            android:tint="@color/white"
+            android:layout_centerVertical="true"
+            android:layout_width="@dimen/height_toggle"
+            android:layout_height="@dimen/height_toggle"
+            android:src="@drawable/calendar_minus"/>
+
+        <com.ids.cloud9.custom.CustomTextViewMedium
+            android:id="@+id/tvVisitTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Visits"
+            android:textColor="@color/white"
+            android:textSize="@dimen/normal_font" />
+
+    </RelativeLayout>
+
+
+    <HorizontalScrollView
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tab_height">
+
+            <LinearLayout
+                android:gravity="center"
+                android:minWidth="@dimen/splash_image_width_height"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:id="@+id/llVisit"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="@dimen/home_radius"
+                    android:layout_marginEnd="@dimen/home_radius"
+                    android:gravity="center"
+                    android:id="@+id/tvVisit"
+                    android:layout_weight="1"
+                    android:textColor="@color/gray_border_tab"
+                    android:text="@string/visit"/>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/llBorderVisit"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/gray_border_tab"/>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/llSelectedVisitBorder"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:visibility="gone"
+                    android:background="@color/medium_blue"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray_border_tab"/>
+
+            <LinearLayout
+                android:gravity="center"
+                android:minWidth="@dimen/splash_image_width_height"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:id="@+id/llCompany"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:id="@+id/tvCompany"
+                    android:layout_marginStart="@dimen/home_radius"
+                    android:layout_marginEnd="@dimen/home_radius"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:textColor="@color/gray_border_tab"
+                    android:text="@string/company"/>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/llBorderCompany"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/gray_border_tab"/>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/llSelectedCompanyBorder"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:visibility="gone"
+                    android:background="@color/medium_blue"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray_border_tab"/>
+
+            <LinearLayout
+                android:gravity="center"
+                android:minWidth="@dimen/splash_image_width_height"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:id="@+id/llProducts"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="@dimen/home_radius"
+                    android:layout_marginEnd="@dimen/home_radius"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:id="@+id/tvProducts"
+                    android:textColor="@color/gray_border_tab"
+                    android:text="@string/products"/>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/llProductsBorder"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/gray_border_tab"/>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/llSelectedProductsBorder"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:visibility="gone"
+                    android:background="@color/medium_blue"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray_border_tab"/>
+
+            <LinearLayout
+                android:gravity="center"
+                android:minWidth="@dimen/splash_image_width_height"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:id="@+id/llRecommendations"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="@dimen/home_radius"
+                    android:layout_marginEnd="@dimen/home_radius"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:id="@+id/tvReccom"
+                    android:textColor="@color/gray_border_tab"
+                    android:text="@string/recommendations"/>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/llBorderRecc"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/gray_border_tab"/>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/llSelectedReccBorder"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:visibility="gone"
+                    android:background="@color/medium_blue"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray_border_tab"/>
+
+            <LinearLayout
+                android:gravity="center"
+                android:minWidth="@dimen/splash_image_width_height"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:id="@+id/llSignature"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:id="@+id/tvSignature"
+                    android:layout_marginStart="@dimen/home_radius"
+                    android:layout_marginEnd="@dimen/home_radius"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:textColor="@color/gray_border_tab"
+                    android:text="@string/signature"/>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/llBorderSignature"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/gray_border_tab"/>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/llSelectedSignatureBorder"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:visibility="gone"
+                    android:background="@color/medium_blue"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray_border_tab"/>
+
+            <LinearLayout
+                android:gravity="center"
+                android:minWidth="@dimen/splash_image_width_height"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:id="@+id/llMedia"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:id="@+id/tvMedia"
+                    android:layout_marginStart="@dimen/home_radius"
+                    android:layout_marginEnd="@dimen/home_radius"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:textColor="@color/gray_border_tab"
+                    android:text="@string/media"/>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/llMediaBorder"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/gray_border_tab"/>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/llSelectedMediaBorder"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:visibility="gone"
+                    android:background="@color/medium_blue"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@color/gray_app_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:id="@+id/visitLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <include
+
+            layout="@layout/layout_visit" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/companyLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <include
+            layout="@layout/layout_company" />
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

@@ -29,7 +29,7 @@
 
         <com.ids.cloud9.custom.CustomTextViewMedium
             android:layout_width="match_parent"
-            android:text="Visits"
+            android:text="@string/visits"
             android:textSize="@dimen/normal_font"
             android:textColor="@color/white"
             android:gravity="center"
@@ -64,7 +64,7 @@
             android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_marginEnd="@dimen/normal_margin_padding"
+            android:layout_marginEnd="@dimen/small_margin"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" >
@@ -74,24 +74,25 @@
             android:layout_width="wrap_content"
             android:textColor="@color/white"
             android:text="today"
+            android:foreground="?android:attr/selectableItemBackground"
             android:paddingEnd="@dimen/small_margin"
             android:paddingStart="@dimen/small_margin"
             android:id="@+id/tvToday"
             android:gravity="center"
             android:textSize="@dimen/title_font"
-            android:background="@drawable/rounded_dark_blue"
-            android:layout_height="@dimen/with_toggle"
+            android:background="@drawable/rounded_selected"
+            android:layout_height="@dimen/height_40"
            />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginEnd="@dimen/normal_margin_padding"
+            android:layout_marginEnd="@dimen/small_margin"
             android:layout_marginTop="@dimen/small_margin_padding"
             android:layout_marginBottom="@dimen/small_margin_padding"
             android:gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/with_toggle">
+            android:layout_height="@dimen/height_40">
 
             <LinearLayout
                 android:id="@+id/btDatePrevious"
@@ -103,8 +104,8 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/rounded_dark_left">
                 <ImageView
-                    android:layout_marginStart="@dimen/normal_margin_padding"
-                    android:layout_marginEnd="@dimen/normal_margin_padding"
+                    android:layout_marginStart="@dimen/padding_10"
+                    android:layout_marginEnd="@dimen/padding_10"
                     android:tint="@color/white"
                     android:layout_width="@dimen/icon_medium"
                     android:layout_height="@dimen/icon_medium"
@@ -119,8 +120,8 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/rounded_dark_right">
                 <ImageView
-                    android:layout_marginStart="@dimen/normal_margin_padding"
-                    android:layout_marginEnd="@dimen/normal_margin_padding"
+                    android:layout_marginStart="@dimen/padding_10"
+                    android:layout_marginEnd="@dimen/padding_10"
                     android:rotation="180"
                     android:tint="@color/white"
                     android:layout_width="@dimen/icon_medium"
@@ -139,15 +140,15 @@
     </androidx.cardview.widget.CardView>
 
         <com.ids.cloud9.custom.CustomTextViewMedium
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:background="@color/gray_app_bg"
-            android:layout_below="@id/llDate"
-            android:textSize="@dimen/normal_font"
-            android:visibility="visible"
             android:id="@+id/tvNoVisits"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="No visits set for this week"/>
+            android:layout_below="@id/llDate"
+            android:background="@color/gray_app_bg"
+            android:gravity="center"
+            android:text="No visits set for this week"
+            android:textSize="@dimen/normal_font"
+            android:visibility="visible" />
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_margin="@dimen/margin_start_end"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:minHeight="@dimen/height_50"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_weight="1"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="Company name:"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_weight="1"
+                    
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/status_reason"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:minHeight="@dimen/height_50"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_weight="1"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/email"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_weight="1"
+                    
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/status_reason"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:minHeight="@dimen/height_50"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_weight="1"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/website"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_weight="1"
+                    
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/status_reason"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:minHeight="@dimen/height_50"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_weight="1"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/phone"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_weight="1"
+                    
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/status_reason"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:minHeight="@dimen/height_50"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_weight="1"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/fax"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_weight="1"
+                    
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/status_reason"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:minHeight="@dimen/height_50"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_weight="1"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/contact_name"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_weight="1"
+                    
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/status_reason"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:minHeight="@dimen/height_50"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_weight="1"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/contact_number"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_weight="1"
+                    
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/status_reason"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:minHeight="@dimen/height_50"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_weight="1"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/address"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_weight="1"
+
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/status_reason"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:gravity="center"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:layout_marginTop="@dimen/small_margin"
+                android:background="@drawable/rounded_primary_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_50">
+
+
+                <ImageView
+                    android:layout_toEndOf="@id/btBack"
+                    android:id="@+id/ivCalendar"
+                    android:tint="@color/white"
+                    android:layout_centerVertical="true"
+                    android:layout_width="@dimen/size_18"
+                    android:layout_height="@dimen/size_18"
+                    android:src="@drawable/map_pin"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_width="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginStart="@dimen/normal_margin_padding"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/normal_font"
+                    android:textColor="@color/white"
+                    android:text="GET DIRECTIONS"/>
+
+            </LinearLayout>
+
+
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+</LinearLayout>

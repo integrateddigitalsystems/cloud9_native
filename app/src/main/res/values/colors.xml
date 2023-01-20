@@ -39,6 +39,8 @@
     <color name="otw_text">#928d87</color>
     <color name="comp_bg">#cbf0df</color>
     <color name="comp_text">#148f62</color>
+    <color name="gray_border_tab">#bcbcbc</color>
+    <color name="selected_today">#707d9f</color>
 
 
 </resources>

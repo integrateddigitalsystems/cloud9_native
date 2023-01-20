@@ -24,11 +24,12 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class StickyAdapter(context: Activity, private val mList: ArrayList<VisitListItem>) :
+class StickyAdapter(context: Activity, private val mList: ArrayList<VisitListItem>,click:RVOnItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), HeaderDecoration.StickyHeaderInterface {
     private val mContext: Activity
     private val VIEW_HEADER = 1
     private val VIEW_DETAIL = 0
+    var click:RVOnItemClickListener = click
 
     init {
         mContext = context
@@ -41,7 +42,7 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<VisitListIte
 
         } else {
             val binding = ItemVisitBinding.inflate(mContext.layoutInflater, viewGroup, false)
-            DetailViewHolder(binding)
+            DetailViewHolder(binding,click)
 
         }
     }
@@ -85,7 +86,8 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<VisitListIte
 
 
     inner class DetailViewHolder(
-        val binding: ItemVisitBinding
+        val binding: ItemVisitBinding,
+        var clicker:RVOnItemClickListener
     ) : RecyclerView.ViewHolder(
         binding.root
 
@@ -160,8 +162,15 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<VisitListIte
 
         }
 
-        override fun onClick(p0: View?) {
+        init {
+            binding.root.setOnClickListener(this)
 
+
+
+        }
+
+        override fun onClick(p0: View?) {
+            clicker.onItemClicked(p0!!, layoutPosition)
         }
     }
 
