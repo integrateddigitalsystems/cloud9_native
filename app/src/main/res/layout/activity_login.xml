@@ -85,6 +85,7 @@
                     android:textSize="@dimen/normal_font" />
 
                 <ImageView
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:id="@+id/btShowPassword"
                     android:layout_marginEnd="@dimen/settings_item_height"
                     android:layout_width="@dimen/button_radius"
@@ -113,6 +114,7 @@
                 android:text="@string/login"
                 android:textColor="@color/white"
                 android:id="@+id/btLogin"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/edit_text_height"
                 android:background="@color/colorPrimary"/>

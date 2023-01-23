@@ -1,21 +1,41 @@
 package com.ids.cloud9.controller.activities
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.Adapter
+import android.widget.AdapterView
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.vision.text.Line
+import com.ids.cloud9.Adapters.AdapterDialog
 import com.ids.cloud9.R
+import com.ids.cloud9.controller.MyApplication
+import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.databinding.ActivityMainBinding
 import com.ids.cloud9.databinding.ActivityVisitDetailsBinding
-import com.ids.cloud9.utils.AppHelper
-import com.ids.cloud9.utils.hide
-import com.ids.cloud9.utils.show
+import com.ids.cloud9.databinding.ReasonDialogBinding
+import com.ids.cloud9.model.ItemSpinner
+import com.ids.cloud9.model.VisitListItem
+import com.ids.cloud9.utils.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
-class ActivtyVisitDetails : Activity(){
+class ActivtyVisitDetails : Activity() , RVOnItemClickListener{
 
     var binding : ActivityVisitDetailsBinding ?=null
+    var simp : SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
+    var simpTime : SimpleDateFormat = SimpleDateFormat("HH:mm")
+    var simpTimeAA : SimpleDateFormat = SimpleDateFormat("hh:mm aa")
+    var simpOrg : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss")
     var currLayout : LinearLayout ?=null
+    var alertDialog : androidx.appcompat.app.AlertDialog ?=null
     var currLayPost = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +52,68 @@ class ActivtyVisitDetails : Activity(){
         binding!!.llBorderVisit.hide()
         binding!!.llSelectedVisitBorder.show()
         currLayout = binding!!.llBorderVisit
+        setUpVisitDetails()
+
+    }
+
+    fun setUpVisitDetails(){
+        var date = simpOrg.parse(MyApplication.selectedVisit!!.visitDate)
+        binding!!.layoutVisit.tvVisitDate.text = simp.format(date)
+        binding!!.layoutVisit.fromTime.text = simpTime.format(simpOrg.parse(MyApplication.selectedVisit!!.fromTime))
+        binding!!.layoutVisit.tvToTime.text = simpTime.format(simpOrg.parse(MyApplication.selectedVisit!!.toTime))
+
+        var millFrom = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss").parse(MyApplication.selectedVisit!!.fromTime).time
+        var millTo = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss").parse(MyApplication.selectedVisit!!.toTime).time
+
+        var diff = millTo - millFrom
+
+        var mins = diff / 60000
+
+
+        var hours = mins/60
+        var min = mins%60
+        binding!!.layoutVisit.tvDuration.text =if(hours>0) {hours.toString()+"hrs"+(if(min>0)
+            min.toString()+"mins"
+        else
+            "")}else {if(min>0)
+            min.toString()+"mins"
+        else
+            ""}
+
+
+        binding!!.layoutVisit.tvCompany.text = MyApplication.selectedVisit!!.company!!.companyName
+        binding!!.layoutVisit.tvActualArrivalTime.text = simpTimeAA.format(simpOrg.parse(MyApplication.selectedVisit!!.modificationDate!!))
+
+        
+    }
+
+
+
+    fun setUpDataVisit(){
+
+        var arrSpinner : ArrayList<ItemSpinner> = arrayListOf()
+
+        arrSpinner.add(ItemSpinner(AppConstants.SCHEDULED_REASON_ID,AppConstants.SCHEDULED_REASON,false,false))
+        arrSpinner.add(ItemSpinner(AppConstants.COMPLETED_REASON_ID,AppConstants.COMPLETED_REASON,true,false))
+        arrSpinner.add(ItemSpinner(AppConstants.ARRIVED_REASON_ID,AppConstants.ARRIVED_REASON,false))
+        arrSpinner.add(ItemSpinner(AppConstants.PENDING_REASON_ID,AppConstants.PENDING_REASON,false,false))
+        arrSpinner.add(ItemSpinner(AppConstants.ON_THE_WAY_REASON_ID,AppConstants.ON_THE_WAY_REASON,false))
+
+
+
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+       var popupItemMultipleBinding = ReasonDialogBinding.inflate(layoutInflater)
+
+        popupItemMultipleBinding.rvReasonStatus.layoutManager = LinearLayoutManager(this)
+        popupItemMultipleBinding.rvReasonStatus.adapter = AdapterDialog(arrSpinner,this,this)
+
+        builder.setView(popupItemMultipleBinding.root)
+        alertDialog = builder.create()
+        alertDialog!!.setCanceledOnTouchOutside(false)
+        safeCall {
+            alertDialog!!.show()
+            alertDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
 
     }
 
@@ -122,5 +204,13 @@ class ActivtyVisitDetails : Activity(){
         binding!!.btBack.setOnClickListener {
             super.onBackPressed()
         }
+
+        binding!!.layoutVisit.spStatusReason.setOnClickListener {
+            setUpDataVisit()
+        }
+    }
+
+    override fun onItemClicked(view: View, position: Int) {
+
     }
 }

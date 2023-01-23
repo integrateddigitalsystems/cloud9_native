@@ -37,19 +37,22 @@
             android:text="@string/status_reason"/>
 
         <RelativeLayout
+            android:id="@+id/spStatusReason"
             android:background="@drawable/rounded_border"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_40"
             android:layout_weight="1">
 
-            <Spinner
-                android:background="@color/transparent"
-                android:id="@+id/spStatusReason"
+
+            <com.ids.cloud9.custom.CustomTextViewMedium
+                android:id="@+id/tvStatusReason"
                 android:layout_width="match_parent"
-                android:dropDownVerticalOffset="@dimen/big_margin"
-                android:layout_height="match_parent" />
-
-
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/normal_margin_padding"
+                android:gravity="center_vertical"
+                android:text="@string/status_reason"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/normal_font" />
 
             <ImageView
                 android:layout_width="@dimen/small_margin"
@@ -69,6 +72,36 @@
     </LinearLayout>
 
 
+        <LinearLayout
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginStart="@dimen/margin_start_end"
+            android:layout_marginEnd="@dimen/margin_start_end"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:minHeight="@dimen/height_50"
+            android:layout_height="wrap_content">
+
+            <com.ids.cloud9.custom.CustomTextViewBold
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/visit_date"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/normal_font" />
+
+            <com.ids.cloud9.custom.CustomTextViewMedium
+                android:layout_weight="1"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/normal_font"
+                android:layout_width="match_parent"
+                android:id="@+id/tvVisitDate"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="@string/status_reason"/>
+
+        </LinearLayout>
 
     <LinearLayout
         android:layout_marginTop="@dimen/small_margin"
@@ -81,13 +114,13 @@
         android:layout_height="wrap_content">
 
         <com.ids.cloud9.custom.CustomTextViewBold
-            android:layout_weight="1"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/normal_font"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="@string/from_time"/>
+            android:text="@string/from_time"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/normal_font" />
 
         <com.ids.cloud9.custom.CustomTextViewMedium
             android:layout_weight="1"
@@ -220,12 +253,15 @@
             android:layout_height="@dimen/height_40"
             android:layout_weight="1">
 
-            <Spinner
-                android:id="@+id/spActualArrivalTime"
-                android:background="@color/transparent"
+            <com.ids.cloud9.custom.CustomTextViewMedium
+                android:id="@+id/tvActualArrivalTime"
                 android:layout_width="match_parent"
-                android:dropDownVerticalOffset="@dimen/big_margin"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/normal_margin_padding"
+                android:gravity="center_vertical"
+                android:text="@string/status_reason"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/normal_font" />
 
 
 
@@ -271,12 +307,15 @@
             android:layout_height="@dimen/height_40"
             android:layout_weight="1">
 
-            <Spinner
-                android:id="@+id/spActualCompletedTime"
-                android:background="@color/transparent"
+            <com.ids.cloud9.custom.CustomTextViewMedium
+                android:id="@+id/tvActualCompletedTime"
                 android:layout_width="match_parent"
-                android:dropDownVerticalOffset="@dimen/big_margin"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/normal_margin_padding"
+                android:gravity="center_vertical"
+                android:text="@string/status_reason"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/normal_font" />
 
 
 

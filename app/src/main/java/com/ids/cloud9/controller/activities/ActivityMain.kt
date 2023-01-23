@@ -314,6 +314,7 @@ class ActivityMain: Activity() , RVOnItemClickListener{
     }
 
     override fun onItemClicked(view: View, position: Int) {
+        MyApplication.selectedVisit = tempArray.get(position)
         startActivity(Intent(this,ActivtyVisitDetails::class.java))
     }
 }

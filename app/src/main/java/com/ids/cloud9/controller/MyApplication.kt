@@ -27,6 +27,7 @@ class MyApplication : Application() {
         var BASE_URL ="https://crmtest.ids.com.lb/api/"
         var selectedFragment  : Fragment?=null
         var token : String ?=""
+        var selectedVisit : VisitListItem ?=null
         var userItem : JWTResponse ?=null
         var mobileConfig : MobileConfig?=null
         var languageCode : String ?="en"

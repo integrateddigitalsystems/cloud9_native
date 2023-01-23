@@ -28,6 +28,13 @@ fun View.hide() {
     try{visibility = View.GONE}catch (e:Exception){}
 }
 
+inline fun <R> safeCall(call: () -> R): Result<R> {
+    try {
+        return Result.success(call())
+    } catch (e: Exception) {
+        return Result.failure(e)
+    }
+}
 
 fun TextView.textRemote(key: String, con:Context) {
     if (MyApplication.locMessages != null) {

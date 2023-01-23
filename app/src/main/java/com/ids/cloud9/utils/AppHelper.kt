@@ -74,6 +74,14 @@ class AppHelper {
             }
         }
 
+        fun getColor(con:Context , color : Int ):Int{
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                return ContextCompat.getColor(con, color)
+            } else {
+                return con.resources.getColor(color)
+            }
+        }
+
         private fun updateView(activity: Activity) {
             val rootView: View = activity.window.decorView.findViewById(android.R.id.content)
             Reword.reword(rootView)
