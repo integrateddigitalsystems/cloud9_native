@@ -38,4 +38,15 @@ object AppConstants {
     const val ON_THE_WAY_REASON = "on the way"
 
 
+    const val FORM_ITEM_GRID = "grid"
+    const val FORM_ITEM_BOOLEAN = "boolean"
+    const val FORM_ITEM_LIST = "list"
+    const val FORM_ITEM_RADIO_BUTTON = "radio-buttons"
+    const val FORM_ITEM_SUBMIT = "submit"
+    const val FORM_ITEM_TEXT_INPUT = "text_input"
+    const val FORM_ITEM_DATE = "date"
+    const val FORM_ITEM_TIME = "time"
+
+
+
 }

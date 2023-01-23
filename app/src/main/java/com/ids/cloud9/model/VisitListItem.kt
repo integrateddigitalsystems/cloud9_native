@@ -79,7 +79,7 @@ data class VisitListItem(
     @SerializedName("reasonId")
     var reasonId: Int?=0,
     @SerializedName("remark")
-    var remark: Any?=null,
+    var remark: String?=null,
     @SerializedName("resource")
     var resource: Any?=null,
     @SerializedName("resourceId")

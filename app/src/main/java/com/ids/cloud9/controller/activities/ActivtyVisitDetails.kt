@@ -84,19 +84,37 @@ class ActivtyVisitDetails : Activity() , RVOnItemClickListener{
         binding!!.layoutVisit.tvCompany.text = MyApplication.selectedVisit!!.company!!.companyName
         binding!!.layoutVisit.tvActualArrivalTime.text = simpTimeAA.format(simpOrg.parse(MyApplication.selectedVisit!!.modificationDate!!))
 
-        
+        if(!MyApplication.selectedVisit!!.actualCompletedTime.isNullOrEmpty())
+            binding!!.layoutVisit.tvActualCompletedTime.text = simp.format(simpOrg.parse(MyApplication.selectedVisit!!.actualCompletedTime))
+        else
+            binding!!.layoutVisit.tvActualCompletedTime.text = ""
+
+        if(MyApplication.selectedVisit!!.actualDuration!=null)
+            binding!!.layoutVisit.tvActualDurtionTime.text = MyApplication.selectedVisit!!.actualDuration!!.toString()
+        else
+            binding!!.layoutVisit.tvActualDurtionTime.text = ""
+
+        if(!MyApplication.selectedVisit!!.remark.isNullOrEmpty())
+            binding!!.layoutVisit.tvRemarks.text = MyApplication.selectedVisit!!.remark!!.toEditable()
+        else
+            binding!!.layoutVisit.tvRemarks.text = "".toEditable()
+
+
     }
 
 
+    fun setUpCompanyData(){
+
+    }
 
     fun setUpDataVisit(){
 
         var arrSpinner : ArrayList<ItemSpinner> = arrayListOf()
 
-        arrSpinner.add(ItemSpinner(AppConstants.SCHEDULED_REASON_ID,AppConstants.SCHEDULED_REASON,false,false))
-        arrSpinner.add(ItemSpinner(AppConstants.COMPLETED_REASON_ID,AppConstants.COMPLETED_REASON,true,false))
+        arrSpinner.add(ItemSpinner(AppConstants.SCHEDULED_REASON_ID,AppConstants.SCHEDULED_REASON,false))
+        arrSpinner.add(ItemSpinner(AppConstants.COMPLETED_REASON_ID,AppConstants.COMPLETED_REASON,true))
         arrSpinner.add(ItemSpinner(AppConstants.ARRIVED_REASON_ID,AppConstants.ARRIVED_REASON,false))
-        arrSpinner.add(ItemSpinner(AppConstants.PENDING_REASON_ID,AppConstants.PENDING_REASON,false,false))
+        arrSpinner.add(ItemSpinner(AppConstants.PENDING_REASON_ID,AppConstants.PENDING_REASON,false))
         arrSpinner.add(ItemSpinner(AppConstants.ON_THE_WAY_REASON_ID,AppConstants.ON_THE_WAY_REASON,false))
 
 
@@ -154,6 +172,7 @@ class ActivtyVisitDetails : Activity() , RVOnItemClickListener{
             binding!!.companyLayout.show()
             binding!!.visitLayout.hide()
 
+            setUpCompanyData()
 
 
         }

@@ -381,7 +381,9 @@
         <com.ids.molilo.custom.CustomEditText
             android:layout_marginStart="@dimen/margin_start_end"
             android:layout_marginEnd="@dimen/margin_start_end"
+            android:padding="@dimen/normal_margin_padding"
             android:layout_marginTop="@dimen/small_margin"
+            android:id="@+id/tvRemarks"
             android:layout_width="match_parent"
             android:background="@drawable/light_rounded_border"
             android:layout_height="@dimen/margin_120" />

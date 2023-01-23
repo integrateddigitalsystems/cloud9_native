@@ -5,6 +5,7 @@ package com.ids.cloud9.utils
 
 import android.app.Activity
 import android.content.Context
+import android.text.Editable
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -34,6 +35,10 @@ inline fun <R> safeCall(call: () -> R): Result<R> {
     } catch (e: Exception) {
         return Result.failure(e)
     }
+}
+
+fun String.toEditable(): Editable {
+    return Editable.Factory.getInstance().newEditable(this)
 }
 
 fun TextView.textRemote(key: String, con:Context) {

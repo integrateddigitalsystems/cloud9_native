@@ -33,11 +33,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="Company name:"/>
+                    android:text="@string/company_name"/>
 
                 <com.ids.cloud9.custom.CustomTextViewMedium
                     android:layout_weight="1"
-                    
+                    android:id="@+id/tvCompanyName"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/normal_font"
                     android:layout_width="match_parent"
@@ -68,7 +68,7 @@
 
                 <com.ids.cloud9.custom.CustomTextViewMedium
                     android:layout_weight="1"
-                    
+                    android:id="@+id/tvEmail"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/normal_font"
                     android:layout_width="match_parent"
@@ -99,7 +99,7 @@
 
                 <com.ids.cloud9.custom.CustomTextViewMedium
                     android:layout_weight="1"
-                    
+                    android:id="@+id/tvWebite"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/normal_font"
                     android:layout_width="match_parent"
@@ -130,7 +130,7 @@
 
                 <com.ids.cloud9.custom.CustomTextViewMedium
                     android:layout_weight="1"
-                    
+                    android:id="@+id/tvPhone"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/normal_font"
                     android:layout_width="match_parent"
@@ -161,7 +161,7 @@
 
                 <com.ids.cloud9.custom.CustomTextViewMedium
                     android:layout_weight="1"
-                    
+                    android:id="@+id/tvFax"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/normal_font"
                     android:layout_width="match_parent"
@@ -192,7 +192,7 @@
 
                 <com.ids.cloud9.custom.CustomTextViewMedium
                     android:layout_weight="1"
-                    
+                    android:id="@+id/tvContactName"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/normal_font"
                     android:layout_width="match_parent"
@@ -223,7 +223,7 @@
 
                 <com.ids.cloud9.custom.CustomTextViewMedium
                     android:layout_weight="1"
-                    
+                    android:id="@+id/tvContactNumber"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/normal_font"
                     android:layout_width="match_parent"
@@ -254,7 +254,7 @@
 
                 <com.ids.cloud9.custom.CustomTextViewMedium
                     android:layout_weight="1"
-
+                    android:id="@+id/tvAddress"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/normal_font"
                     android:layout_width="match_parent"
