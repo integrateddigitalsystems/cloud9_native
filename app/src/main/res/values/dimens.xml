@@ -66,13 +66,16 @@
     <dimen name="barcode_big_width">200dp</dimen>
     <dimen name="size_15">15sp</dimen>
     <dimen name="size_35">35dp</dimen>
+    <dimen name="medium_tab_height">72dp</dimen>
 
   <!-- Text Sizes-->
 
     <dimen name="title_font">18sp</dimen>
     <dimen name="medium_font">17sp</dimen>
     <dimen name="normal_font">16sp</dimen>
+    <dimen name="sub_normal_font">15sp</dimen>
     <dimen name="small_font">14sp</dimen>
     <dimen name="smaller_font">12sp</dimen>
+    <dimen name="tiny_font">10sp</dimen>
     <dimen name="tab_height">72dp</dimen>
 </resources>

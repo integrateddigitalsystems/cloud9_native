@@ -20,6 +20,24 @@ fun Activity.toast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 }
 
+fun TextView.setCheckText(message: String){
+   try{
+       if(!message.isNullOrEmpty())
+           this.text = message
+       else
+           this.text = ""
+   }catch (ex:Exception){
+       this.text = ""
+   }
+}
+
+fun TextView.setTextLang(messageEn:String , messageAr:String){
+    if(MyApplication.languageCode.equals("en")){
+        this.text = messageEn
+    }else{
+        this.text = messageAr
+    }
+}
 
 fun View.show() {
     try{ visibility = View.VISIBLE}catch (e:Exception){}

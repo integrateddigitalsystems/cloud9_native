@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <RelativeLayout
         android:elevation="@dimen/small_margin"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/tab_height"
+        android:layout_height="wrap_content"
         android:background="@drawable/gradient_bg">
 
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/btBack"
             android:foreground="?android:attr/selectableItemBackground"
@@ -21,22 +30,26 @@
             android:layout_centerVertical="true"
             android:layout_width="@dimen/height_toggle"
             android:layout_height="@dimen/height_toggle"
-            android:src="@drawable/arrow_left"/>
+            android:rotation="180"
+            android:src="@drawable/ic_arrow_right"/>
 
         <ImageView
             android:layout_toEndOf="@id/btBack"
             android:id="@+id/ivCalendar"
             android:layout_marginStart="@dimen/small_margin"
-            android:tint="@color/white"
             android:layout_centerVertical="true"
             android:layout_width="@dimen/height_toggle"
             android:layout_height="@dimen/height_toggle"
-            android:src="@drawable/calendar_minus"/>
+            android:src="@drawable/feed_bg"/>
+
+        </LinearLayout>
 
         <com.ids.cloud9.custom.CustomTextViewMedium
+            android:layout_marginTop="@dimen/home_radius"
+            android:layout_marginBottom="@dimen/home_radius"
             android:id="@+id/tvVisitTitle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Visits"
             android:textColor="@color/white"
@@ -53,11 +66,11 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/tab_height">
+            android:layout_height="@dimen/medium_tab_height">
 
             <LinearLayout
                 android:gravity="center"
-                android:minWidth="@dimen/splash_image_width_height"
+                android:minWidth="@dimen/scan_height"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:id="@+id/llVisit"
                 android:orientation="vertical"
@@ -79,7 +92,7 @@
                     android:orientation="vertical"
                     android:id="@+id/llBorderVisit"
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="1dp"
                     android:background="@color/gray_border_tab"/>
 
                 <LinearLayout
@@ -100,7 +113,7 @@
 
             <LinearLayout
                 android:gravity="center"
-                android:minWidth="@dimen/splash_image_width_height"
+                android:minWidth="@dimen/scan_height"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:id="@+id/llCompany"
                 android:orientation="vertical"
@@ -122,7 +135,7 @@
                     android:orientation="vertical"
                     android:id="@+id/llBorderCompany"
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="1dp"
                     android:background="@color/gray_border_tab"/>
 
                 <LinearLayout
@@ -143,7 +156,7 @@
 
             <LinearLayout
                 android:gravity="center"
-                android:minWidth="@dimen/splash_image_width_height"
+                android:minWidth="@dimen/scan_height"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:id="@+id/llProducts"
                 android:orientation="vertical"
@@ -165,7 +178,7 @@
                     android:orientation="vertical"
                     android:id="@+id/llProductsBorder"
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="1dp"
                     android:background="@color/gray_border_tab"/>
                 <LinearLayout
                     android:orientation="vertical"
@@ -185,7 +198,7 @@
 
             <LinearLayout
                 android:gravity="center"
-                android:minWidth="@dimen/splash_image_width_height"
+                android:minWidth="@dimen/scan_height"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:id="@+id/llRecommendations"
                 android:orientation="vertical"
@@ -207,7 +220,7 @@
                     android:orientation="vertical"
                     android:id="@+id/llBorderRecc"
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="1dp"
                     android:background="@color/gray_border_tab"/>
 
                 <LinearLayout
@@ -228,7 +241,7 @@
 
             <LinearLayout
                 android:gravity="center"
-                android:minWidth="@dimen/splash_image_width_height"
+                android:minWidth="@dimen/scan_height"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:id="@+id/llSignature"
                 android:orientation="vertical"
@@ -250,7 +263,7 @@
                     android:orientation="vertical"
                     android:id="@+id/llBorderSignature"
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="1dp"
                     android:background="@color/gray_border_tab"/>
                 <LinearLayout
                     android:orientation="vertical"
@@ -270,7 +283,7 @@
 
             <LinearLayout
                 android:gravity="center"
-                android:minWidth="@dimen/splash_image_width_height"
+                android:minWidth="@dimen/scan_height"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:id="@+id/llMedia"
                 android:orientation="vertical"
@@ -292,7 +305,7 @@
                     android:orientation="vertical"
                     android:id="@+id/llMediaBorder"
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="1dp"
                     android:background="@color/gray_border_tab"/>
                 <LinearLayout
                     android:orientation="vertical"
@@ -331,7 +344,52 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         <include
+            android:id="@+id/layoutCompany"
             layout="@layout/layout_company" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/productionLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include
+                android:id="@+id/layoutProdcution"
+                layout="@layout/layout_products" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/reccomLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include
+                android:id="@+id/layoutReccomend"
+                layout="@layout/layout_reccomendations" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/signLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include
+                android:id="@+id/layoutSignature"
+                layout="@layout/layout_signature" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/mediaLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include
+                android:id="@+id/layoutMedia"
+                layout="@layout/layout_media" />
 
         </LinearLayout>
 
@@ -340,7 +398,18 @@
 
     </LinearLayout>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/llLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <include
+        layout="@layout/loading" />
+
+    </LinearLayout>
 
 
-
-</LinearLayout>
+</RelativeLayout>

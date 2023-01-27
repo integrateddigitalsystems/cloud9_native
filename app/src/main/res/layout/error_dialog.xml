@@ -34,8 +34,7 @@
             android:rotation="270"
             android:tint="@color/black"
             android:layout_width="@dimen/list_icon_width_height"
-            android:layout_height="@dimen/list_icon_width_height"
-            tools:ignore="ContentDescription,UseAppTint" />
+            android:layout_height="@dimen/list_icon_width_height" />
     </LinearLayout>
 
     <com.ids.cloud9.custom.CustomTextViewBold

@@ -24,7 +24,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:minHeight="@dimen/height_50"
+        android:minHeight="@dimen/button_height"
         android:layout_height="wrap_content">
 
         <com.ids.cloud9.custom.CustomTextViewBold
@@ -62,7 +62,7 @@
                 android:layout_marginEnd="@dimen/settings_item_height"
                 android:rotation="90"
                 android:src="@drawable/arrow_submit"
-                tools:ignore="UseAppTint" />
+               />
 
 
 
@@ -79,7 +79,7 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:minHeight="@dimen/height_50"
+            android:minHeight="@dimen/button_height"
             android:layout_height="wrap_content">
 
             <com.ids.cloud9.custom.CustomTextViewBold
@@ -110,7 +110,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:minHeight="@dimen/height_50"
+        android:minHeight="@dimen/button_height"
         android:layout_height="wrap_content">
 
         <com.ids.cloud9.custom.CustomTextViewBold
@@ -141,7 +141,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:minHeight="@dimen/height_50"
+        android:minHeight="@dimen/button_height"
         android:layout_height="wrap_content">
 
         <com.ids.cloud9.custom.CustomTextViewBold
@@ -172,7 +172,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:minHeight="@dimen/height_50"
+        android:minHeight="@dimen/button_height"
         android:layout_height="wrap_content">
 
         <com.ids.cloud9.custom.CustomTextViewBold
@@ -203,7 +203,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:minHeight="@dimen/height_50"
+        android:minHeight="@dimen/button_height"
         android:layout_height="wrap_content">
 
         <com.ids.cloud9.custom.CustomTextViewBold
@@ -234,7 +234,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:minHeight="@dimen/height_50"
+        android:minHeight="@dimen/button_height"
         android:layout_height="wrap_content">
 
         <com.ids.cloud9.custom.CustomTextViewBold
@@ -273,7 +273,7 @@
                 android:layout_marginEnd="@dimen/settings_item_height"
                 android:rotation="90"
                 android:src="@drawable/arrow_submit"
-                tools:ignore="UseAppTint" />
+               />
 
 
 
@@ -289,7 +289,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:minHeight="@dimen/height_50"
+        android:minHeight="@dimen/button_height"
         android:layout_height="wrap_content">
 
         <com.ids.cloud9.custom.CustomTextViewBold
@@ -327,7 +327,7 @@
                 android:layout_marginEnd="@dimen/settings_item_height"
                 android:rotation="90"
                 android:src="@drawable/arrow_submit"
-                tools:ignore="UseAppTint" />
+               />
 
 
 
@@ -342,7 +342,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:minHeight="@dimen/height_50"
+        android:minHeight="@dimen/button_height"
         android:layout_height="wrap_content">
 
         <com.ids.cloud9.custom.CustomTextViewBold

@@ -158,7 +158,7 @@ class ActivityMain: Activity() , RVOnItemClickListener{
     }
 
     fun setUpDrawer(){
-        binding!!.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+       // binding!!.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     fun setUpData(list: VisitList){

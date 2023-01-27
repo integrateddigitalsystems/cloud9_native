@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_marginBottom="@dimen/small_margin"
+        android:layout_marginStart="@dimen/margin_start_end"
+        android:layout_marginEnd="@dimen/margin_start_end"
+        android:background="@color/white"
+        app:cardElevation="@dimen/small_margin_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_margin="@dimen/big_margin_padding"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_30"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/medium_font"
+                    android:id="@+id/tvSubject"
+                    android:textColor="@color/lighter_blue"
+                    android:text="subjjt"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/normal_margin_padding"
+                    android:textSize="@dimen/small_font"
+                    android:id="@+id/tvDesc"
+                    android:textColor="@color/otw_text"
+                    android:text="desc"/>
+
+
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+
+                    <LinearLayout
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="2dp"
+                            android:layout_height="@dimen/size_30"
+                            android:background="@color/gray_tint"/>
+
+
+                        <ImageView
+                            android:layout_marginStart="@dimen/small_margin_padding"
+                            android:tint="@color/gray_tint"
+                            android:src="@drawable/ic_arrow_right"
+                            android:layout_width="@dimen/normal_margin"
+                            android:layout_height="@dimen/normal_margin" />
+
+                    </LinearLayout>
+
+                    <com.ids.cloud9.custom.CustomTextViewMedium
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/normal_margin_padding"
+                        android:textSize="@dimen/normal_font"
+                        android:visibility="invisible"
+                        android:textColor="@color/otw_text"
+                        android:text="desc"/>
+                </LinearLayout>
+
+
+
+
+
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:gravity="end"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_width="match_parent"
+                    android:gravity="end"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/small_margin_padding"
+                    android:textSize="@dimen/sub_normal_font"
+                    android:id="@+id/tvAssignedTo"
+                    android:text="Mahdi MTE Safwan"
+                    android:textColor="@color/colorPrimaryDark"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_marginTop="@dimen/small_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvDueDate"
+                    android:textSize="@dimen/small_font"
+                    android:text="20/01/2023"
+                    android:textColor="@color/otw_text"/>
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_marginTop="@dimen/normal_margin_padding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/tiny_font"
+                    android:id="@+id/tvReason"
+                    android:text="In progress"
+                    android:textColor="@color/otw_text"/>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:visibility="visible"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="@dimen/small_margin"
+        android:layout_marginStart="@dimen/small_margin"
+        android:layout_marginEnd="@dimen/small_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_marginStart="@dimen/small_margin"
+        android:layout_marginEnd="@dimen/small_margin"
+        android:layout_marginTop="@dimen/big_margin_padding"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_40">
+
+        <LinearLayout
+            android:id="@+id/llCamera"
+            android:gravity="center"
+            android:background="@drawable/white_rounded_border"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:src="@drawable/camera"
+                android:layout_width="@dimen/height_toggle"
+                android:layout_height="@dimen/height_toggle" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llVideo"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/small_margin"
+            android:background="@drawable/white_rounded_border"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:src="@drawable/video"
+                android:layout_width="@dimen/height_toggle"
+                android:layout_height="@dimen/height_toggle" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llGallery"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/small_margin"
+            android:background="@drawable/white_rounded_border"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:src="@drawable/gallery"
+                android:layout_width="@dimen/height_toggle"
+                android:layout_height="@dimen/height_toggle" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    </LinearLayout>
+
+    <com.ids.cloud9.custom.CustomTextViewMedium
+        android:layout_marginTop="@dimen/normal_margin"
+        android:textSize="@dimen/normal_font"
+        android:textColor="@color/otw_text"
+        android:visibility="gone"
+        android:id="@+id/tvNoAttachments"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:text="No attachments to show"/>
+
+</LinearLayout>

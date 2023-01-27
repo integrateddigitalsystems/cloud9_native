@@ -74,6 +74,7 @@ class AppHelper {
             }
         }
 
+
         fun getColor(con:Context , color : Int ):Int{
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 return ContextCompat.getColor(con, color)

@@ -41,6 +41,8 @@
     <color name="comp_text">#148f62</color>
     <color name="gray_border_tab">#bcbcbc</color>
     <color name="selected_today">#707d9f</color>
+    <color name="lighter_blue">#5164bb</color>
+    <color name="gray_tint">#dfdfdf</color>
 
 
 </resources>

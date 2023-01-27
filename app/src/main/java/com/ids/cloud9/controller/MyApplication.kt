@@ -31,6 +31,7 @@ class MyApplication : Application() {
         var userItem : JWTResponse ?=null
         var mobileConfig : MobileConfig?=null
         var languageCode : String ?="en"
+        var isSignatureEmpty = false
         var locMessages : ArrayList<LocalisedMessage> = arrayListOf()
         var selectedFragmentConstant:String=""
         @SuppressLint("StaticFieldLeak")

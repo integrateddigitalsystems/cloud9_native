@@ -1,9 +1,6 @@
 package com.ids.cloud9.utils
 
-import com.ids.cloud9.model.ApplicationUserList
-import com.ids.cloud9.model.RequestLogin
-import com.ids.cloud9.model.ResponseLogin
-import com.ids.cloud9.model.VisitList
+import com.ids.cloud9.model.*
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -27,5 +24,22 @@ interface RetrofitInterface {
         @Query("statusId") statusId : Int ,
         @Query("userId") userId : Int
     ):Call<VisitList>
+
+
+    @GET("VisitProduct/GetByVisitId")
+    fun getProducts(
+        @Query("VisitId") visitId : Int
+    ):Call<Products>
+
+    @GET("Form/GetFormsByProductCategoryId")
+    fun getReports(
+        @Query("productCategoryId") prodCat : Int
+    ):Call<ArrayList<Report>>
+
+
+    @GET("Activity/GetActivitiesToUserMobile")
+    fun getReccomendations(
+        @Query("loggedUser") userId: Int
+    ):Call<ActivitiesList>
 
 }
