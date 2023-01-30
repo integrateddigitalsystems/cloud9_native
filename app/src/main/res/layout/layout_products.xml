@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
    <androidx.recyclerview.widget.RecyclerView
        android:layout_marginTop="@dimen/normal_margin"
@@ -9,4 +10,34 @@
        android:layout_height="match_parent"
        android:id="@+id/rvProducts"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+   <RelativeLayout
+       android:layout_marginBottom="@dimen/with_80"
+       android:background="@color/transparent"
+       android:layout_alignParentBottom="true"
+       android:layout_width="match_parent"
+       android:layout_height="100dp">
+
+
+      <com.google.android.material.floatingactionbutton.FloatingActionButton
+          android:layout_width="@dimen/with_80"
+          android:layout_height="@dimen/with_80"
+          app:tint="@color/white"
+          android:layout_marginEnd="@dimen/margin_start_end"
+          android:layout_marginBottom="@dimen/margin_start_end"
+          android:layout_centerVertical="true"
+          android:layout_gravity="end|bottom"
+          android:id="@+id/btAddProducts"
+          android:scaleType="center"
+          app:fabSize="normal"
+          app:rippleColor="@color/colorAccent"
+          app:backgroundTint="@color/colorPrimary"
+          android:src="@drawable/plus"
+          android:layout_alignParentEnd="true"
+          android:layout_alignParentBottom="true"
+          />
+
+
+   </RelativeLayout>
+
+</RelativeLayout>

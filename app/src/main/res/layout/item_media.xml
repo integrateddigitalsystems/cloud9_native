@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/margin_100"
+    android:layout_height="@dimen/margin_100" >
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    <ImageView
+        android:src="@drawable/camera"
+        android:visibility="visible"
+        android:layout_width="@dimen/margin_100"
+        android:layout_height="@dimen/margin_100"
+        android:id="@+id/ivMedia"/>
+
+    <VideoView
+        android:visibility="gone"
+        android:layout_width="@dimen/margin_100"
+        android:layout_height="@dimen/margin_100"
+        android:id="@+id/vvMedia"/>
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/btClose"
+        android:layout_margin="@dimen/normal_margin_padding"
+        android:layout_alignParentEnd="true"
+        android:tint="@color/white"
+        android:layout_width="@dimen/list_icon_width_height"
+        android:layout_height="@dimen/list_icon_width_height"
+        android:src="@drawable/close_x"/>
+
+</RelativeLayout>

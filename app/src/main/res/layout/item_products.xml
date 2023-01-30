@@ -146,7 +146,7 @@
                 android:gravity="center_vertical">
 
                 <RelativeLayout
-                    android:id="@+id/llDistrictNotify"
+                    android:id="@+id/llJobReport"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/height_40"
                     android:layout_marginStart="@dimen/normal_margin_padding"

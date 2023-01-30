@@ -7,6 +7,10 @@ class ItemSpinner(
 
     var selected : Boolean ?=false ,
 
-    var selectable : Boolean?= true
+    var selectable : Boolean?= true ,
+
+    var isLocal : Boolean ?=false ,
+
+    var type : Int ? =0
 ) {
 }

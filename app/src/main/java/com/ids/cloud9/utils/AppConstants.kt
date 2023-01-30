@@ -46,6 +46,7 @@ object AppConstants {
     const val FORM_ITEM_TEXT_INPUT = "text_input"
     const val FORM_ITEM_DATE = "date"
     const val FORM_ITEM_TIME = "time"
+    const val PRODUCTION_LOOKUP_CODE = "PROD_UNIT"
 
 
 

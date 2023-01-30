@@ -1,47 +1,77 @@
 package com.ids.cloud9.controller.activities
 
+import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.database.Cursor
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.provider.OpenableColumns
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.LinearLayout
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.vision.text.Line
 import com.google.api.Distribution.BucketOptions.Linear
 import com.ids.cloud9.Adapters.AdapterDialog
+import com.ids.cloud9.Adapters.AdapterMedia
 import com.ids.cloud9.Adapters.AdapterProducts
 import com.ids.cloud9.Adapters.AdapterReccomendations
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
+import com.ids.cloud9.custom.AppCompactBase
 import com.ids.cloud9.databinding.ActivityMainBinding
 import com.ids.cloud9.databinding.ActivityVisitDetailsBinding
 import com.ids.cloud9.databinding.ReasonDialogBinding
 import com.ids.cloud9.model.*
 import com.ids.cloud9.utils.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ActivtyVisitDetails : Activity() , RVOnItemClickListener{
+class ActivtyVisitDetails : AppCompactBase() , RVOnItemClickListener{
 
     var binding : ActivityVisitDetailsBinding ?=null
     var simp : SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
     var simpTime : SimpleDateFormat = SimpleDateFormat("HH:mm")
     var arrayProd : ArrayList<ProductsItem> = arrayListOf()
     var arrayReccomend : ArrayList<ActivitiesListItem> = arrayListOf()
+    lateinit var mPermissionResult: ActivityResultLauncher<Intent>
+    var arrayMedia : ArrayList<ItemSpinner> = arrayListOf()
+    var adapterMedia : AdapterMedia ?=null
     var ctProd =0
+    var CODE_CAMERA = 1
+    var CODE_VIDEO = 2
+    var CODE_GALLERY = 3
+    var code : Int ?=-1
+    val GRANTED = 0
+    val DENIED = 1
+    val BLOCKED = -1
     var simpTimeAA : SimpleDateFormat = SimpleDateFormat("hh:mm aa")
     var simpOrg : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss")
     var currLayout : LinearLayout ?=null
@@ -53,7 +83,154 @@ class ActivtyVisitDetails : Activity() , RVOnItemClickListener{
         binding = ActivityVisitDetailsBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
         init()
+        setUp()
+        setUpContent()
         listeners()
+
+    }
+
+    fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path: String =
+            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        return Uri.parse(path)
+    }
+
+    fun getRealPathFromURI(uri: Uri?): String? {
+        var path = ""
+        if (getContentResolver() != null) {
+            val cursor: Cursor = getContentResolver().query(uri!!, null, null, null, null)!!
+            if (cursor != null) {
+                cursor.moveToFirst()
+                val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+                path = cursor.getString(idx)
+                cursor.close()
+            }
+        }
+        return path
+    }
+
+
+    @Throws(IOException::class)
+    fun getFile(context: Activity, uri: Uri): File {
+        try {
+            val destinationFilename =
+                File(context.filesDir.path + File.separatorChar + queryName(context, uri))
+            try {
+                context.contentResolver.openInputStream(uri).use { ins ->
+                    createFileFromStream(
+                        ins!!,
+                        destinationFilename
+                    )
+                }
+            } catch (ex: java.lang.Exception) {
+                Log.e("Save File", ex.message!!)
+                ex.printStackTrace()
+            }
+            return destinationFilename
+        }
+        catch (ex:java.lang.Exception){
+            Log.wtf("createFile","error")
+            return File("")
+        }
+    }
+
+    fun createFileFromStream(ins: InputStream, destination: File?) {
+        try {
+            FileOutputStream(destination).use { os ->
+                val buffer = ByteArray(4096)
+                var length: Int
+                while (ins.read(buffer).also { length = it } > 0) {
+                    os.write(buffer, 0, length)
+                }
+                os.flush()
+            }
+        } catch (ex: java.lang.Exception) {
+            Log.e("Save File", ex.message!!)
+            ex.printStackTrace()
+        }
+    }
+
+    private fun queryName(context: Context, uri: Uri): String {
+        val returnCursor: Cursor = context.contentResolver.query(uri, null, null, null, null)!!
+        val nameIndex: Int = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+        returnCursor.moveToFirst()
+        val name: String = returnCursor.getString(nameIndex)
+        returnCursor.close()
+        return name
+    }
+
+    fun setUpContent(){
+
+
+        mPermissionResult = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+
+            Toast.makeText(this@ActivtyVisitDetails,"TESTWORK",Toast.LENGTH_SHORT).show()
+            var file : File ?=null
+            when (code) {
+
+                CODE_CAMERA -> {
+                    try {
+                        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
+                            var path: Bitmap = it.data!!.extras!!.get("data") as Bitmap
+                            var ur = getImageUri(this, path)
+                            var paths = getRealPathFromURI(ur)
+                            file = File(paths)
+                        }else{
+                            file = File(it.data!!.data!!.path)
+                        }
+
+
+                        arrayMedia.add(ItemSpinner(0,file.absolutePath,false,false,true,1))
+                        adapterMedia!!.notifyDataSetChanged()
+
+                    } catch (e: Exception) {
+                        Toast.makeText(this@ActivtyVisitDetails,e.toString(),Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                CODE_GALLERY -> {
+                    file = getFile(this, it.data!!.data!!)
+
+                    var type = -1
+
+                    if(AppHelper.isImageFile(file.path))
+                        type = 1
+                    else
+                        type = 0
+
+                    arrayMedia.add(ItemSpinner(0,file.absolutePath,false,false,true,type))
+                    adapterMedia!!.notifyDataSetChanged()
+                }
+
+                CODE_VIDEO -> {
+                    try {
+                        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
+                            var path: Bitmap = it.data!!.extras!!.get("data") as Bitmap
+                            var ur = getImageUri(this, path)
+                            var paths = getRealPathFromURI(ur)
+                            file = File(paths)
+                        }else{
+                            file = File(it.data!!.data!!.path)
+                        }
+
+
+                        arrayMedia.add(ItemSpinner(0,file.absolutePath,false,false,true,1))
+                        adapterMedia!!.notifyDataSetChanged()
+
+                    } catch (e: Exception) {
+                    }
+                }
+
+                else -> {
+
+                }
+            }
+
+        }
     }
 
     fun init(){
@@ -66,6 +243,9 @@ class ActivtyVisitDetails : Activity() , RVOnItemClickListener{
         binding!!.tvVisitTitle.text = MyApplication.selectedVisit!!.title
 
 
+        binding!!.layoutMedia.rvMedia.layoutManager = GridLayoutManager(this,1,LinearLayoutManager.HORIZONTAL,false)
+        adapterMedia = AdapterMedia(arrayMedia,this,this)
+        binding!!.layoutMedia.rvMedia.adapter = adapterMedia
     }
 
     fun setDataReccomend(){
@@ -237,6 +417,8 @@ class ActivtyVisitDetails : Activity() , RVOnItemClickListener{
     }
 
 
+
+
     fun setUpCompanyData(){
 
         binding!!.layoutCompany.tvCompanyName.setTextLang(MyApplication.selectedVisit!!.company!!.companyName,MyApplication.selectedVisit!!.company!!.companyNameAr)
@@ -276,6 +458,106 @@ class ActivtyVisitDetails : Activity() , RVOnItemClickListener{
         safeCall {
             alertDialog!!.show()
             alertDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+
+    }
+
+    fun setUpDataVisit(pos : Int){
+
+        var arrSpinner : ArrayList<ItemSpinner> = arrayListOf()
+
+        for(item in arrayProd.get(pos).reports)
+            arrSpinner.add(ItemSpinner(item.id,item.name,false,true))
+
+
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        var popupItemMultipleBinding = ReasonDialogBinding.inflate(layoutInflater)
+
+        popupItemMultipleBinding.rvReasonStatus.layoutManager = LinearLayoutManager(this)
+        popupItemMultipleBinding.rvReasonStatus.adapter = AdapterDialog(arrSpinner,this,this)
+
+        builder.setView(popupItemMultipleBinding.root)
+        alertDialog = builder.create()
+        alertDialog!!.setCanceledOnTouchOutside(false)
+        safeCall {
+            alertDialog!!.show()
+            alertDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+
+
+            CODE_CAMERA -> {
+                var permissioned = false
+
+                for (item in grantResults) {
+                    permissioned = item == PackageManager.PERMISSION_GRANTED
+                }
+                if (permissioned) {
+                    MyApplication.permission = 0
+                } else {
+                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                        if (MyApplication.permission!! >= 2) {
+                            for (item in permissions) {
+
+                                var x = checkSelfPermission(item)
+                                if (checkSelfPermission(item) == BLOCKED) {
+                                    mPermissionResult.launch(
+                                        Intent(android.provider.Settings.ACTION_SETTINGS)
+                                    )
+                                    /*startActivityForResult(
+                                      ,
+                                        0
+                                    );*/
+                                    toast(
+                                        AppHelper.getRemoteString(
+                                            "grant_settings_permission",
+                                            this
+                                        )
+                                    )
+                                    break
+                                }
+                            }
+                        } else {
+                            MyApplication.permission = MyApplication.permission!! + 1
+                        }
+                    }
+                }
+
+            }
+
+        }
+    }
+
+    fun setUp() {
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(
+                arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ), CODE_GALLERY
+            )
+        } else {
+            ActivityCompat.requestPermissions(
+                this, arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ), CODE_GALLERY
+            )
         }
 
     }
@@ -364,6 +646,29 @@ class ActivtyVisitDetails : Activity() , RVOnItemClickListener{
                 )
                 startActivity(intent)
             }
+        }
+
+        binding!!.layoutReccomend.btAddReccomend.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    ActivityAddReccomendations::class.java
+
+                )
+            )
+
+          //  overridePendingTransition(R.anim.cycling ,R.anim.cycling)
+        }
+
+        binding!!.layoutProdcution.btAddProducts.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    ActivityAddProduct::class.java
+
+                )
+            )
+          //  overridePendingTransition(R.anim.cycling ,R.anim.cycling)
         }
 
         binding!!.llMedia.setOnClickListener {
@@ -485,7 +790,24 @@ class ActivtyVisitDetails : Activity() , RVOnItemClickListener{
                 currLayPost = 3
             }
         }
+        binding!!.layoutMedia.llCamera.setOnClickListener {
+            code = CODE_CAMERA
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            mPermissionResult.launch(cameraIntent)
+        }
+        binding!!.layoutMedia.llVideo.setOnClickListener {
+            code = CODE_VIDEO
+            val cameraIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+            mPermissionResult.launch(cameraIntent)
+        }
 
+        binding!!.layoutMedia.llGallery.setOnClickListener {
+            code = CODE_GALLERY
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type ="image/* video/*"
+            // resultcode = CODE_IMAGE
+            mPermissionResult.launch(intent)
+        }
         binding!!.llSignature.setOnClickListener {
             restartLayouts()
             AppHelper.setTextColor(this,binding!!.tvSignature,R.color.medium_blue)
@@ -528,6 +850,9 @@ class ActivtyVisitDetails : Activity() , RVOnItemClickListener{
     }
 
     override fun onItemClicked(view: View, position: Int) {
-
+        if(view.id == R.id.llJobReport){
+            if(arrayProd.get(position).reports.size>0)
+                setUpDataVisit(position)
+        }
     }
 }

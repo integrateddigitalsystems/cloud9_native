@@ -11,17 +11,24 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
+import android.net.Uri
 import android.os.Build
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.VideoView
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.databinding.ErrorDialogBinding
 import dev.b3nedikt.restring.Restring
 import dev.b3nedikt.restring.toMutableRepository
 import dev.b3nedikt.reword.Reword
+import java.io.File
 import java.io.IOException
+import java.net.URLConnection
 import java.util.*
 
 
@@ -74,6 +81,47 @@ class AppHelper {
             }
         }
 
+        fun isImageFile(path: String?): Boolean {
+            val mimeType: String = URLConnection.guessContentTypeFromName(path)
+            return mimeType != null && mimeType.startsWith("image")
+        }
+
+
+        fun loadVideo(view:VideoView, video :String){
+
+                view.setVideoURI(Uri.parse(video))
+                view.requestFocus()
+                view.start()
+
+
+        }
+
+
+        fun setImage(context: Context, img: ImageView, ImgUrl: String, isLocal: Boolean) {
+            try {
+                if (isLocal) {
+                    Glide.with(context)
+                        .load(File(ImgUrl))
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .dontAnimate()
+                        .fitCenter()
+                        .dontTransform()
+                        .into(img)
+                } else {
+                    Glide.with(context)
+                        .load(ImgUrl)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .dontAnimate()
+                        .fitCenter()
+                        .dontTransform()
+                        .into(img)
+                }
+
+
+            } catch (e: Exception) {
+            }
+
+        }
 
         fun getColor(con:Context , color : Int ):Int{
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

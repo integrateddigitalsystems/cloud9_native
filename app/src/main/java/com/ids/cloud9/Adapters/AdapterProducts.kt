@@ -63,6 +63,7 @@ class AdapterProducts(
 
         init {
             binding.root.setOnClickListener(this)
+            binding.llJobReport.setOnClickListener(this)
 
 
 

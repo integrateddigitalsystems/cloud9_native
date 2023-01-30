@@ -40,7 +40,7 @@
             android:layout_centerVertical="true"
             android:layout_width="@dimen/height_toggle"
             android:layout_height="@dimen/height_toggle"
-            android:src="@drawable/feed_bg"/>
+            android:src="@drawable/icon_calendar_points"/>
 
         </LinearLayout>
 

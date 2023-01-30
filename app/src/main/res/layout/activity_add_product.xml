@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/gray_app_bg"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:elevation="@dimen/small_margin"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gradient_bg">
+
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/btBack"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:layout_marginStart="@dimen/small_margin"
+                android:tint="@color/white"
+                android:layout_centerVertical="true"
+                android:layout_width="@dimen/height_toggle"
+                android:layout_height="@dimen/height_toggle"
+                android:rotation="180"
+                android:src="@drawable/ic_arrow_right"/>
+
+            <ImageView
+                android:layout_toEndOf="@id/btBack"
+                android:id="@+id/ivCalendar"
+                android:layout_marginStart="@dimen/small_margin"
+                android:layout_centerVertical="true"
+                android:layout_width="@dimen/height_toggle"
+                android:layout_height="@dimen/height_toggle"
+                android:src="@drawable/icon_calendar_points"/>
+
+        </LinearLayout>
+
+        <com.ids.cloud9.custom.CustomTextViewMedium
+            android:layout_marginTop="@dimen/home_radius"
+            android:layout_marginBottom="@dimen/home_radius"
+            android:id="@+id/tvVisitTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Visits"
+            android:textColor="@color/white"
+            android:textSize="@dimen/normal_font" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:background="@color/white"
+        android:layout_margin="@dimen/margin_start_end"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/name"/>
+
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/small_margin_padding"
+                    android:background="@drawable/rounded_gray_border"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_40"
+                    android:layout_weight="1">
+
+
+                    <com.ids.cloud9.custom.CustomTextViewMedium
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/normal_margin_padding"
+                        android:gravity="center_vertical"
+                        android:text="@string/status_reason"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/normal_font" />
+
+                    <ImageView
+                        android:layout_width="@dimen/padding_10"
+                        android:layout_height="@dimen/padding_10"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/settings_item_height"
+                        android:rotation="90"
+                        android:src="@drawable/arrow_submit"
+                        />
+
+
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/unit"/>
+
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/small_margin_padding"
+                    android:id="@+id/spStatusReason"
+                    android:background="@drawable/rounded_gray_border"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_40"
+                    android:layout_weight="1">
+
+
+                    <com.ids.cloud9.custom.CustomTextViewMedium
+                        android:id="@+id/tvStatusReason"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/normal_margin_padding"
+                        android:gravity="center_vertical"
+                        android:text="@string/status_reason"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/normal_font" />
+
+                    <ImageView
+                        android:layout_width="@dimen/padding_10"
+                        android:layout_height="@dimen/padding_10"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/settings_item_height"
+                        android:rotation="90"
+                        android:src="@drawable/arrow_submit"
+                        />
+
+
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/quantity"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font" />
+
+                <com.ids.molilo.custom.CustomEditText
+                    android:layout_weight="1"
+                    android:layout_marginTop="@dimen/small_margin_padding"
+                    android:padding="@dimen/small_margin_padding"
+                    android:background="@drawable/rounded_gray_border"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:minHeight="@dimen/height_40"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/status_reason"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/serial_number_1"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font" />
+
+                <com.ids.molilo.custom.CustomEditText
+                    android:layout_weight="1"
+                    android:layout_marginTop="@dimen/small_margin_padding"
+                    android:padding="@dimen/small_margin_padding"
+                    android:background="@drawable/rounded_gray_border"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:minHeight="@dimen/height_40"
+                    android:layout_width="match_parent"
+                    android:id="@+id/tvVisitDate"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/status_reason"/>
+
+            </LinearLayout>
+
+
+
+            <com.ids.cloud9.custom.CustomButton
+                android:layout_marginBottom="@dimen/small_margin"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:layout_width="match_parent"
+                android:text="@string/add"
+                android:textColor="@color/white"
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_height="@dimen/height_40"
+                android:background="@drawable/rounded_primary_layout"/>
+
+
+            <LinearLayout
+                android:layout_marginBottom="@dimen/small_margin"
+                android:background="@drawable/rounded_red"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_40">
+
+                <ImageView
+                    android:tint="@color/white"
+                    android:layout_width="@dimen/list_icon_width_height"
+                    android:layout_height="@dimen/list_icon_width_height"
+                    android:src="@drawable/trash_alt"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_marginStart="@dimen/small_margin_padding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:text="@string/delete"/>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+</LinearLayout>

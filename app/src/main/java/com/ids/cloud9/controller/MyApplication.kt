@@ -29,6 +29,7 @@ class MyApplication : Application() {
         var token : String ?=""
         var selectedVisit : VisitListItem ?=null
         var userItem : JWTResponse ?=null
+        var permission =-1
         var mobileConfig : MobileConfig?=null
         var languageCode : String ?="en"
         var isSignatureEmpty = false

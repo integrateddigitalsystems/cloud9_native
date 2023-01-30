@@ -42,4 +42,18 @@ interface RetrofitInterface {
         @Query("loggedUser") userId: Int
     ):Call<ActivitiesList>
 
+
+    @GET("Products/GetAllActiveProductsMobile")
+    fun getAllProducts():Call<ProductAllList>
+
+    @GET("Lookups/GetLookupByParantCode")
+    fun getUnits(
+        code:String
+    ):Call<UnitList>
+
+    @GET("ApplicationUsers/GetAllApplicationUsers")
+    fun getAllUsers(
+        statusId:Int
+    ):Call<UnitList>
+
 }
