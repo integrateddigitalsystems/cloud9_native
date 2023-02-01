@@ -30,6 +30,7 @@ class MyApplication : Application() {
         var selectedVisit : VisitListItem ?=null
         var userItem : JWTResponse ?=null
         var permission =-1
+        var selectedProduct:ProductsItem  ?= null
         var mobileConfig : MobileConfig?=null
         var languageCode : String ?="en"
         var isSignatureEmpty = false

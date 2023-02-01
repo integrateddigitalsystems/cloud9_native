@@ -37,5 +37,7 @@ data class ProductAllListItem(
     @SerializedName("typeOthers")
     val typeOthers: Boolean,
     @SerializedName("unitId")
-    val unitId: Int
+    val unitId: Int ,
+
+    var selected : Boolean ?=false
 )

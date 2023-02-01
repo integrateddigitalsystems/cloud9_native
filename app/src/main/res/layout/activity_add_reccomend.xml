@@ -123,8 +123,7 @@
                     android:textSize="@dimen/normal_font"
                     android:layout_width="match_parent"
                     android:id="@+id/tvVisitDate"
-                    android:layout_height="@dimen/with_80"
-                    android:text="@string/status_reason"/>
+                    android:layout_height="@dimen/with_80" />
 
             </LinearLayout>
 
@@ -148,23 +147,33 @@
                     android:text="@string/assign_to"/>
 
                 <RelativeLayout
+                    android:id="@+id/llAssignTo"
                     android:layout_marginTop="@dimen/small_margin_padding"
                     android:background="@drawable/rounded_white_gray_border"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_40"
+                    android:minHeight="@dimen/height_40"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1">
 
 
-                    <com.ids.cloud9.custom.CustomTextViewMedium
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:id="@+id/rvSelectedUser"
+                        android:visibility="gone"
+                        android:layout_toStartOf="@id/ivSelectUser"
+                        android:layout_height="wrap_content"
+                        />
+
+                    <!--<com.ids.cloud9.custom.CustomTextViewMedium
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/normal_margin_padding"
                         android:gravity="center_vertical"
-                        android:text="@string/status_reason"
                         android:textColor="@color/text_color"
-                        android:textSize="@dimen/normal_font" />
+                        android:textSize="@dimen/normal_font" />-->
 
                     <ImageView
+                        android:id="@+id/ivSelectUser"
                         android:layout_width="@dimen/padding_10"
                         android:layout_height="@dimen/padding_10"
                         android:layout_alignParentEnd="true"
@@ -180,6 +189,13 @@
                 </RelativeLayout>
 
             </LinearLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
 
 
             <LinearLayout
@@ -202,7 +218,6 @@
 
                 <RelativeLayout
                     android:layout_marginTop="@dimen/small_margin_padding"
-                    android:id="@+id/spStatusReason"
                     android:background="@drawable/rounded_white_gray_border"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/height_40"
@@ -210,12 +225,11 @@
 
 
                     <com.ids.cloud9.custom.CustomTextViewMedium
-                        android:id="@+id/tvStatusReason"
+                        android:id="@+id/tvDueDate"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/normal_margin_padding"
                         android:gravity="center_vertical"
-                        android:text="@string/status_reason"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/normal_font" />
 
@@ -235,6 +249,34 @@
                 </RelativeLayout>
 
             </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/llNameSelect"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/with_200"
+                    android:layout_marginStart="@dimen/margin_start_end"
+                    android:layout_marginTop="-1dp"
+                    android:layout_marginEnd="@dimen/margin_start_end"
+                    android:background="@drawable/rounded_bottom_white_gray_border"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvNames"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+
+                </LinearLayout>
+
+
+
+
+            </RelativeLayout>
 
             
 

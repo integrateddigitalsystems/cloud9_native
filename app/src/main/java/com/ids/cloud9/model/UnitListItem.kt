@@ -29,5 +29,6 @@ data class UnitListItem(
     @SerializedName("parentName")
     val parentName: Any,
     @SerializedName("pid")
-    val pid: String
+    val pid: String ,
+    var selected : Boolean ?=false
 )

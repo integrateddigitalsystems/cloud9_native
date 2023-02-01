@@ -15,7 +15,7 @@ data class ProductsItem(
     @SerializedName("id")
     var id: Int,
     @SerializedName("isDeleted")
-    var isDeleted: Any,
+    var isDeleted: Boolean,
     @SerializedName("modificationDate")
     var modificationDate: String,
     @SerializedName("notes")
@@ -33,7 +33,7 @@ data class ProductsItem(
     @SerializedName("serialNumber")
     var serialNumber: String,
     @SerializedName("serialNumbers")
-    var serialNumbers: List<String>,
+    var serialNumbers: ArrayList<String>?= arrayListOf(),
     @SerializedName("unit")
     var unit: Unit,
     @SerializedName("unitId")
@@ -43,7 +43,7 @@ data class ProductsItem(
     @SerializedName("visitId")
     var visitId: Int,
     @SerializedName("visitNumber")
-    var visitNumber: String ,
+    var visitNumber: String,
 
     var reports : ArrayList<Report> = arrayListOf()
     

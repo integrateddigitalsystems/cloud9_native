@@ -1,4 +1,4 @@
-package com.ids.cloud9.Adapters
+package com.ids.cloud9.controller.adapters
 
 import android.app.Activity
 import android.view.View
@@ -8,28 +8,23 @@ import com.ids.cloud9.R
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.databinding.ItemProductsBinding
 import com.ids.cloud9.databinding.ItemReasonDialogBinding
-import com.ids.cloud9.databinding.ItemReccomendationsBinding
-import com.ids.cloud9.model.ActivitiesListItem
 import com.ids.cloud9.model.ItemSpinner
 import com.ids.cloud9.model.ProductsItem
 import com.ids.cloud9.utils.AppHelper
 import com.ids.cloud9.utils.setCheckText
-import java.text.SimpleDateFormat
 import java.util.ArrayList
 
-class AdapterReccomendations(
-    var items : ArrayList<ActivitiesListItem>,
+class AdapterProducts(
+    var items : ArrayList<ProductsItem>,
     var con: Activity,
     private var clickListener: RVOnItemClickListener
-) : RecyclerView.Adapter<AdapterReccomendations.VhItem>() {
-    var simpOrg = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-    var simpTo = SimpleDateFormat("dd/MM/yyyy")
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterReccomendations.VhItem {
-        val binding = ItemReccomendationsBinding.inflate(con.layoutInflater,parent,false)
+) : RecyclerView.Adapter<AdapterProducts.VhItem>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VhItem {
+        val binding = ItemProductsBinding.inflate(con.layoutInflater,parent,false)
         return VhItem(binding, clickListener)
     }
 
-    override fun onBindViewHolder(holder: AdapterReccomendations.VhItem, position: Int) {
+    override fun onBindViewHolder(holder: VhItem, position: Int) {
         holder.bind(items[position])
     }
 
@@ -38,7 +33,7 @@ class AdapterReccomendations(
     }
 
     inner class VhItem(
-        val binding: ItemReccomendationsBinding,
+        val binding: ItemProductsBinding,
         private var clickListener: RVOnItemClickListener
     ) : RecyclerView.ViewHolder(
         binding.root
@@ -46,15 +41,19 @@ class AdapterReccomendations(
     ), View.OnClickListener {
 
 
-        fun bind(item: ActivitiesListItem) {
+        fun bind(item: ProductsItem) {
 
-
-            binding.tvAssignedTo.setCheckText(item.assignedTo)
-            binding.tvDesc.setCheckText(item.description)
-            binding.tvSubject.setCheckText(item.subject)
-            binding.tvDueDate.setCheckText(simpTo.format(simpOrg.parse(item.dueDate)))
-            binding.tvReason.setCheckText(item.reason)
-
+            binding.tvProductName.setCheckText(item.product.name)
+            if(item.product.unit!=null && !item.product.unit.name.isNullOrEmpty())
+                binding.tvUnit.setCheckText(item.product.unit.name)
+            else
+                binding.tvUnit.text = ""
+            binding.tvSN.text =if(item.serialNumbers!=null && item.serialNumbers!!.size > 0 ){
+                item.serialNumbers!!.get(0)
+            }else{
+                "N/A"
+            }
+            binding.tvQuantity.text = item.quantity.toString()
 
 
 
@@ -64,6 +63,9 @@ class AdapterReccomendations(
 
         init {
             binding.root.setOnClickListener(this)
+            binding.llJobReport.setOnClickListener(this)
+            binding.btEditProduct.setOnClickListener(this)
+            binding.btClose.setOnClickListener(this)
 
 
 

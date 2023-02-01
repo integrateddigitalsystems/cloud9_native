@@ -13,7 +13,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
-import com.ids.cloud9.Adapters.StickyAdapter
+import com.ids.cloud9.controller.adapters.StickyAdapter
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
@@ -25,6 +25,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ActivityMain: Activity() , RVOnItemClickListener{
@@ -200,6 +201,16 @@ class ActivityMain: Activity() , RVOnItemClickListener{
         }else{
             tempArray.clear()
         }
+
+
+        var x : ArrayList<VisitListItem> = arrayListOf()
+        x.addAll(tempArray)
+
+        tempArray.clear()
+        tempArray.addAll(x.filter {
+            it.reasonId != AppConstants.SCHEDULED_REASON_ID
+        })
+
 
 
 

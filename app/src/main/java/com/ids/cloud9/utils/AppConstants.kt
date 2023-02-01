@@ -25,6 +25,7 @@ object AppConstants {
     const val FIREBASE_CONFIG = "MobileConfiguration"
     const val LOCALISED_MESSAGES = "localised_messages"
 
+
     const val COMPLETED_REASON_ID = 4651
     const val SCHEDULED_REASON_ID = 4652
     const val ARRIVED_REASON_ID = 4653

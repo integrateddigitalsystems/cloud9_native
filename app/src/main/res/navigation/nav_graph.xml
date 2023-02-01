@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragmentVisitDetails">
+
+    <fragment
+        android:id="@+id/fragmentVisitDetails"
+        android:name="com.ids.cloud9.controller.base.Fragment.FragmentVisitDetails"
+        android:label="FragmentVisitDetails" >
+        <action
+            android:id="@+id/action_fragmentVisitDetails_to_fragmentProducts"
+            app:destination="@id/fragmentProducts" />
+        <action
+            android:id="@+id/action_fragmentVisitDetails_to_fragmentReccomendations"
+            app:destination="@id/fragmentReccomendations" />
+        <action
+            android:id="@+id/action_fragmentVisitDetails_to_fragmentSignature"
+            app:destination="@id/fragmentSignature" />
+        <action
+            android:id="@+id/action_fragmentVisitDetails_to_fragmentCompany"
+            app:destination="@id/fragmentCompany" />
+        <action
+            android:id="@+id/action_fragmentVisitDetails_to_fragmentMedia"
+            app:destination="@id/fragmentMedia" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentCompany"
+        android:name="com.ids.cloud9.controller.base.Fragment.FragmentCompany"
+        android:label="FragmentCompany" />
+    <fragment
+        android:id="@+id/fragmentMedia"
+        android:name="com.ids.cloud9.controller.Fragment.FragmentMedia"
+        android:label="FragmentMedia" />
+    <fragment
+        android:id="@+id/fragmentProducts"
+        android:name="com.ids.cloud9.controller.Fragment.FragmentProducts"
+        android:label="FragmentProducts" />
+    <fragment
+        android:id="@+id/fragmentReccomendations"
+        android:name="com.ids.cloud9.controller.Fragment.FragmentReccomendations"
+        android:label="FragmentReccomendations" />
+    <fragment
+        android:id="@+id/fragmentSignature"
+        android:name="com.ids.cloud9.controller.Fragment.FragmentSignature"
+        android:label="FragmentSignature" >
+        <action
+            android:id="@+id/action_fragmentSignature_to_fragmentVisitDetails"
+            app:destination="@id/fragmentVisitDetails" />
+        <action
+            android:id="@+id/action_fragmentSignature_to_fragmentProducts"
+            app:destination="@id/fragmentProducts" />
+        <action
+            android:id="@+id/action_fragmentSignature_to_fragmentReccomendations"
+            app:destination="@id/fragmentReccomendations" />
+    </fragment>
+</navigation>

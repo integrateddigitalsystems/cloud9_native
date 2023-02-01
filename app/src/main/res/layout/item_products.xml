@@ -34,18 +34,24 @@
                 android:textColor="@color/medium_blue"/>
 
             <ImageView
+                android:foreground="?android:attr/selectableItemBackground"
+                android:padding="@dimen/small_margin_padding"
+                android:id="@+id/btEditProduct"
                 android:layout_marginEnd="@dimen/normal_margin_padding"
                 android:tint="@color/gray_border_tab"
-                android:layout_width="@dimen/list_icon_width_height"
-                android:layout_height="@dimen/list_icon_width_height"
+                android:layout_width="@dimen/height_toggle"
+                android:layout_height="@dimen/height_toggle"
                 android:src="@drawable/pen"/>
 
             <ImageView
+                android:id="@+id/btClose"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:padding="@dimen/small_margin_padding"
                 android:layout_marginEnd="@dimen/small_margin_padding"
                 android:tint="@color/gray_border_tab"
                 android:layout_marginStart="@dimen/small_margin_padding"
-                android:layout_width="@dimen/list_icon_width_height"
-                android:layout_height="@dimen/list_icon_width_height"
+                android:layout_width="@dimen/height_toggle"
+                android:layout_height="@dimen/height_toggle"
                 android:src="@drawable/close_x"/>
         </LinearLayout>
 
@@ -180,17 +186,23 @@
 
 
                 <ImageView
-                    android:layout_width="@dimen/size_18"
-                    android:layout_height="@dimen/size_18"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="@dimen/small_margin_padding"
+                    android:layout_width="@dimen/height_toggle"
+                    android:layout_height="@dimen/height_toggle"
                     android:tint="@color/gray_tint"
-                    android:layout_marginEnd="@dimen/small_margin"
+                    android:layout_marginEnd="@dimen/normal_margin_padding"
                     android:src="@drawable/share_square" />
 
 
                 <ImageView
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:layout_marginStart="@dimen/small_margin_padding"
+                    android:layout_marginEnd="@dimen/small_margin_padding"
+                    android:padding="@dimen/small_margin_padding"
                     android:tint="@color/colorAccent"
-                    android:layout_width="@dimen/size_18"
-                    android:layout_height="@dimen/size_18"
+                    android:layout_width="@dimen/height_toggle"
+                    android:layout_height="@dimen/height_toggle"
                     android:src="@drawable/list" />
             </LinearLayout>
 

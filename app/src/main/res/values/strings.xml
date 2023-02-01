@@ -47,4 +47,7 @@
     <string name="description">Description:</string>
     <string name="assign_to">Assign to:</string>
     <string name="due_date">Due date:</string>
+    <string name="product">--Product--</string>
+    <string name="fill_details">Please fill details</string>
+    <string name="you_wanna_delete">Are you sure you want to delete ?</string>
 </resources>

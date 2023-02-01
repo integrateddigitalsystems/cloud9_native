@@ -1,19 +1,343 @@
 package com.ids.cloud9.controller.activities
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.ids.cloud9.controller.adapters.AdapterDialog
+import com.ids.cloud9.R
+import com.ids.cloud9.controller.MyApplication
+import com.ids.cloud9.controller.adapters.AdapterText
+import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.databinding.ActivityAddProductBinding
 import com.ids.cloud9.databinding.ActivityVisitDetailsBinding
+import com.ids.cloud9.databinding.ReasonDialogBinding
+import com.ids.cloud9.model.*
+import com.ids.cloud9.utils.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
-class ActivityAddProduct : AppCompatActivity() {
+class ActivityAddProduct : AppCompatActivity() , RVOnItemClickListener {
 
-    var binding : ActivityAddProductBinding ?=null
+    var binding: ActivityAddProductBinding? = null
+    var prodId : Int ?=0
+    var unitId : Int ?=0
+    var mainPos  = -1
+    var array: ArrayList<ProductAllListItem> = arrayListOf()
+    var createProduct : CreateProduct ?=null
+    var simp : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+    var tempArray : ArrayList<ProductAllListItem> = arrayListOf()
+    var arrSpinner : ArrayList<ItemSpinner> = arrayListOf()
+    var alertDialog : AlertDialog ?=null
+    var adapter : AdapterText?=null
+    var adapterDialog :AdapterDialog ?=null
+    var arr : ArrayList<ItemSpinner> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddProductBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
 
+        init()
+        listeners()
 
+
+    }
+
+
+    fun init() {
+        getUnits()
+        getProductNames()
+        createProduct = CreateProduct()
+        if(MyApplication.selectedProduct!=null){
+            binding!!.tvUnit.text = MyApplication.selectedProduct!!.product.unit.name
+            binding!!.tvProduct.text = MyApplication.selectedProduct!!.product.name
+            binding!!.etQuantity.text = MyApplication.selectedProduct!!.quantity!!.toString().toEditable()
+            binding!!.etSerialNumber.text = MyApplication.selectedProduct!!.serialNumbers!!.get(0).toEditable()
+            unitId = MyApplication.selectedProduct!!.unitId
+            prodId = MyApplication.selectedProduct!!.productId
+        }
+    }
+
+    fun setUpUnits() {
+
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        var popupItemMultipleBinding = ReasonDialogBinding.inflate(layoutInflater)
+
+        popupItemMultipleBinding.rvReasonStatus.layoutManager = LinearLayoutManager(this)
+        adapterDialog =  AdapterDialog(arrSpinner,this, this, true)
+        popupItemMultipleBinding.rvReasonStatus.adapter = adapterDialog
+
+
+        builder.setView(popupItemMultipleBinding.root)
+        alertDialog = builder.create()
+        alertDialog!!.setCanceledOnTouchOutside(true)
+        safeCall {
+            alertDialog!!.show()
+            alertDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+
+    }
+
+    fun setUpProduct(a : ArrayList<ProductAllListItem>){
+        arr.clear()
+        for(item in a) {
+            if(item.selected!=null)
+                arr.add(ItemSpinner(item.id, item.name, item.selected))
+            else
+                arr.add(ItemSpinner(item.id, item.name, false))
+        }
+        binding!!.rvNames.layoutManager = LinearLayoutManager(this)
+        adapter = AdapterText(arr,this,this )
+        binding!!.rvNames.adapter = adapter
+
+        binding!!.llLoading.hide()
+    }
+
+    fun setUpUnitData(units : UnitList){
+        arrSpinner.clear()
+        for(item in units) {
+            if(item.selected!=null)
+                arrSpinner.add(ItemSpinner(item.id, item.name, item.selected))
+            else
+                arrSpinner.add(ItemSpinner(item.id, item.name, false))
+        }
+    }
+
+    fun getUnits(){
+        binding!!.llLoading.show()
+        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.PRODUCTION_LOOKUP_CODE)
+            .enqueue(object : Callback<UnitList> {
+                override fun onResponse(
+                    call: Call<UnitList>,
+                    response: Response<UnitList>
+                ) {
+                   setUpUnitData(response.body()!!)
+                }
+
+                override fun onFailure(call: Call<UnitList>, t: Throwable) {
+                    binding!!.llLoading.hide()
+                }
+
+            })
+
+    }
+
+    fun getProductNames() {
+        binding!!.llLoading.show()
+        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getAllProducts()
+            .enqueue(object : Callback<ProductAllList> {
+                override fun onResponse(
+                    call: Call<ProductAllList>,
+                    response: Response<ProductAllList>
+                ) {
+                    array.clear()
+                    array.addAll(response.body()!!)
+                    setUpProduct(array)
+                }
+
+                override fun onFailure(call: Call<ProductAllList>, t: Throwable) {
+                    binding!!.llLoading.hide()
+                }
+
+            })
+
+    }
+
+    fun addProduct(){
+        binding!!.llLoading.show()
+        var cal = Calendar.getInstance()
+        createProduct = CreateProduct(
+            simp.format(cal.time),
+            if(!array.get(mainPos).description.isNullOrEmpty()) array.get(mainPos).description  else "" ,
+            array.get(mainPos).name,
+            0,
+            0,
+            false,
+            simp.format(cal.time),
+            "",
+            prodId ,
+            binding!!.etQuantity.text.toString().toInt(),
+            binding!!.etSerialNumber.text.toString().toInt(),
+            arrayListOf(),
+            unitId,
+            MyApplication.selectedVisit!!.id,
+            MyApplication.selectedVisit!!.number
+        )
+
+        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
+            .createMobile(
+                createProduct!!
+            ).enqueue(object : Callback<ResponseMessage>{
+                override fun onResponse(
+                    call: Call<ResponseMessage>,
+                    response: Response<ResponseMessage>
+                ) {
+                    if(response.body()!!.success!!.equals("true")){
+                        AppHelper.createDialogAgain(this@ActivityAddProduct,response.body()!!.message!!){
+                            finish()
+                        }
+                    }else{
+                        AppHelper.createDialogPositive(this@ActivityAddProduct,response.body()!!.message!!)
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
+                   binding!!.llLoading.hide()
+                }
+
+            })
+    }
+
+    fun editProduct(){
+        binding!!.llLoading.show()
+        var cal = Calendar.getInstance()
+        createProduct = CreateProduct(
+            simp.format(cal.time),
+            MyApplication.selectedProduct!!.customProductDescription ,
+            array.find { it.id == prodId }!!.name,
+            0,
+            MyApplication.selectedProduct!!.id,
+            false,
+            simp.format(cal.time),
+            "",
+            prodId ,
+            binding!!.etQuantity.text.toString().toInt(),
+            binding!!.etSerialNumber.text.toString().toInt(),
+            arrayListOf(),
+            unitId,
+            MyApplication.selectedVisit!!.id,
+            MyApplication.selectedVisit!!.number
+        )
+
+
+        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
+            .updateProduct(
+                createProduct!!
+            ).enqueue(object : Callback<ResponseMessage>{
+                override fun onResponse(
+                    call: Call<ResponseMessage>,
+                    response: Response<ResponseMessage>
+                ) {
+                    if(response.body()!!.success!!.equals("true")){
+                        AppHelper.createDialogAgain(this@ActivityAddProduct,response.body()!!.message!!){
+                            finish()
+                        }
+                    }else{
+                        AppHelper.createDialogPositive(this@ActivityAddProduct,response.body()!!.message!!)
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
+                    binding!!.llLoading.hide()
+                }
+
+            })
+    }
+
+    fun listeners() {
+
+        binding!!.rlProductName.setOnClickListener {
+            if(binding!!.llNameSelect.visibility == View.GONE) {
+                binding!!.llNameSelect.show()
+                binding!!.rlProductName.setBackgroundResource(R.drawable.rounded_top_white_gray_border)
+            }else{
+                binding!!.llNameSelect.hide()
+                binding!!.rlProductName.setBackgroundResource(R.drawable.rounded_white_gray_border)
+            }
+        }
+
+        binding!!.etFilterName.doOnTextChanged { text, start, before, count ->
+
+            var items = array.filter {
+                it.name.contains(text!!)
+            }
+            var arrayList : ArrayList<ProductAllListItem> = arrayListOf()
+            arrayList.addAll(items)
+            setUpProduct(arrayList)
+        }
+
+        binding!!.btAddProduct.setOnClickListener {
+            if(prodId!=0 && unitId!=0 && !binding!!.etQuantity.text.toString().isNullOrEmpty() && !binding!!.etSerialNumber.text.toString().isNullOrEmpty()) {
+                if(MyApplication.selectedProduct==null)
+                    addProduct()
+                else
+                    editProduct()
+            }else{
+                AppHelper.createDialogPositive(this,getString(R.string.fill_details))
+            }
+        }
+
+        binding!!.btBack.setOnClickListener {
+            super.onBackPressed()
+        }
+
+        binding!!.rlAddProdcut.setOnClickListener {
+            binding!!.llNameSelect.hide()
+        }
+
+        binding!!.spUnit.setOnClickListener {
+            setUpUnits()
+        }
+    }
+
+    override fun onItemClicked(view: View, position: Int) {
+
+        if (view.id == R.id.llItemText) {
+            var old = arr.get(position).selected
+            try {
+                arr.find {
+                    it.selected!!
+                }!!.selected = false
+                array.find {
+                    it.selected!!
+                }!!.selected = false
+            } catch (ex: Exception) {
+
+            }
+
+            if (!old!!)
+                arr.get(position).selected = true
+            else
+                arr.get(position).selected = false
+            array.find {
+                it.id == arr.get(position).id
+            }!!.selected = arr.get(position).selected
+            prodId = arr.get(position).id
+            mainPos = array.indexOf(array.find {
+                it.id == arr.get(position).id
+            })
+
+            binding!!.tvProduct.text = arr.get(position).name
+            binding!!.llNameSelect.hide()
+
+
+
+
+            adapter!!.notifyDataSetChanged()
+        } else {
+
+            try {
+                arrSpinner.find {
+                    it.selected!!
+                }!!.selected = false
+            }catch (ex:Exception){
+
+            }
+
+            arrSpinner.get(position).selected = true
+
+            binding!!.tvUnit.text = arrSpinner.get(position).name
+            unitId = arrSpinner.get(position).id
+            alertDialog!!.cancel()
+            adapterDialog!!.notifyDataSetChanged()
+        }
     }
 }

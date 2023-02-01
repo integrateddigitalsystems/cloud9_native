@@ -383,7 +383,7 @@
             android:layout_marginEnd="@dimen/margin_start_end"
             android:padding="@dimen/normal_margin_padding"
             android:layout_marginTop="@dimen/small_margin"
-            android:id="@+id/tvRemarks"
+            android:id="@+id/etRemark"
             android:layout_width="match_parent"
             android:background="@drawable/light_rounded_border"
             android:layout_height="@dimen/margin_120" />
@@ -394,6 +394,7 @@
             android:layout_marginEnd="@dimen/margin_start_end"
             android:layout_width="match_parent"
             android:text="@string/save"
+            android:id="@+id/btSave"
             android:textColor="@color/white"
             android:layout_marginTop="@dimen/small_margin"
             android:layout_height="@dimen/height_40"

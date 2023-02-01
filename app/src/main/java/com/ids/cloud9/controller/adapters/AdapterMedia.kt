@@ -1,4 +1,4 @@
-package com.ids.cloud9.Adapters
+package com.ids.cloud9.controller.adapters
 
 import android.app.Activity
 import android.view.View
@@ -17,12 +17,12 @@ class AdapterMedia(
     var con: Activity,
     private var clickListener: RVOnItemClickListener
 ) : RecyclerView.Adapter<AdapterMedia.VhItem>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterMedia.VhItem {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VhItem {
         val binding = ItemMediaBinding.inflate(con.layoutInflater,parent,false)
         return VhItem(binding, clickListener)
     }
 
-    override fun onBindViewHolder(holder: AdapterMedia.VhItem, position: Int) {
+    override fun onBindViewHolder(holder: VhItem, position: Int) {
         holder.bind(items[position])
     }
 

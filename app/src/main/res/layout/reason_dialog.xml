@@ -3,15 +3,24 @@
     android:layout_width="match_parent"
     android:gravity="center"
     android:layout_margin="@dimen/normal_margin"
-    android:background="@drawable/rounded_popup_white"
     android:layout_height="match_parent">
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="@dimen/normal_margin"
-        android:layout_marginBottom="@dimen/normal_margin"
+    <LinearLayout
+        android:paddingTop="@dimen/normal_margin"
+        android:background="@drawable/rounded_popup_white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/rvReasonStatus"/>
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginStart="@dimen/margin_start_end"
+            android:layout_marginEnd="@dimen/margin_start_end"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rvReasonStatus"/>
+
+
+    </LinearLayout>
+
+
 
 </LinearLayout>

@@ -3,6 +3,8 @@ package com.ids.cloud9.utils
 import com.ids.cloud9.model.*
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -48,12 +50,37 @@ interface RetrofitInterface {
 
     @GET("Lookups/GetLookupByParantCode")
     fun getUnits(
-        code:String
+        @Query("code")code :String
     ):Call<UnitList>
 
     @GET("ApplicationUsers/GetAllApplicationUsers")
     fun getAllUsers(
         statusId:Int
     ):Call<UnitList>
+
+    @POST("VisitProduct/CreateMobile")
+    fun createMobile(
+        @Body param : CreateProduct
+    ):Call<ResponseMessage>
+
+    @POST("VisitProduct/UpdateMobile")
+    fun updateProduct(
+        @Body param: CreateProduct
+    ):Call<ResponseMessage>
+
+    @POST("VisitProduct/Delete")
+    fun deleteProduct(
+        @Query("id") id  : Int
+    ):Call<ResponseMessage>
+
+    @POST("Activity/CreateActivityMobile")
+    fun createActivity(
+        @Body createAct : CreateActivity
+    ):Call<ResponseMessage>
+
+    @POST("Visit/UpdateVisit")
+    fun updateVisit(
+        @Body param: VisitListItem
+    ): Call<ResponseMessage>
 
 }
