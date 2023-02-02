@@ -38,6 +38,9 @@ object AppConstants {
     const val PENDING_REASON = "pending"
     const val ON_THE_WAY_REASON = "on the way"
 
+    const val ENTITY_TYPE_CODE_SIGNATURE = "A_EntityType_V"
+    const val SIGNATURE_TYPE_CLIENT = "SIGTYPE_C"
+    const val SIGNATURE_TYPE_EMPLOYEE = "SIGTYPE_E"
 
     const val FORM_ITEM_GRID = "grid"
     const val FORM_ITEM_BOOLEAN = "boolean"

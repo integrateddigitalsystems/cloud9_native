@@ -95,7 +95,7 @@ data class VisitListItem(
     @SerializedName("toTime")
     var toTime: String ?="",
     @SerializedName("type")
-    var type: Any?=null,
+    var type: String?="",
     @SerializedName("typeId")
     var typeId: Int?=0,
     @SerializedName("visitDate")

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -37,8 +37,17 @@
         android:background="@color/white"
         android:layout_width="match_parent"
         android:id="@+id/drawClient"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"/>
+
+            <ImageView
+                android:background="@color/white"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/normal_margin_padding"
+                android:layout_width="match_parent"
+                android:id="@+id/ivSelectedDrawClient"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
 
             <RelativeLayout
                 android:layout_marginTop="@dimen/small_margin_padding"
@@ -77,7 +86,7 @@
         <com.ids.cloud9.custom.CustomButton
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:background="@drawable/rounded_gray"
+            android:background="@drawable/rounded_primary_layout"
             android:id="@+id/btClearClient"
             android:layout_marginEnd="@dimen/small_margin_padding"
             android:layout_height="@dimen/size_35"
@@ -89,7 +98,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_marginStart="@dimen/small_margin_padding"
-            android:background="@drawable/rounded_gray"
+            android:background="@drawable/rounded_primary_layout"
             android:id="@+id/btSaveClient"
             android:layout_height="@dimen/size_35"
             android:text="@string/save"
@@ -123,8 +132,17 @@
         android:background="@color/white"
         android:layout_width="match_parent"
         android:id="@+id/drawEmployee"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"/>
+
+            <ImageView
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/normal_margin_padding"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:id="@+id/ivSelectedDrawEmployee"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
 
             <RelativeLayout
                 android:layout_marginTop="@dimen/small_margin_padding"
@@ -160,7 +178,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_marginEnd="@dimen/small_margin_padding"
-            android:background="@drawable/rounded_gray"
+            android:background="@drawable/rounded_primary_layout"
             android:id="@+id/btClearEmployee"
             android:layout_height="@dimen/size_35"
             android:text="@string/clear"
@@ -171,7 +189,7 @@
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/small_margin_padding"
             android:layout_weight="1"
-            android:background="@drawable/rounded_gray"
+            android:background="@drawable/rounded_primary_layout"
             android:id="@+id/btSaveEMployee"
             android:layout_height="@dimen/size_35"
             android:text="@string/save"
@@ -188,5 +206,17 @@
     </ScrollView>
 
 
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/llLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</LinearLayout>
+        <include
+            layout="@layout/loading" />
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

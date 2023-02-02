@@ -83,4 +83,22 @@ interface RetrofitInterface {
         @Body param: VisitListItem
     ): Call<ResponseMessage>
 
+    @POST("Activity/UpdateActivityMobile")
+    fun updateActivity(
+        @Body param : UpdateActivity
+    ): Call<ResponseMessage>
+
+    @GET("Attachments/GetAttachmentsMobile")
+    fun getSignatures(
+        @Query("entityTypeCode") entityType : String ,
+        @Query("entityId") entity_id : Int
+
+    ):Call<SignatureList>
+
+
+    @POST("Attachments/CreateAttachmentSignatureMobile")
+    fun saveSignature(
+        @Body sigReq : ArrayList<SignatureRequest>
+    ):Call<ResponseMessage>
+
 }

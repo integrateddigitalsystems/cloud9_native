@@ -6,6 +6,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_marginBottom="@dimen/small_margin"
+        android:foreground="?android:attr/selectableItemBackground"
         android:layout_marginStart="@dimen/margin_start_end"
         android:layout_marginEnd="@dimen/margin_start_end"
         android:background="@color/white"

@@ -51,6 +51,7 @@ class FragmentReccomendations : Fragment() , RVOnItemClickListener {
 
     fun listeners(){
         binding!!.btAddReccomend.setOnClickListener{
+            MyApplication.selectedReccomend = null
             startActivity(
                 Intent(
                     requireActivity(),
@@ -84,7 +85,10 @@ class FragmentReccomendations : Fragment() , RVOnItemClickListener {
                 arrayReccomend.clear()
                 arrayReccomend.addAll(response.body()!!
                     .filter {
-                        it.entity.equals(MyApplication.selectedVisit!!.title)
+                        if(!it.entity.isNullOrEmpty())
+                            it.entity.equals(MyApplication.selectedVisit!!.title)
+                        else
+                            false
                     })
                 setDataReccomend()
 
@@ -98,6 +102,12 @@ class FragmentReccomendations : Fragment() , RVOnItemClickListener {
     }
 
     override fun onItemClicked(view: View, position: Int) {
-
+        MyApplication.selectedReccomend = arrayReccomend.get(position)
+        startActivity(
+            Intent(
+                requireActivity(),
+                ActivityAddReccomendations::class.java
+            )
+        )
     }
 }

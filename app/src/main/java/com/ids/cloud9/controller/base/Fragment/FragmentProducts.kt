@@ -54,6 +54,7 @@ class FragmentProducts : Fragment() , RVOnItemClickListener {
         getProducts()
 
         binding!!.btAddProducts.setOnClickListener {
+            MyApplication.selectedProduct = null
             startActivity(
                 Intent(
                     requireActivity(),

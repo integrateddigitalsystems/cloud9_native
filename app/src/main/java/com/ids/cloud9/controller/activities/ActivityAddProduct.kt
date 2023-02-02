@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ids.cloud9.controller.adapters.AdapterDialog
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
+import com.ids.cloud9.controller.adapters.AdapterEdit
 import com.ids.cloud9.controller.adapters.AdapterText
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.databinding.ActivityAddProductBinding
@@ -30,6 +31,8 @@ class ActivityAddProduct : AppCompatActivity() , RVOnItemClickListener {
     var prodId : Int ?=0
     var unitId : Int ?=0
     var mainPos  = -1
+    var adapterSer : AdapterEdit ?=null
+    var arraySer : ArrayList<SerialItem> = arrayListOf()
     var array: ArrayList<ProductAllListItem> = arrayListOf()
     var createProduct : CreateProduct ?=null
     var simp : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
@@ -60,10 +63,22 @@ class ActivityAddProduct : AppCompatActivity() , RVOnItemClickListener {
             binding!!.tvUnit.text = MyApplication.selectedProduct!!.product.unit.name
             binding!!.tvProduct.text = MyApplication.selectedProduct!!.product.name
             binding!!.etQuantity.text = MyApplication.selectedProduct!!.quantity!!.toString().toEditable()
-            binding!!.etSerialNumber.text = MyApplication.selectedProduct!!.serialNumbers!!.get(0).toEditable()
+            for(i in 1..MyApplication.selectedProduct!!.quantity){
+                arraySer.add(SerialItem(""))
+            }
+            for(item in MyApplication.selectedProduct!!.serialNumbers!!.indices)
+                arraySer.get(item).serial = MyApplication.selectedProduct!!.serialNumbers!!.get(item)
             unitId = MyApplication.selectedProduct!!.unitId
             prodId = MyApplication.selectedProduct!!.productId
+        }else{
+            arraySer.add(SerialItem(""))
         }
+
+        binding!!.rvSerialised.layoutManager = LinearLayoutManager(this)
+        adapterSer = AdapterEdit(arraySer,this,this)
+        binding!!.rvSerialised.adapter = adapterSer
+
+
     }
 
     fun setUpUnits() {
@@ -154,6 +169,9 @@ class ActivityAddProduct : AppCompatActivity() , RVOnItemClickListener {
     fun addProduct(){
         binding!!.llLoading.show()
         var cal = Calendar.getInstance()
+        var arr:ArrayList<String> = arrayListOf()
+        for(item in arraySer)
+            arr.add(item.serial!!)
         createProduct = CreateProduct(
             simp.format(cal.time),
             if(!array.get(mainPos).description.isNullOrEmpty()) array.get(mainPos).description  else "" ,
@@ -165,8 +183,11 @@ class ActivityAddProduct : AppCompatActivity() , RVOnItemClickListener {
             "",
             prodId ,
             binding!!.etQuantity.text.toString().toInt(),
-            binding!!.etSerialNumber.text.toString().toInt(),
-            arrayListOf(),
+            if(arr.size >0)
+                0
+            else
+              arr.get(0).toInt()  ,
+            arr,
             unitId,
             MyApplication.selectedVisit!!.id,
             MyApplication.selectedVisit!!.number
@@ -199,6 +220,9 @@ class ActivityAddProduct : AppCompatActivity() , RVOnItemClickListener {
     fun editProduct(){
         binding!!.llLoading.show()
         var cal = Calendar.getInstance()
+        var arr:ArrayList<String> = arrayListOf()
+        for(item in arraySer)
+            arr.add(item.serial!!)
         createProduct = CreateProduct(
             simp.format(cal.time),
             MyApplication.selectedProduct!!.customProductDescription ,
@@ -210,8 +234,11 @@ class ActivityAddProduct : AppCompatActivity() , RVOnItemClickListener {
             "",
             prodId ,
             binding!!.etQuantity.text.toString().toInt(),
-            binding!!.etSerialNumber.text.toString().toInt(),
-            arrayListOf(),
+            if(arr.size >0)
+                0
+            else
+                arr.get(0).toInt()  ,
+            arr,
             unitId,
             MyApplication.selectedVisit!!.id,
             MyApplication.selectedVisit!!.number
@@ -254,6 +281,21 @@ class ActivityAddProduct : AppCompatActivity() , RVOnItemClickListener {
             }
         }
 
+        binding!!.etQuantity.doOnTextChanged { text, start, before, count ->
+            arraySer.clear()
+            var ct = 1
+            if(text!=null && text.length >0) {
+                while (ct <= text.toString().toInt()) {
+                    arraySer.add(SerialItem(""))
+                    adapterSer!!.notifyDataSetChanged()
+                    ct++
+                }
+            }else{
+                arraySer.add(SerialItem(""))
+                adapterSer!!.notifyDataSetChanged()
+            }
+        }
+
         binding!!.etFilterName.doOnTextChanged { text, start, before, count ->
 
             var items = array.filter {
@@ -265,7 +307,7 @@ class ActivityAddProduct : AppCompatActivity() , RVOnItemClickListener {
         }
 
         binding!!.btAddProduct.setOnClickListener {
-            if(prodId!=0 && unitId!=0 && !binding!!.etQuantity.text.toString().isNullOrEmpty() && !binding!!.etSerialNumber.text.toString().isNullOrEmpty()) {
+            if(prodId!=0 && unitId!=0 && !binding!!.etQuantity.text.toString().isNullOrEmpty() && arraySer.size > 0) {
                 if(MyApplication.selectedProduct==null)
                     addProduct()
                 else

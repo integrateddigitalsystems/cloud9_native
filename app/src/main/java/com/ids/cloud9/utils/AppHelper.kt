@@ -7,6 +7,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Context.CONNECTIVITY_SERVICE
 import android.content.res.Configuration
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Typeface
 import android.net.ConnectivityManager
@@ -26,6 +27,7 @@ import com.ids.cloud9.databinding.ErrorDialogBinding
 import dev.b3nedikt.restring.Restring
 import dev.b3nedikt.restring.toMutableRepository
 import dev.b3nedikt.reword.Reword
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.net.URLConnection
@@ -94,6 +96,18 @@ class AppHelper {
                 view.start()
 
 
+        }
+
+        fun encodeImage(bm: Bitmap): String? {
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            bm.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+            val byteArray = byteArrayOutputStream.toByteArray()
+
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Base64.getEncoder().encodeToString(byteArray)
+            } else {
+                return android.util.Base64.encodeToString(byteArray, 0)
+            }
         }
 
 

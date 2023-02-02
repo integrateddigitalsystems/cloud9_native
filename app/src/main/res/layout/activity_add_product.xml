@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
+    android:id="@+id/rlAddProdcut"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/gray_app_bg"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
+
+ <LinearLayout
+     android:orientation="vertical"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent">
+
 
     <RelativeLayout
         android:elevation="@dimen/small_margin"
@@ -85,8 +92,9 @@
                     android:text="@string/name"/>
 
                 <RelativeLayout
+                    android:id="@+id/rlProductName"
                     android:layout_marginTop="@dimen/small_margin_padding"
-                    android:background="@drawable/rounded_gray_border"
+                    android:background="@drawable/rounded_white_gray_border"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/height_40"
                     android:layout_weight="1">
@@ -97,7 +105,8 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/normal_margin_padding"
                         android:gravity="center_vertical"
-                        android:text="@string/status_reason"
+                        android:id="@+id/tvProduct"
+                        android:text="@string/product"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/normal_font" />
 
@@ -119,129 +128,181 @@
             </LinearLayout>
 
 
-            <LinearLayout
-                android:layout_marginTop="@dimen/small_margin"
-                android:layout_marginStart="@dimen/margin_start_end"
-                android:layout_marginEnd="@dimen/margin_start_end"
-                android:gravity="center"
-                android:orientation="vertical"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.ids.cloud9.custom.CustomTextViewBold
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/normal_font"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/unit"/>
-
-                <RelativeLayout
-                    android:layout_marginTop="@dimen/small_margin_padding"
-                    android:id="@+id/spStatusReason"
-                    android:background="@drawable/rounded_gray_border"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_40"
-                    android:layout_weight="1">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
 
-                    <com.ids.cloud9.custom.CustomTextViewMedium
-                        android:id="@+id/tvStatusReason"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="@dimen/normal_margin_padding"
-                        android:gravity="center_vertical"
-                        android:text="@string/status_reason"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/normal_font" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_start_end"
+                        android:layout_marginTop="@dimen/small_margin"
+                        android:layout_marginEnd="@dimen/margin_start_end"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="@dimen/padding_10"
-                        android:layout_height="@dimen/padding_10"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/settings_item_height"
-                        android:rotation="90"
-                        android:src="@drawable/arrow_submit"
-                        />
+                        <com.ids.cloud9.custom.CustomTextViewBold
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/unit"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/normal_font" />
+
+                        <RelativeLayout
+                            android:id="@+id/spUnit"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/height_40"
+                            android:layout_marginTop="@dimen/small_margin_padding"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_gray_border">
 
 
+                            <com.ids.cloud9.custom.CustomTextViewMedium
+                                android:id="@+id/tvUnit"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="@dimen/normal_margin_padding"
+                                android:gravity="center_vertical"
+                                android:text=""
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/normal_font" />
+
+                            <ImageView
+                                android:layout_width="@dimen/padding_10"
+                                android:layout_height="@dimen/padding_10"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="@dimen/settings_item_height"
+                                android:rotation="90"
+                                android:src="@drawable/arrow_submit" />
 
 
-                </RelativeLayout>
+                        </RelativeLayout>
 
-            </LinearLayout>
+                    </LinearLayout>
 
 
-            <LinearLayout
-                android:layout_marginTop="@dimen/small_margin"
-                android:layout_marginStart="@dimen/margin_start_end"
-                android:layout_marginEnd="@dimen/margin_start_end"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_start_end"
+                        android:layout_marginTop="@dimen/small_margin"
+                        android:layout_marginEnd="@dimen/margin_start_end"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
-                <com.ids.cloud9.custom.CustomTextViewBold
+                        <com.ids.cloud9.custom.CustomTextViewBold
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/quantity"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/normal_font" />
+
+                        <com.ids.molilo.custom.CustomEditText
+                            android:id="@+id/etQuantity"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/small_margin_padding"
+                            android:layout_weight="1"
+                            android:inputType="number"
+                            android:background="@drawable/rounded_gray_border"
+                            android:gravity="center_vertical"
+                            android:minHeight="@dimen/height_40"
+                            android:padding="@dimen/small_margin_padding"
+                            android:text="1"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/normal_font" />
+
+                    </LinearLayout>
+
+                   <!-- <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_start_end"
+                        android:layout_marginTop="@dimen/small_margin"
+                        android:layout_marginEnd="@dimen/margin_start_end"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.ids.cloud9.custom.CustomTextViewBold
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/serial_number_1"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/normal_font" />
+
+                        <com.ids.molilo.custom.CustomEditText
+                            android:id="@+id/etSerialNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/small_margin_padding"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_gray_border"
+                            android:gravity="center_vertical"
+                            android:minHeight="@dimen/height_40"
+                            android:padding="@dimen/small_margin_padding"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/normal_font" />
+
+                    </LinearLayout>-->
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rvSerialised"/>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/llNameSelect"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="@string/quantity"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/normal_font" />
-
-                <com.ids.molilo.custom.CustomEditText
-                    android:layout_weight="1"
-                    android:layout_marginTop="@dimen/small_margin_padding"
-                    android:padding="@dimen/small_margin_padding"
-                    android:background="@drawable/rounded_gray_border"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/normal_font"
-                    android:minHeight="@dimen/height_40"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="@string/status_reason"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginTop="@dimen/small_margin"
-                android:layout_marginStart="@dimen/margin_start_end"
-                android:layout_marginEnd="@dimen/margin_start_end"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.ids.cloud9.custom.CustomTextViewBold
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="@string/serial_number_1"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/normal_font" />
-
-                <com.ids.molilo.custom.CustomEditText
-                    android:layout_weight="1"
-                    android:layout_marginTop="@dimen/small_margin_padding"
-                    android:padding="@dimen/small_margin_padding"
-                    android:background="@drawable/rounded_gray_border"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/normal_font"
-                    android:minHeight="@dimen/height_40"
-                    android:layout_width="match_parent"
-                    android:id="@+id/tvVisitDate"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="@string/status_reason"/>
-
-            </LinearLayout>
+                    android:layout_height="@dimen/width_250"
+                    android:layout_marginStart="@dimen/margin_start_end"
+                    android:layout_marginTop="-1dp"
+                    android:layout_marginEnd="@dimen/margin_start_end"
+                    android:background="@drawable/rounded_bottom_white_gray_border"
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
 
+                    <com.ids.molilo.custom.CustomEditText
+                        android:id="@+id/etFilterName"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_30"
+                        android:layout_margin="@dimen/small_margin_padding"
+                        android:background="@drawable/rounded_gray_border" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/gray_tint" />
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvNames"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+
+                </LinearLayout>
+
+            </FrameLayout>
 
             <com.ids.cloud9.custom.CustomButton
                 android:layout_marginBottom="@dimen/small_margin"
@@ -249,6 +310,7 @@
                 android:layout_marginEnd="@dimen/margin_start_end"
                 android:layout_width="match_parent"
                 android:text="@string/add"
+                android:id="@+id/btAddProduct"
                 android:textColor="@color/white"
                 android:layout_marginTop="@dimen/small_margin"
                 android:layout_height="@dimen/height_40"
@@ -285,7 +347,18 @@
 
     </ScrollView>
 
+ </LinearLayout>
 
 
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/llLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</LinearLayout>
+        <include
+            layout="@layout/loading" />
+
+    </LinearLayout>
+
+</RelativeLayout>

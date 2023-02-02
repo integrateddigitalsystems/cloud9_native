@@ -25,12 +25,14 @@ class MyApplication : Application() {
         internal lateinit var instance: MyApplication
         var selectedFragmentTag : String ?=""
         var BASE_URL ="https://crmtest.ids.com.lb/api/"
+        var BASE_URL_IMAGE = "https://crmtest.ids.com.lb"
         var selectedFragment  : Fragment?=null
         var token : String ?=""
         var selectedVisit : VisitListItem ?=null
         var userItem : JWTResponse ?=null
         var permission =-1
         var selectedProduct:ProductsItem  ?= null
+        var selectedReccomend : ActivitiesListItem ?=null
         var mobileConfig : MobileConfig?=null
         var languageCode : String ?="en"
         var isSignatureEmpty = false

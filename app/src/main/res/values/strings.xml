@@ -43,6 +43,7 @@
     <string name="delete">Delete</string>
     <string name="name">Name:</string>
     <string name="serial_number_1">Serial Number 1:</string>
+    <string name="serial_number">Serial Number</string>
     <string name="subject">Subject:</string>
     <string name="description">Description:</string>
     <string name="assign_to">Assign to:</string>
@@ -50,4 +51,5 @@
     <string name="product">--Product--</string>
     <string name="fill_details">Please fill details</string>
     <string name="you_wanna_delete">Are you sure you want to delete ?</string>
+    <string name="less_than_5">Subject should be at least 5 charcters</string>
 </resources>

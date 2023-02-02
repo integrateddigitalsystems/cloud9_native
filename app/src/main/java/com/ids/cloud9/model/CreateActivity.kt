@@ -5,15 +5,17 @@ import com.google.gson.annotations.SerializedName
 
 data class CreateActivity(
     @SerializedName("assignedToId")
-    val assignedToId: Any,
+    var assignedToId: Int?=0,
     @SerializedName("description")
-    val description: String,
+    var description: String?="",
     @SerializedName("entityId")
-    val entityId: Int,
+    var entityId: Int?=0,
     @SerializedName("manyAssigned")
-    val manyAssigned: List<Int>,
+    var manyAssigned: ArrayList<Int>?= arrayListOf(),
     @SerializedName("ownerId")
-    val ownerId: String,
+    var ownerId: String?="",
     @SerializedName("subject")
-    val subject: String
+    var subject: String?="",
+    @SerializedName("dueDate")
+    var dueDate : String ?=""
 )
