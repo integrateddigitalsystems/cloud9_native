@@ -84,8 +84,14 @@ class AppHelper {
         }
 
         fun isImageFile(path: String?): Boolean {
-            val mimeType: String = URLConnection.guessContentTypeFromName(path)
-            return mimeType != null && mimeType.startsWith("image")
+          if(path!!.contains("png")||
+              path!!.contains("jpg")||
+              path!!.contains("jpeg")||
+              path!!.contains("png")){
+              return true
+          }else{
+              return false
+          }
         }
 
 

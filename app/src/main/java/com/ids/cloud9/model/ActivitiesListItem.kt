@@ -5,31 +5,31 @@ import com.google.gson.annotations.SerializedName
 
 data class ActivitiesListItem(
     @SerializedName("assignedTo")
-    val assignedTo: String,
+    var assignedTo: String,
     @SerializedName("assignedToId")
-    val assignedToId: Int,
+    var assignedToId: Int,
     @SerializedName("creationDate")
-    val creationDate: String,
+    var creationDate: String,
     @SerializedName("description")
-    val description: String,
+    var description: String,
     @SerializedName("dueDate")
-    val dueDate: String,
+    var dueDate: String,
     @SerializedName("entity")
-    val entity: String,
+    var entity: String,
     @SerializedName("entityType")
-    val entityType: String,
+    var entityType: String,
     @SerializedName("id")
-    val id: Int,
+    var id: Int,
     @SerializedName("isAutomated")
-    val isAutomated: Boolean,
+    var isAutomated: Boolean,
     @SerializedName("owner")
-    val owner: String,
+    var owner: String,
     @SerializedName("reason")
-    val reason: String,
+    var reason: String,
     @SerializedName("reasonId")
-    val reasonId: Int,
+    var reasonId: Int,
     @SerializedName("status")
-    val status: String,
+    var status: String,
     @SerializedName("subject")
-    val subject: String
+    var subject: String
 )

@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/margin_100"
-    android:layout_height="@dimen/margin_100" >
+    android:layout_marginStart="@dimen/normal_margin_padding"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/gray_border_tab"
+    android:layout_height="@dimen/margin_100">
+
+
+
+
+
+
 
     <LinearLayout
+        android:gravity="center"
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <ImageView
-        android:src="@drawable/camera"
+        android:src="@drawable/video"
         android:visibility="visible"
-        android:layout_width="@dimen/margin_100"
-        android:layout_height="@dimen/margin_100"
+        android:layout_width="@dimen/min_height"
+        android:layout_height="@dimen/min_height"
         android:id="@+id/ivMedia"/>
 
     <VideoView
@@ -20,6 +30,9 @@
         android:layout_width="@dimen/margin_100"
         android:layout_height="@dimen/margin_100"
         android:id="@+id/vvMedia"/>
+
+
+
 
     </LinearLayout>
 
@@ -32,5 +45,6 @@
         android:layout_width="@dimen/list_icon_width_height"
         android:layout_height="@dimen/list_icon_width_height"
         android:src="@drawable/close_x"/>
+
 
 </RelativeLayout>

@@ -239,7 +239,7 @@ class ActivtyVisitDetails : AppCompactBase(), RVOnItemClickListener {
 
         binding!!.layoutMedia.rvMedia.layoutManager =
             GridLayoutManager(this, 1, LinearLayoutManager.HORIZONTAL, false)
-        adapterMedia = AdapterMedia(arrayMedia, this, this)
+       // adapterMedia = AdapterMedia(arrayMedia, this, binding.llLoading)
         binding!!.layoutMedia.rvMedia.adapter = adapterMedia
     }
 

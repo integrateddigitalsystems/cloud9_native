@@ -17,5 +17,7 @@ data class SignatureRequest(
     @SerializedName("ownerId")
     val ownerId: String,
     @SerializedName("SignatureType")
-    val signatureType: Boolean
+    val signatureType: Boolean,
+    @SerializedName("isSignature")
+    var isSign : Boolean ?=false
 )

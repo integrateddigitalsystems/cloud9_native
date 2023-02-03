@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <LinearLayout
+        android:weightSum="2"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -21,7 +22,7 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
     <com.ids.cloud9.custom.CustomTextViewMedium
         android:layout_width="match_parent"
@@ -37,8 +38,10 @@
         android:background="@color/white"
         android:layout_width="match_parent"
         android:id="@+id/drawClient"
-        android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_height="0dp"
+        android:visibility="visible"
+        android:layout_weight="1"
+        />
 
             <ImageView
                 android:background="@color/white"
@@ -46,8 +49,9 @@
                 android:layout_marginTop="@dimen/normal_margin_padding"
                 android:layout_width="match_parent"
                 android:id="@+id/ivSelectedDrawClient"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
 
             <RelativeLayout
                 android:layout_marginTop="@dimen/small_margin_padding"
@@ -116,7 +120,7 @@
             android:layout_marginTop="@dimen/small_margin_padding"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
     <com.ids.cloud9.custom.CustomTextViewMedium
         android:layout_width="match_parent"
@@ -132,17 +136,19 @@
         android:background="@color/white"
         android:layout_width="match_parent"
         android:id="@+id/drawEmployee"
-        android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:visibility="visible"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
 
             <ImageView
-                android:visibility="gone"
+                android:id="@+id/ivSelectedDrawEmployee"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:layout_marginTop="@dimen/normal_margin_padding"
                 android:background="@color/white"
-                android:layout_width="match_parent"
-                android:id="@+id/ivSelectedDrawEmployee"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:layout_marginTop="@dimen/small_margin_padding"

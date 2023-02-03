@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.ids.cloud9.controller.MyApplication
-import com.ids.cloud9.databinding.LayoutReccomendationsBinding
 import com.ids.cloud9.databinding.LayoutSignatureBinding
 import com.ids.cloud9.model.ResponseMessage
 import com.ids.cloud9.model.SignatureList
@@ -105,12 +104,12 @@ class FragmentSignature : Fragment() {
 
         binding!!.btSaveClient.setOnClickListener {
             var bit = AppHelper.encodeImage(getBitmapFromView(binding!!.drawClient))
-            Log.wtf("LOG_BIT",bit)
             saveSignature(bit!! , true )
         }
 
         binding!!.btSaveEMployee.setOnClickListener {
-            saveSignature(AppHelper.encodeImage(binding!!.drawEmployee.bmp!!)!! , false )
+            var bit = AppHelper.encodeImage(getBitmapFromView(binding!!.drawEmployee))
+            saveSignature(bit!! , false )
         }
     }
 
@@ -123,10 +122,12 @@ class FragmentSignature : Fragment() {
         signatureRequest = SignatureRequest(
             MyApplication.selectedVisit!!.id!!,
             simpDate.format(cal.time)+simpDateSec.format(cal.time)+"_"+MyApplication.userItem!!.applicationUserId+"_"+MyApplication.userItem!!.userName+"_signature.jpg",
-            "data:image/jpeg;base64,"+base64string,0,
-            true,
+            "data:image/jpeg;base64,"+base64string,
+            0,
+            false,
             MyApplication.userItem!!.applicationUserId!!,
-            !isClient
+            !isClient,
+            true
 
         )
         var signs = arrayListOf<SignatureRequest>()

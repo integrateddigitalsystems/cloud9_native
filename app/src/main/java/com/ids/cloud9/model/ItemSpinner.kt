@@ -1,5 +1,7 @@
 package com.ids.cloud9.model
 
+import com.google.android.exoplayer2.Player
+
 class ItemSpinner(
     var id : Int ?=0 ,
 
@@ -11,6 +13,8 @@ class ItemSpinner(
 
     var isLocal : Boolean ?=false ,
 
-    var type : Int ? =0
+    var type : Int ? =0 ,
+
+    var player : Player ?=null
 ) {
 }
