@@ -167,10 +167,10 @@ class FragmentSignature : Fragment() {
     fun setUpSignatures(){
         arraySign!!.sortBy { it.id }
         emEy = arraySign!!.find {
-            it.signatureTypeLookup.equals(AppConstants.SIGNATURE_TYPE_EMPLOYEE)
+            it.signatureTypeLookup!=null &&  it.signatureTypeLookup.equals(AppConstants.SIGNATURE_TYPE_EMPLOYEE)
         }
         emCl = arraySign!!.find {
-            it.signatureTypeLookup.equals(AppConstants.SIGNATURE_TYPE_CLIENT)
+            it.signatureTypeLookup!=null && it.signatureTypeLookup.equals(AppConstants.SIGNATURE_TYPE_CLIENT)
         }
 
         if(emEy!=null && !emEy!!.directory.isNullOrEmpty()){

@@ -8,4 +8,5 @@
     <string name="try_again">اعادة المحاولة</string>
     <string name="login">Login</string>
     <string name="visits">Visits</string>
+    <string name="sure_delete_media">Are you sure you want to delete media item ?</string>
 </resources>

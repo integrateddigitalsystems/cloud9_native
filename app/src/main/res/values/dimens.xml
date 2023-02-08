@@ -68,6 +68,7 @@
     <dimen name="size_15">15sp</dimen>
     <dimen name="size_35">35dp</dimen>
     <dimen name="medium_tab_height">72dp</dimen>
+    <dimen name="smallest_margin">3dp</dimen>
 
   <!-- Text Sizes-->
 

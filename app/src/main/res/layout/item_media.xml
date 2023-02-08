@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/margin_100"
+    android:layout_marginTop="@dimen/normal_margin_padding"
     android:layout_marginStart="@dimen/normal_margin_padding"
+    android:id="@+id/llMainMediaLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/gray_border_tab"
-    android:layout_height="@dimen/margin_100">
+    android:layout_height="@dimen/width_150">
 
 
 
@@ -18,11 +20,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+        <ImageView
+            android:src="@drawable/video"
+            android:visibility="visible"
+            android:layout_width="@dimen/min_height"
+            android:layout_height="@dimen/min_height"
+            android:id="@+id/ivVideoDefault"/>
+
     <ImageView
+        android:scaleType="centerCrop"
         android:src="@drawable/video"
-        android:visibility="visible"
-        android:layout_width="@dimen/min_height"
-        android:layout_height="@dimen/min_height"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/ivMedia"/>
 
     <VideoView
@@ -38,13 +49,16 @@
 
 
     <ImageView
+        android:layout_margin="@dimen/smallest_margin"
         android:id="@+id/btClose"
-        android:layout_margin="@dimen/normal_margin_padding"
-        android:layout_alignParentEnd="true"
-        android:tint="@color/white"
         android:layout_width="@dimen/list_icon_width_height"
         android:layout_height="@dimen/list_icon_width_height"
-        android:src="@drawable/close_x"/>
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/black_circle"
+        android:outlineProvider="paddedBounds"
+        android:padding="@dimen/smallest_margin"
+        android:src="@drawable/close_x"
+        android:tint="@color/white" />
 
 
 </RelativeLayout>

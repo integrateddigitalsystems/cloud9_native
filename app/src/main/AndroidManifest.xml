@@ -47,10 +47,18 @@
 
         </activity>
 
+        <activity android:name=".controller.activities.ActivityFullScreen">
+
+        </activity>
+
         <activity android:name=".controller.activities.ActivtyVisitDetails">
 
         </activity>
 
     </application>
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
 </manifest>

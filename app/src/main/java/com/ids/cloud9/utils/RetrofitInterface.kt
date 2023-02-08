@@ -95,6 +95,16 @@ interface RetrofitInterface {
 
     ):Call<SignatureList>
 
+    @POST("Attachments/DeleteAttachment")
+    fun deleteMedia(
+        @Query("id") id  : Int
+    ):Call<ResponseMessage>
+
+    @POST("Attachments/CreateAttachmentMobile")
+    fun saveAttachment(
+        @Body sigReq : ArrayList<SignatureRequest>
+    ):Call<ResponseMessage>
+
 
     @POST("Attachments/CreateAttachmentSignatureMobile")
     fun saveSignature(

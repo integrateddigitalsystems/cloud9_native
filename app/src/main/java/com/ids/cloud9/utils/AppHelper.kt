@@ -14,6 +14,9 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
 import android.net.Uri
 import android.os.Build
+import android.util.Base64;
+
+import android.util.Base64OutputStream
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -104,13 +107,24 @@ class AppHelper {
 
         }
 
+        fun convertImageFileToBase64(imageFile: File): String {
+            return ByteArrayOutputStream().use { outputStream ->
+                Base64OutputStream(outputStream, Base64.DEFAULT).use { base64FilterStream ->
+                    imageFile.inputStream().use { inputStream ->
+                        inputStream.copyTo(base64FilterStream)
+                    }
+                }
+                return@use outputStream.toString()
+            }
+        }
+
         fun encodeImage(bm: Bitmap): String? {
             val byteArrayOutputStream = ByteArrayOutputStream()
             bm.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
             val byteArray = byteArrayOutputStream.toByteArray()
 
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                Base64.getEncoder().encodeToString(byteArray)
+                java.util.Base64.getEncoder().encodeToString(byteArray)
             } else {
                 return android.util.Base64.encodeToString(byteArray, 0)
             }

@@ -17,6 +17,7 @@ import dev.b3nedikt.viewpump.ViewPump
 import com.ids.cloud9.utils.AppConstants
 import com.ids.cloud9.utils.AppConstants.LOCALE_ARABIC
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MyApplication : Application() {
@@ -26,6 +27,7 @@ class MyApplication : Application() {
         var selectedFragmentTag : String ?=""
         var BASE_URL ="https://crmtest.ids.com.lb/api/"
         var BASE_URL_IMAGE = "https://crmtest.ids.com.lb"
+        var arrayVid : ArrayList<ItemSpinner> = arrayListOf()
         var selectedFragment  : Fragment?=null
         var token : String ?=""
         var selectedVisit : VisitListItem ?=null

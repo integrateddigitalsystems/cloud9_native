@@ -12,6 +12,7 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.StyledPlayerView
+import com.ids.cloud9.R
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.databinding.ItemMediaBinding
 import com.ids.cloud9.model.ItemSpinner
@@ -49,10 +50,16 @@ class AdapterMedia(
 
 
         fun bind(item: ItemSpinner) {
-            if(item.type==0){
 
-            }else if(item.type == 1){
+            if(item.type == 1){
+                binding.ivVideoDefault.hide()
+                binding.ivMedia.show()
+                binding.vvMedia.hide()
+                binding.llMainMediaLayout.setBackgroundResource(R.color.transparent)
                 AppHelper.setImage(con,binding.ivMedia,item.name!!,item.isLocal!!)
+            }else{
+                binding.ivMedia.hide()
+                binding.ivVideoDefault.show()
             }
         }
         init {
