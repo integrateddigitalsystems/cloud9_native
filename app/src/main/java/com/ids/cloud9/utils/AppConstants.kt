@@ -51,6 +51,8 @@ object AppConstants {
     const val FORM_ITEM_DATE = "date"
     const val FORM_ITEM_TIME = "time"
     const val PRODUCTION_LOOKUP_CODE = "PROD_UNIT"
+    const val LOGGED_IN ="LoggedIn"
+    const val TOKEN = "token"
 
 
 

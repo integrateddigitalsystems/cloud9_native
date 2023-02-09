@@ -11,54 +11,12 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <RelativeLayout
-        android:elevation="@dimen/small_margin"
-        android:gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/gradient_bg">
 
-        <LinearLayout
-            android:gravity="center_vertical"
-            android:layout_centerVertical="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/btBack"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:layout_marginStart="@dimen/small_margin"
-                android:tint="@color/white"
-                android:layout_centerVertical="true"
-                android:layout_width="@dimen/height_toggle"
-                android:layout_height="@dimen/height_toggle"
-                android:rotation="180"
-                android:src="@drawable/ic_arrow_right"/>
+        <include
+            android:id="@+id/llTool"
+            layout="@layout/toolbar_layout" />
 
-            <ImageView
-                android:layout_toEndOf="@id/btBack"
-                android:id="@+id/ivCalendar"
-                android:layout_marginStart="@dimen/small_margin"
-                android:layout_centerVertical="true"
-                android:layout_width="@dimen/height_toggle"
-                android:layout_height="@dimen/height_toggle"
-                android:src="@drawable/icon_calendar_points"/>
-
-        </LinearLayout>
-
-        <com.ids.cloud9.custom.CustomTextViewMedium
-            android:layout_marginTop="@dimen/home_radius"
-            android:layout_marginBottom="@dimen/home_radius"
-            android:id="@+id/tvVisitTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Visits"
-            android:textColor="@color/white"
-            android:textSize="@dimen/normal_font" />
-
-    </RelativeLayout>
-
-    <ScrollView
+        <ScrollView
         android:layout_marginTop="@dimen/normal_margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -324,6 +282,7 @@
                 android:layout_marginStart="@dimen/margin_start_end"
                 android:layout_marginEnd="@dimen/margin_start_end"
                 android:gravity="center"
+                android:id="@+id/lLDelete"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_40">
 

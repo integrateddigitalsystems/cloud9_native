@@ -9,6 +9,9 @@ import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.window.OnBackInvokedDispatcher
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +31,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ActivityMain: Activity() , RVOnItemClickListener{
+class ActivityMain: AppCompatActivity() , RVOnItemClickListener{
 
     var simp = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss")
     var half = SimpleDateFormat("MMM dd")
@@ -54,7 +57,12 @@ class ActivityMain: Activity() , RVOnItemClickListener{
         setUpDate()
         setUpDrawer()
 
+
+
+
+
     }
+
 
     fun editDate(isNext : Boolean ){
         if(isNext){
@@ -263,12 +271,33 @@ class ActivityMain: Activity() , RVOnItemClickListener{
 
 
     fun listeners(){
+        binding!!.drawerMenu.tvWelcome.text = binding!!.drawerMenu.tvWelcome.text.toString() + MyApplication.userItem!!.firstName + " "+MyApplication.userItem!!.lastName
         binding!!.llHomeMain.ivDrawer.setOnClickListener {
             var  shake =  AnimationUtils.loadAnimation(this, R.anim.corner)
             binding!!.navView.startAnimation(shake)
             binding!!.drawerLayout.openDrawer(GravityCompat.START)
         }
 
+
+        binding!!.drawerMenu.llLogout.setOnClickListener {
+            AppHelper.createYesNoDialog(this,getString(R.string.sure_logout),0){
+                finishAffinity()
+                MyApplication.loggedIn = false
+                startActivity(Intent(this,ActivityLogin::class.java))
+            }
+        }
+
+        binding!!.drawerMenu.tvAllTasks.setOnClickListener {
+            startActivity(Intent(
+                this,
+                ActivityAllTasks::class.java
+            ))
+        }
+
+        binding!!.drawerMenu.tvHome.setOnClickListener {
+            finishAffinity()
+            startActivity(Intent(this,ActivityMain::class.java))
+        }
 
         binding!!.drawerMenu.btClose.setOnClickListener {
             var  shake =  AnimationUtils.loadAnimation(this, R.anim.close_corner)
@@ -278,6 +307,15 @@ class ActivityMain: Activity() , RVOnItemClickListener{
             }, 300)
 
         }
+
+        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                AppHelper.createYesNoDialog(this@ActivityMain,getString(R.string.are_you_sure_exit),0){
+                    finish()
+                }
+
+            }
+        })
 
         binding!!.llHomeMain.btDatePrevious.setOnClickListener {
             binding!!.llHomeMain.btDatePrevious.setBackgroundResource(R.drawable.rounded_darker_left)

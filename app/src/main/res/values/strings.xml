@@ -53,4 +53,9 @@
     <string name="you_wanna_delete">Are you sure you want to delete ?</string>
     <string name="less_than_5">Subject should be at least 5 charcters</string>
     <string name="sure_delete_media">Are you sure you want to delete media item ?</string>
+    <string name="home">Home</string>
+    <string name="all_tasks">All tasks</string>
+    <string name="log_out">Log out</string>
+    <string name="sure_logout">Are you sure you want to logout?</string>
+    <string name="are_you_sure_exit">Are you sure you want to leave the Cloud9?</string>
 </resources>

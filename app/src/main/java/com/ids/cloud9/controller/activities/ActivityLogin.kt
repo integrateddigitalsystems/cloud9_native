@@ -89,11 +89,12 @@ class ActivityLogin : Activity() {
 
                    try {
 
-                       MyApplication.token = response.body()!!.token
+                       MyApplication.token = response.body()!!.token!!
                        Log.wtf("TOKEN",MyApplication.token)
                        MyApplication.userItem = JWTDecoding.decoded(MyApplication.token!!)
                        binding!!.loadingLogin.hide()
                        binding!!.btLogin.show()
+                       MyApplication.loggedIn = true
                        startActivity(Intent(this@ActivityLogin,ActivityMain::class.java))
                    }catch (ex:Exception){
                        binding!!.btLogin.show()

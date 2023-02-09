@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:elevation="@dimen/small_margin"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="67dp"
+        android:background="@drawable/gradient_bg">
+
+        <ImageView
+            android:padding="@dimen/padding_10"
+            android:id="@+id/ivDrawer"
+            android:layout_marginStart="@dimen/small_margin"
+            android:tint="@color/white"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_centerVertical="true"
+            android:layout_width="@dimen/image_size"
+            android:layout_height="@dimen/image_size"
+            android:src="@drawable/align_left"/>
+
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/layoutFragment"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:padding="@dimen/padding_10"
+                android:id="@+id/btBack"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:tint="@color/white"
+                android:layout_centerVertical="true"
+                android:layout_width="@dimen/image_size"
+                android:layout_height="@dimen/image_size"
+                android:rotation="180"
+                android:src="@drawable/ic_arrow_right"/>
+
+            <ImageView
+                android:padding="@dimen/padding_10"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:layout_toEndOf="@id/btBack"
+                android:id="@+id/ivCalendar"
+                android:layout_centerVertical="true"
+                android:layout_width="@dimen/image_size"
+                android:layout_height="@dimen/image_size"
+                android:src="@drawable/calendar2"/>
+
+        </LinearLayout>
+
+        <com.ids.cloud9.custom.CustomTextViewMedium
+            android:layout_width="match_parent"
+            android:text="@string/visits"
+            android:id="@+id/tvTitleTool"
+            android:textSize="@dimen/normal_font"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+</LinearLayout>

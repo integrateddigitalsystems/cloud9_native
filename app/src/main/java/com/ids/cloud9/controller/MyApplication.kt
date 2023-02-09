@@ -29,12 +29,11 @@ class MyApplication : Application() {
         var BASE_URL_IMAGE = "https://crmtest.ids.com.lb"
         var arrayVid : ArrayList<ItemSpinner> = arrayListOf()
         var selectedFragment  : Fragment?=null
-        var token : String ?=""
         var selectedVisit : VisitListItem ?=null
         var userItem : JWTResponse ?=null
         var permission =-1
         var selectedProduct:ProductsItem  ?= null
-        var selectedReccomend : ActivitiesListItem ?=null
+        var selectedReccomend : FilteredActivityListItem ?=null
         var mobileConfig : MobileConfig?=null
         var languageCode : String ?="en"
         var isSignatureEmpty = false
@@ -42,6 +41,16 @@ class MyApplication : Application() {
         var selectedFragmentConstant:String=""
         @SuppressLint("StaticFieldLeak")
         var showLogs: Boolean = true
+        lateinit var sharedPreferences : SharedPreferences
+        lateinit var sharedPreferencesEditor : SharedPreferences.Editor
+
+        var loggedIn : Boolean
+            get() = sharedPreferences.getBoolean(AppConstants.LOGGED_IN, false)
+            set(value) { sharedPreferencesEditor.putBoolean(AppConstants.LOGGED_IN, value).apply() }
+
+        var token : String
+            get() = sharedPreferences.getString(AppConstants.TOKEN, "")!!
+            set(value) { sharedPreferencesEditor.putString(AppConstants.TOKEN, value).apply() }
 
 
 
@@ -52,6 +61,8 @@ class MyApplication : Application() {
         Restring.init(this)
         Restring.localeProvider = AppLocaleLocaleProvider
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
+        sharedPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        sharedPreferencesEditor = sharedPreferences.edit()
 
         ViewPump.init(RewordInterceptor)
         /*sharedPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(applicationContext)

@@ -1,9 +1,11 @@
 package com.ids.cloud9.controller.activities
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
@@ -47,15 +49,15 @@ class ActivityAddProduct : AppCompatActivity() , RVOnItemClickListener {
         super.onCreate(savedInstanceState)
         binding = ActivityAddProductBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
-
         init()
         listeners()
-
-
     }
 
 
     fun init() {
+        binding!!.llTool.ivDrawer.hide()
+        binding!!.llTool.layoutFragment.show()
+        binding!!.llTool.tvTitleTool.text = MyApplication.selectedVisit!!.title
         getUnits()
         getProductNames()
         createProduct = CreateProduct()
@@ -306,6 +308,7 @@ class ActivityAddProduct : AppCompatActivity() , RVOnItemClickListener {
             setUpProduct(arrayList)
         }
 
+
         binding!!.btAddProduct.setOnClickListener {
             if(prodId!=0 && unitId!=0 && !binding!!.etQuantity.text.toString().isNullOrEmpty() && arraySer.size > 0) {
                 if(MyApplication.selectedProduct==null)
@@ -317,8 +320,18 @@ class ActivityAddProduct : AppCompatActivity() , RVOnItemClickListener {
             }
         }
 
-        binding!!.btBack.setOnClickListener {
-            super.onBackPressed()
+        binding!!.llTool.btBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+
+        binding!!.llTool.ivCalendar.setOnClickListener {
+            finishAffinity()
+            startActivity(
+                Intent(
+                    this,
+                    ActivityMain::class.java
+                )
+            )
         }
 
         binding!!.rlAddProdcut.setOnClickListener {
@@ -328,6 +341,40 @@ class ActivityAddProduct : AppCompatActivity() , RVOnItemClickListener {
         binding!!.spUnit.setOnClickListener {
             setUpUnits()
         }
+
+        binding!!.llProductDelete.setOnClickListener {
+            AppHelper.createYesNoDialog(this,getString(R.string.you_wanna_delete),0){
+                deleteProduct()
+            }
+        }
+    }
+
+    fun deleteProduct(){
+        binding!!.llLoading.show()
+        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).deleteProduct(
+            MyApplication.selectedProduct!!.id
+        )?.enqueue(object : Callback<ResponseMessage> {
+            override fun onResponse(
+                call: Call<ResponseMessage>,
+                response: Response<ResponseMessage>
+            ) {
+                if(response.body()!!.success.equals("true")){
+                    binding!!.llLoading.hide()
+                    finish()
+                    toast(response.body()!!.message!!)
+                }else{
+                    binding!!.llLoading.hide()
+                }
+
+
+
+            }
+
+            override fun onFailure(call: Call<ResponseMessage>, throwable: Throwable) {
+
+                binding!!.llLoading.hide()
+            }
+        })
     }
 
     override fun onItemClicked(view: View, position: Int) {

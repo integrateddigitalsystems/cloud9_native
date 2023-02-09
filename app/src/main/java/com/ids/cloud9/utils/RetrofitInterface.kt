@@ -42,7 +42,14 @@ interface RetrofitInterface {
     @GET("Activity/GetActivitiesToUserMobile")
     fun getReccomendations(
         @Query("loggedUser") userId: Int
-    ):Call<ActivitiesList>
+    ):Call<FilteredActivityList>
+
+    @GET("Activity/GetActivitiesMobile")
+    fun getReccomendationsFilter(
+        @Query("entityId") entityId : Int ,
+        @Query("statusId") statId : Int
+
+    ):Call<FilteredActivityList>
 
 
     @GET("Products/GetAllActiveProductsMobile")
@@ -78,6 +85,11 @@ interface RetrofitInterface {
         @Body createAct : CreateActivity
     ):Call<ResponseMessage>
 
+    @POST("Activity/DeleteActivity")
+    fun deleteActivity(
+        @Query("id") id : Int
+    ):Call<ResponseMessage>
+
     @POST("Visit/UpdateVisit")
     fun updateVisit(
         @Body param: VisitListItem
@@ -85,7 +97,7 @@ interface RetrofitInterface {
 
     @POST("Activity/UpdateActivityMobile")
     fun updateActivity(
-        @Body param : UpdateActivity
+        @Body param : FilteredActivityListItem
     ): Call<ResponseMessage>
 
     @GET("Attachments/GetAttachmentsMobile")

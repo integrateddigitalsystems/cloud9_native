@@ -31,7 +31,8 @@
 
     <com.ids.cloud9.custom.CustomTextViewMedium
         android:layout_width="match_parent"
-        android:text="Home"
+        android:text="@string/home"
+        android:id="@+id/tvHome"
         android:foreground="?android:attr/selectableItemBackground"
         android:layout_marginTop="@dimen/normal_margin"
         android:layout_marginStart="@dimen/button_height"
@@ -40,7 +41,8 @@
 
     <com.ids.cloud9.custom.CustomTextViewMedium
         android:layout_width="match_parent"
-        android:text="All tasks"
+        android:text="@string/all_tasks"
+        android:id="@+id/tvAllTasks"
         android:foreground="?android:attr/selectableItemBackground"
         android:layout_marginTop="@dimen/normal_margin"
         android:layout_marginStart="@dimen/button_height"
@@ -49,6 +51,8 @@
 
 
     <LinearLayout
+        android:id="@+id/llLogout"
+        android:layout_marginBottom="@dimen/normal_margin"
         android:foreground="?android:attr/selectableItemBackground"
         android:layout_marginTop="@dimen/normal_margin"
         android:layout_marginStart="@dimen/button_height"
@@ -64,7 +68,7 @@
 
         <com.ids.cloud9.custom.CustomTextViewMedium
             android:layout_width="match_parent"
-            android:text="Log out"
+            android:text="@string/log_out"
             android:gravity="center_vertical"
             android:layout_marginStart="@dimen/mini_radius"
             android:textColor="@color/white"

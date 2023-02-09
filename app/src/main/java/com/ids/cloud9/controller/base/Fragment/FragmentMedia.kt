@@ -428,6 +428,9 @@ class FragmentMedia : Fragment() , RVOnItemClickListener , Player.Listener{
                 Intent(
                 requireActivity(),
                 ActivityFullScreen::class.java
+            ).putExtra(
+                    "ID_MEDIA" ,
+                    position
             )
             )
         }

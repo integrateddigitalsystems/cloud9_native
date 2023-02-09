@@ -10,6 +10,7 @@ import com.ids.cloud9.databinding.ItemProductsBinding
 import com.ids.cloud9.databinding.ItemReasonDialogBinding
 import com.ids.cloud9.databinding.ItemReccomendationsBinding
 import com.ids.cloud9.model.ActivitiesListItem
+import com.ids.cloud9.model.FilteredActivityListItem
 import com.ids.cloud9.model.ItemSpinner
 import com.ids.cloud9.model.ProductsItem
 import com.ids.cloud9.utils.AppHelper
@@ -17,11 +18,11 @@ import com.ids.cloud9.utils.setCheckText
 import java.text.SimpleDateFormat
 import java.util.ArrayList
 
-class AdapterReccomendations(
-    var items : ArrayList<ActivitiesListItem>,
+class AdapterFilteredReccomendations(
+    var items : ArrayList<FilteredActivityListItem>,
     var con: Activity,
     private var clickListener: RVOnItemClickListener
-) : RecyclerView.Adapter<AdapterReccomendations.VhItem>() {
+) : RecyclerView.Adapter<AdapterFilteredReccomendations.VhItem>() {
     var simpOrg = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
     var simpTo = SimpleDateFormat("dd/MM/yyyy")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VhItem {
@@ -46,15 +47,15 @@ class AdapterReccomendations(
     ), View.OnClickListener {
 
 
-        fun bind(item: ActivitiesListItem) {
+        fun bind(item: FilteredActivityListItem) {
 
 
             binding.tvAssignedTo.setCheckText(item.assignedTo)
             binding.tvDesc.setCheckText(item.description)
             binding.tvSubject.setCheckText(item.subject)
             binding.tvDueDate.setCheckText(simpTo.format(simpOrg.parse(item.dueDate)))
-            if(!item.reason.isNullOrEmpty())
-                binding.tvReason.setCheckText(item.reason!!)
+            if(!item.statusReason.isNullOrEmpty())
+                binding.tvReason.setCheckText(item.statusReason!!)
 
 
 

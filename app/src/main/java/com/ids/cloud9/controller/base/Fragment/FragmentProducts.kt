@@ -13,8 +13,9 @@ import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.activities.ActivityAddProduct
 import com.ids.cloud9.controller.activities.ActivtyVisitDetails
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
-import com.ids.cloud9.databinding.LayoutMediaBinding
 import com.ids.cloud9.databinding.LayoutProductsBinding
+
+
 import com.ids.cloud9.model.*
 import com.ids.cloud9.utils.*
 import retrofit2.Call
@@ -67,7 +68,7 @@ class FragmentProducts : Fragment() , RVOnItemClickListener {
     }
 
     fun getProducts() {
-        (requireActivity() as ActivtyVisitDetails).binding!!.llLoading.show()
+       binding!!.llLoading.show()
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getProducts(
             MyApplication.selectedVisit!!.id!!
         )?.enqueue(object : Callback<Products> {
@@ -81,7 +82,7 @@ class FragmentProducts : Fragment() , RVOnItemClickListener {
 
             override fun onFailure(call: Call<Products>, throwable: Throwable) {
 
-                (requireActivity() as ActivtyVisitDetails).binding!!.llLoading.hide()
+                binding!!.llLoading.hide()
             }
         })
     }
@@ -89,17 +90,18 @@ class FragmentProducts : Fragment() , RVOnItemClickListener {
     fun setUpProductsPage() {
         binding!!.rvProducts.layoutManager = LinearLayoutManager(requireContext())
         binding!!.rvProducts.adapter = AdapterProducts(arrayProd, requireActivity(), this)
-        (requireActivity() as ActivtyVisitDetails).binding!!.llLoading.hide()
+        binding!!.llLoading.hide()
     }
 
     fun setUpProducts() {
+        ctProd = 0
         if (arrayProd.size > 0) {
             for (i in arrayProd.indices) {
                 arrayProd.get(i).reports = arrayListOf()
                 getReports(i)
             }
         } else {
-            (requireActivity() as ActivtyVisitDetails).binding!!.llLoading.hide()
+           binding!!.llLoading.hide()
         }
     }
 
@@ -127,10 +129,15 @@ class FragmentProducts : Fragment() , RVOnItemClickListener {
 
             override fun onFailure(call: Call<ArrayList<Report>>, throwable: Throwable) {
 
-                (requireActivity() as ActivtyVisitDetails).binding!!.llLoading.hide()
+               binding!!.llLoading.hide()
             }
         })
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getProducts()
     }
 
     fun deleteProduct(pos:Int){
@@ -150,7 +157,7 @@ class FragmentProducts : Fragment() , RVOnItemClickListener {
 
             override fun onFailure(call: Call<ResponseMessage>, throwable: Throwable) {
 
-                (requireActivity() as ActivtyVisitDetails).binding!!.llLoading.hide()
+               binding!!.llLoading.hide()
             }
         })
     }

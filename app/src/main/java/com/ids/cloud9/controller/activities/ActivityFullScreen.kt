@@ -1,5 +1,6 @@
 package com.ids.cloud9.controller.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
@@ -16,11 +17,14 @@ import com.ids.cloud9.databinding.ActivityLoginBinding
 import com.ids.cloud9.databinding.ActivityMediaFullscreenBinding
 import com.ids.cloud9.model.Videos
 import com.ids.cloud9.utils.IFragmentImages
+import com.ids.cloud9.utils.hide
+import com.ids.cloud9.utils.show
 import java.util.*
 
 class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageChangeListener , Player.Listener {
     private var arrayVideos: ArrayList<Videos> = ArrayList()
     var binding : ActivityMediaFullscreenBinding?=null
+    var pos=0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMediaFullscreenBinding.inflate(layoutInflater)
@@ -31,15 +35,31 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
 
     private fun init() {
 
-       /* btBack.setOnClickListener {
-            onBackPressed()
+        binding!!.llTool.ivDrawer.hide()
+        binding!!.llTool.layoutFragment.show()
+        binding!!.llTool.tvTitleTool.text = MyApplication.selectedVisit!!.title
+        binding!!.llTool.btBack.setOnClickListener {
+           onBackPressedDispatcher.onBackPressed()
             try {
                 pauseAll()
             } catch (e: java.lang.Exception) {
                 Log.wtf("pause_exception", e.toString())
             }
-        }*/
+        }
 
+        binding!!.llTool.ivCalendar.setOnClickListener {
+            finishAffinity()
+            startActivity(
+                Intent(
+                    this,
+                    ActivityMain::class.java
+                )
+            )
+        }
+
+
+
+        pos = intent.getIntExtra("ID_MEDIA",0)
         setMediaPager()
 
 
@@ -68,6 +88,8 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
         }else{
             binding!!.tbMedia.visibility = View.GONE
         }
+
+        binding!!.vpMediaFull.currentItem = pos
         // vpLessonsMedia.currentItem = intent.getIntExtra(AppConstants.IMAGE_POSITION, 0)
 
     }

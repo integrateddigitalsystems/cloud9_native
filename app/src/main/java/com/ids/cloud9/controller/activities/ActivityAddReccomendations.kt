@@ -1,6 +1,7 @@
 package com.ids.cloud9.controller.activities
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -74,8 +75,20 @@ class ActivityAddReccomendations : AppCompatActivity(), RVOnItemClickListener {
     }
 
     fun listeners() {
-        binding!!.btBack.setOnClickListener {
-            super.onBackPressed()
+        binding!!.llTool.ivDrawer.hide()
+        binding!!.llTool.layoutFragment.show()
+        binding!!.llTool.tvTitleTool.text = MyApplication.selectedReccomend!!.subject
+        binding!!.llTool.ivCalendar.setOnClickListener {
+            finishAffinity()
+            startActivity(
+                Intent(
+                    this,
+                    ActivityMain::class.java
+                )
+            )
+        }
+        binding!!.llTool.btBack.setOnClickListener {
+           onBackPressedDispatcher.onBackPressed()
         }
         binding!!.llAssignTo.setOnClickListener {
             binding!!.llNameSelect.show()
@@ -85,6 +98,15 @@ class ActivityAddReccomendations : AppCompatActivity(), RVOnItemClickListener {
         }
         binding!!.tvDueDate.setOnClickListener {
             popupDate()
+        }
+        binding!!.lLDelete.setOnClickListener {
+            AppHelper.createYesNoDialog(
+                this,
+                getString(R.string.you_wanna_delete),
+                0
+            ){
+                deleteReccomend()
+            }
         }
         binding!!.btSave.setOnClickListener {
             if (!binding!!.etSubject.text.toString()
@@ -137,38 +159,12 @@ class ActivityAddReccomendations : AppCompatActivity(), RVOnItemClickListener {
         MyApplication.selectedReccomend!!.subject = binding!!.etSubject.text.toString()
         MyApplication.selectedReccomend!!.description = binding!!.etDesc.text.toString()
 
-        var upAct = UpdateActivity(
-            MyApplication.selectedReccomend!!.assignedTo!!,
-            MyApplication.selectedReccomend!!.assignedToId,
-            simp.format(simpOrg.parse(MyApplication.selectedReccomend!!.creationDate)),
-            MyApplication.selectedReccomend!!.description,
-            simp.format(simpOrg.parse(MyApplication.selectedReccomend!!.dueDate)),
-            simp.format(simpOrg.parse(MyApplication.selectedReccomend!!.dueDate)),
-            MyApplication.selectedReccomend!!.entity,
-            MyApplication.selectedVisit!!.id!!,
-            MyApplication.selectedReccomend!!.entityType,
-            MyApplication.selectedVisit!!.typeId!!,
-            MyApplication.selectedReccomend!!.id,
-            MyApplication.selectedReccomend!!.owner,
-            arraySpinner.find { it.name.equals(MyApplication.selectedReccomend!!.owner) }!!.id!!,
-            MyApplication.selectedReccomend!!.reasonId,
-            simp.format(simpOrg.parse(MyApplication.selectedReccomend!!.dueDate)),
-            MyApplication.selectedReccomend!!.status,
-            MyApplication.selectedVisit!!.statusId!!,
-            MyApplication.selectedReccomend!!.reason,
-            MyApplication.selectedReccomend!!.subject,
-            if (MyApplication.selectedVisit!!.type != null)
-                MyApplication.selectedVisit!!.type!!
-            else
-                ""
-
-        )
 
 
         Log.wtf("TAG_CREATE", Gson().toJson(MyApplication.selectedReccomend))
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
             .updateActivity(
-                upAct
+                MyApplication.selectedReccomend!!
             ).enqueue(object : Callback<ResponseMessage> {
                 override fun onResponse(
                     call: Call<ResponseMessage>,
@@ -198,6 +194,33 @@ class ActivityAddReccomendations : AppCompatActivity(), RVOnItemClickListener {
             })
     }
 
+    fun deleteReccomend(){
+        binding!!.llLoading.show()
+        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).deleteActivity(
+            MyApplication.selectedReccomend!!.id
+        )?.enqueue(object : Callback<ResponseMessage> {
+            override fun onResponse(
+                call: Call<ResponseMessage>,
+                response: Response<ResponseMessage>
+            ) {
+                if(response.body()!!.success.equals("true")){
+                    binding!!.llLoading.hide()
+                    finish()
+                    toast(response.body()!!.message!!)
+                }else{
+                    binding!!.llLoading.hide()
+                }
+
+
+
+            }
+
+            override fun onFailure(call: Call<ResponseMessage>, throwable: Throwable) {
+
+                binding!!.llLoading.hide()
+            }
+        })
+    }
     fun createReccomend() {
         var id = 0
         binding!!.llLoading.show()

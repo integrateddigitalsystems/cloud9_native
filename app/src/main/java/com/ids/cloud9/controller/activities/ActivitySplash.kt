@@ -22,10 +22,7 @@ import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.databinding.ActivitySplashBinding
 import com.ids.cloud9.databinding.ActivitySplshBindingImpl
-import com.ids.cloud9.model.LocMessages
-import com.ids.cloud9.model.MobileConfigTypes
-import com.ids.cloud9.model.RequestLogin
-import com.ids.cloud9.model.ResponseLogin
+import com.ids.cloud9.model.*
 import com.ids.cloud9.utils.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -105,7 +102,14 @@ class ActivitySplash : Activity() {
 
             } else {
                 Handler(Looper.getMainLooper()).postDelayed({
-                    startActivity(Intent(this,ActivityLogin::class.java))
+                    if(!MyApplication.loggedIn) {
+                        finishAffinity()
+                        startActivity(Intent(this, ActivityLogin::class.java))
+                    }else{
+                        finishAffinity()
+                        MyApplication.userItem = JWTDecoding.decoded(MyApplication.token!!)
+                        startActivity(Intent(this,ActivityMain::class.java))
+                    }
                 }, 2000)
             }
         }

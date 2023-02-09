@@ -1,18 +1,20 @@
-package com.ids.cloud9.controller.Fragment
+package com.ids.cloud9.controller.activities
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.util.AttributeSet
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ids.cloud9.R
+import com.ids.cloud9.controller.Fragment.FragmentReccomendations
 import com.ids.cloud9.controller.MyApplication
-import com.ids.cloud9.controller.activities.ActivityAddReccomendations
 import com.ids.cloud9.controller.adapters.AdapterFilteredReccomendations
 import com.ids.cloud9.controller.adapters.AdapterReccomendations
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
-import com.ids.cloud9.databinding.LayoutProductsBinding
+import com.ids.cloud9.databinding.ActivityVisitDetailsBinding
 import com.ids.cloud9.databinding.LayoutReccomendationsBinding
 import com.ids.cloud9.model.ActivitiesList
 import com.ids.cloud9.model.ActivitiesListItem
@@ -25,55 +27,18 @@ import com.ids.cloud9.utils.show
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.ArrayList
 
-class FragmentReccomendations : Fragment() , RVOnItemClickListener {
+class ActivityAllTasks : AppCompatActivity(),RVOnItemClickListener {
 
     var binding : LayoutReccomendationsBinding?=null
-
-    var arrayReccomend: ArrayList<FilteredActivityListItem> = arrayListOf()
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-        binding = LayoutReccomendationsBinding.inflate(inflater, container, false)
-        return binding!!.root
-    }
-
+    var arrayReccomend : ArrayList<FilteredActivityListItem> = arrayListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        init()
-        listeners()
-    }
-
-    fun listeners(){
-        binding!!.btAddReccomend.setOnClickListener{
-            MyApplication.selectedReccomend = null
-            startActivity(
-                Intent(
-                    requireActivity(),
-                    ActivityAddReccomendations::class.java
-                )
-            )
-        }
-    }
-
-
-    fun init(){
+        binding = LayoutReccomendationsBinding.inflate(layoutInflater)
+        setContentView(binding!!.root)
         getReccomendations()
-    }
+        listeners()
 
-    fun setDataReccomend() {
-        binding!!.rvReccomendations.layoutManager = LinearLayoutManager(requireContext())
-        binding!!.rvReccomendations.adapter =
-            AdapterFilteredReccomendations(arrayReccomend, requireActivity(), this)
-        binding!!.llLoading.hide()
     }
 
     override fun onResume() {
@@ -81,11 +46,32 @@ class FragmentReccomendations : Fragment() , RVOnItemClickListener {
         getReccomendations()
     }
 
+    fun listeners(){
+        binding!!.layoutTool.show()
+        binding!!.llTool.ivDrawer.hide()
+        binding!!.llTool.layoutFragment.show()
+        binding!!.llTool.tvTitleTool.text = getString(R.string.all_tasks)
+
+
+        binding!!.llTool.btBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+
+        binding!!.llTool.ivCalendar.setOnClickListener {
+            finishAffinity()
+            startActivity(Intent(
+                this,
+                ActivityMain::class.java
+            ))
+        }
+
+        binding!!.btAddReccomend.hide()
+    }
+
     fun getReccomendations() {
         binding!!.llLoading.show()
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getReccomendationsFilter(
-           MyApplication.selectedVisit!!.id!!,
-            -1
+        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getReccomendations(
+            MyApplication.userItem!!.applicationUserId!!.toInt()
         ).enqueue(object : Callback<FilteredActivityList> {
             override fun onResponse(
                 call: Call<FilteredActivityList>,
@@ -104,11 +90,18 @@ class FragmentReccomendations : Fragment() , RVOnItemClickListener {
         })
     }
 
+
+    fun setDataReccomend(){
+        binding!!.rvReccomendations.layoutManager = LinearLayoutManager(this)
+        binding!!.rvReccomendations.adapter = AdapterFilteredReccomendations(arrayReccomend!!,this,this)
+        binding!!.llLoading.hide()
+    }
+
     override fun onItemClicked(view: View, position: Int) {
-        MyApplication.selectedReccomend = arrayReccomend.get(position)
+        MyApplication.selectedReccomend = arrayReccomend.get(position)!!
         startActivity(
             Intent(
-                requireActivity(),
+                this,
                 ActivityAddReccomendations::class.java
             )
         )
