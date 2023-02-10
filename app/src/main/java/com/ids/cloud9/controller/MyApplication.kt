@@ -32,7 +32,7 @@ class MyApplication : Application() {
         var selectedVisit : VisitListItem ?=null
         var userItem : JWTResponse ?=null
         var permission =-1
-        var selectedProduct:ProductsItem  ?= null
+        var selectedProduct:ProductListItem  ?= null
         var selectedReccomend : FilteredActivityListItem ?=null
         var mobileConfig : MobileConfig?=null
         var languageCode : String ?="en"

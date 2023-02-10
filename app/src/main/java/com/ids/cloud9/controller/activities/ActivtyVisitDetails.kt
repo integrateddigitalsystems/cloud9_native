@@ -323,7 +323,7 @@ class ActivtyVisitDetails : AppCompactBase(), RVOnItemClickListener {
                 val navController = Navigation.findNavController(this, R.id.fragmentContainerView)
                 navController.navigate(R.id.fragmentSignature, null, navBuilder.build())
 
-                
+
                 currLayPost = 4
             }
         }

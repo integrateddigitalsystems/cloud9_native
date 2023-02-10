@@ -27,7 +27,7 @@ class FragmentProducts : Fragment() , RVOnItemClickListener {
 
     var binding : LayoutProductsBinding?=null
     var ctProd = 0
-    var arrayProd: ArrayList<ProductsItem> = arrayListOf()
+    var arrayProd: ArrayList<ProductListItem> = arrayListOf()
     var arrayReccomend: ArrayList<ActivitiesListItem> = arrayListOf()
 
     override fun onCreateView(
@@ -71,8 +71,8 @@ class FragmentProducts : Fragment() , RVOnItemClickListener {
        binding!!.llLoading.show()
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getProducts(
             MyApplication.selectedVisit!!.id!!
-        )?.enqueue(object : Callback<Products> {
-            override fun onResponse(call: Call<Products>, response: Response<Products>) {
+        )?.enqueue(object : Callback<ProductList> {
+            override fun onResponse(call: Call<ProductList>, response: Response<ProductList>) {
                 arrayProd.clear()
                 arrayProd.addAll(response.body()!!)
                 setUpProducts()
@@ -80,7 +80,7 @@ class FragmentProducts : Fragment() , RVOnItemClickListener {
 
             }
 
-            override fun onFailure(call: Call<Products>, throwable: Throwable) {
+            override fun onFailure(call: Call<ProductList>, throwable: Throwable) {
 
                 binding!!.llLoading.hide()
             }

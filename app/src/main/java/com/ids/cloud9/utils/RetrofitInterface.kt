@@ -31,7 +31,7 @@ interface RetrofitInterface {
     @GET("VisitProduct/GetByVisitId")
     fun getProducts(
         @Query("VisitId") visitId : Int
-    ):Call<Products>
+    ):Call<ProductList>
 
     @GET("Form/GetFormsByProductCategoryId")
     fun getReports(

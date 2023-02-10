@@ -3,7 +3,7 @@ package com.ids.cloud9.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Unit(
+data class UnitXX(
     @SerializedName("accountDefaultBranches")
     val accountDefaultBranches: List<Any>,
     @SerializedName("accountDefaultCurrencies")
@@ -163,7 +163,7 @@ data class Unit(
     @SerializedName("visitPriorities")
     val visitPriorities: List<Any>,
     @SerializedName("visitProducts")
-    val visitProducts: ArrayList<Any>,
+    val visitProducts: ArrayList<VisitProductsItem>,
     @SerializedName("visitReasons")
     val visitReasons: List<Any>,
     @SerializedName("visitStatuses")

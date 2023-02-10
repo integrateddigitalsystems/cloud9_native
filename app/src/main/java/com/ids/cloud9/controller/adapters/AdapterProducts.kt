@@ -9,13 +9,15 @@ import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickLis
 import com.ids.cloud9.databinding.ItemProductsBinding
 import com.ids.cloud9.databinding.ItemReasonDialogBinding
 import com.ids.cloud9.model.ItemSpinner
+import com.ids.cloud9.model.ProductList
+import com.ids.cloud9.model.ProductListItem
 import com.ids.cloud9.model.ProductsItem
 import com.ids.cloud9.utils.AppHelper
 import com.ids.cloud9.utils.setCheckText
 import java.util.ArrayList
 
 class AdapterProducts(
-    var items : ArrayList<ProductsItem>,
+    var items : ArrayList<ProductListItem>,
     var con: Activity,
     private var clickListener: RVOnItemClickListener
 ) : RecyclerView.Adapter<AdapterProducts.VhItem>() {
@@ -41,7 +43,7 @@ class AdapterProducts(
     ), View.OnClickListener {
 
 
-        fun bind(item: ProductsItem) {
+        fun bind(item: ProductListItem) {
 
             binding.tvProductName.setCheckText(item.product.name)
             if(item.product.unit!=null && !item.product.unit.name.isNullOrEmpty())

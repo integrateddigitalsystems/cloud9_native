@@ -6,6 +6,8 @@ package com.ids.cloud9.utils
 import android.app.Activity
 import android.content.Context
 import android.text.Editable
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -47,6 +49,13 @@ fun View.hide() {
     try{visibility = View.GONE}catch (e:Exception){}
 }
 
+fun TextView.underline() {
+    val spannableString = SpannableString(this.text).apply {
+        setSpan(UnderlineSpan(), 0, this@underline.text.length, 0)
+    }
+
+    setText(spannableString)
+}
 inline fun <R> safeCall(call: () -> R): Result<R> {
     try {
         return Result.success(call())

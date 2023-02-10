@@ -14,9 +14,10 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
 import android.net.Uri
 import android.os.Build
-import android.util.Base64;
-
+import android.text.TextUtils
+import android.util.Base64
 import android.util.Base64OutputStream
+import android.util.Patterns
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -33,7 +34,6 @@ import dev.b3nedikt.reword.Reword
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
-import java.net.URLConnection
 import java.util.*
 
 
@@ -97,6 +97,10 @@ class AppHelper {
           }
         }
 
+
+        fun isValidPhoneNumber(phoneNumber: String): Boolean {
+            return !TextUtils.isEmpty(phoneNumber) && Patterns.PHONE.matcher(phoneNumber).matches()
+        }
 
         fun loadVideo(view:VideoView, video :String){
 

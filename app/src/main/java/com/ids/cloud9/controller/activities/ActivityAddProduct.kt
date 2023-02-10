@@ -70,7 +70,7 @@ class ActivityAddProduct : AppCompatActivity() , RVOnItemClickListener {
             }
             for(item in MyApplication.selectedProduct!!.serialNumbers!!.indices)
                 arraySer.get(item).serial = MyApplication.selectedProduct!!.serialNumbers!!.get(item)
-            unitId = MyApplication.selectedProduct!!.unitId
+            unitId = MyApplication.selectedProduct!!.product.unit.visitProducts.get(0).unitId
             prodId = MyApplication.selectedProduct!!.productId
         }else{
             arraySer.add(SerialItem(""))
@@ -125,6 +125,10 @@ class ActivityAddProduct : AppCompatActivity() , RVOnItemClickListener {
                 arrSpinner.add(ItemSpinner(item.id, item.name, item.selected))
             else
                 arrSpinner.add(ItemSpinner(item.id, item.name, false))
+        }
+
+        if(MyApplication.selectedProduct!=null){
+
         }
     }
 
