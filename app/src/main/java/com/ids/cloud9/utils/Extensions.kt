@@ -5,6 +5,7 @@ package com.ids.cloud9.utils
 
 import android.app.Activity
 import android.content.Context
+import android.location.Location
 import android.text.Editable
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
@@ -20,6 +21,14 @@ fun Any.wtf(message: String) {
 }
 fun Activity.toast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+}
+
+fun Location.toText():String{
+    return if (this != null) {
+        "($latitude, $longitude)"
+    } else {
+        "Unknown location"
+    }
 }
 
 fun TextView.setCheckText(message: String){

@@ -12,14 +12,26 @@
         android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="@dimen/small_margin"
+        android:layout_marginTop="@dimen/normal_margin"
         android:id="@+id/rvMedia"
         android:layout_marginStart="@dimen/small_margin"
         android:layout_marginEnd="@dimen/small_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+        <com.ids.cloud9.custom.CustomTextViewMedium
+            android:layout_width="match_parent"
+            android:id="@+id/tvNoMedia"
+            android:textColor="@color/text_gray"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:visibility="gone"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:text="@string/no_attachments_to_show"/>
+
+
     <LinearLayout
+        android:id="@+id/llMediaButtons"
         android:layout_marginStart="@dimen/small_margin"
         android:layout_marginEnd="@dimen/small_margin"
         android:layout_marginTop="@dimen/big_margin_padding"
@@ -28,6 +40,7 @@
         android:layout_height="@dimen/height_40">
 
         <LinearLayout
+            android:foreground="?android:attr/selectableItemBackground"
             android:id="@+id/llCamera"
             android:gravity="center"
             android:background="@drawable/white_rounded_border"
@@ -43,6 +56,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:foreground="?android:attr/selectableItemBackground"
             android:id="@+id/llVideo"
             android:gravity="center"
             android:layout_marginStart="@dimen/small_margin"
@@ -59,6 +73,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:foreground="?android:attr/selectableItemBackground"
             android:id="@+id/llGallery"
             android:gravity="center"
             android:layout_marginStart="@dimen/small_margin"

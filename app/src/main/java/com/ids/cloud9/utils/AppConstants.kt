@@ -32,6 +32,8 @@ object AppConstants {
     const val PENDING_REASON_ID = 4654
     const val ON_THE_WAY_REASON_ID = 4655
 
+    const val REQUEST_LOCATION_PERMISSION = 111
+
     const val COMPLETED_REASON = "completed"
     const val SCHEDULED_REASON = "scheduled"
     const val ARRIVED_REASON = "arrived"

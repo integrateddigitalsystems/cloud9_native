@@ -1,10 +1,13 @@
 package com.ids.cloud9.controller.Fragment
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ids.cloud9.R
@@ -12,8 +15,10 @@ import com.ids.cloud9.controller.adapters.AdapterProducts
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.activities.ActivityAddProduct
 import com.ids.cloud9.controller.activities.ActivtyVisitDetails
+import com.ids.cloud9.controller.adapters.AdapterDialog
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.databinding.LayoutProductsBinding
+import com.ids.cloud9.databinding.ReasonDialogBinding
 
 
 import com.ids.cloud9.model.*
@@ -23,10 +28,14 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.ArrayList
 
-class FragmentProducts : Fragment() , RVOnItemClickListener {
+class FragmentProducts : Fragment(), RVOnItemClickListener {
 
-    var binding : LayoutProductsBinding?=null
+    var binding: LayoutProductsBinding? = null
     var ctProd = 0
+    var arrSpin = arrayListOf<ItemSpinner>()
+    var adapterProd: AdapterProducts? = null
+    var alertDialog: AlertDialog? = null
+    var adapterDialog: AdapterDialog? = null
     var arrayProd: ArrayList<ProductListItem> = arrayListOf()
     var arrayReccomend: ArrayList<ActivitiesListItem> = arrayListOf()
 
@@ -50,10 +59,40 @@ class FragmentProducts : Fragment() , RVOnItemClickListener {
         init()
     }
 
+    fun setUpDataVisit(position: Int) {
 
-    fun init(){
+        arrSpin.clear()
+        for (item in arrayProd.get(position).reports) {
+            arrSpin.add(ItemSpinner(item.id, item.name, item.selected, true, false, position, null))
+        }
+
+
+        val builder = androidx.appcompat.app.AlertDialog.Builder(requireActivity())
+        var popupItemMultipleBinding = ReasonDialogBinding.inflate(layoutInflater)
+
+        popupItemMultipleBinding.rvReasonStatus.layoutManager =
+            LinearLayoutManager(requireActivity())
+        adapterDialog = AdapterDialog(arrSpin, requireActivity(), this, true)
+        popupItemMultipleBinding.rvReasonStatus.adapter = adapterDialog
+
+
+        builder.setView(popupItemMultipleBinding.root)
+        alertDialog = builder.create()
+        alertDialog!!.setCanceledOnTouchOutside(true)
+        safeCall {
+            alertDialog!!.show()
+            alertDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+
+    }
+
+
+    fun init() {
         getProducts()
 
+        if (MyApplication.selectedVisit!!.reasonId == AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.ON_THE_WAY_REASON_ID) {
+            binding!!.btAddProducts.hide()
+        }
         binding!!.btAddProducts.setOnClickListener {
             MyApplication.selectedProduct = null
             startActivity(
@@ -68,7 +107,7 @@ class FragmentProducts : Fragment() , RVOnItemClickListener {
     }
 
     fun getProducts() {
-       binding!!.llLoading.show()
+        binding!!.llLoading.show()
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getProducts(
             MyApplication.selectedVisit!!.id!!
         )?.enqueue(object : Callback<ProductList> {
@@ -88,8 +127,16 @@ class FragmentProducts : Fragment() , RVOnItemClickListener {
     }
 
     fun setUpProductsPage() {
-        binding!!.rvProducts.layoutManager = LinearLayoutManager(requireContext())
-        binding!!.rvProducts.adapter = AdapterProducts(arrayProd, requireActivity(), this)
+        if (arrayProd.size > 0) {
+            binding!!.tvNoData.hide()
+            binding!!.rvProducts.show()
+            binding!!.rvProducts.layoutManager = LinearLayoutManager(requireContext())
+            adapterProd = AdapterProducts(arrayProd, requireActivity(), this)
+            binding!!.rvProducts.adapter = adapterProd
+        } else {
+            binding!!.tvNoData.show()
+            binding!!.rvProducts.hide()
+        }
         binding!!.llLoading.hide()
     }
 
@@ -101,7 +148,7 @@ class FragmentProducts : Fragment() , RVOnItemClickListener {
                 getReports(i)
             }
         } else {
-           binding!!.llLoading.hide()
+            binding!!.llLoading.hide()
         }
     }
 
@@ -129,7 +176,7 @@ class FragmentProducts : Fragment() , RVOnItemClickListener {
 
             override fun onFailure(call: Call<ArrayList<Report>>, throwable: Throwable) {
 
-               binding!!.llLoading.hide()
+                binding!!.llLoading.hide()
             }
         })
 
@@ -140,7 +187,7 @@ class FragmentProducts : Fragment() , RVOnItemClickListener {
         getProducts()
     }
 
-    fun deleteProduct(pos:Int){
+    fun deleteProduct(pos: Int) {
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).deleteProduct(
             arrayProd.get(pos).id
         )?.enqueue(object : Callback<ResponseMessage> {
@@ -148,32 +195,57 @@ class FragmentProducts : Fragment() , RVOnItemClickListener {
                 call: Call<ResponseMessage>,
                 response: Response<ResponseMessage>
             ) {
-                AppHelper.createDialogPositive(requireActivity(),response.body()!!.message!!)
+                AppHelper.createDialogPositive(requireActivity(), response.body()!!.message!!)
 
-                if(response.body()!!.success.equals("true"))
+                if (response.body()!!.success.equals("true"))
                     getProducts()
 
             }
 
             override fun onFailure(call: Call<ResponseMessage>, throwable: Throwable) {
 
-               binding!!.llLoading.hide()
+                binding!!.llLoading.hide()
             }
         })
     }
 
     override fun onItemClicked(view: View, position: Int) {
-        if(view.id == R.id.btEditProduct){
-            MyApplication.selectedProduct = arrayProd.get(position)
-            startActivity(Intent(
+        if (view.id == R.id.btEditProduct) {
+            if (MyApplication.selectedVisit!!.reasonId != AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID) {
+
+                MyApplication.selectedProduct = arrayProd.get(position)
+                startActivity(
+                    Intent(
+                        requireActivity(),
+                        ActivityAddProduct::class.java
+                    )
+                )
+            }
+    } else if (view.id == R.id.btClose)
+    {
+        if (MyApplication.selectedVisit!!.reasonId != AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID) {
+
+            AppHelper.createYesNoDialog(
                 requireActivity(),
-                ActivityAddProduct::class.java
-            )
-            )
-        }else if(view.id == R.id.btClose){
-            AppHelper.createYesNoDialog(requireActivity(),getString(R.string.you_wanna_delete),0){
+                getString(R.string.you_wanna_delete),
+                0
+            ) {
                 deleteProduct(position)
             }
         }
+    } else if (view.id == R.id.llJobReport)
+    {
+        if (arrayProd.get(position).reports.size > 0)
+            setUpDataVisit(position)
+    } else if (view.id == R.id.llItemReason)
+    {
+        alertDialog!!.dismiss()
+        arrSpin.get(position).selected = true
+        for (item in arrayProd.get(arrSpin.get(position).type!!).reports)
+            item.selected = false
+        arrayProd.get(arrSpin.get(position).type!!).reports.get(position).selected = true
+        adapterDialog!!.notifyDataSetChanged()
+        adapterProd!!.notifyDataSetChanged()
     }
+}
 }

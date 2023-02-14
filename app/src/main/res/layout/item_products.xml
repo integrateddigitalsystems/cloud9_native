@@ -154,7 +154,8 @@
                 <RelativeLayout
                     android:id="@+id/llJobReport"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_40"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/height_40"
                     android:layout_marginStart="@dimen/normal_margin_padding"
                     android:layout_marginEnd="@dimen/big_margin_padding"
                     android:layout_weight="1"
@@ -164,19 +165,21 @@
                     <com.ids.cloud9.custom.CustomTextViewMedium
                         android:id="@+id/tvJopReport"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/normal_margin_padding"
                         android:gravity="center_vertical"
                         android:text="--Job Report--"
+                        android:layout_toStartOf="@id/ivArrowReport"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/normal_font" />
 
                     <ImageView
-
+                        android:layout_centerVertical="true"
+                        android:id="@+id/ivArrowReport"
                         android:layout_width="@dimen/big_margin_padding"
                         android:layout_height="@dimen/big_margin_padding"
                         android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
                         android:layout_marginEnd="@dimen/settings_item_height"
                         android:rotation="90"
                         android:src="@drawable/arrow_submit" />
@@ -186,7 +189,6 @@
 
 
                 <ImageView
-                    android:foreground="?android:attr/selectableItemBackground"
                     android:padding="@dimen/small_margin_padding"
                     android:layout_width="@dimen/height_toggle"
                     android:layout_height="@dimen/height_toggle"
@@ -196,7 +198,6 @@
 
 
                 <ImageView
-                    android:foreground="?android:attr/selectableItemBackground"
                     android:layout_marginStart="@dimen/small_margin_padding"
                     android:layout_marginEnd="@dimen/small_margin_padding"
                     android:padding="@dimen/small_margin_padding"

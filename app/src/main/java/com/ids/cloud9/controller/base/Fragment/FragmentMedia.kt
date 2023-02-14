@@ -39,14 +39,14 @@ import retrofit2.Response
 import java.io.*
 
 
-class FragmentMedia : Fragment() , RVOnItemClickListener , Player.Listener{
+class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
 
-    var binding : com.ids.cloud9.databinding.LayoutMediaBinding?=null
+    var binding: com.ids.cloud9.databinding.LayoutMediaBinding? = null
     lateinit var mPermissionResult: ActivityResultLauncher<Intent>
     var arrayMedia: ArrayList<ItemSpinner> = arrayListOf()
     var adapterMedia: AdapterMedia? = null
     var ctProd = 0
-    var sigList : ArrayList<SignatureListItem> = arrayListOf()
+    var sigList: ArrayList<SignatureListItem> = arrayListOf()
     var CODE_CAMERA = 1
     var CODE_VIDEO = 2
     var CODE_GALLERY = 3
@@ -81,20 +81,20 @@ class FragmentMedia : Fragment() , RVOnItemClickListener , Player.Listener{
         init()
     }
 
-    fun init(){
-     //   arrayMedia.add(ItemSpinner(0,"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",true , true , true , 0 ))
+    fun init() {
+        //   arrayMedia.add(ItemSpinner(0,"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",true , true , true , 0 ))
         binding!!.rvMedia.layoutManager =
             GridLayoutManager(requireContext(), 3, LinearLayoutManager.VERTICAL, false)
-        adapterMedia = AdapterMedia(arrayMedia,requireActivity(),this )
+        adapterMedia = AdapterMedia(arrayMedia, requireActivity(), this)
         binding!!.rvMedia.adapter = adapterMedia
         getSignatures()
     }
 
 
-    fun listeners(){
+    fun listeners() {
         binding!!.llCamera.setOnClickListener {
             code = CODE_CAMERA
-            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
                 ImagePicker.with(this)
                     .crop()
                     .compress(1024)
@@ -103,7 +103,7 @@ class FragmentMedia : Fragment() , RVOnItemClickListener , Player.Listener{
                     .createIntent {
                         mPermissionResult.launch(it)
                     }
-            }else{
+            } else {
                 val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 mPermissionResult.launch(cameraIntent)
             }
@@ -121,6 +121,10 @@ class FragmentMedia : Fragment() , RVOnItemClickListener , Player.Listener{
             // resultcode = CODE_IMAGE
             mPermissionResult.launch(intent)
         }
+
+        if (MyApplication.selectedVisit!!.reasonId == AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.ON_THE_WAY_REASON_ID) {
+            binding!!.llMediaButtons.hide()
+        }
     }
 
     fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
@@ -134,7 +138,8 @@ class FragmentMedia : Fragment() , RVOnItemClickListener , Player.Listener{
     fun getRealPathFromURI(uri: Uri?): String? {
         var path = ""
         if (requireActivity().getContentResolver() != null) {
-            val cursor: Cursor = requireActivity().getContentResolver().query(uri!!, null, null, null, null)!!
+            val cursor: Cursor =
+                requireActivity().getContentResolver().query(uri!!, null, null, null, null)!!
             if (cursor != null) {
                 cursor.moveToFirst()
                 val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
@@ -202,11 +207,11 @@ class FragmentMedia : Fragment() , RVOnItemClickListener , Player.Listener{
 
             Toast.makeText(requireActivity(), "TESTWORK", Toast.LENGTH_SHORT).show()
             var file: File? = null
-           // Log.wtf("DATA_TAG",it.data!!.extras)
+            // Log.wtf("DATA_TAG",it.data!!.extras)
 
-            try{
+            try {
 
-                if(code == CODE_CAMERA){
+                if (code == CODE_CAMERA) {
                     try {
                         var file: File? = null
                         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
@@ -229,7 +234,7 @@ class FragmentMedia : Fragment() , RVOnItemClickListener , Player.Listener{
                         Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT)
                             .show()
                     }
-                } else if(code == CODE_GALLERY) {
+                } else if (code == CODE_GALLERY) {
                     file = getFile(requireActivity(), it.data!!.data!!)
 
                     var type = -1
@@ -252,7 +257,7 @@ class FragmentMedia : Fragment() , RVOnItemClickListener , Player.Listener{
                         )
                     )
                     adapterMedia!!.notifyDataSetChanged()
-                } else if(code == CODE_VIDEO){
+                } else if (code == CODE_VIDEO) {
                     try {
                         /*if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
                             val path: Bitmap = it.data!!.extras!!.get("data") as Bitmap
@@ -269,7 +274,7 @@ class FragmentMedia : Fragment() , RVOnItemClickListener , Player.Listener{
 
                         var file = File(urlImage)
 
-                        if(file.exists()) {
+                        if (file.exists()) {
                             AppHelper.createDialogPositive(requireActivity(), "FILE EXISTS")
                             saveMedia(file)
                         }
@@ -281,10 +286,10 @@ class FragmentMedia : Fragment() , RVOnItemClickListener , Player.Listener{
                     }
                 }
 
-            }catch (ex:Exception){
+            } catch (ex: Exception) {
 
             }
-            }
+        }
 
 
     }
@@ -303,24 +308,25 @@ class FragmentMedia : Fragment() , RVOnItemClickListener , Player.Listener{
         return returnedBitmap
     }
 
-    fun saveMedia(file:File){
+    fun saveMedia(file: File) {
 
         binding!!.llLoading.show()
         var base64 = AppHelper.convertImageFileToBase64(file)
-        var sigReq  = SignatureRequest(
-            MyApplication.selectedVisit!!.id!! ,
-            file.name ,
-            "data:video/mp4;base64,"+base64,
+        var sigReq = SignatureRequest(
+            MyApplication.selectedVisit!!.id!!,
+            file.name,
+            "data:video/mp4;base64," + base64,
             0,
             false,
             MyApplication.userItem!!.applicationUserId!!,
-            null ,
-            null)
-        var arr : ArrayList<SignatureRequest> = arrayListOf()
+            null,
+            null
+        )
+        var arr: ArrayList<SignatureRequest> = arrayListOf()
         arr.add(sigReq)
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
             .saveAttachment(arr)
-            .enqueue(object : Callback<ResponseMessage>{
+            .enqueue(object : Callback<ResponseMessage> {
                 override fun onResponse(
                     call: Call<ResponseMessage>,
                     response: Response<ResponseMessage>
@@ -330,10 +336,10 @@ class FragmentMedia : Fragment() , RVOnItemClickListener , Player.Listener{
                         AppHelper.createDialogAgain(
                             requireActivity(),
                             response.body()!!.message!!
-                        ){
-                           getSignatures()
+                        ) {
+                            getSignatures()
                         }
-                    }catch (ex:Exception){
+                    } catch (ex: Exception) {
                         binding!!.llLoading.hide()
                     }
 
@@ -346,28 +352,38 @@ class FragmentMedia : Fragment() , RVOnItemClickListener , Player.Listener{
             })
     }
 
-    fun setUpMedia(array : ArrayList<SignatureListItem>){
-        arrayMedia.clear()
-        for(item in array)
-            arrayMedia.add(
-                ItemSpinner(
-                item.id,
-                MyApplication.BASE_URL_IMAGE+item.directory,
-                false,
-                false,
-                false,
-                if(AppHelper.isImageFile(item.directory)) 1 else 0 ,
-            null )
-            )
-        adapterMedia!!.notifyDataSetChanged()
-        binding!!.llLoading.hide()
+    fun setUpMedia(array: ArrayList<SignatureListItem>) {
+        if (array.size > 0) {
+            binding!!.rvMedia.show()
+            binding!!.tvNoMedia.hide()
+            arrayMedia.clear()
+            for (item in array)
+                arrayMedia.add(
+                    ItemSpinner(
+                        item.id,
+                        MyApplication.BASE_URL_IMAGE + item.directory,
+                        false,
+                        false,
+                        false,
+                        if (AppHelper.isImageFile(item.directory)) 1 else 0,
+                        null
+                    )
+                )
+            adapterMedia!!.notifyDataSetChanged()
+            binding!!.llLoading.hide()
+        } else {
+            binding!!.rvMedia.hide()
+            binding!!.tvNoMedia.show()
+            binding!!.llLoading.hide()
+        }
     }
-    fun getSignatures(){
+
+    fun getSignatures() {
         binding!!.llLoading.show()
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getSignatures(
             AppConstants.ENTITY_TYPE_CODE_SIGNATURE,
             MyApplication.selectedVisit!!.id!!
-        ).enqueue(object : Callback<SignatureList>{
+        ).enqueue(object : Callback<SignatureList> {
             override fun onResponse(call: Call<SignatureList>, response: Response<SignatureList>) {
                 sigList.clear()
                 sigList.addAll(response.body()!!.filter {
@@ -384,26 +400,29 @@ class FragmentMedia : Fragment() , RVOnItemClickListener , Player.Listener{
     }
 
 
-    fun deleteMedia(pos:Int){
+    fun deleteMedia(pos: Int) {
         binding!!.llLoading.show()
         RetrofitClientAuth.client!!.create(
             RetrofitInterface::class.java
         ).deleteMedia(arrayMedia.get(pos).id!!)
-            .enqueue(object : Callback<ResponseMessage>{
+            .enqueue(object : Callback<ResponseMessage> {
                 override fun onResponse(
                     call: Call<ResponseMessage>,
                     response: Response<ResponseMessage>
                 ) {
                     try {
-                        AppHelper.createDialogPositive(requireActivity(),response.body()!!.message!!)
+                        AppHelper.createDialogPositive(
+                            requireActivity(),
+                            response.body()!!.message!!
+                        )
                         if (response.body()!!.success.equals("true")) {
                             arrayMedia.removeAt(pos)
                             adapterMedia!!.notifyDataSetChanged()
                             getSignatures()
-                        }else{
+                        } else {
                             binding!!.llLoading.hide()
                         }
-                    }catch (ex:Exception){
+                    } catch (ex: Exception) {
                         binding!!.llLoading.hide()
                     }
                 }
@@ -416,22 +435,28 @@ class FragmentMedia : Fragment() , RVOnItemClickListener , Player.Listener{
     }
 
     override fun onItemClicked(view: View, position: Int) {
-        if(view.id == R.id.btClose){
-            AppHelper.createDialogAgain(requireActivity() ,
-            getString(R.string.sure_delete_media)){
-                deleteMedia(position)
+        if (view.id == R.id.btClose) {
+            if (MyApplication.selectedVisit!!.reasonId != AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID) {
+
+                AppHelper.createYesNoDialog(
+                    requireActivity(),
+                    getString(R.string.sure_delete_media),
+                    0
+                ) {
+                    deleteMedia(position)
+                }
             }
-        }else{
+        } else {
             MyApplication.arrayVid.clear()
             MyApplication.arrayVid.addAll(arrayMedia)
             startActivity(
                 Intent(
-                requireActivity(),
-                ActivityFullScreen::class.java
-            ).putExtra(
-                    "ID_MEDIA" ,
+                    requireActivity(),
+                    ActivityFullScreen::class.java
+                ).putExtra(
+                    "ID_MEDIA",
                     position
-            )
+                )
             )
         }
     }

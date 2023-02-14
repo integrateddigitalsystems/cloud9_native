@@ -117,6 +117,10 @@ interface RetrofitInterface {
         @Body sigReq : ArrayList<SignatureRequest>
     ):Call<ResponseMessage>
 
+    @POST("VisitLocation/UpdateVisitLocation")
+    fun createVisitLocation(
+        @Body reqVisit : VisitLocationRequest
+    ):Call<ResponseMessage>
 
     @POST("Attachments/CreateAttachmentSignatureMobile")
     fun saveSignature(

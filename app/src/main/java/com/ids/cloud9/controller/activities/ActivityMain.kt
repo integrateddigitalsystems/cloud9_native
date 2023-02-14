@@ -1,25 +1,39 @@
 package com.ids.cloud9.controller.activities
 
 import HeaderDecoration
+import android.Manifest
 import android.app.Activity
-import android.content.Intent
+import android.content.*
+import android.content.ContentValues.TAG
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import android.os.Handler
+import android.os.IBinder
 import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import android.window.OnBackInvokedDispatcher
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.ids.cloud9.controller.adapters.StickyAdapter
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
+import com.ids.cloud9.custom.AppCompactBase
 import com.ids.cloud9.databinding.ActivityMainBinding
 import com.ids.cloud9.model.*
 import com.ids.cloud9.utils.*
@@ -31,7 +45,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ActivityMain: AppCompatActivity() , RVOnItemClickListener{
+class ActivityMain: AppCompactBase() , RVOnItemClickListener{
 
     var simp = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss")
     var half = SimpleDateFormat("MMM dd")
@@ -40,29 +54,188 @@ class ActivityMain: AppCompatActivity() , RVOnItemClickListener{
     var binding : ActivityMainBinding?=null
     var fromDefault = Calendar.getInstance()
     var toDefault = Calendar.getInstance()
+    var foregroundOnlyLocationService: LocationForeService? = null
+    val BLOCKED = -1
+    val GRANTED = 0
+    val DENIED = 1
+    val BLOCKED_OR_NEVER_ASKED = 2
+    var mPermissionResult: ActivityResultLauncher<Array<String>>? = null
     var prevHeaders : ArrayList<Int> = arrayListOf()
     var editingFrom = Calendar.getInstance()
     var editingTo = Calendar.getInstance()
     var tempArray : ArrayList<VisitListItem> = arrayListOf()
     var mainArray : ArrayList<VisitListItem> = arrayListOf()
+    private lateinit var foregroundOnlyBroadcastReceiver: ForegroundOnlyBroadcastReceiver
+    private var foregroundOnlyLocationServiceBound = false
 
+    private inner class ForegroundOnlyBroadcastReceiver : BroadcastReceiver() {
+
+        override fun onReceive(context: Context, intent: Intent) {
+            val location = intent.getParcelableExtra<Location>(
+                LocationForeService.EXTRA_LOCATION
+            )
+
+            if (location != null) {
+                Log.wtf("FORE", "Foreground location: ${location.toText()}")
+            }
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
-
+        setUpPermission()
         listeners()
         setUpSliding()
         getVisits()
         setUpDate()
         setUpDrawer()
+        foregroundOnlyBroadcastReceiver = ForegroundOnlyBroadcastReceiver()
 
+       /* binding!!.llHomeMain.BIND.text = getString(R.string.test_text)
+        binding!!.llHomeMain.BIND.setOnClickListener {
+            foregroundOnlyLocationService!!.subscribeToLocationUpdates()
+        }
 
-
+        binding!!.llHomeMain.UNBIND.setOnClickListener {
+            foregroundOnlyLocationService!!.unsubscribeToLocationUpdates()
+            val intent = Intent()
+            intent.setClass(this, LocationForeService::class.java)
+            stopService(intent)
+        }
+*/
 
 
     }
 
+    private fun foregroundPermissionApproved(): Boolean {
+        return PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
+    }
+
+    private fun openChooser() {
+
+
+        mPermissionResult!!.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        )
+        /*mPermissionResult!!.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        )*/
+
+
+    }
+
+    fun changeState(track: Boolean, indx: Int) {
+        var gps_enabled = false
+        var mLocationManager =
+            getSystemService(LOCATION_SERVICE) as LocationManager
+
+        try {
+            gps_enabled = mLocationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        } catch (ex: Exception) {
+        }
+
+        if (gps_enabled) {
+            if (!track) {
+                MyApplication.saveLocTracking = false
+                try {
+                    foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
+                    val intent = Intent()
+                    intent.setClass(this, LocationForeService::class.java)
+                    stopService(intent)
+                } catch (ex: Exception) {
+                }
+            } else {
+                try {
+                    // TODO: Step 1.0, Review Permissions: Checks and requests if needed.
+                    if (foregroundPermissionApproved()) {
+
+                            MyApplication.saveLocTracking = true
+                            foregroundOnlyLocationService?.subscribeToLocationUpdates()
+                                ?: run {
+                                    Log.d(TAG, "Service Not Bound")
+
+                                }
+                    } else {
+                        AppHelper.createYesNoDialog(
+                            this,
+                            getString(R.string.permission_background_android),
+                            0
+                        ){
+                           openChooser()
+                        }
+
+                    }
+                } catch (ex: Exception) {
+                    Log.wtf("Ex",ex.toString())
+                }
+            }
+        }
+
+
+    }
+
+    fun getPermissionStatus(androidPermissionName: String?): Int {
+        return if (ContextCompat.checkSelfPermission(
+                this,
+                androidPermissionName!!
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    androidPermissionName
+                )
+            ) {
+                BLOCKED_OR_NEVER_ASKED
+            } else DENIED
+        } else GRANTED
+    }
+
+    fun setUpPermission() {
+        mPermissionResult =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions())
+            { result ->
+                var permission = false
+                for (item in result) {
+                    permission = item.value
+                }
+                if (permission) {
+
+                } else {
+                    toast(getString(R.string.location_updates_disabled))
+                    for (item in result) {
+                        if (ContextCompat.checkSelfPermission(
+                               this,
+                                item.key
+                            ) == BLOCKED
+                        ) {
+
+                            if (getPermissionStatus(Manifest.permission.ACCESS_FINE_LOCATION) == BLOCKED_OR_NEVER_ASKED) {
+                                Toast.makeText(
+                                    this,
+                                    AppHelper.getRemoteString(
+                                        "grant_settings_permission",
+                                       this
+                                    ),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                break
+                            }
+                        }
+                    }
+
+                }
+            }
+
+
+    }
 
     fun editDate(isNext : Boolean ){
         if(isNext){
@@ -114,6 +287,7 @@ class ActivityMain: AppCompatActivity() , RVOnItemClickListener{
         else
             binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondNoMonthHalf.format(editingTo.time)
     }
+
 
 
     fun setUpDate(){
@@ -168,6 +342,59 @@ class ActivityMain: AppCompatActivity() , RVOnItemClickListener{
 
     fun setUpDrawer(){
        // binding!!.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+
+    override fun onStop() {
+        if (foregroundOnlyLocationServiceBound) {
+            unbindService(foregroundOnlyServiceConnection)
+            foregroundOnlyLocationServiceBound = false
+        }
+        //  sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+
+        super.onStop()
+    }
+
+
+    private val foregroundOnlyServiceConnection = object : ServiceConnection {
+
+        override fun onServiceConnected(name: ComponentName, service: IBinder) {
+            val binder = service as LocationForeService.LocalBinder
+            foregroundOnlyLocationService = binder.foreService
+            foregroundOnlyLocationServiceBound = true
+            if (MyApplication.saveLocTracking!!)
+                changeState(true, 0)
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+            foregroundOnlyLocationService = null
+            foregroundOnlyLocationServiceBound = false
+        }
+    }
+
+    override fun onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(
+            foregroundOnlyBroadcastReceiver
+        )
+
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+            foregroundOnlyBroadcastReceiver,
+            IntentFilter(
+                LocationForeService.ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST
+            )
+        )
+    }
+    override fun onStart() {
+        super.onStart()
+
+        MyApplication.serviceContext = this
+        val serviceIntent = Intent(this, LocationForeService::class.java)
+        bindService(serviceIntent, foregroundOnlyServiceConnection, Context.BIND_AUTO_CREATE)
     }
 
     fun setUpData(list: VisitList){
@@ -260,6 +487,14 @@ class ActivityMain: AppCompatActivity() , RVOnItemClickListener{
                 override fun onResponse(call: Call<VisitList>, response: Response<VisitList>) {
                     mainArray.clear()
                     mainArray.addAll(response.body()!!)
+                    var visit = mainArray.find {
+                        it.reasonId == AppConstants.ON_THE_WAY_REASON_ID
+                    }
+                    MyApplication.onTheWayVisit = visit
+                    if(visit!=null)
+                        changeState(true,0)
+                    else
+                        changeState(false , 0 )
                     filterDate(response.body()!!)
 
                 }
@@ -287,6 +522,21 @@ class ActivityMain: AppCompatActivity() , RVOnItemClickListener{
             }
         }
 
+        binding!!.drawerMenu.btArabic.hide()
+        binding!!.drawerMenu.btEnglish.hide()
+
+        binding!!.drawerMenu.btArabic.setOnClickListener {
+            AppHelper.changeLanguage(this,"ar")
+            val intent = Intent(this, ActivityMain::class.java)
+            startActivity(intent)
+            finishAffinity()
+        }
+        binding!!.drawerMenu.btEnglish.setOnClickListener {
+            AppHelper.changeLanguage(this,"en")
+            val intent = Intent(this, ActivityMain::class.java)
+            startActivity(intent)
+            finishAffinity()
+        }
         binding!!.drawerMenu.tvAllTasks.setOnClickListener {
             startActivity(Intent(
                 this,
@@ -307,6 +557,7 @@ class ActivityMain: AppCompatActivity() , RVOnItemClickListener{
             }, 300)
 
         }
+
 
         onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {

@@ -38,6 +38,20 @@
     </RelativeLayout>
 
 
+       <!-- <com.ids.cloud9.custom.CustomButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/BIND"
+            android:background="@color/red"
+            android:text="B I N D "/>
+        <com.ids.cloud9.custom.CustomButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/UNBIND"
+            android:background="@color/teal_200"
+            android:text="U N B I N D "/>-->
+
+
     <androidx.cardview.widget.CardView
         android:id="@+id/llDate"
         android:layout_width="match_parent"

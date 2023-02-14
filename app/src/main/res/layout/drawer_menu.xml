@@ -11,8 +11,9 @@
     <ImageView
         android:foreground="?android:attr/selectableItemBackground"
         android:id="@+id/btClose"
-        android:layout_width="@dimen/huge_margin"
-        android:layout_height="@dimen/huge_margin"
+        android:padding="@dimen/big_margin_padding"
+        android:layout_width="@dimen/button_height"
+        android:layout_height="@dimen/button_height"
         android:layout_marginStart="@dimen/margin_start_end"
         android:layout_marginTop="@dimen/normal_margin"
         android:src="@drawable/close_x"
@@ -32,32 +33,38 @@
     <com.ids.cloud9.custom.CustomTextViewMedium
         android:layout_width="match_parent"
         android:text="@string/home"
+        android:layout_marginTop="@dimen/normal_margin_padding"
         android:id="@+id/tvHome"
+        android:gravity="center_vertical"
         android:foreground="?android:attr/selectableItemBackground"
-        android:layout_marginTop="@dimen/normal_margin"
         android:layout_marginStart="@dimen/button_height"
+        android:layout_marginEnd="@dimen/button_height"
         android:textColor="@color/white"
-        android:layout_height="wrap_content"/>
+        android:layout_height="@dimen/edit_text_height"/>
 
     <com.ids.cloud9.custom.CustomTextViewMedium
         android:layout_width="match_parent"
         android:text="@string/all_tasks"
+        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/normal_margin_padding"
         android:id="@+id/tvAllTasks"
         android:foreground="?android:attr/selectableItemBackground"
-        android:layout_marginTop="@dimen/normal_margin"
         android:layout_marginStart="@dimen/button_height"
+        android:layout_marginEnd="@dimen/button_height"
         android:textColor="@color/white"
-        android:layout_height="wrap_content"/>
+        android:layout_height="@dimen/edit_text_height"/>
 
 
     <LinearLayout
+        android:gravity="center_vertical"
         android:id="@+id/llLogout"
+        android:layout_marginTop="@dimen/normal_margin_padding"
+        android:layout_marginEnd="@dimen/button_height"
         android:layout_marginBottom="@dimen/normal_margin"
         android:foreground="?android:attr/selectableItemBackground"
-        android:layout_marginTop="@dimen/normal_margin"
         android:layout_marginStart="@dimen/button_height"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/edit_text_height">
 
 
         <ImageView
@@ -75,5 +82,49 @@
             android:layout_height="match_parent"/>
 
     </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginStart="@dimen/button_height"
+        android:layout_marginEnd="@dimen/button_height"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="@dimen/normal_margin_padding"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_50">
+
+        <com.ids.cloud9.custom.CustomTextViewBold
+            android:text="English"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:id="@+id/btEnglish"
+            android:layout_marginEnd="@dimen/normal_margin_padding"
+            android:layout_weight="1"
+            android:textColor="@color/medium_blue"
+            android:background="@drawable/rounded_white"
+            android:textSize="@dimen/normal_font"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_40"/>
+
+
+        <com.ids.cloud9.custom.CustomTextViewBold
+            android:text="عربي"
+            android:id="@+id/btArabic"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/normal_margin_padding"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_border_white"
+            android:textSize="@dimen/normal_font"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="@dimen/height_40"/>
+
+    </LinearLayout>
+
+
+
 
 </LinearLayout>

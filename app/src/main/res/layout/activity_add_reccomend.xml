@@ -269,6 +269,7 @@
                 android:layout_marginEnd="@dimen/margin_start_end"
                 android:layout_width="match_parent"
                 android:text="@string/save"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:id="@+id/btSave"
                 android:textColor="@color/white"
                 android:layout_marginTop="@dimen/small_margin"
@@ -282,6 +283,7 @@
                 android:layout_marginStart="@dimen/margin_start_end"
                 android:layout_marginEnd="@dimen/margin_start_end"
                 android:gravity="center"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:id="@+id/lLDelete"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_40">

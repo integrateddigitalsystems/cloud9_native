@@ -18,18 +18,15 @@ import com.ids.cloud9.model.ActivitiesList
 import com.ids.cloud9.model.ActivitiesListItem
 import com.ids.cloud9.model.FilteredActivityList
 import com.ids.cloud9.model.FilteredActivityListItem
-import com.ids.cloud9.utils.RetrofitClientAuth
-import com.ids.cloud9.utils.RetrofitInterface
-import com.ids.cloud9.utils.hide
-import com.ids.cloud9.utils.show
+import com.ids.cloud9.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.ArrayList
 
-class FragmentReccomendations : Fragment() , RVOnItemClickListener {
+class FragmentReccomendations : Fragment(), RVOnItemClickListener {
 
-    var binding : LayoutReccomendationsBinding?=null
+    var binding: LayoutReccomendationsBinding? = null
 
     var arrayReccomend: ArrayList<FilteredActivityListItem> = arrayListOf()
     override fun onCreateView(
@@ -52,8 +49,11 @@ class FragmentReccomendations : Fragment() , RVOnItemClickListener {
         listeners()
     }
 
-    fun listeners(){
-        binding!!.btAddReccomend.setOnClickListener{
+    fun listeners() {
+        if (MyApplication.selectedVisit!!.reasonId == AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.ON_THE_WAY_REASON_ID) {
+            binding!!.btAddReccomend.hide()
+        }
+        binding!!.btAddReccomend.setOnClickListener {
             MyApplication.selectedReccomend = null
             startActivity(
                 Intent(
@@ -65,7 +65,7 @@ class FragmentReccomendations : Fragment() , RVOnItemClickListener {
     }
 
 
-    fun init(){
+    fun init() {
         getReccomendations()
     }
 
@@ -84,7 +84,7 @@ class FragmentReccomendations : Fragment() , RVOnItemClickListener {
     fun getReccomendations() {
         binding!!.llLoading.show()
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getReccomendationsFilter(
-           MyApplication.selectedVisit!!.id!!,
+            MyApplication.selectedVisit!!.id!!,
             -1
         ).enqueue(object : Callback<FilteredActivityList> {
             override fun onResponse(
@@ -105,12 +105,15 @@ class FragmentReccomendations : Fragment() , RVOnItemClickListener {
     }
 
     override fun onItemClicked(view: View, position: Int) {
-        MyApplication.selectedReccomend = arrayReccomend.get(position)
-        startActivity(
-            Intent(
-                requireActivity(),
-                ActivityAddReccomendations::class.java
+        if (MyApplication.selectedVisit!!.reasonId != AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID) {
+
+            MyApplication.selectedReccomend = arrayReccomend.get(position)
+            startActivity(
+                Intent(
+                    requireActivity(),
+                    ActivityAddReccomendations::class.java
+                )
             )
-        )
+        }
     }
 }

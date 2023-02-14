@@ -56,6 +56,11 @@ class AdapterProducts(
                 "N/A"
             }
             binding.tvQuantity.text = item.quantity.toString()
+            var rep = item.reports.find {
+                it.selected!!
+            }
+            if(rep!=null)
+                binding.tvJopReport.text = rep!!.name
 
 
 

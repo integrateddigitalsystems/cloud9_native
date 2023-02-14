@@ -21,6 +21,16 @@
         </LinearLayout>
 
 
+        <com.ids.cloud9.custom.CustomTextViewMedium
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/tvNotasks"
+            android:textColor="@color/text_gray"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:text="@string/no_tasks_added_yet"/>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvReccomendations"
         android:layout_width="match_parent"

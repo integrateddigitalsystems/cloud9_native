@@ -17,6 +17,7 @@ import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.AdapterText
 import com.ids.cloud9.controller.adapters.AdapterUser
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
+import com.ids.cloud9.custom.AppCompactBase
 import com.ids.cloud9.databinding.ActivityAddProductBinding
 import com.ids.cloud9.databinding.ActivityAddReccomendBinding
 import com.ids.cloud9.databinding.ActivityVisitDetailsBinding
@@ -29,7 +30,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ActivityAddReccomendations : AppCompatActivity(), RVOnItemClickListener {
+class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
 
     var binding: ActivityAddReccomendBinding? = null
     var adapter: AdapterText? = null

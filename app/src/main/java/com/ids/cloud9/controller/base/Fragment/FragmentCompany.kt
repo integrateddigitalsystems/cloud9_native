@@ -32,6 +32,18 @@ class FragmentCompany : Fragment() {
 
     fun init(){
         setUpCompanyData()
+        listenrs()
+    }
+
+    fun listenrs(){
+
+        binding!!.llGetDirection.setOnClickListener {
+            val geoUri =
+                "http://maps.google.com/maps?q=loc:" + MyApplication.selectedVisit!!.company!!.lat + "," + MyApplication.selectedVisit!!.company!!.long + " (" + MyApplication.selectedVisit!!.company!!.companyName + ")"
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
+            startActivity(intent)
+
+        }
     }
 
     fun setUpCompanyData(){

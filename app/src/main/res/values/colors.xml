@@ -45,6 +45,8 @@
     <color name="gray_tint">#dfdfdf</color>
     <color name="selected_gray">#eeeeee</color>
     <color name="selected_gray_border">#dbdbdb</color>
+    <color name="text_gray">#b1b1b1</color>
+    <color name="disabled_primary">#91d0c6</color>
 
 
 </resources>

@@ -16,6 +16,7 @@ import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.AdapterEdit
 import com.ids.cloud9.controller.adapters.AdapterText
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
+import com.ids.cloud9.custom.AppCompactBase
 import com.ids.cloud9.databinding.ActivityAddProductBinding
 import com.ids.cloud9.databinding.ActivityVisitDetailsBinding
 import com.ids.cloud9.databinding.ReasonDialogBinding
@@ -27,7 +28,7 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
-class ActivityAddProduct : AppCompatActivity() , RVOnItemClickListener {
+class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
 
     var binding: ActivityAddProductBinding? = null
     var prodId : Int ?=0
@@ -70,7 +71,8 @@ class ActivityAddProduct : AppCompatActivity() , RVOnItemClickListener {
             }
             for(item in MyApplication.selectedProduct!!.serialNumbers!!.indices)
                 arraySer.get(item).serial = MyApplication.selectedProduct!!.serialNumbers!!.get(item)
-            unitId = MyApplication.selectedProduct!!.product.unit.visitProducts.get(0).unitId
+            if(MyApplication.selectedProduct!!.product.unit.visitProducts.size>0)
+                unitId = MyApplication.selectedProduct!!.product.unit.visitProducts.get(0).unitId
             prodId = MyApplication.selectedProduct!!.productId
         }else{
             arraySer.add(SerialItem(""))

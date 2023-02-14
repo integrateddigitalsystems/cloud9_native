@@ -48,7 +48,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class ActivtyVisitDetails : AppCompactBase(), RVOnItemClickListener {
+class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
 
     var binding: ActivityVisitDetailsBinding? = null
     lateinit var mPermissionResult: ActivityResultLauncher<Intent>
@@ -143,12 +143,12 @@ class ActivtyVisitDetails : AppCompactBase(), RVOnItemClickListener {
     }
 
     fun restartLayouts() {
-        AppHelper.setTextColor(this, binding!!.tvCompany, R.color.gray_border_tab)
-        AppHelper.setTextColor(this, binding!!.tvVisit, R.color.gray_border_tab)
-        AppHelper.setTextColor(this, binding!!.tvMedia, R.color.gray_border_tab)
-        AppHelper.setTextColor(this, binding!!.tvReccom, R.color.gray_border_tab)
-        AppHelper.setTextColor(this, binding!!.tvProducts, R.color.gray_border_tab)
-        AppHelper.setTextColor(this, binding!!.tvSignature, R.color.gray_border_tab)
+        AppHelper.setTextColor(this, binding!!.tvCompany, R.color.text_gray)
+        AppHelper.setTextColor(this, binding!!.tvVisit, R.color.text_gray)
+        AppHelper.setTextColor(this, binding!!.tvMedia, R.color.text_gray)
+        AppHelper.setTextColor(this, binding!!.tvReccom, R.color.text_gray)
+        AppHelper.setTextColor(this, binding!!.tvProducts, R.color.text_gray)
+        AppHelper.setTextColor(this, binding!!.tvSignature, R.color.text_gray)
 
         binding!!.llBorderCompany.show()
         binding!!.llSelectedCompanyBorder.hide()

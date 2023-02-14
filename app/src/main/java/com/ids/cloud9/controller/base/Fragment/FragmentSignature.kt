@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
+import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.databinding.LayoutSignatureBinding
 import com.ids.cloud9.model.ResponseMessage
@@ -162,6 +163,26 @@ class FragmentSignature : Fragment() {
 
     fun init(){
         getSignatures()
+
+        if(MyApplication.selectedVisit!!.reasonId == AppConstants.PENDING_REASON_ID)
+        {
+            binding!!.drawEmployee.hide()
+            binding!!.drawClient.hide()
+            AppHelper.setImage(requireContext(),binding!!.ivSelectedDrawClient,"",true)
+            AppHelper.setImage(requireContext(),binding!!.ivSelectedDrawEmployee,"",true)
+            binding!!.btSaveClient.isEnabled = false
+            binding!!.btSaveEMployee.isEnabled = false
+            binding!!.btClearEmployee.isEnabled = false
+            binding!!.btClearClient.isEnabled = false
+            binding!!.btSaveClient.setBackgroundResource(R.drawable.rounded_gray_background)
+            binding!!.btSaveEMployee.setBackgroundResource(R.drawable.rounded_gray_background)
+            binding!!.btClearEmployee.setBackgroundResource(R.drawable.rounded_gray_background)
+            binding!!.btClearClient.setBackgroundResource(R.drawable.rounded_gray_background)
+            binding!!.undoEmployee.hide()
+            binding!!.redoEmployee.hide()
+            binding!!.redoClient.hide()
+            binding!!.undoClient.hide()
+        }
     }
 
     fun setUpSignatures(){
@@ -191,6 +212,29 @@ class FragmentSignature : Fragment() {
             binding!!.drawClient.show()
         }
 
+        if(MyApplication.selectedVisit!!.reasonId == AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.ON_THE_WAY_REASON_ID)
+        {
+            binding!!.drawEmployee.hide()
+            binding!!.drawClient.hide()
+            if(emCl==null)
+                AppHelper.setImage(requireContext(),binding!!.ivSelectedDrawClient,"",true)
+            if(emEy==null)
+                AppHelper.setImage(requireContext(),binding!!.ivSelectedDrawEmployee,"",true)
+            binding!!.ivSelectedDrawClient.show()
+            binding!!.ivSelectedDrawEmployee.show()
+            binding!!.btSaveClient.isEnabled = false
+            binding!!.btSaveEMployee.isEnabled = false
+            binding!!.btClearEmployee.isEnabled = false
+            binding!!.btClearClient.isEnabled = false
+            binding!!.btSaveClient.setBackgroundResource(R.drawable.rounded_gray_background)
+            binding!!.btSaveEMployee.setBackgroundResource(R.drawable.rounded_gray_background)
+            binding!!.btClearEmployee.setBackgroundResource(R.drawable.rounded_gray_background)
+            binding!!.btClearClient.setBackgroundResource(R.drawable.rounded_gray_background)
+            binding!!.undoEmployee.hide()
+            binding!!.redoEmployee.hide()
+            binding!!.redoClient.hide()
+            binding!!.undoClient.hide()
+        }
         binding!!.llLoading.hide()
     }
 

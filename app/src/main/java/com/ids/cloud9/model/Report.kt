@@ -39,5 +39,6 @@ data class Report(
     @SerializedName("timeStamp")
     val timeStamp: Any,
     @SerializedName("visitProductReports")
-    val visitProductReports: List<Any>
+    val visitProductReports: List<Any> ,
+    var selected : Boolean = false
 )

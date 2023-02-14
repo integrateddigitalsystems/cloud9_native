@@ -14,6 +14,7 @@ import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.AdapterFilteredReccomendations
 import com.ids.cloud9.controller.adapters.AdapterReccomendations
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
+import com.ids.cloud9.custom.AppCompactBase
 import com.ids.cloud9.databinding.ActivityVisitDetailsBinding
 import com.ids.cloud9.databinding.LayoutReccomendationsBinding
 import com.ids.cloud9.model.ActivitiesList
@@ -28,7 +29,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ActivityAllTasks : AppCompatActivity(),RVOnItemClickListener {
+class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
 
     var binding : LayoutReccomendationsBinding?=null
     var arrayReccomend : ArrayList<FilteredActivityListItem> = arrayListOf()

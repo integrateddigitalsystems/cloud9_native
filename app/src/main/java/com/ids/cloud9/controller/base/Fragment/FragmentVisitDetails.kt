@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import com.ids.cloud9.controller.adapters.AdapterDialog
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
@@ -17,6 +18,7 @@ import com.ids.cloud9.databinding.LayoutVisitBinding
 import com.ids.cloud9.databinding.ReasonDialogBinding
 import com.ids.cloud9.model.ItemSpinner
 import com.ids.cloud9.model.ResponseMessage
+import com.ids.cloud9.model.UpdateVisit
 import com.ids.cloud9.model.VisitListItem
 import com.ids.cloud9.utils.*
 import retrofit2.Call
@@ -173,8 +175,9 @@ class FragmentVisitDetails : Fragment() , RVOnItemClickListener{
         }
     }
     fun updateVisit(){
+        Log.wtf("TAG_USER",Gson().toJson(editVisit))
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
-            .updateVisit(MyApplication.selectedVisit!!)
+            .updateVisit(editVisit!!)
             .enqueue(object : Callback<ResponseMessage>{
                 override fun onResponse(call: Call<ResponseMessage>, response: Response<ResponseMessage>) {
                    AppHelper.createDialogPositive(requireActivity(),response.body()!!.message!!)
@@ -191,6 +194,9 @@ class FragmentVisitDetails : Fragment() , RVOnItemClickListener{
         setUpVisitDetails()
         listeners()
         editVisit = MyApplication.selectedVisit
+
+        if(MyApplication.selectedVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID)
+            binding!!.btSave.hide()
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

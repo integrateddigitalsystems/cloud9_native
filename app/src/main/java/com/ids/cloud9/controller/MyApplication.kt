@@ -16,6 +16,7 @@ import dev.b3nedikt.reword.RewordInterceptor
 import dev.b3nedikt.viewpump.ViewPump
 import com.ids.cloud9.utils.AppConstants
 import com.ids.cloud9.utils.AppConstants.LOCALE_ARABIC
+import com.ids.cloud9.utils.LocationForeService
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -30,8 +31,12 @@ class MyApplication : Application() {
         var arrayVid : ArrayList<ItemSpinner> = arrayListOf()
         var selectedFragment  : Fragment?=null
         var selectedVisit : VisitListItem ?=null
+        var serviceContext : Context ?=null
         var userItem : JWTResponse ?=null
         var permission =-1
+        var onTheWayVisit : VisitListItem ?=null
+        var saveLocTracking = false
+        var address : ResponseAddress ?=null
         var selectedProduct:ProductListItem  ?= null
         var selectedReccomend : FilteredActivityListItem ?=null
         var mobileConfig : MobileConfig?=null

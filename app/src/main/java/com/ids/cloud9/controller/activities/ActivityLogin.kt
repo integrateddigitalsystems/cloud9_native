@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
+import com.ids.cloud9.custom.AppCompactBase
 import com.ids.cloud9.databinding.ActivityLoginBinding
 import com.ids.cloud9.model.JWTDecoding
 import com.ids.cloud9.model.RequestLogin
@@ -20,7 +21,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ActivityLogin : Activity() {
+class ActivityLogin : AppCompactBase() {
 
 
     var binding : ActivityLoginBinding?=null

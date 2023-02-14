@@ -4,6 +4,16 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+   <com.ids.cloud9.custom.CustomTextViewMedium
+       android:layout_width="match_parent"
+       android:gravity="center_horizontal"
+       android:id="@+id/tvNoData"
+       android:textColor="@color/text_gray"
+       android:text="@string/no_products_added_yet"
+       android:layout_marginTop="@dimen/normal_margin"
+       android:layout_height="match_parent"/>
+
    <androidx.recyclerview.widget.RecyclerView
        android:layout_marginTop="@dimen/normal_margin"
        android:layout_width="match_parent"

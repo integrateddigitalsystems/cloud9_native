@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Gravity
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -70,6 +71,8 @@ class ActivitySplash : Activity() {
     }
 
     fun setUpFirebase() {
+
+
         var mobConfig = Gson().fromJson(
             mFirebaseRemoteConfig!!.getString(AppConstants.FIREBASE_CONFIG),
             MobileConfigTypes::class.java
@@ -80,6 +83,9 @@ class ActivitySplash : Activity() {
             mFirebaseRemoteConfig!!.getString(AppConstants.LOCALISED_MESSAGES),
             LocMessages::class.java
         )
+
+
+
 
         MyApplication.locMessages.addAll(locMessages.values)
 
