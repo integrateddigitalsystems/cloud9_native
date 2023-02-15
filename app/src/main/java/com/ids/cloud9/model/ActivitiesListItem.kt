@@ -25,7 +25,7 @@ data class ActivitiesListItem(
     @SerializedName("owner")
     var owner: String,
     @SerializedName("reason")
-    var reason: String,
+    var reason: String?="" ,
     @SerializedName("reasonId")
     var reasonId: Int,
     @SerializedName("status")
