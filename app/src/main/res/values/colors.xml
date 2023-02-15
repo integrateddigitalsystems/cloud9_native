@@ -24,7 +24,7 @@
     <color name="hint_search">#B35a5f66</color>
     <color name="gray_bg">#009688</color>
     <color name="gray_bg1">#33999999</color>
-    <color name="red">#e26969</color>
+    <color name="red">#CC0000</color>
     <color name="gray_border">#757579</color>
     <color name="new_night_blue">#262046</color>
     <color name="gray_app_bg">#faf6f7</color>
@@ -46,7 +46,7 @@
     <color name="selected_gray">#eeeeee</color>
     <color name="selected_gray_border">#dbdbdb</color>
     <color name="text_gray">#b1b1b1</color>
-    <color name="disabled_primary">#91d0c6</color>
+    <color name="disabled_primary">#BF91d0c6</color>
 
 
 </resources>

@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ids.cloud9.controller.adapters.AdapterDialog
@@ -59,11 +60,14 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
         binding!!.llTool.ivDrawer.hide()
         binding!!.llTool.layoutFragment.show()
         binding!!.llTool.tvTitleTool.text = MyApplication.selectedVisit!!.title
+
         getUnits()
         getProductNames()
         createProduct = CreateProduct()
         if(MyApplication.selectedProduct!=null){
-            binding!!.tvUnit.text = MyApplication.selectedProduct!!.product.unit.name
+            binding!!.tvUnit.text = MyApplication.units.find {
+                it.id == MyApplication.selectedProduct!!.unitId
+            }!!.name
             binding!!.tvProduct.text = MyApplication.selectedProduct!!.product.name
             binding!!.etQuantity.text = MyApplication.selectedProduct!!.quantity!!.toString().toEditable()
             for(i in 1..MyApplication.selectedProduct!!.quantity){
@@ -74,6 +78,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             if(MyApplication.selectedProduct!!.product.unit.visitProducts.size>0)
                 unitId = MyApplication.selectedProduct!!.product.unit.visitProducts.get(0).unitId
             prodId = MyApplication.selectedProduct!!.productId
+            binding!!.btAddProduct.text = getString(R.string.update)
         }else{
             arraySer.add(SerialItem(""))
         }
@@ -81,6 +86,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
         binding!!.rvSerialised.layoutManager = LinearLayoutManager(this)
         adapterSer = AdapterEdit(arraySer,this,this)
         binding!!.rvSerialised.adapter = adapterSer
+
 
 
     }

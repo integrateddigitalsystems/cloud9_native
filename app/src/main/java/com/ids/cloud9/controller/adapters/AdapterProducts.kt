@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ids.cloud9.R
+import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.databinding.ItemProductsBinding
 import com.ids.cloud9.databinding.ItemReasonDialogBinding
@@ -12,8 +13,10 @@ import com.ids.cloud9.model.ItemSpinner
 import com.ids.cloud9.model.ProductList
 import com.ids.cloud9.model.ProductListItem
 import com.ids.cloud9.model.ProductsItem
+import com.ids.cloud9.utils.AppConstants
 import com.ids.cloud9.utils.AppHelper
 import com.ids.cloud9.utils.setCheckText
+import com.ids.cloud9.utils.setTintImage
 import java.util.ArrayList
 
 class AdapterProducts(
@@ -46,8 +49,10 @@ class AdapterProducts(
         fun bind(item: ProductListItem) {
 
             binding.tvProductName.setCheckText(item.product.name)
-            if(item.product.unit!=null && !item.product.unit.name.isNullOrEmpty())
-                binding.tvUnit.setCheckText(item.product.unit.name)
+            if(item.unitId!=null)
+              binding.tvUnit.text = MyApplication.units.find {
+                  it.id == item.unitId
+              }!!.name
             else
                 binding.tvUnit.text = ""
             binding.tvSN.text =if(item.serialNumbers!=null && item.serialNumbers!!.size > 0 ){
@@ -59,8 +64,12 @@ class AdapterProducts(
             var rep = item.reports.find {
                 it.selected!!
             }
-            if(rep!=null)
+            if(rep!=null) {
                 binding.tvJopReport.text = rep!!.name
+                if(MyApplication.selectedVisit!!.reasonId==AppConstants.ARRIVED_REASON_ID)
+                    binding.ivReport.setTintImage(R.color.black)
+            }
+
 
 
 
@@ -70,6 +79,7 @@ class AdapterProducts(
 
         init {
             binding.root.setOnClickListener(this)
+            binding.ivReport.setOnClickListener(this)
             binding.llJobReport.setOnClickListener(this)
             binding.btEditProduct.setOnClickListener(this)
             binding.btClose.setOnClickListener(this)

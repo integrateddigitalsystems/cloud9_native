@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.activities.ActivityAddReccomendations
 import com.ids.cloud9.controller.adapters.AdapterFilteredReccomendations
@@ -51,7 +53,8 @@ class FragmentReccomendations : Fragment(), RVOnItemClickListener {
 
     fun listeners() {
         if (MyApplication.selectedVisit!!.reasonId == AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.ON_THE_WAY_REASON_ID) {
-            binding!!.btAddReccomend.hide()
+           binding!!.btAddReccomend.isEnabled = false
+            binding!!.llButton.setBackgroundResource(R.color.disabled_primary)
         }
         binding!!.btAddReccomend.setOnClickListener {
             MyApplication.selectedReccomend = null
@@ -66,13 +69,21 @@ class FragmentReccomendations : Fragment(), RVOnItemClickListener {
 
 
     fun init() {
-        getReccomendations()
+        //getReccomendations()
     }
 
     fun setDataReccomend() {
+        if(arrayReccomend.size > 0 ) {
+            binding!!.rvReccomendations.show()
+            binding!!.tvNotasks.hide()
+        }else{
+            binding!!.rvReccomendations.hide()
+            binding!!.tvNotasks.show()
+        }
         binding!!.rvReccomendations.layoutManager = LinearLayoutManager(requireContext())
         binding!!.rvReccomendations.adapter =
             AdapterFilteredReccomendations(arrayReccomend, requireActivity(), this)
+
         binding!!.llLoading.hide()
     }
 

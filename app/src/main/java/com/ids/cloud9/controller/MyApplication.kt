@@ -41,6 +41,7 @@ class MyApplication : Application() {
         var selectedReccomend : FilteredActivityListItem ?=null
         var mobileConfig : MobileConfig?=null
         var languageCode : String ?="en"
+        var units : kotlin.collections.ArrayList<UnitListItem> = arrayListOf()
         var isSignatureEmpty = false
         var locMessages : ArrayList<LocalisedMessage> = arrayListOf()
         var selectedFragmentConstant:String=""

@@ -55,23 +55,37 @@
         android:layout_height="100dp">
 
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="@dimen/with_80"
-            android:layout_height="@dimen/with_80"
-            app:tint="@color/white"
+        <androidx.cardview.widget.CardView
             android:layout_marginEnd="@dimen/margin_start_end"
-            android:layout_marginBottom="@dimen/margin_start_end"
-            android:layout_centerVertical="true"
-            android:layout_gravity="end|bottom"
-            android:id="@+id/btAddReccomend"
-            android:scaleType="center"
-            app:fabSize="normal"
-            app:rippleColor="@color/colorAccent"
-            app:backgroundTint="@color/colorPrimary"
-            android:src="@drawable/plus"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            />
+            android:layout_width="@dimen/size_image_60"
+            android:id="@+id/btAddReccomend"
+            app:cardElevation="@dimen/small_margin_padding"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardCornerRadius="@dimen/button_height"
+            android:layout_height="@dimen/size_image_60" >
+
+
+
+
+        <LinearLayout
+            android:id="@+id/llButton"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:layout_width="@dimen/size_image_60"
+            android:layout_height="@dimen/size_image_60">
+
+
+            <ImageView
+                android:tint="@color/white"
+                android:layout_width="@dimen/margin_30"
+                android:layout_height="@dimen/margin_30"
+                android:src="@drawable/plus"/>
+
+        </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
 
 
     </RelativeLayout>

@@ -18,7 +18,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_marginBottom="@dimen/normal_margin"
+            android:layout_marginBottom="@dimen/normal_margin_padding"
             android:layout_weight="1"
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -84,7 +84,6 @@
 
 
     <LinearLayout
-        android:layout_marginTop="@dimen/small_margin"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -120,7 +119,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginBottom="@dimen/normal_margin"
+            android:layout_marginBottom="@dimen/normal_margin_padding"
             android:layout_weight="1"
             android:layout_marginTop="@dimen/small_margin_padding"
             android:orientation="vertical"
@@ -183,7 +182,6 @@
             </RelativeLayout>
 
     <LinearLayout
-        android:layout_marginTop="@dimen/small_margin"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

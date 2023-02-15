@@ -12,6 +12,9 @@ import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
+import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 
 
@@ -41,7 +44,10 @@ fun TextView.setCheckText(message: String){
        this.text = ""
    }
 }
+fun ImageView.setTintImage(color : Int){
+    this.setColorFilter(ContextCompat.getColor(context, color), android.graphics.PorterDuff.Mode.MULTIPLY);
 
+}
 fun TextView.setTextLang(messageEn:String , messageAr:String){
     if(MyApplication.languageCode.equals("en")){
         this.text = messageEn

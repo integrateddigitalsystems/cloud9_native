@@ -92,7 +92,7 @@ class ActivitySplash : Activity() {
         MyApplication.mobileConfig = mobConfig.android.find {
             it.version.toDouble() == BuildConfig.VERSION_NAME.toDouble()
         }
-
+        getUnits()
         if (MyApplication.mobileConfig == null) {
             AppHelper.createDialogAgain(
                 this,
@@ -119,6 +119,25 @@ class ActivitySplash : Activity() {
                 }, 2000)
             }
         }
+    }
+
+    fun getUnits(){
+        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.PRODUCTION_LOOKUP_CODE)
+            .enqueue(object : Callback<UnitList> {
+                override fun onResponse(
+                    call: Call<UnitList>,
+                    response: Response<UnitList>
+                ) {
+                    MyApplication.units.clear()
+                    MyApplication.units.addAll(response.body()!!)
+                }
+
+                override fun onFailure(call: Call<UnitList>, t: Throwable) {
+
+                }
+
+            })
+
     }
 
     private fun showDialogUpdate(activity: Activity) {

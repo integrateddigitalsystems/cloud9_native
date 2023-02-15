@@ -78,7 +78,10 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
     fun listeners() {
         binding!!.llTool.ivDrawer.hide()
         binding!!.llTool.layoutFragment.show()
-        binding!!.llTool.tvTitleTool.text = MyApplication.selectedReccomend!!.subject
+        if(MyApplication.selectedReccomend!=null)
+            binding!!.llTool.tvTitleTool.text = MyApplication.selectedReccomend!!.subject
+        else
+            binding!!.llTool.tvTitleTool.text = getString(R.string.task)
         binding!!.llTool.ivCalendar.setOnClickListener {
             finishAffinity()
             startActivity(

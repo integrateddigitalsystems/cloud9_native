@@ -7,9 +7,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
+import com.ids.cloud9.R
 import com.ids.cloud9.controller.adapters.AdapterDialog
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
@@ -175,9 +177,43 @@ class FragmentVisitDetails : Fragment() , RVOnItemClickListener{
         }
     }
     fun updateVisit(){
-        Log.wtf("TAG_USER",Gson().toJson(editVisit))
+        var update = UpdateVisit(
+            MyApplication.selectedVisit!!.accountId!!,
+            if(MyApplication.selectedVisit!!.actualArrivalTime!=null) MyApplication.selectedVisit!!.actualArrivalTime!! else "",
+            if(MyApplication.selectedVisit!!.actualCompletedTime!=null) MyApplication.selectedVisit!!.actualCompletedTime!! else "",
+            if(MyApplication.selectedVisit!!.actualDuration!=null) MyApplication.selectedVisit!!.actualDuration!! else 0.0,
+            if(MyApplication.selectedVisit!!.assignedToId!=null) MyApplication.selectedVisit!!.assignedToId!! else 0 ,
+            if(MyApplication.selectedVisit!!.companyAddressId!=null) MyApplication.selectedVisit!!.companyAddressId!! else 0,
+            if(MyApplication.selectedVisit!!.companyId!=null) MyApplication.selectedVisit!!.companyId!! else 0 ,
+            if(MyApplication.selectedVisit!!.contactId!=null) MyApplication.selectedVisit!!.contactId!! else 0 ,
+            if(MyApplication.selectedVisit!!.actualArrivalTime!=null) MyApplication.selectedVisit!!.contractId!! else 0 ,
+            if(MyApplication.selectedVisit!!.creationDate!=null) MyApplication.selectedVisit!!.creationDate!! else "" ,
+            if(MyApplication.selectedVisit!!.duration!=null) MyApplication.selectedVisit!!.duration!! else 0.0 ,
+            if(MyApplication.selectedVisit!!.email!=null) MyApplication.selectedVisit!!.email!! else "",
+            if(MyApplication.selectedVisit!!.fromTime!=null) MyApplication.selectedVisit!!.fromTime!! else "",
+            if(MyApplication.selectedVisit!!.id!=null) MyApplication.selectedVisit!!.id!! else 0,
+            if(MyApplication.selectedVisit!!.isDeleted!=null) MyApplication.selectedVisit!!.isDeleted!! else false ,
+            simpOrg.format(Calendar.getInstance().time),
+            MyApplication.selectedVisit!!.number!!,
+            if(MyApplication.selectedVisit!!.opportunityId!=null) MyApplication.selectedVisit!!.opportunityId!! else 0 ,
+            if(MyApplication.selectedVisit!!.orderId!=null) MyApplication.selectedVisit!!.orderId!! else 0 ,
+            if(MyApplication.selectedVisit!!.ownerId!=null) MyApplication.selectedVisit!!.ownerId!! else 0 ,
+            if(MyApplication.selectedVisit!!.parentVisitId!=null) MyApplication.selectedVisit!!.parentVisitId!! else 0 ,
+            if(MyApplication.selectedVisit!!.phoneNumber!=null) MyApplication.selectedVisit!!.phoneNumber!! else "",
+            if(MyApplication.selectedVisit!!.priorityId!=null) MyApplication.selectedVisit!!.priorityId!! else 0,
+            if(MyApplication.selectedVisit!!.reasonId!=null) MyApplication.selectedVisit!!.reasonId!! else 0 ,
+            if(MyApplication.selectedVisit!!.remark!=null) MyApplication.selectedVisit!!.remark!! else "",
+            if(MyApplication.selectedVisit!!.resourceId!=null) MyApplication.selectedVisit!!.resourceId!! else 0 ,
+            if(MyApplication.selectedVisit!!.statusId!=null) MyApplication.selectedVisit!!.statusId!! else 0 ,
+            MyApplication.selectedVisit!!.title!!,
+            MyApplication.selectedVisit!!.toTime!!,
+            MyApplication.selectedVisit!!.typeId!!,
+            MyApplication.selectedVisit!!.visitDate!!,
+            MyApplication.selectedVisit!!.visitResources
+        )
+        Log.wtf("TAG_VISIT",Gson().toJson(update))
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
-            .updateVisit(editVisit!!)
+            .updateVisit(update!!)
             .enqueue(object : Callback<ResponseMessage>{
                 override fun onResponse(call: Call<ResponseMessage>, response: Response<ResponseMessage>) {
                    AppHelper.createDialogPositive(requireActivity(),response.body()!!.message!!)
@@ -195,8 +231,11 @@ class FragmentVisitDetails : Fragment() , RVOnItemClickListener{
         listeners()
         editVisit = MyApplication.selectedVisit
 
-        if(MyApplication.selectedVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID)
-            binding!!.btSave.hide()
+        if(MyApplication.selectedVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID) {
+            binding!!.btSave.setBackgroundResource(R.drawable.rounded_trans_primary)
+            binding!!.btSave.isEnabled = false
+        }
+
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

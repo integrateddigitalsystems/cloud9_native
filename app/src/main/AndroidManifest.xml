@@ -63,6 +63,10 @@
 
         </activity>
 
+        <activity android:name=".controller.activities.ActivityReportDetails">
+
+        </activity>
+
         <service
             android:name=".utils.LocationForeService"
             android:stopWithTask="false"

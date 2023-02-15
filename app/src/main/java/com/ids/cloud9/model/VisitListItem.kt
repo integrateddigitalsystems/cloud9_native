@@ -17,7 +17,7 @@ data class VisitListItem(
     @SerializedName("assignedTo")
     var assignedTo: Int?=0,
     @SerializedName("assignedToId")
-    var assignedToId: Any?=null,
+    var assignedToId: Int?=0,
     @SerializedName("company")
     var company: Company?=null,
     @SerializedName("companyAddress")

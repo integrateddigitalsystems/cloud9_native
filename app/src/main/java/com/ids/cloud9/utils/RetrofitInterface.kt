@@ -92,7 +92,7 @@ interface RetrofitInterface {
 
     @POST("Visit/UpdateVisit")
     fun updateVisit(
-        @Body param: VisitListItem
+        @Body param: UpdateVisit
     ): Call<ResponseMessage>
 
     @POST("Activity/UpdateActivityMobile")

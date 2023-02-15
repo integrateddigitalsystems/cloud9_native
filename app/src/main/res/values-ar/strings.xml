@@ -65,4 +65,17 @@
     <string name="no_products_added_yet">لم يتم اضافة أي منتج</string>
     <string name="no_tasks_added_yet">لم يتم اضافة أي مهمة</string>
     <string name="no_attachments_to_show">لم يتم اضافة أي وسائط</string>
+    <string name="product_name_p">Product Name:</string>
+    <string name="client_name_p">Client Name:</string>
+    <string name="contact_name_p">Contact Name:</string>
+    <string name="contract_number_p">Contract Number:</string>
+    <string name="fax_p">Fax:</string>
+    <string name="site_location_p">Site Location:</string>
+    <string name="date_p">Date:</string>
+    <string name="opportunity_p">Opportunity:</string>
+    <string name="matco_eng_p">Matco Eng:</string>
+    <string name="n_a">N/A</string>
+    <string name="contact_number_p">Contact Number:</string>
+    <string name="update">Update</string>
+    <string name="task">Task</string>
 </resources>

@@ -189,6 +189,8 @@
 
 
                 <ImageView
+                    android:id="@+id/ivReport"
+                    android:foreground="?attr/selectableItemBackground"
                     android:padding="@dimen/small_margin_padding"
                     android:layout_width="@dimen/height_toggle"
                     android:layout_height="@dimen/height_toggle"

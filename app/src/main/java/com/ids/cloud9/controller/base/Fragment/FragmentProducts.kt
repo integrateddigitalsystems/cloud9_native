@@ -8,12 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.adapters.AdapterProducts
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.activities.ActivityAddProduct
+import com.ids.cloud9.controller.activities.ActivityReportDetails
 import com.ids.cloud9.controller.activities.ActivtyVisitDetails
 import com.ids.cloud9.controller.adapters.AdapterDialog
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
@@ -91,7 +93,8 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
         getProducts()
 
         if (MyApplication.selectedVisit!!.reasonId == AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.ON_THE_WAY_REASON_ID) {
-            binding!!.btAddProducts.hide()
+            binding!!.llButton.setBackgroundResource(R.color.disabled_primary)
+            binding!!.btAddProducts.isEnabled = false
         }
         binding!!.btAddProducts.setOnClickListener {
             MyApplication.selectedProduct = null
@@ -221,31 +224,49 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
                     )
                 )
             }
-    } else if (view.id == R.id.btClose)
-    {
-        if (MyApplication.selectedVisit!!.reasonId != AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID) {
+        } else if (view.id == R.id.btClose) {
+            if (MyApplication.selectedVisit!!.reasonId != AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID) {
 
-            AppHelper.createYesNoDialog(
-                requireActivity(),
-                getString(R.string.you_wanna_delete),
-                0
-            ) {
-                deleteProduct(position)
+                AppHelper.createYesNoDialog(
+                    requireActivity(),
+                    getString(R.string.you_wanna_delete),
+                    0
+                ) {
+                    deleteProduct(position)
+                }
+            }
+        } else if (view.id == R.id.llJobReport) {
+            if (arrayProd.get(position).reports.size > 0)
+                setUpDataVisit(position)
+        } else if (view.id == R.id.llItemReason) {
+            alertDialog!!.dismiss()
+            arrSpin.get(position).selected = true
+            for (item in arrayProd.get(arrSpin.get(position).type!!).reports)
+                item.selected = false
+            arrayProd.get(arrSpin.get(position).type!!).reports.get(position).selected = true
+            adapterDialog!!.notifyDataSetChanged()
+            adapterProd!!.notifyDataSetChanged()
+        } else if (view.id == R.id.ivReport) {
+            if (MyApplication.selectedVisit!!.reasonId == AppConstants.ARRIVED_REASON_ID) {
+                MyApplication.selectedProduct = arrayProd.get(position)
+                var ct = arrayProd.get(position).reports.count {
+                    it.selected
+                }
+                if (ct > 0) {
+                    startActivity(
+                        Intent(
+                            requireContext(),
+                            ActivityReportDetails::class.java
+                        ).putExtra(
+                            "RepId",
+                            arrayProd.get(position).reports.find {
+                                it.selected
+                            }!!.id
+
+                        )
+                    )
+                }
             }
         }
-    } else if (view.id == R.id.llJobReport)
-    {
-        if (arrayProd.get(position).reports.size > 0)
-            setUpDataVisit(position)
-    } else if (view.id == R.id.llItemReason)
-    {
-        alertDialog!!.dismiss()
-        arrSpin.get(position).selected = true
-        for (item in arrayProd.get(arrSpin.get(position).type!!).reports)
-            item.selected = false
-        arrayProd.get(arrSpin.get(position).type!!).reports.get(position).selected = true
-        adapterDialog!!.notifyDataSetChanged()
-        adapterProd!!.notifyDataSetChanged()
     }
-}
 }

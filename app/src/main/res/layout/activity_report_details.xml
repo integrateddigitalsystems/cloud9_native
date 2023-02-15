@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/gray_app_bg"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include
+            android:id="@+id/llTool"
+            layout="@layout/toolbar_layout" />
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:background="@color/white"
+        android:layout_marginTop="@dimen/normal_margin"
+        app:cardElevation="@dimen/small_margin"
+        android:layout_marginStart="@dimen/margin_start_end"
+        android:layout_marginEnd="@dimen/margin_start_end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:padding="@dimen/small_margin"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <com.ids.cloud9.custom.CustomTextViewBold
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/title_font"
+                android:id="@+id/tvVisit"/>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/normal_margin_padding"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:text="@string/product_name_p"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_marginStart="@dimen/mini_radius"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvProductName"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/normal_margin_padding"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:textColor="@color/text_color" android:textSize="@dimen/normal_font"
+                    android:text="@string/client_name_p"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_marginStart="@dimen/mini_radius"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvClientName"/>
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/normal_margin_padding"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:textColor="@color/text_color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/normal_font"
+                    android:text="@string/contact_name_p"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_marginStart="@dimen/mini_radius"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvContactName"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/normal_margin_padding"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:textColor="@color/text_color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/normal_font"
+                    android:text="@string/contact_number_p"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_marginStart="@dimen/mini_radius"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvContactNumber"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/normal_margin_padding"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/text_color"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/normal_font"
+                    android:text="@string/contract_number_p"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_marginStart="@dimen/mini_radius"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvContractNumber"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/normal_margin_padding"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:text="@string/fax_p"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_marginStart="@dimen/mini_radius"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvFax"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/normal_margin_padding"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/text_color"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/normal_font"
+                    android:text="@string/site_location_p"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_marginStart="@dimen/mini_radius"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvSiteLocation"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/normal_margin_padding"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/text_color"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/normal_font"
+                    android:text="@string/date_p"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_marginStart="@dimen/mini_radius"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvDate"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/normal_margin_padding"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/text_color"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/normal_font"
+                    android:text="@string/opportunity_p"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_marginStart="@dimen/mini_radius"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvOpportunity"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/normal_margin_padding"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"
+                    android:text="@string/matco_eng_p"/>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:layout_marginStart="@dimen/mini_radius"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvMatcoEng"/>
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <WebView
+        android:layout_marginTop="@dimen/normal_margin"
+        android:id="@+id/wvReport"
+        android:layout_marginStart="@dimen/margin_start_end"
+        android:layout_marginEnd="@dimen/margin_start_end"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    </ScrollView>
+
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/llLoading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                layout="@layout/loading" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>
