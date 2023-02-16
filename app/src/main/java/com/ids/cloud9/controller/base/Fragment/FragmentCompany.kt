@@ -48,12 +48,18 @@ class FragmentCompany : Fragment() {
 
     fun setUpCompanyData(){
 
-        binding!!.tvCompanyName.setTextLang(
-            MyApplication.selectedVisit!!.company!!.companyName,
-            MyApplication.selectedVisit!!.company!!.companyNameAr)
-        binding!!.tvEmail.setCheckText(MyApplication.selectedVisit!!.company!!.email)
-        binding!!.tvWebite.setCheckText(MyApplication.selectedVisit!!.company!!.website)
-        binding!!.tvPhone.setCheckText(MyApplication.selectedVisit!!.company!!.phoneNumber)
+        if(MyApplication.selectedVisit!!.company!=null) {
+            binding!!.tvCompanyName.setTextLang(
+                MyApplication.selectedVisit!!.company!!.companyName!!,
+                MyApplication.selectedVisit!!.company!!.companyNameAr!!
+            )
+            binding!!.tvEmail.setCheckText(MyApplication.selectedVisit!!.company!!.email!!)
+            binding!!.tvWebite.setCheckText(MyApplication.selectedVisit!!.company!!.website!!)
+            if(MyApplication.selectedVisit!!.company!!.phoneNumber!=null && MyApplication.selectedVisit!!.company!!.phoneNumber!!.isNotEmpty())
+                binding!!.tvPhone.setCheckText(MyApplication.selectedVisit!!.company!!.phoneNumber!!)
+            else
+                binding!!.tvPhone.text = ""
+        }
         if(AppHelper.isValidPhoneNumber(binding!!.tvPhone.text.toString()))
         {
             AppHelper.setTextColor(requireContext(),binding!!.tvPhone, R.color.colorPrimaryDark)
@@ -64,7 +70,7 @@ class FragmentCompany : Fragment() {
                 startActivity(intent)
             }
         }
-        binding!!.tvFax.setCheckText(MyApplication.selectedVisit!!.company!!.fax)
+        binding!!.tvFax.setCheckText(MyApplication.selectedVisit!!.company!!.fax!!)
         binding!!.tvContactName.setTextLang(
             MyApplication.selectedVisit!!.contact!!.firstName + " "+ MyApplication.selectedVisit!!.contact!!.lastName,
             MyApplication.selectedVisit!!.contact!!.firstNameAr + " "+ MyApplication.selectedVisit!!.contact!!.lastNameAr)
@@ -79,10 +85,7 @@ class FragmentCompany : Fragment() {
                 startActivity(intent)
             }
         }
-        if(MyApplication.selectedVisit!!.companyAddress!=null)
-            binding!!.tvAddress.setCheckText(MyApplication.selectedVisit!!.companyAddress!!.address)
-        else
-            binding!!.tvAddress.text = ""
+        binding!!.tvAddress.text = MyApplication.selectedVisit!!.company!!.address
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

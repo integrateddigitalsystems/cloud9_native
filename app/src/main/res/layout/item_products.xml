@@ -203,6 +203,7 @@
                     android:layout_marginStart="@dimen/small_margin_padding"
                     android:layout_marginEnd="@dimen/small_margin_padding"
                     android:padding="@dimen/small_margin_padding"
+                    android:id="@+id/btRecords"
                     android:tint="@color/colorAccent"
                     android:layout_width="@dimen/height_toggle"
                     android:layout_height="@dimen/height_toggle"

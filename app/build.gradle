@@ -153,6 +153,7 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.13.0'
 
 
     testImplementation 'junit:junit:4.13.2'

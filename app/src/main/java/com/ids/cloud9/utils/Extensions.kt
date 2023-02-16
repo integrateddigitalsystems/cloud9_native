@@ -16,6 +16,8 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 
 fun Any.wtf(message: String) {
@@ -62,6 +64,13 @@ fun View.show() {
 
 fun View.hide() {
     try{visibility = View.GONE}catch (e:Exception){}
+}
+
+fun String.isEmailValid(): Boolean {
+    val expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$"
+    val pattern: Pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE)
+    val matcher: Matcher = pattern.matcher(this)
+    return matcher.matches()
 }
 
 fun TextView.underline() {

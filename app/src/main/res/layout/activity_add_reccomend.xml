@@ -273,7 +273,7 @@
                 android:id="@+id/btSave"
                 android:textColor="@color/white"
                 android:layout_marginTop="@dimen/small_margin"
-                android:layout_height="@dimen/height_40"
+                android:layout_height="@dimen/height_50"
                 android:background="@drawable/rounded_primary_layout"/>
 
 
@@ -286,7 +286,7 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 android:id="@+id/lLDelete"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/height_40">
+                android:layout_height="@dimen/height_50">
 
                 <ImageView
                     android:tint="@color/white"

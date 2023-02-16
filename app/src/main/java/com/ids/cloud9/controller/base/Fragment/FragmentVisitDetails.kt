@@ -18,10 +18,7 @@ import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickLis
 import com.ids.cloud9.databinding.LayoutReccomendationsBinding
 import com.ids.cloud9.databinding.LayoutVisitBinding
 import com.ids.cloud9.databinding.ReasonDialogBinding
-import com.ids.cloud9.model.ItemSpinner
-import com.ids.cloud9.model.ResponseMessage
-import com.ids.cloud9.model.UpdateVisit
-import com.ids.cloud9.model.VisitListItem
+import com.ids.cloud9.model.*
 import com.ids.cloud9.utils.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,7 +30,7 @@ import java.util.Calendar
 class FragmentVisitDetails : Fragment() , RVOnItemClickListener{
 
     var alertDialog: androidx.appcompat.app.AlertDialog? = null
-    var editVisit : VisitListItem ?=null
+    var edtitVisit : testVisitItem ?=null
     var adapter : AdapterDialog?=null
     var simp : SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
     var simpTime : SimpleDateFormat = SimpleDateFormat("HH:mm")
@@ -172,48 +169,17 @@ class FragmentVisitDetails : Fragment() , RVOnItemClickListener{
         }
 
         binding!!.btSave.setOnClickListener {
-            editVisit!!.remark = binding!!.etRemark.text.toString()
+            MyApplication.selectedVisit!!.remark = binding!!.etRemark.text.toString()
             updateVisit()
         }
     }
     fun updateVisit(){
-        var update = UpdateVisit(
-            MyApplication.selectedVisit!!.accountId!!,
-            if(MyApplication.selectedVisit!!.actualArrivalTime!=null) MyApplication.selectedVisit!!.actualArrivalTime!! else "",
-            if(MyApplication.selectedVisit!!.actualCompletedTime!=null) MyApplication.selectedVisit!!.actualCompletedTime!! else "",
-            if(MyApplication.selectedVisit!!.actualDuration!=null) MyApplication.selectedVisit!!.actualDuration!! else 0.0,
-            if(MyApplication.selectedVisit!!.assignedToId!=null) MyApplication.selectedVisit!!.assignedToId!! else 0 ,
-            if(MyApplication.selectedVisit!!.companyAddressId!=null) MyApplication.selectedVisit!!.companyAddressId!! else 0,
-            if(MyApplication.selectedVisit!!.companyId!=null) MyApplication.selectedVisit!!.companyId!! else 0 ,
-            if(MyApplication.selectedVisit!!.contactId!=null) MyApplication.selectedVisit!!.contactId!! else 0 ,
-            if(MyApplication.selectedVisit!!.actualArrivalTime!=null) MyApplication.selectedVisit!!.contractId!! else 0 ,
-            if(MyApplication.selectedVisit!!.creationDate!=null) MyApplication.selectedVisit!!.creationDate!! else "" ,
-            if(MyApplication.selectedVisit!!.duration!=null) MyApplication.selectedVisit!!.duration!! else 0.0 ,
-            if(MyApplication.selectedVisit!!.email!=null) MyApplication.selectedVisit!!.email!! else "",
-            if(MyApplication.selectedVisit!!.fromTime!=null) MyApplication.selectedVisit!!.fromTime!! else "",
-            if(MyApplication.selectedVisit!!.id!=null) MyApplication.selectedVisit!!.id!! else 0,
-            if(MyApplication.selectedVisit!!.isDeleted!=null) MyApplication.selectedVisit!!.isDeleted!! else false ,
-            simpOrg.format(Calendar.getInstance().time),
-            MyApplication.selectedVisit!!.number!!,
-            if(MyApplication.selectedVisit!!.opportunityId!=null) MyApplication.selectedVisit!!.opportunityId!! else 0 ,
-            if(MyApplication.selectedVisit!!.orderId!=null) MyApplication.selectedVisit!!.orderId!! else 0 ,
-            if(MyApplication.selectedVisit!!.ownerId!=null) MyApplication.selectedVisit!!.ownerId!! else 0 ,
-            if(MyApplication.selectedVisit!!.parentVisitId!=null) MyApplication.selectedVisit!!.parentVisitId!! else 0 ,
-            if(MyApplication.selectedVisit!!.phoneNumber!=null) MyApplication.selectedVisit!!.phoneNumber!! else "",
-            if(MyApplication.selectedVisit!!.priorityId!=null) MyApplication.selectedVisit!!.priorityId!! else 0,
-            if(MyApplication.selectedVisit!!.reasonId!=null) MyApplication.selectedVisit!!.reasonId!! else 0 ,
-            if(MyApplication.selectedVisit!!.remark!=null) MyApplication.selectedVisit!!.remark!! else "",
-            if(MyApplication.selectedVisit!!.resourceId!=null) MyApplication.selectedVisit!!.resourceId!! else 0 ,
-            if(MyApplication.selectedVisit!!.statusId!=null) MyApplication.selectedVisit!!.statusId!! else 0 ,
-            MyApplication.selectedVisit!!.title!!,
-            MyApplication.selectedVisit!!.toTime!!,
-            MyApplication.selectedVisit!!.typeId!!,
-            MyApplication.selectedVisit!!.visitDate!!,
-            MyApplication.selectedVisit!!.visitResources
-        )
-        Log.wtf("TAG_VISIT",Gson().toJson(update))
+        for(item in MyApplication.selectedVisit!!.visitResources)
+            item.id = 0
+        
+        Log.wtf("TAG_VISIT",Gson().toJson(MyApplication.selectedVisit))
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
-            .updateVisit(update!!)
+            .updateVisit(MyApplication.selectedVisit!!)
             .enqueue(object : Callback<ResponseMessage>{
                 override fun onResponse(call: Call<ResponseMessage>, response: Response<ResponseMessage>) {
                    AppHelper.createDialogPositive(requireActivity(),response.body()!!.message!!)
@@ -229,7 +195,7 @@ class FragmentVisitDetails : Fragment() , RVOnItemClickListener{
         
         setUpVisitDetails()
         listeners()
-        editVisit = MyApplication.selectedVisit
+        MyApplication.selectedVisit = MyApplication.selectedVisit!!
 
         if(MyApplication.selectedVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID) {
             binding!!.btSave.setBackgroundResource(R.drawable.rounded_trans_primary)
@@ -315,16 +281,20 @@ class FragmentVisitDetails : Fragment() , RVOnItemClickListener{
             alertDialog!!.dismiss()
             adapter!!.notifyDataSetChanged()
 
-            if (arrSpinner.get(position).id == AppConstants.COMPLETED_REASON_ID) {
+            if(arrSpinner.get(position).id == AppConstants.ARRIVED_REASON_ID){
+                var cal = Calendar.getInstance()
+                binding!!.tvActualArrivalTime.text = simpTimeAA.format(cal.time)
+                MyApplication.selectedVisit!!.actualArrivalTime = simpOrgss.format(cal.time)
+            }else if (arrSpinner.get(position).id == AppConstants.COMPLETED_REASON_ID) {
                 var cal = Calendar.getInstance()
                 binding!!.tvActualCompletedTime.text = simpTimeAA.format(cal.time)
-                editVisit!!.actualCompletedTime = simpOrgss.format(cal.time)
+                MyApplication.selectedVisit!!.actualCompletedTime = simpOrgss.format(cal.time)
             } else {
                 binding!!.tvActualCompletedTime.text = ""
             }
 
             binding!!.tvStatusReason.text = arrSpinner.get(position).name
-            editVisit!!.reasonId = arrSpinner.get(position).id
+            MyApplication.selectedVisit!!.reasonId = arrSpinner.get(position).id
         }
     }
 }

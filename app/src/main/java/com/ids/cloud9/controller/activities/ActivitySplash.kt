@@ -21,8 +21,10 @@ import com.google.gson.Gson
 import com.ids.cloud9.BuildConfig
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
+import com.ids.cloud9.databinding.ActivityNewSplashBinding
 import com.ids.cloud9.databinding.ActivitySplashBinding
 import com.ids.cloud9.databinding.ActivitySplshBindingImpl
+import com.ids.cloud9.databinding.LayoutReccomendationsBinding
 import com.ids.cloud9.model.*
 import com.ids.cloud9.utils.*
 import retrofit2.Call
@@ -32,12 +34,14 @@ import retrofit2.Response
 class ActivitySplash : Activity() {
 
     var mFirebaseRemoteConfig: FirebaseRemoteConfig? = null
-    private lateinit var binding: ActivitySplshBindingImpl
+    private lateinit var binding: ActivityNewSplashBinding
     var token : String ?=""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_splsh)
+        binding = ActivityNewSplashBinding.inflate(layoutInflater)
+        setContentView(binding!!.root)
+
         startFirebase()
 
 
@@ -70,6 +74,24 @@ class ActivitySplash : Activity() {
 
     }
 
+    fun startApp(){
+        if (MyApplication.mobileConfig!!.forceVersion > BuildConfig.VERSION_NAME.toDouble()) {
+
+        } else {
+            Handler(Looper.getMainLooper()).postDelayed({
+                if(!MyApplication.loggedIn) {
+                    finishAffinity()
+                    startActivity(Intent(this, ActivityLogin::class.java))
+                }else{
+                    finishAffinity()
+                    MyApplication.userItem = JWTDecoding.decoded(MyApplication.token!!)
+                    startActivity(Intent(this,ActivityMain::class.java))
+                }
+            }, 2000)
+        }
+    }
+
+
     fun setUpFirebase() {
 
 
@@ -92,7 +114,6 @@ class ActivitySplash : Activity() {
         MyApplication.mobileConfig = mobConfig.android.find {
             it.version.toDouble() == BuildConfig.VERSION_NAME.toDouble()
         }
-        getUnits()
         if (MyApplication.mobileConfig == null) {
             AppHelper.createDialogAgain(
                 this,
@@ -104,21 +125,10 @@ class ActivitySplash : Activity() {
             /*Handler(Looper.getMainLooper()).postDelayed({
 
             }, 2000)*/
-            if (MyApplication.mobileConfig!!.forceVersion > BuildConfig.VERSION_NAME.toDouble()) {
 
-            } else {
-                Handler(Looper.getMainLooper()).postDelayed({
-                    if(!MyApplication.loggedIn) {
-                        finishAffinity()
-                        startActivity(Intent(this, ActivityLogin::class.java))
-                    }else{
-                        finishAffinity()
-                        MyApplication.userItem = JWTDecoding.decoded(MyApplication.token!!)
-                        startActivity(Intent(this,ActivityMain::class.java))
-                    }
-                }, 2000)
-            }
+            getUnits()
         }
+
     }
 
     fun getUnits(){
@@ -128,12 +138,36 @@ class ActivitySplash : Activity() {
                     call: Call<UnitList>,
                     response: Response<UnitList>
                 ) {
-                    MyApplication.units.clear()
-                    MyApplication.units.addAll(response.body()!!)
+                    try {
+                        if(response.body()!!.size >0) {
+                            MyApplication.units.clear()
+                            MyApplication.units.addAll(response.body()!!)
+                            startApp()
+                        }else{
+                            AppHelper.createDialogAgain(
+                                this@ActivitySplash,
+                                AppHelper.getRemoteString("error_getting_data", this@ActivitySplash)
+                            ) {
+                                startFirebase()
+                            }
+                        }
+                    }catch (ex:Exception){
+                        AppHelper.createDialogAgain(
+                            this@ActivitySplash,
+                            AppHelper.getRemoteString("error_getting_data", this@ActivitySplash)
+                        ) {
+                            startFirebase()
+                        }
+                    }
                 }
 
                 override fun onFailure(call: Call<UnitList>, t: Throwable) {
-
+                    AppHelper.createDialogAgain(
+                        this@ActivitySplash,
+                        AppHelper.getRemoteString("error_getting_data", this@ActivitySplash)
+                    ) {
+                        startFirebase()
+                    }
                 }
 
             })

@@ -5,95 +5,95 @@ import com.google.gson.annotations.SerializedName
 
 data class Company(
     @SerializedName("account")
-    val account: Any,
+    var account: Any?=null,
     @SerializedName("accountId")
-    val accountId: Int,
+    var accountId: Int?=0,
     @SerializedName("active")
-    val active: Boolean,
+    var active: Boolean?=false,
     @SerializedName("address")
-    val address: String,
+    var address: String?="",
     @SerializedName("address2")
-    val address2: String,
+    var address2: String?="",
     @SerializedName("certificates")
-    val certificates: List<Any>,
+    var certificates: ArrayList<Any> = arrayListOf(),
     @SerializedName("city")
-    val city: Any,
+    var city: Any?=null,
     @SerializedName("cityId")
-    val cityId: Double,
+    var cityId: Int?=0,
     @SerializedName("companyAddresses")
-    val companyAddresses: List<Any>,
+    var companyAddresses: ArrayList<Any> = arrayListOf(),
     @SerializedName("companyContact")
-    val companyContact: Any,
+    var companyContact: Any?=null,
     @SerializedName("companyContactId")
-    val companyContactId: Any,
+    var companyContactId: Any?=null,
     @SerializedName("companyContacts")
-    val companyContacts: List<Any>,
+    var companyContacts: ArrayList<Any> = arrayListOf(),
     @SerializedName("companyFiles")
-    val companyFiles: List<Any>,
+    var companyFiles: ArrayList<Any> = arrayListOf(),
     @SerializedName("companyName")
-    val companyName: String,
+    var companyName: String?="",
     @SerializedName("companyNameAr")
-    val companyNameAr: String,
+    var companyNameAr: String?="",
     @SerializedName("contacts")
-    val contacts: List<Any>,
+    var contacts: ArrayList<Any> = arrayListOf(),
     @SerializedName("contracts")
-    val contracts: List<Any>,
+    var contracts: ArrayList<Any> = arrayListOf(),
     @SerializedName("countryId")
-    val countryId: Int,
+    var countryId: Int?=0,
     @SerializedName("creationDate")
-    val creationDate: String,
+    var creationDate: String?="",
     @SerializedName("email")
-    val email: String,
+    var email: String?="",
     @SerializedName("fax")
-    val fax: String,
+    var fax: String?="",
     @SerializedName("id")
-    val id: Int,
+    var id: Int?=0,
     @SerializedName("industry")
-    val industry: Any,
+    var industry: Any?=null,
     @SerializedName("industryId")
-    val industryId: Any,
+    var industryId: Any?=null,
     @SerializedName("isDeleted")
-    val isDeleted: Boolean,
+    var isDeleted: Boolean?=false,
     @SerializedName("lat")
-    val lat: String,
+    var lat: String?="",
     @SerializedName("lead")
-    val lead: Any,
+    var lead: Any?=null,
     @SerializedName("leadId")
-    val leadId: Int,
+    var leadId: Int?=0,
     @SerializedName("long")
-    val long: String,
+    var long: String?="",
     @SerializedName("modificationDate")
-    val modificationDate: String,
+    var modificationDate: String?="",
     @SerializedName("opportunityBeneficiaries")
-    val opportunityBeneficiaries: List<Any>,
+    var opportunityBeneficiaries: ArrayList<Any> = arrayListOf(),
     @SerializedName("opportunityCompanies")
-    val opportunityCompanies: List<Any>,
+    var opportunityCompanies: ArrayList<Any>  = arrayListOf(),
     @SerializedName("orders")
-    val orders: List<Any>,
+    var orders: ArrayList<Any> = arrayListOf(),
     @SerializedName("owner")
-    val owner: Any,
+    var owner: Any?=null,
     @SerializedName("ownerId")
-    val ownerId: Int,
+    var ownerId: Int?=0,
     @SerializedName("phoneNumber")
-    val phoneNumber: String,
+    var phoneNumber: String?="",
     @SerializedName("phoneNumberSecondary")
-    val phoneNumberSecondary: Any,
+    var phoneNumberSecondary: Any?=null,
     @SerializedName("pid")
-    val pid: String,
+    var pid: String?="",
     @SerializedName("primaryContact")
-    val primaryContact: Int,
+    var primaryContact: Int?=0,
     @SerializedName("primaryContactNavigation")
-    val primaryContactNavigation: Any,
+    var primaryContactNavigation: Any?=null,
     @SerializedName("quotes")
-    val quotes: List<Any>,
+    var quotes: ArrayList<Any> = arrayListOf(),
     @SerializedName("services")
-    val services: List<Any>,
+    var services: ArrayList<Any> = arrayListOf(),
     @SerializedName("timeStamp")
-    val timeStamp: String,
+    var timeStamp: String?="",
     @SerializedName("vat")
-    val vat: Boolean,
+    var vat: Boolean?=false,
     @SerializedName("visits")
-    val visits: List<Any>,
+    var visits: ArrayList<Any> = arrayListOf(),
     @SerializedName("website")
-    val website: String
+    var website: String?=""
 )

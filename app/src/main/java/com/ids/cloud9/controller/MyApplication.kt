@@ -30,11 +30,12 @@ class MyApplication : Application() {
         var BASE_URL_IMAGE = "https://crmtest.ids.com.lb"
         var arrayVid : ArrayList<ItemSpinner> = arrayListOf()
         var selectedFragment  : Fragment?=null
-        var selectedVisit : VisitListItem ?=null
+        var selectedVisit : testVisitItem ?=null
+        var allVisits : ArrayList<testVisitItem> = arrayListOf()
         var serviceContext : Context ?=null
         var userItem : JWTResponse ?=null
         var permission =-1
-        var onTheWayVisit : VisitListItem ?=null
+        var onTheWayVisit : testVisitItem ?=null
         var saveLocTracking = false
         var address : ResponseAddress ?=null
         var selectedProduct:ProductListItem  ?= null

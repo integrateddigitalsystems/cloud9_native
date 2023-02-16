@@ -96,7 +96,7 @@
             android:background="@drawable/rounded_primary_layout"
             android:id="@+id/btClearClient"
             android:layout_marginEnd="@dimen/small_margin_padding"
-            android:layout_height="@dimen/size_35"
+            android:layout_height="@dimen/height_40"
             android:text="@string/clear"
             android:textColor="@color/white"
             />
@@ -108,7 +108,7 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:background="@drawable/rounded_primary_layout"
             android:id="@+id/btSaveClient"
-            android:layout_height="@dimen/size_35"
+            android:layout_height="@dimen/height_40"
             android:text="@string/save"
             android:textColor="@color/white"
             />
@@ -194,7 +194,7 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:background="@drawable/rounded_primary_layout"
             android:id="@+id/btClearEmployee"
-            android:layout_height="@dimen/size_35"
+            android:layout_height="@dimen/height_40"
             android:text="@string/clear"
             android:textColor="@color/white"
             />
@@ -206,7 +206,7 @@
             android:layout_weight="1"
             android:background="@drawable/rounded_primary_layout"
             android:id="@+id/btSaveEMployee"
-            android:layout_height="@dimen/size_35"
+            android:layout_height="@dimen/height_40"
             android:text="@string/save"
             android:textColor="@color/white"
             />

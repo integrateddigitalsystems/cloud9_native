@@ -15,6 +15,7 @@ import com.ids.cloud9.R
 import com.ids.cloud9.controller.adapters.AdapterProducts
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.activities.ActivityAddProduct
+import com.ids.cloud9.controller.activities.ActivityRecords
 import com.ids.cloud9.controller.activities.ActivityReportDetails
 import com.ids.cloud9.controller.activities.ActivtyVisitDetails
 import com.ids.cloud9.controller.adapters.AdapterDialog
@@ -214,7 +215,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
 
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.btEditProduct) {
-            if (MyApplication.selectedVisit!!.reasonId != AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID) {
+            if (MyApplication.selectedVisit!!.reasonId != AppConstants.PENDING_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID) {
 
                 MyApplication.selectedProduct = arrayProd.get(position)
                 startActivity(
@@ -225,7 +226,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
                 )
             }
         } else if (view.id == R.id.btClose) {
-            if (MyApplication.selectedVisit!!.reasonId != AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID) {
+            if (MyApplication.selectedVisit!!.reasonId != AppConstants.PENDING_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID) {
 
                 AppHelper.createYesNoDialog(
                     requireActivity(),
@@ -235,6 +236,9 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
                     deleteProduct(position)
                 }
             }
+        }else if(view.id == R.id.btRecords){
+            MyApplication.selectedProduct = arrayProd.get(position)
+            startActivity(Intent(requireContext(),ActivityRecords::class.java))
         } else if (view.id == R.id.llJobReport) {
             if (arrayProd.get(position).reports.size > 0)
                 setUpDataVisit(position)

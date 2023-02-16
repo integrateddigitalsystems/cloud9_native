@@ -63,8 +63,8 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
     var prevHeaders : ArrayList<Int> = arrayListOf()
     var editingFrom = Calendar.getInstance()
     var editingTo = Calendar.getInstance()
-    var tempArray : ArrayList<VisitListItem> = arrayListOf()
-    var mainArray : ArrayList<VisitListItem> = arrayListOf()
+    var tempArray : ArrayList<testVisitItem> = arrayListOf()
+    var mainArray : ArrayList<testVisitItem> = arrayListOf()
     private lateinit var foregroundOnlyBroadcastReceiver: ForegroundOnlyBroadcastReceiver
     private var foregroundOnlyLocationServiceBound = false
 
@@ -325,7 +325,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
 
 
 
-    fun filterDate(arrayList: ArrayList<VisitListItem>){
+    fun filterDate(arrayList: ArrayList<testVisitItem>){
 
         tempArray.clear()
 
@@ -419,7 +419,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                         tempArray.add(indx, item)
                     }
                 } else {
-                    var visHeader = VisitListItem()
+                    var visHeader = testVisitItem()
                     visHeader.isHeader = true
                     visHeader.visitDate = item.visitDate
                     visHeader.dateMill = date.time
@@ -438,7 +438,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
         }
 
 
-        var x : ArrayList<VisitListItem> = arrayListOf()
+        var x : ArrayList<testVisitItem> = arrayListOf()
         x.addAll(tempArray)
 
         tempArray.clear()
@@ -487,6 +487,8 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                 override fun onResponse(call: Call<VisitList>, response: Response<VisitList>) {
                     mainArray.clear()
                     mainArray.addAll(response.body()!!)
+                    MyApplication.allVisits.clear()
+                    MyApplication.allVisits.addAll(response.body()!!)
                     var visit = mainArray.find {
                         it.reasonId == AppConstants.ON_THE_WAY_REASON_ID
                     }
@@ -516,6 +518,15 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
 
         binding!!.drawerMenu.llLogout.setOnClickListener {
             AppHelper.createYesNoDialog(this,getString(R.string.sure_logout),0){
+
+                try {
+                    foregroundOnlyLocationService!!.unsubscribeToLocationUpdates()
+                    val intent = Intent()
+                    intent.setClass(this, LocationForeService::class.java)
+                    stopService(intent)
+                }catch (ex:Exception){
+
+                }
                 finishAffinity()
                 MyApplication.loggedIn = false
                 startActivity(Intent(this,ActivityLogin::class.java))

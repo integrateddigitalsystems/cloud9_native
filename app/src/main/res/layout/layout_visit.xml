@@ -398,7 +398,7 @@
             android:id="@+id/btSave"
             android:textColor="@color/white"
             android:layout_marginTop="@dimen/small_margin"
-            android:layout_height="@dimen/height_40"
+            android:layout_height="@dimen/height_50"
             android:background="@drawable/rounded_primary_layout"/>
 
     </LinearLayout>

@@ -21,10 +21,7 @@ import com.ids.cloud9.model.ActivitiesList
 import com.ids.cloud9.model.ActivitiesListItem
 import com.ids.cloud9.model.FilteredActivityList
 import com.ids.cloud9.model.FilteredActivityListItem
-import com.ids.cloud9.utils.RetrofitClientAuth
-import com.ids.cloud9.utils.RetrofitInterface
-import com.ids.cloud9.utils.hide
-import com.ids.cloud9.utils.show
+import com.ids.cloud9.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,7 +34,7 @@ class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
         super.onCreate(savedInstanceState)
         binding = LayoutReccomendationsBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
-        getReccomendations()
+       // getReccomendations()
         listeners()
 
     }
@@ -52,6 +49,7 @@ class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
         binding!!.llTool.ivDrawer.hide()
         binding!!.llTool.layoutFragment.show()
         binding!!.llTool.tvTitleTool.text = getString(R.string.all_tasks)
+        binding!!.layoutAllTasks.setBackgroundResource(R.color.gray_app_bg)
 
 
         binding!!.llTool.btBack.setOnClickListener {
@@ -93,18 +91,30 @@ class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
 
 
     fun setDataReccomend(){
-        binding!!.rvReccomendations.layoutManager = LinearLayoutManager(this)
-        binding!!.rvReccomendations.adapter = AdapterFilteredReccomendations(arrayReccomend!!,this,this)
+        if(arrayReccomend.size > 0) {
+            binding!!.tvNotasks.hide()
+            binding!!.rvReccomendations.show()
+            binding!!.rvReccomendations.layoutManager = LinearLayoutManager(this)
+            binding!!.rvReccomendations.adapter = AdapterFilteredReccomendations(arrayReccomend!!, this, this)
+        }else{
+            binding!!.tvNotasks.show()
+            binding!!.rvReccomendations.hide()
+        }
         binding!!.llLoading.hide()
     }
 
     override fun onItemClicked(view: View, position: Int) {
-        MyApplication.selectedReccomend = arrayReccomend.get(position)!!
-        startActivity(
-            Intent(
-                this,
-                ActivityAddReccomendations::class.java
+        var ct = MyApplication.allVisits.count {
+            it.title.equals(arrayReccomend.get(position).entity) && it.reasonId==AppConstants.ARRIVED_REASON_ID
+        }
+        if(ct>0) {
+            MyApplication.selectedReccomend = arrayReccomend.get(position)!!
+            startActivity(
+                Intent(
+                    this,
+                    ActivityAddReccomendations::class.java
+                )
             )
-        )
+        }
     }
 }

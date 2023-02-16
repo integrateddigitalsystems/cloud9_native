@@ -16,6 +16,7 @@ import com.ids.cloud9.databinding.ItemVisitBinding
 import com.ids.cloud9.databinding.ItemVisitDateBinding
 import com.ids.cloud9.model.VisitDates
 import com.ids.cloud9.model.VisitListItem
+import com.ids.cloud9.model.testVisitItem
 import com.ids.cloud9.utils.AppConstants
 import com.ids.cloud9.utils.AppHelper
 import com.ids.cloud9.utils.hide
@@ -24,7 +25,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class StickyAdapter(context: Activity, private val mList: ArrayList<VisitListItem>,click:RVOnItemClickListener) :
+class StickyAdapter(context: Activity, private val mList: ArrayList<testVisitItem>,click:RVOnItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), HeaderDecoration.StickyHeaderInterface {
     private val mContext: Activity
     private val VIEW_HEADER = 1
@@ -64,7 +65,7 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<VisitListIte
     ), View.OnClickListener {
 
 
-        fun bind(item: VisitListItem) {
+        fun bind(item: testVisitItem) {
 
             var cal = Calendar.getInstance()
             var dateMil = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss").parse(item.visitDate!!).time
@@ -93,7 +94,7 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<VisitListIte
 
     ), View.OnClickListener {
 
-        fun bind(child: VisitListItem) {
+        fun bind(child: testVisitItem) {
 
             binding.tvVisitName.text = child.title
             binding.tvCompany.text = child.company!!.companyName
@@ -178,7 +179,7 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<VisitListIte
         return mList?.size ?: 0
     }
 
-    fun getItem(position: Int): VisitListItem {
+    fun getItem(position: Int): testVisitItem {
         return mList!![position]
     }
 

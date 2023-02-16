@@ -436,7 +436,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
 
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.btClose) {
-            if (MyApplication.selectedVisit!!.reasonId != AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID) {
+            if (MyApplication.selectedVisit!!.reasonId != AppConstants.PENDING_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID) {
 
                 AppHelper.createYesNoDialog(
                     requireActivity(),

@@ -34,6 +34,7 @@
         android:layout_width="match_parent"
         android:text="@string/home"
         android:layout_marginTop="@dimen/normal_margin_padding"
+        android:paddingStart="@dimen/normal_margin_padding"
         android:id="@+id/tvHome"
         android:gravity="center_vertical"
         android:foreground="?android:attr/selectableItemBackground"
@@ -42,20 +43,22 @@
         android:textColor="@color/white"
         android:layout_height="@dimen/edit_text_height"/>
 
-    <com.ids.cloud9.custom.CustomTextViewMedium
-        android:layout_width="match_parent"
-        android:text="@string/all_tasks"
-        android:gravity="center_vertical"
-        android:layout_marginTop="@dimen/normal_margin_padding"
-        android:id="@+id/tvAllTasks"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:layout_marginStart="@dimen/button_height"
-        android:layout_marginEnd="@dimen/button_height"
-        android:textColor="@color/white"
-        android:layout_height="@dimen/edit_text_height"/>
 
+    <com.ids.cloud9.custom.CustomTextViewMedium
+        android:id="@+id/tvAllTasks"
+        android:paddingStart="@dimen/normal_margin_padding"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/edit_text_height"
+        android:layout_marginStart="@dimen/button_height"
+        android:layout_marginTop="@dimen/normal_margin_padding"
+        android:layout_marginEnd="@dimen/button_height"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:text="@string/all_tasks"
+        android:textColor="@color/white" />
 
     <LinearLayout
+        android:paddingStart="@dimen/normal_margin_padding"
         android:gravity="center_vertical"
         android:id="@+id/llLogout"
         android:layout_marginTop="@dimen/normal_margin_padding"
