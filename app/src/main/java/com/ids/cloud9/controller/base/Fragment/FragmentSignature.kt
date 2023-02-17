@@ -234,6 +234,11 @@ class FragmentSignature : Fragment() {
             binding!!.redoEmployee.hide()
             binding!!.redoClient.hide()
             binding!!.undoClient.hide()
+        }else{
+            binding!!.undoEmployee.show()
+            binding!!.redoEmployee.show()
+            binding!!.redoClient.show()
+            binding!!.undoClient.show()
         }
         binding!!.llLoading.hide()
     }

@@ -271,7 +271,7 @@
                 android:id="@+id/btAddProduct"
                 android:textColor="@color/white"
                 android:layout_marginTop="@dimen/small_margin"
-                android:layout_height="@dimen/height_40"
+                android:layout_height="@dimen/height_50"
                 android:background="@drawable/rounded_primary_layout"/>
 
 
@@ -284,7 +284,7 @@
                 android:layout_marginEnd="@dimen/margin_start_end"
                 android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/height_40">
+                android:layout_height="@dimen/height_50">
 
                 <ImageView
                     android:tint="@color/white"

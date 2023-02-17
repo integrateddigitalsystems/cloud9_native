@@ -62,6 +62,7 @@
                 <ImageView
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="@dimen/normal_margin_padding"
+                    android:visibility="gone"
                     android:id="@+id/undoClient"
                     android:layout_width="@dimen/height_40"
                     android:layout_height="@dimen/height_40"
@@ -72,6 +73,7 @@
                     android:padding="@dimen/normal_margin_padding"
                     android:layout_alignParentEnd="true"
                     android:layout_marginStart="@dimen/normal_margin_padding"
+                    android:visibility="gone"
                     android:id="@+id/redoClient"
                     android:layout_gravity="end"
                     android:rotation="180"
@@ -164,6 +166,7 @@
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="@dimen/normal_margin_padding"
                     android:id="@+id/undoEmployee"
+                    android:visibility="gone"
                     android:layout_width="@dimen/height_40"
                     android:layout_height="@dimen/height_40"
                     android:src="@drawable/arrow_left"/>
@@ -174,6 +177,7 @@
                     android:layout_marginStart="@dimen/normal_margin_padding"
                     android:padding="@dimen/normal_margin_padding"
                     android:id="@+id/redoEmployee"
+                    android:visibility="gone"
                     android:rotation="180"
                     android:layout_width="@dimen/height_40"
                     android:layout_height="@dimen/height_40"
