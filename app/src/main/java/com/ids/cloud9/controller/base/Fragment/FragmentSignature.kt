@@ -25,35 +25,28 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 
 class FragmentSignature : Fragment() {
-
     var emEy : SignatureListItem ?=null
     var emCl : SignatureListItem ?=null
     var simpDate = SimpleDateFormat("yyyy-MM-dd_hhmmaa")
     var simpDateSec = SimpleDateFormat("ss")
     var binding : LayoutSignatureBinding?=null
     var arraySign : SignatureList ?=null
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = LayoutSignatureBinding.inflate(inflater, container, false)
         return binding!!.root
     }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
         listeners()
     }
-
     private fun getBitmapFromView(view: View): Bitmap {
         val returnedBitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(returnedBitmap)
@@ -66,25 +59,19 @@ class FragmentSignature : Fragment() {
         view.draw(canvas)
         return returnedBitmap
     }
-
-
     fun listeners(){
         binding!!.redoClient.setOnClickListener {
             binding!!.drawClient.redo()
         }
-
         binding!!.undoClient.setOnClickListener {
             binding!!.drawClient.undo()
         }
-
         binding!!.redoEmployee.setOnClickListener {
             binding!!.drawEmployee.redo()
         }
-
         binding!!.undoEmployee.setOnClickListener {
             binding!!.drawEmployee.undo()
         }
-
         binding!!.btClearClient.setOnClickListener {
             if(binding!!.drawClient.visibility == View.VISIBLE)
                 binding!!.drawClient.clearCanvas()
@@ -93,7 +80,6 @@ class FragmentSignature : Fragment() {
                 binding!!.ivSelectedDrawClient.hide()
             }
         }
-
         binding!!.btClearEmployee.setOnClickListener {
             if(binding!!.drawEmployee.visibility == View.VISIBLE)
                 binding!!.drawEmployee.clearCanvas()
@@ -102,24 +88,19 @@ class FragmentSignature : Fragment() {
                 binding!!.ivSelectedDrawEmployee.hide()
             }
         }
-
         binding!!.btSaveClient.setOnClickListener {
             var bit = AppHelper.encodeImage(getBitmapFromView(binding!!.drawClient))
             saveSignature(bit!! , true )
         }
-
         binding!!.btSaveEMployee.setOnClickListener {
             var bit = AppHelper.encodeImage(getBitmapFromView(binding!!.drawEmployee))
             saveSignature(bit!! , false )
         }
     }
-
     fun saveSignature(base64string  : String , isClient : Boolean){
-
         binding!!.llLoading.show()
         var signatureRequest : SignatureRequest ?=null
         var cal = Calendar.getInstance()
-
         signatureRequest = SignatureRequest(
             MyApplication.selectedVisit!!.id!!,
             simpDate.format(cal.time)+simpDateSec.format(cal.time)+"_"+MyApplication.userItem!!.applicationUserId+"_"+MyApplication.userItem!!.userName+"_signature.jpg",
@@ -129,7 +110,6 @@ class FragmentSignature : Fragment() {
             MyApplication.userItem!!.applicationUserId!!,
             !isClient,
             true
-
         )
         var signs = arrayListOf<SignatureRequest>()
         signs.add(signatureRequest)
@@ -149,21 +129,16 @@ class FragmentSignature : Fragment() {
                     }else{
                         AppHelper.createDialogPositive(requireActivity(),response.body()!!.message!!)
                     }
-
                     binding!!.llLoading.hide()
                 }
-
                 override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
                     binding!!.llLoading.hide()
                 }
-
             }
         )
     }
-
     fun init(){
         getSignatures()
-
         if(MyApplication.selectedVisit!!.reasonId == AppConstants.PENDING_REASON_ID)
         {
             binding!!.drawEmployee.hide()
@@ -184,7 +159,6 @@ class FragmentSignature : Fragment() {
             binding!!.undoClient.hide()
         }
     }
-
     fun setUpSignatures(){
         arraySign!!.sortBy { it.id }
         emEy = arraySign!!.find {
@@ -193,7 +167,6 @@ class FragmentSignature : Fragment() {
         emCl = arraySign!!.find {
             it.signatureTypeLookup!=null && it.signatureTypeLookup.equals(AppConstants.SIGNATURE_TYPE_CLIENT)
         }
-
         if(emEy!=null && !emEy!!.directory.isNullOrEmpty()){
             binding!!.ivSelectedDrawEmployee.show()
             binding!!.drawEmployee.hide()
@@ -202,7 +175,6 @@ class FragmentSignature : Fragment() {
             binding!!.ivSelectedDrawEmployee.hide()
             binding!!.drawEmployee.show()
         }
-
         if(emCl!=null && !emCl!!.directory.isNullOrEmpty()){
             binding!!.ivSelectedDrawClient.show()
             binding!!.drawClient.hide()
@@ -211,7 +183,6 @@ class FragmentSignature : Fragment() {
             binding!!.ivSelectedDrawClient.hide()
             binding!!.drawClient.show()
         }
-
         if(MyApplication.selectedVisit!!.reasonId == AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.ON_THE_WAY_REASON_ID)
         {
             binding!!.drawEmployee.hide()
@@ -242,8 +213,6 @@ class FragmentSignature : Fragment() {
         }
         binding!!.llLoading.hide()
     }
-
-
     fun getSignatures(){
         binding!!.llLoading.show()
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getSignatures(
@@ -254,11 +223,9 @@ class FragmentSignature : Fragment() {
                 arraySign = response.body()
                 setUpSignatures()
             }
-
             override fun onFailure(call: Call<SignatureList>, t: Throwable) {
                 binding!!.llLoading.hide()
             }
-
         })
     }
 }

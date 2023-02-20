@@ -153,36 +153,43 @@
 
                 <RelativeLayout
                     android:id="@+id/llJobReport"
+                    android:layout_marginEnd="@dimen/bigger_margin_padding"
+                    android:background="@drawable/light_rounded_border"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="@dimen/height_40"
-                    android:layout_marginStart="@dimen/normal_margin_padding"
-                    android:layout_marginEnd="@dimen/big_margin_padding"
-                    android:layout_weight="1"
-                    android:background="@drawable/rounded_gray_border">
-
+                    android:layout_height="@dimen/height_40"
+                    android:layout_weight="1">
 
                     <com.ids.cloud9.custom.CustomTextViewMedium
-                        android:id="@+id/tvJopReport"
+                        android:id="@+id/tvReport"
                         android:layout_width="match_parent"
-                        android:layout_centerVertical="true"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/normal_margin_padding"
                         android:gravity="center_vertical"
-                        android:text="--Job Report--"
-                        android:layout_toStartOf="@id/ivArrowReport"
+                        android:text=""
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/normal_font" />
 
+                    <Spinner
+                        android:id="@+id/spReports"
+                        android:dropDownVerticalOffset="@dimen/big_margin"
+                        android:popupBackground="@drawable/white_light_rounded"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/transparent"/>
+
+
                     <ImageView
-                        android:layout_centerVertical="true"
-                        android:id="@+id/ivArrowReport"
-                        android:layout_width="@dimen/big_margin_padding"
-                        android:layout_height="@dimen/big_margin_padding"
+                        android:id="@+id/ivArrowSpin"
+                        android:layout_width="@dimen/radius_10"
+                        android:layout_height="@dimen/radius_10"
                         android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
                         android:layout_marginEnd="@dimen/settings_item_height"
                         android:rotation="90"
-                        android:src="@drawable/arrow_submit" />
+                        android:src="@drawable/arrow_submit"
+                        />
+
+
 
 
                 </RelativeLayout>

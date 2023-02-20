@@ -46,11 +46,7 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
         binding = com.ids.cloud9.databinding.ActivityAddReccomendBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
         init()
-
-
     }
-
-
     fun popupDate() {
         var myCalendar: Calendar = Calendar.getInstance()
         var DatePicker =
@@ -61,20 +57,14 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
                     myCalendar.set(Calendar.YEAR, year)
                     myCalendar.set(Calendar.MONTH, monthOfYear)
                     myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-
                     binding!!.tvDueDate.text = simp.format(myCalendar.time)
-
                 },
                 myCalendar.get(Calendar.YEAR),
                 myCalendar.get(Calendar.MONTH),
                 myCalendar.get(Calendar.DAY_OF_MONTH)
             )
-
         DatePicker.show()
-
-
     }
-
     fun listeners() {
         binding!!.llTool.ivDrawer.hide()
         binding!!.llTool.layoutFragment.show()
@@ -138,9 +128,7 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
             } else {
                 AppHelper.createDialogPositive(this, getString(R.string.fill_details))
             }
-
         }
-
         if (MyApplication.selectedReccomend == null) {
             binding!!.llAssignTo.show()
             binding!!.llEditAssign.hide()
@@ -154,17 +142,12 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
                 simp.format(simpOrg.parse(MyApplication.selectedReccomend!!.dueDate))
         }
     }
-
     fun updateReccomend() {
         var id = 0
         binding!!.llLoading.show()
-
         MyApplication.selectedReccomend!!.dueDate = simpOrg.format(simp.parse(binding!!.tvDueDate.text.toString()))
         MyApplication.selectedReccomend!!.subject = binding!!.etSubject.text.toString()
         MyApplication.selectedReccomend!!.description = binding!!.etDesc.text.toString()
-
-
-
         Log.wtf("TAG_CREATE", Gson().toJson(MyApplication.selectedReccomend))
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
             .updateActivity(
@@ -188,16 +171,12 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
                         )
                         binding!!.llLoading.hide()
                     }
-
                 }
-
                 override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
                     binding!!.llLoading.hide()
                 }
-
             })
     }
-
     fun deleteReccomend(){
         binding!!.llLoading.show()
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).deleteActivity(
@@ -214,13 +193,8 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
                 }else{
                     binding!!.llLoading.hide()
                 }
-
-
-
             }
-
             override fun onFailure(call: Call<ResponseMessage>, throwable: Throwable) {
-
                 binding!!.llLoading.hide()
             }
         })
@@ -229,7 +203,6 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
         var id = 0
         binding!!.llLoading.show()
         var arrId: kotlin.collections.ArrayList<Int> = arrayListOf()
-
         if (arrayUserSelected.size == 1)
             id = arrayUserSelected.get(0).id
         else {
@@ -244,9 +217,7 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
             MyApplication.userItem!!.applicationUserId,
             binding!!.etSubject.text.toString(),
             binding!!.tvDueDate.text.toString()
-
         )
-
         Log.wtf("TAG_CREATE", Gson().toJson(createActivity))
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
             .createActivity(
@@ -272,27 +243,22 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
                     }
 
                 }
-
                 override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
                     binding!!.llLoading.hide()
                 }
-
             })
     }
-
     fun setUpData() {
         binding!!.rvSelectedUser.layoutManager =
             GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false)
         adapterUser = AdapterUser(arrayUserSelected, this, this)
         binding!!.rvSelectedUser.adapter = adapterUser
     }
-
     fun init() {
         getUsers()
         listeners()
         setUpData()
     }
-
     fun setUpUsers() {
         for (item in arrayUsers)
             arraySpinner.add(
@@ -308,7 +274,6 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
         binding!!.rvNames.adapter = adapter
         binding!!.llLoading.hide()
     }
-
     fun getUsers() {
         binding!!.llLoading.show()
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
@@ -322,21 +287,16 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
                     arrayUsers.addAll(response.body()!!)
                     setUpUsers()
                 }
-
                 override fun onFailure(call: Call<ApplicationUserList>, t: Throwable) {
                     binding!!.llLoading.hide()
                 }
-
             })
     }
-
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.btRemoveMore) {
-
             arraySpinner.find {
                 it.id == arrayUsers.get(position).id
             }!!.selected = false
-
             arrayUserSelected.removeAt(position)
             if (arrayUsers.size == 0)
                 binding!!.rvSelectedUser.hide()
@@ -352,7 +312,5 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
                 adapterUser!!.notifyDataSetChanged()
             }
         }
-
     }
-
 }

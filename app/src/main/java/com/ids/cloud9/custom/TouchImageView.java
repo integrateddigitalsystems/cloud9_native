@@ -24,7 +24,6 @@ import android.widget.Scroller;
 import androidx.appcompat.widget.AppCompatImageView;
 
 public class TouchImageView extends AppCompatImageView {
-
     private static final String DEBUG = "DEBUG";
 
     //

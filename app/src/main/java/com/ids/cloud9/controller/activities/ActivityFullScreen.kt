@@ -30,11 +30,8 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
         binding = ActivityMediaFullscreenBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
         init()
-
     }
-
     private fun init() {
-
         binding!!.llTool.ivDrawer.hide()
         binding!!.llTool.layoutFragment.show()
         binding!!.llTool.tvTitleTool.text = MyApplication.selectedVisit!!.title
@@ -46,7 +43,6 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
                 Log.wtf("pause_exception", e.toString())
             }
         }
-
         binding!!.llTool.ivCalendar.setOnClickListener {
             finishAffinity()
             startActivity(
@@ -56,23 +52,11 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
                 )
             )
         }
-
-
-
         pos = intent.getIntExtra("ID_MEDIA",0)
         setMediaPager()
-
-
-
-
-
     }
-
     private fun setMediaPager(){
         arrayVideos.clear()
-        //  arrayVideos.add(Videos(1,"http://staging.in-point.org/images/about-videos/inpoint-3-withSE-and-Sub.mp4",2))
-        // arrayVideos.add(Videos(2,"http://staging.in-point.org/images/about-videos/Inpoint-second-video-with-SE-and-Sub.mp4",2))
-        //  arrayVideos.add(Videos(3,"http://staging.in-point.org/images/about-videos/Inpoint-With-Sub-And-SE-Final.mp4",2))
         var ct = 1
         for(item in MyApplication.arrayVid){
             arrayVideos.add(Videos(ct,item.name,item.type))
@@ -88,40 +72,25 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
         }else{
             binding!!.tbMedia.visibility = View.GONE
         }
-
         binding!!.vpMediaFull.currentItem = pos
-        // vpLessonsMedia.currentItem = intent.getIntExtra(AppConstants.IMAGE_POSITION, 0)
-
     }
-
     override fun onPageClicked(v: View) {
-
     }
-
     override fun onPageScrollStateChanged(state: Int) {
-
     }
-
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
-        Log.wtf("TAG_ABOUT_1","$position")
-        Log.wtf("TAG_ABOUT_2","$positionOffset")
         for(i in arrayVideos.indices){
             if(arrayVideos.get(i).player!=null) {
                 if (i == position) {
-                    // arrayVideos.get(i).player!!.play()
                 } else {
                     arrayVideos.get(i).player!!.pause()
                 }
             }
         }
-        //Toast.makeText(this,"PAGE NUMBER $position",Toast.LENGTH_SHORT).show()
     }
-
     override fun onPageSelected(position: Int) {
         try{pauseAll()}catch (e:java.lang.Exception){}
     }
-
     private fun pauseAll() {
         for (i in arrayVideos.indices) {
             if (arrayVideos.get(i).type==2) {
@@ -133,7 +102,6 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
             }
         }
     }
-
     override fun onPause() {
         try {
             pauseAll()
@@ -141,7 +109,6 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
         }
         super.onPause()
     }
-
     override fun onStop() {
         try {
             pauseAll()
@@ -149,7 +116,6 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
         }
         super.onStop()
     }
-
     override fun onPlaybackStateChanged(playbackState: Int) {
         super.onPlaybackStateChanged(playbackState)
 

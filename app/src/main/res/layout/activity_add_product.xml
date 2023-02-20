@@ -113,36 +113,48 @@
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/normal_font" />
 
+
                         <RelativeLayout
-                            android:id="@+id/spUnit"
+                            android:background="@drawable/light_rounded_border"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/height_40"
-                            android:layout_marginTop="@dimen/small_margin_padding"
-                            android:layout_weight="1"
-                            android:background="@drawable/rounded_gray_border">
-
+                            android:layout_weight="1">
 
                             <com.ids.cloud9.custom.CustomTextViewMedium
-                                android:id="@+id/tvUnit"
+                                android:id="@+id/tvUnitText"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginStart="@dimen/normal_margin_padding"
                                 android:gravity="center_vertical"
-                                android:text=""
+                                android:text="@string/status_reason"
                                 android:textColor="@color/text_color"
                                 android:textSize="@dimen/normal_font" />
 
+                            <Spinner
+                                android:id="@+id/spUnit"
+                                android:dropDownVerticalOffset="@dimen/big_margin"
+                                android:popupBackground="@drawable/white_light_rounded"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/transparent"/>
+
+
                             <ImageView
-                                android:layout_width="@dimen/padding_10"
-                                android:layout_height="@dimen/padding_10"
+                                android:id="@+id/ivArrowSpin"
+                                android:layout_width="@dimen/radius_10"
+                                android:layout_height="@dimen/radius_10"
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginEnd="@dimen/settings_item_height"
                                 android:rotation="90"
-                                android:src="@drawable/arrow_submit" />
+                                android:src="@drawable/arrow_submit"
+                                />
+
+
 
 
                         </RelativeLayout>
+
 
                     </LinearLayout>
 

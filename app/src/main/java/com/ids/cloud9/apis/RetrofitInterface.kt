@@ -10,15 +10,4 @@ import retrofit2.http.*
 
 interface RetrofitInterface {
 
-/*
-    @POST("api/Auth/GoogleLogin")
-    fun getLogin(
-        @Query("idToken") idToken: String?,
-    ): Call<ResponseLogin>
-
-    @GET("api/WareHouses")
-   suspend fun getWarehouses(
-    ): Response<ResponseGetWareHouse>
-*/
-
 }

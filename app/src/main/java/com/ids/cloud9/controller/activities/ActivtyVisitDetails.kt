@@ -59,7 +59,6 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
     val BLOCKED = -1
     var currLayout: LinearLayout? = null
     var currLayPost = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityVisitDetailsBinding.inflate(layoutInflater)
@@ -68,7 +67,6 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
         setUp()
         listeners()
     }
-
     fun init() {
         binding!!.llTool.ivDrawer.hide()
         binding!!.llTool.layoutFragment.show()
@@ -77,8 +75,6 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
         binding!!.llSelectedVisitBorder.show()
         binding!!.llTool.tvTitleTool.text = MyApplication.selectedVisit!!.title
     }
-
-
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -121,7 +117,6 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
 
         }
     }
-
     fun setUp() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(
@@ -141,7 +136,6 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
             )
         }
     }
-
     fun restartLayouts() {
         AppHelper.setTextColor(this, binding!!.tvCompany, R.color.text_gray)
         AppHelper.setTextColor(this, binding!!.tvVisit, R.color.text_gray)
@@ -149,7 +143,6 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
         AppHelper.setTextColor(this, binding!!.tvReccom, R.color.text_gray)
         AppHelper.setTextColor(this, binding!!.tvProducts, R.color.text_gray)
         AppHelper.setTextColor(this, binding!!.tvSignature, R.color.text_gray)
-
         binding!!.llBorderCompany.show()
         binding!!.llSelectedCompanyBorder.hide()
         binding!!.llBorderVisit.show()
@@ -163,7 +156,6 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
         binding!!.llBorderSignature.show()
         binding!!.llSelectedSignatureBorder.hide()
     }
-
     fun listeners() {
         binding!!.llCompany.setOnClickListener {
             if (currLayPost != 1) {
@@ -172,7 +164,6 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
                 binding!!.llSelectedCompanyBorder.show()
                 Navigation.findNavController(binding!!.fragmentContainerView)
                     .navigate(R.id.fragmentCompany)
-
                 val navBuilder = NavOptions.Builder()
                 if (currLayPost > 1) {
                     navBuilder.setEnterAnim(R.anim.right_in).setExitAnim(R.anim.right_out)
@@ -186,7 +177,6 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
             }
             currLayPost = 1
         }
-
         binding!!.llVisit.setOnClickListener {
             if (currLayPost != 0) {
                 restartLayouts()
@@ -203,9 +193,6 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
                 currLayPost = 0
             }
         }
-
-
-
         binding!!.llTool.ivCalendar.setOnClickListener {
             finishAffinity()
             startActivity(
@@ -215,7 +202,6 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
                 )
             )
         }
-
         binding!!.llMedia.setOnClickListener {
             if (currLayPost != 5) {
                 restartLayouts()
@@ -224,7 +210,6 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
                 binding!!.llSelectedMediaBorder.show()
                 Navigation.findNavController(binding!!.fragmentContainerView)
                     .navigate(R.id.fragmentMedia)
-
                 val navBuilder = NavOptions.Builder()
                 if (currLayPost > 5) {
                     navBuilder.setEnterAnim(R.anim.right_in).setExitAnim(R.anim.right_out)
@@ -235,44 +220,30 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
                 }
                 val navController = Navigation.findNavController(this, R.id.fragmentContainerView)
                 navController.navigate(R.id.fragmentMedia, null, navBuilder.build())
-
                 currLayPost = 5
             }
         }
-
-
-
-
         binding!!.llProducts.setOnClickListener {
             if (currLayPost != 2) {
-
                 restartLayouts()
                 AppHelper.setTextColor(this, binding!!.tvProducts, R.color.medium_blue)
                 binding!!.llProductsBorder.hide()
                 binding!!.llSelectedProductsBorder.show()
                 Navigation.findNavController(binding!!.fragmentContainerView)
                     .navigate(R.id.fragmentProducts)
-
                 val navBuilder = NavOptions.Builder()
                 if (currLayPost > 2) {
-
-
                     navBuilder.setEnterAnim(R.anim.right_in).setExitAnim(R.anim.right_out)
                         .setPopEnterAnim(R.anim.right_in).setPopExitAnim(R.anim.right_out)
                 } else {
-
                     navBuilder.setEnterAnim(R.anim.left_in).setExitAnim(R.anim.left_out)
                         .setPopEnterAnim(R.anim.left_in).setPopExitAnim(R.anim.left_out)
                 }
-
-
                 val navController = Navigation.findNavController(this, R.id.fragmentContainerView)
                 navController.navigate(R.id.fragmentProducts, null, navBuilder.build())
-
                 currLayPost = 2
             }
         }
-
         binding!!.llRecommendations.setOnClickListener {
             if (currLayPost != 3) {
                 restartLayouts()
@@ -281,27 +252,19 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
                 binding!!.llSelectedReccBorder.show()
                 Navigation.findNavController(binding!!.fragmentContainerView)
                     .navigate(R.id.fragmentReccomendations)
-
                 val navBuilder = NavOptions.Builder()
                 if (currLayPost > 3) {
-
-
                     navBuilder.setEnterAnim(R.anim.right_in).setExitAnim(R.anim.right_out)
                         .setPopEnterAnim(R.anim.right_in).setPopExitAnim(R.anim.right_out)
                 } else {
-
                     navBuilder.setEnterAnim(R.anim.left_in).setExitAnim(R.anim.left_out)
                         .setPopEnterAnim(R.anim.left_in).setPopExitAnim(R.anim.left_out)
                 }
-
-
                 val navController = Navigation.findNavController(this, R.id.fragmentContainerView)
                 navController.navigate(R.id.fragmentReccomendations, null, navBuilder.build())
-
                 currLayPost = 3
             }
         }
-
         binding!!.llSignature.setOnClickListener {
             if (currLayPost != 4) {
                 restartLayouts()
@@ -310,8 +273,6 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
                 binding!!.llSelectedSignatureBorder.show()
                 Navigation.findNavController(binding!!.fragmentContainerView)
                     .navigate(R.id.fragmentProducts)
-
-
                 val navBuilder = NavOptions.Builder()
                 if (currLayPost < 4) {
                     navBuilder.setEnterAnim(R.anim.left_in).setExitAnim(R.anim.left_out)
@@ -322,12 +283,9 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
                 }
                 val navController = Navigation.findNavController(this, R.id.fragmentContainerView)
                 navController.navigate(R.id.fragmentSignature, null, navBuilder.build())
-
-
                 currLayPost = 4
             }
         }
-
         binding!!.llTool.btBack.setOnClickListener {
             finish()
         }

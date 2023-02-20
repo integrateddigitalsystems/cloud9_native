@@ -20,7 +20,6 @@ import dev.b3nedikt.restring.Restring
 import java.util.*
 
 open class AppCompactBase : AppCompatActivity() {
-
     private val appCompatDelegate: AppCompatDelegate by lazy {
         ViewPumpAppCompatDelegate(
             baseDelegate = super.getDelegate(),
@@ -28,15 +27,12 @@ open class AppCompactBase : AppCompatActivity() {
             wrapContext = Restring::wrapContext
         )
     }
-
     init {
         AppHelper.setLocal()
     }
-
     override fun getDelegate(): AppCompatDelegate {
         return appCompatDelegate
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppHelper.setLocal()
@@ -53,7 +49,6 @@ open class AppCompactBase : AppCompatActivity() {
             config.setLocale(Locale.getDefault())
             newBase = newBase.createConfigurationContext(config)
         }
-
         super.attachBaseContext(newBase)
     }
 }

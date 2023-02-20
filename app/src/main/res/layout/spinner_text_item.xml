@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.ids.cloud9.custom.CustomTextViewMedium
+    android:layout_marginBottom="-90dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="1sp"
+    android:paddingStart="@dimen/small_margin"
+    android:paddingEnd="@dimen/small_margin_padding"
+    android:id="@+id/tvSpinnertext"
+    android:gravity="center"
+    android:textColor="@color/black"
+    />

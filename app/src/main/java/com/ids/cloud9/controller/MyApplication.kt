@@ -29,7 +29,6 @@ class MyApplication : Application() {
         var BASE_URL ="https://crmtest.ids.com.lb/api/"
         var BASE_URL_IMAGE = "https://crmtest.ids.com.lb"
         var arrayVid : ArrayList<ItemSpinner> = arrayListOf()
-        var selectedFragment  : Fragment?=null
         var selectedVisit : testVisitItem ?=null
         var allVisits : ArrayList<testVisitItem> = arrayListOf()
         var serviceContext : Context ?=null
@@ -50,17 +49,12 @@ class MyApplication : Application() {
         var showLogs: Boolean = true
         lateinit var sharedPreferences : SharedPreferences
         lateinit var sharedPreferencesEditor : SharedPreferences.Editor
-
         var loggedIn : Boolean
             get() = sharedPreferences.getBoolean(AppConstants.LOGGED_IN, false)
             set(value) { sharedPreferencesEditor.putBoolean(AppConstants.LOGGED_IN, value).apply() }
-
         var token : String
             get() = sharedPreferences.getString(AppConstants.TOKEN, "")!!
             set(value) { sharedPreferencesEditor.putString(AppConstants.TOKEN, value).apply() }
-
-
-
     }
     override fun onCreate() {
         super.onCreate()
@@ -70,14 +64,12 @@ class MyApplication : Application() {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         sharedPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(applicationContext)
         sharedPreferencesEditor = sharedPreferences.edit()
-
         ViewPump.init(RewordInterceptor)
         /*sharedPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(applicationContext)
         sharedPreferencesEditor = sharedPreferences.edit()*/
         instance =this
         setupServices()
     }
-
     override fun getResources(): Resources {
         return Restring.wrapResources(applicationContext, super.getResources())
     }

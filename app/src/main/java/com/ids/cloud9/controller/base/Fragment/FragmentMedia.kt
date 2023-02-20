@@ -40,7 +40,6 @@ import java.io.*
 
 
 class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
-
     var binding: com.ids.cloud9.databinding.LayoutMediaBinding? = null
     lateinit var mPermissionResult: ActivityResultLauncher<Intent>
     var arrayMedia: ArrayList<ItemSpinner> = arrayListOf()
@@ -54,7 +53,6 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
     val GRANTED = 0
     val DENIED = 1
     val BLOCKED = -1
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -64,33 +62,25 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
         binding = LayoutMediaBinding.inflate(inflater, container, false)
         return binding!!.root
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
-
     override fun onPlaybackStateChanged(playbackState: Int) {
         super.onPlaybackStateChanged(playbackState)
-
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpContent()
         listeners()
         init()
     }
-
     fun init() {
-        //   arrayMedia.add(ItemSpinner(0,"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",true , true , true , 0 ))
         binding!!.rvMedia.layoutManager =
             GridLayoutManager(requireContext(), 3, LinearLayoutManager.VERTICAL, false)
         adapterMedia = AdapterMedia(arrayMedia, requireActivity(), this)
         binding!!.rvMedia.adapter = adapterMedia
         getSignatures()
     }
-
-
     fun listeners() {
         binding!!.llCamera.setOnClickListener {
             code = CODE_CAMERA
@@ -121,12 +111,10 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
             // resultcode = CODE_IMAGE
             mPermissionResult.launch(intent)
         }
-
         if (MyApplication.selectedVisit!!.reasonId == AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.ON_THE_WAY_REASON_ID) {
             binding!!.llMediaButtons.hide()
         }
     }
-
     fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
@@ -134,7 +122,6 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
             MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
         return Uri.parse(path)
     }
-
     fun getRealPathFromURI(uri: Uri?): String? {
         var path = ""
         if (requireActivity().getContentResolver() != null) {
@@ -149,7 +136,6 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
         }
         return path
     }
-
     @Throws(IOException::class)
     fun getFile(context: Activity, uri: Uri): File {
         try {
@@ -172,7 +158,6 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
             return File("")
         }
     }
-
     fun createFileFromStream(ins: InputStream, destination: File?) {
         try {
             FileOutputStream(destination).use { os ->
@@ -188,7 +173,6 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
             ex.printStackTrace()
         }
     }
-
     private fun queryName(context: Context, uri: Uri): String {
         val returnCursor: Cursor = context.contentResolver.query(uri, null, null, null, null)!!
         val nameIndex: Int = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
@@ -197,20 +181,14 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
         returnCursor.close()
         return name
     }
-
     fun setUpContent() {
-
-
         mPermissionResult = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) {
 
             Toast.makeText(requireActivity(), "TESTWORK", Toast.LENGTH_SHORT).show()
             var file: File? = null
-            // Log.wtf("DATA_TAG",it.data!!.extras)
-
             try {
-
                 if (code == CODE_CAMERA) {
                     try {
                         var file: File? = null
@@ -222,30 +200,22 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                         } else {
                             file = File(it.data!!.data!!.path!!)
                         }
-
                         var urlImage = file.toString()
-
                         saveMedia(file)
-
                         arrayMedia.add(ItemSpinner(0, urlImage, false, false, true, 1))
                         adapterMedia!!.notifyDataSetChanged()
-
                     } catch (e: Exception) {
                         Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT)
                             .show()
                     }
                 } else if (code == CODE_GALLERY) {
                     file = getFile(requireActivity(), it.data!!.data!!)
-
                     var type = -1
-
                     if (AppHelper.isImageFile(file.path))
                         type = 1
                     else
                         type = 0
-
                     saveMedia(file)
-
                     arrayMedia.add(
                         ItemSpinner(
                             0,
@@ -259,42 +229,22 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                     adapterMedia!!.notifyDataSetChanged()
                 } else if (code == CODE_VIDEO) {
                     try {
-                        /*if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
-                            val path: Bitmap = it.data!!.extras!!.get("data") as Bitmap
-                            val ur = getImageUri(requireActivity(), path)
-                            val paths = getRealPathFromURI(ur)
-                            file = File(paths)
-                        } else {
-                            file = File(it.data!!.data!!.path!!)
-                        }
-
-                        var urlImage = file.toString()*/
                         var videoUri = it.data!!.data
                         var urlImage = getRealPathFromURI(videoUri)
-
                         var file = File(urlImage)
-
                         if (file.exists()) {
                             AppHelper.createDialogPositive(requireActivity(), "FILE EXISTS")
                             saveMedia(file)
                         }
-
                         arrayMedia.add(ItemSpinner(0, urlImage, false, false, true, 0))
                         adapterMedia!!.notifyDataSetChanged()
-
                     } catch (e: Exception) {
                     }
                 }
-
             } catch (ex: Exception) {
-
             }
         }
-
-
     }
-
-
     private fun getBitmapFromView(view: View): Bitmap {
         val returnedBitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(returnedBitmap)
@@ -307,9 +257,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
         view.draw(canvas)
         return returnedBitmap
     }
-
     fun saveMedia(file: File) {
-
         binding!!.llLoading.show()
         var base64 = AppHelper.convertImageFileToBase64(file)
         var sigReq = SignatureRequest(
@@ -342,16 +290,12 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                     } catch (ex: Exception) {
                         binding!!.llLoading.hide()
                     }
-
                 }
-
                 override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
                     binding!!.llLoading.hide()
                 }
-
             })
     }
-
     fun setUpMedia(array: ArrayList<SignatureListItem>) {
         if (array.size > 0) {
             binding!!.rvMedia.show()
@@ -377,7 +321,6 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
             binding!!.llLoading.hide()
         }
     }
-
     fun getSignatures() {
         binding!!.llLoading.show()
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getSignatures(
@@ -398,8 +341,6 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
 
         })
     }
-
-
     fun deleteMedia(pos: Int) {
         binding!!.llLoading.show()
         RetrofitClientAuth.client!!.create(
@@ -426,18 +367,14 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                         binding!!.llLoading.hide()
                     }
                 }
-
                 override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
                     binding!!.llLoading.hide()
                 }
-
             })
     }
-
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.btClose) {
             if (MyApplication.selectedVisit!!.reasonId != AppConstants.PENDING_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID) {
-
                 AppHelper.createYesNoDialog(
                     requireActivity(),
                     getString(R.string.sure_delete_media),

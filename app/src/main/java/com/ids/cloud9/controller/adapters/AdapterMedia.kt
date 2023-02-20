@@ -27,9 +27,7 @@ class AdapterMedia(
     var con: Activity,
     private var clickListener: RVOnItemClickListener
 ) : RecyclerView.Adapter<AdapterMedia.VhItem>() {
-
     var list : Player.Listener?=null
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VhItem {
         val binding = ItemMediaBinding.inflate(con.layoutInflater,parent,false)
         return VhItem(binding, clickListener)
@@ -45,12 +43,8 @@ class AdapterMedia(
         private var clickListener: RVOnItemClickListener
     ) : RecyclerView.ViewHolder(
         binding.root
-
     ), View.OnClickListener {
-
-
         fun bind(item: ItemSpinner) {
-
             if(item.type == 1){
                 binding.ivVideoDefault.hide()
                 binding.ivMedia.show()
@@ -70,7 +64,4 @@ class AdapterMedia(
             clickListener.onItemClicked(p0!!, layoutPosition)
         }
     }
-
-
-
 }

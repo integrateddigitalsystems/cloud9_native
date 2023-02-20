@@ -37,15 +37,13 @@
             android:text="@string/status_reason"/>
 
         <RelativeLayout
-            android:id="@+id/spStatusReason"
             android:background="@drawable/light_rounded_border"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_40"
             android:layout_weight="1">
 
-
             <com.ids.cloud9.custom.CustomTextViewMedium
-                android:id="@+id/tvStatusReason"
+                android:id="@+id/tvStatreason"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/normal_margin_padding"
@@ -54,7 +52,17 @@
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/normal_font" />
 
+            <Spinner
+                android:id="@+id/spStatusReason"
+                android:dropDownVerticalOffset="@dimen/big_margin"
+                android:popupBackground="@drawable/white_light_rounded"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"/>
+
+
             <ImageView
+                android:id="@+id/ivArrowSpin"
                 android:layout_width="@dimen/radius_10"
                 android:layout_height="@dimen/radius_10"
                 android:layout_alignParentEnd="true"
@@ -68,6 +76,8 @@
 
 
         </RelativeLayout>
+
+
 
     </LinearLayout>
 

@@ -27,30 +27,23 @@ import retrofit2.Response
 import java.util.ArrayList
 
 class FragmentReccomendations : Fragment(), RVOnItemClickListener {
-
     var binding: LayoutReccomendationsBinding? = null
-
     var arrayReccomend: ArrayList<FilteredActivityListItem> = arrayListOf()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = LayoutReccomendationsBinding.inflate(inflater, container, false)
         return binding!!.root
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        listeners()
     }
-
     fun listeners() {
         if (MyApplication.selectedVisit!!.reasonId == AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.ON_THE_WAY_REASON_ID) {
            binding!!.btAddReccomend.isEnabled = false
@@ -66,10 +59,8 @@ class FragmentReccomendations : Fragment(), RVOnItemClickListener {
             )
         }
     }
-
-
     fun init() {
-        //getReccomendations()
+        listeners()
     }
 
     fun setDataReccomend() {
@@ -86,12 +77,10 @@ class FragmentReccomendations : Fragment(), RVOnItemClickListener {
 
         binding!!.llLoading.hide()
     }
-
     override fun onResume() {
         super.onResume()
         getReccomendations()
     }
-
     fun getReccomendations() {
         binding!!.llLoading.show()
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getReccomendationsFilter(
@@ -105,19 +94,15 @@ class FragmentReccomendations : Fragment(), RVOnItemClickListener {
                 arrayReccomend.clear()
                 arrayReccomend.addAll(response.body()!!)
                 setDataReccomend()
-
             }
-
             override fun onFailure(call: Call<FilteredActivityList>, t: Throwable) {
                 binding!!.llLoading.hide()
             }
 
         })
     }
-
     override fun onItemClicked(view: View, position: Int) {
         if (MyApplication.selectedVisit!!.reasonId != AppConstants.PENDING_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID) {
-
             MyApplication.selectedReccomend = arrayReccomend.get(position)
             startActivity(
                 Intent(

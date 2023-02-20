@@ -46,7 +46,6 @@ import kotlin.collections.ArrayList
 
 
 class ActivityMain: AppCompactBase() , RVOnItemClickListener{
-
     var simp = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss")
     var half = SimpleDateFormat("MMM dd")
     var secondHalf = SimpleDateFormat("MMM dd yyyy")
@@ -67,14 +66,11 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
     var mainArray : ArrayList<testVisitItem> = arrayListOf()
     private lateinit var foregroundOnlyBroadcastReceiver: ForegroundOnlyBroadcastReceiver
     private var foregroundOnlyLocationServiceBound = false
-
     private inner class ForegroundOnlyBroadcastReceiver : BroadcastReceiver() {
-
         override fun onReceive(context: Context, intent: Intent) {
             val location = intent.getParcelableExtra<Location>(
                 LocationForeService.EXTRA_LOCATION
             )
-
             if (location != null) {
                 Log.wtf("FORE", "Foreground location: ${location.toText()}")
             }
@@ -86,26 +82,9 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
         setContentView(binding!!.root)
         setUpPermission()
         listeners()
-        setUpSliding()
         getVisits()
         setUpDate()
-        setUpDrawer()
         foregroundOnlyBroadcastReceiver = ForegroundOnlyBroadcastReceiver()
-
-       /* binding!!.llHomeMain.BIND.text = getString(R.string.test_text)
-        binding!!.llHomeMain.BIND.setOnClickListener {
-            foregroundOnlyLocationService!!.subscribeToLocationUpdates()
-        }
-
-        binding!!.llHomeMain.UNBIND.setOnClickListener {
-            foregroundOnlyLocationService!!.unsubscribeToLocationUpdates()
-            val intent = Intent()
-            intent.setClass(this, LocationForeService::class.java)
-            stopService(intent)
-        }
-*/
-
-
     }
 
     private fun foregroundPermissionApproved(): Boolean {
@@ -114,24 +93,13 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             Manifest.permission.ACCESS_FINE_LOCATION
         )
     }
-
     private fun openChooser() {
-
-
         mPermissionResult!!.launch(
             arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION
             )
         )
-        /*mPermissionResult!!.launch(
-            arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-        )*/
-
-
-    }
-
+       }
     fun changeState(track: Boolean, indx: Int) {
         var gps_enabled = false
         var mLocationManager =
@@ -141,7 +109,6 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             gps_enabled = mLocationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)
         } catch (ex: Exception) {
         }
-
         if (gps_enabled) {
             if (!track) {
                 MyApplication.saveLocTracking = false
@@ -161,7 +128,6 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                             foregroundOnlyLocationService?.subscribeToLocationUpdates()
                                 ?: run {
                                     Log.d(TAG, "Service Not Bound")
-
                                 }
                     } else {
                         AppHelper.createYesNoDialog(
@@ -171,17 +137,13 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                         ){
                            openChooser()
                         }
-
                     }
                 } catch (ex: Exception) {
                     Log.wtf("Ex",ex.toString())
                 }
             }
         }
-
-
     }
-
     fun getPermissionStatus(androidPermissionName: String?): Int {
         return if (ContextCompat.checkSelfPermission(
                 this,
@@ -197,7 +159,6 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             } else DENIED
         } else GRANTED
     }
-
     fun setUpPermission() {
         mPermissionResult =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions())
@@ -230,11 +191,8 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                             }
                         }
                     }
-
                 }
             }
-
-
     }
 
     fun editDate(isNext : Boolean ){
@@ -252,33 +210,27 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             editingFrom.add(Calendar.DAY_OF_MONTH,-7)
             editingTo.add(Calendar.DAY_OF_MONTH,-1)
         }
-
         editingFrom.set(Calendar.HOUR,0)
         editingFrom.set(Calendar.HOUR_OF_DAY,0)
         editingFrom.set(Calendar.MINUTE,0)
         editingFrom.set(Calendar.SECOND,0)
         editingFrom.set(Calendar.MILLISECOND,0)
-
         editingTo.set(Calendar.HOUR,0)
         editingTo.set(Calendar.HOUR_OF_DAY,0)
         editingTo.set(Calendar.MINUTE,0)
         editingTo.set(Calendar.SECOND,0)
         editingTo.set(Calendar.MILLISECOND,0)
-
         var curr = Calendar.getInstance()
         curr.set(Calendar.HOUR,0)
         curr.set(Calendar.HOUR_OF_DAY,0)
         curr.set(Calendar.MINUTE,0)
         curr.set(Calendar.SECOND,0)
         curr.set(Calendar.MILLISECOND,0)
-
         if(curr.time.time >= editingFrom.time.time && curr.time.time <= editingTo.time.time){
             binding!!.llHomeMain.tvToday.setBackgroundResource(R.drawable.rounded_selected)
         }else{
             binding!!.llHomeMain.tvToday.setBackgroundResource(R.drawable.rounded_dark_blue)
         }
-
-
         var vl = VisitList()
         binding!!.llHomeMain.loading.show()
         filterDate(mainArray)
@@ -286,51 +238,34 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondHalf.format(editingTo.time)
         else
             binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondNoMonthHalf.format(editingTo.time)
-    }
-
-
-
-    fun setUpDate(){
+    }fun setUpDate(){
         var from = Calendar.getInstance()
         var to = Calendar.getInstance()
-
         from.add(Calendar.DAY_OF_MONTH,-2)
         to.add(Calendar.DAY_OF_MONTH,3)
-
         fromDefault = from
         toDefault = to
         editingFrom = from
         editingTo = to
-
         editingFrom.set(Calendar.HOUR,0)
         editingFrom.set(Calendar.HOUR_OF_DAY,0)
         editingFrom.set(Calendar.MINUTE,0)
         editingFrom.set(Calendar.SECOND,0)
         editingFrom.set(Calendar.MILLISECOND,0)
-
         editingTo.set(Calendar.HOUR,0)
         editingTo.set(Calendar.HOUR_OF_DAY,0)
         editingTo.set(Calendar.MINUTE,0)
         editingTo.set(Calendar.SECOND,0)
         editingTo.set(Calendar.MILLISECOND,0)
-
         filterDate(mainArray)
-
         if(editingFrom.get(Calendar.MONTH) != editingTo.get(Calendar.MONTH))
             binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondHalf.format(editingTo.time)
         else
             binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondNoMonthHalf.format(editingTo.time)
     }
-
-
-
-
     fun filterDate(arrayList: ArrayList<testVisitItem>){
-
         tempArray.clear()
-
         tempArray.addAll(arrayList.filter {
-
             simp.parse(it.visitDate).time >= editingFrom.time.time && simp.parse(it.visitDate).time <= editingTo.time.time
         }
         )
@@ -339,25 +274,14 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
         vl.addAll(tempArray)
         setUpData(vl)
     }
-
-    fun setUpDrawer(){
-       // binding!!.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-    }
-
-
     override fun onStop() {
         if (foregroundOnlyLocationServiceBound) {
             unbindService(foregroundOnlyServiceConnection)
             foregroundOnlyLocationServiceBound = false
         }
-        //  sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
-
         super.onStop()
     }
-
-
     private val foregroundOnlyServiceConnection = object : ServiceConnection {
-
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             val binder = service as LocationForeService.LocalBinder
             foregroundOnlyLocationService = binder.foreService
@@ -365,21 +289,17 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             if (MyApplication.saveLocTracking!!)
                 changeState(true, 0)
         }
-
         override fun onServiceDisconnected(name: ComponentName) {
             foregroundOnlyLocationService = null
             foregroundOnlyLocationServiceBound = false
         }
     }
-
     override fun onPause() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(
             foregroundOnlyBroadcastReceiver
         )
-
         super.onPause()
     }
-
     override fun onResume() {
         super.onResume()
         LocalBroadcastManager.getInstance(this).registerReceiver(
@@ -391,12 +311,10 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
     }
     override fun onStart() {
         super.onStart()
-
         MyApplication.serviceContext = this
         val serviceIntent = Intent(this, LocationForeService::class.java)
         bindService(serviceIntent, foregroundOnlyServiceConnection, Context.BIND_AUTO_CREATE)
     }
-
     fun setUpData(list: VisitList){
         if(list.size >0) {
             list.sortBy {
@@ -427,33 +345,18 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                     headers++
                     tempArray.add(visHeader)
                     tempArray.add(item)
-
-
-
                 }
-
             }
         }else{
             tempArray.clear()
         }
-
-
         var x : ArrayList<testVisitItem> = arrayListOf()
         x.addAll(tempArray)
-
         tempArray.clear()
         tempArray.addAll(x.filter {
             it.reasonId != AppConstants.SCHEDULED_REASON_ID
         })
-
-
-
-
-
-
-
         if(tempArray.size > 0) {
-
             var adapter = StickyAdapter(this, tempArray,this)
             binding!!.llHomeMain.rvVisits.layoutManager = LinearLayoutManager(this)
             binding!!.llHomeMain.rvVisits.adapter = adapter
@@ -463,7 +366,6 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                     adapter
                 )
             );
-
             Log.wtf("Visitors", Gson().toJson(tempArray))
             binding!!.llHomeMain.loading.hide()
             binding!!.llHomeMain.rvVisits.show()
@@ -472,11 +374,8 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             binding!!.llHomeMain.loading.hide()
             binding!!.llHomeMain.rvVisits.hide()
             binding!!.llHomeMain.tvNoVisits.show()
-
         }
     }
-
-
     fun getVisits(){
         binding!!.llHomeMain.loading.show()
         RetrofitClientAuth.client?.create(RetrofitInterface::class.java)
@@ -498,15 +397,11 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                     else
                         changeState(false , 0 )
                     filterDate(response.body()!!)
-
                 }
                 override fun onFailure(call: Call<VisitList>, throwable: Throwable) {
-
                 }
             })
     }
-
-
     fun listeners(){
         binding!!.drawerMenu.tvWelcome.text = binding!!.drawerMenu.tvWelcome.text.toString() + MyApplication.userItem!!.firstName + " "+MyApplication.userItem!!.lastName
         binding!!.llHomeMain.ivDrawer.setOnClickListener {
@@ -514,28 +409,22 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             binding!!.navView.startAnimation(shake)
             binding!!.drawerLayout.openDrawer(GravityCompat.START)
         }
-
-
         binding!!.drawerMenu.llLogout.setOnClickListener {
             AppHelper.createYesNoDialog(this,getString(R.string.sure_logout),0){
-
                 try {
                     foregroundOnlyLocationService!!.unsubscribeToLocationUpdates()
                     val intent = Intent()
                     intent.setClass(this, LocationForeService::class.java)
                     stopService(intent)
                 }catch (ex:Exception){
-
                 }
                 finishAffinity()
                 MyApplication.loggedIn = false
                 startActivity(Intent(this,ActivityLogin::class.java))
             }
         }
-
         binding!!.drawerMenu.btArabic.hide()
         binding!!.drawerMenu.btEnglish.hide()
-
         binding!!.drawerMenu.btArabic.setOnClickListener {
             AppHelper.changeLanguage(this,"ar")
             val intent = Intent(this, ActivityMain::class.java)
@@ -554,76 +443,41 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                 ActivityAllTasks::class.java
             ))
         }
-
         binding!!.drawerMenu.tvHome.setOnClickListener {
             finishAffinity()
             startActivity(Intent(this,ActivityMain::class.java))
         }
-
         binding!!.drawerMenu.btClose.setOnClickListener {
             var  shake =  AnimationUtils.loadAnimation(this, R.anim.close_corner)
             binding!!.navView.startAnimation(shake)
             Handler(Looper.getMainLooper()).postDelayed({
                 binding!!.drawerLayout.closeDrawers()
             }, 300)
-
         }
-
-
         onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 AppHelper.createYesNoDialog(this@ActivityMain,getString(R.string.are_you_sure_exit),0){
                     finish()
                 }
-
             }
         })
-
         binding!!.llHomeMain.btDatePrevious.setOnClickListener {
             binding!!.llHomeMain.btDatePrevious.setBackgroundResource(R.drawable.rounded_darker_left)
             binding!!.llHomeMain.btDateNext.setBackgroundResource(R.drawable.rounded_dark_right)
             editDate(false)
         }
-
         binding!!.llHomeMain.btDateNext.setOnClickListener {
             binding!!.llHomeMain.btDateNext.setBackgroundResource(R.drawable.rounded_darker_right)
             binding!!.llHomeMain.btDatePrevious.setBackgroundResource(R.drawable.rounded_dark_left)
             editDate(true)
         }
-
         binding!!.llHomeMain.tvToday.setOnClickListener {
             setUpDate()
             binding!!.llHomeMain.tvToday.setBackgroundResource(R.drawable.rounded_selected)
             binding!!.llHomeMain.btDateNext.setBackgroundResource(R.drawable.rounded_dark_right)
             binding!!.llHomeMain.btDatePrevious.setBackgroundResource(R.drawable.rounded_dark_left)
-
         }
     }
-
-
-
-    fun setUpSliding(){
-        /*var menuItems : ArrayList<MenuItem> ?= arrayListOf()
-        menuItems!!.add(MenuItem("News", com.ids.cloud9.R.drawable.background))
-        menuItems.add(MenuItem("Feed", com.ids.cloud9.R.drawable.background))
-        menuItems.add(MenuItem("Messages",com.ids.cloud9.R.drawable.background))
-        menuItems.add(MenuItem("Music",com.ids.cloud9.R.drawable.background))
-
-        //then add them to navigation drawer
-
-
-        //then add them to navigation drawer
-        binding!!.navigationDrawer.setMenuItemList(menuItems)
-        binding!!.navigationDrawer.
-                setAppbarTitleTypeface(AppHelper.getTypeFace(this))
-
-
-        binding!!.navigationDrawer.setOnMenuItemClickListener {
-
-        }*/
-
-    }
-
     override fun onItemClicked(view: View, position: Int) {
         MyApplication.selectedVisit = tempArray.get(position)
         startActivity(Intent(this,ActivtyVisitDetails::class.java))

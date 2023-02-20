@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ids.cloud9">
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -12,7 +11,6 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.CALL_PHONE"/>
-
     <application
         android:name="com.ids.cloud9.controller.MyApplication"
         android:allowBackup="false"
@@ -25,65 +23,33 @@
         android:theme="@style/Theme.LibraScan"
         tools:targetApi="31"
         tools:replace="android:allowBackup">
-
+        
         <activity
             android:name=".controller.activities.ActivitySplash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".controller.activities.ActivityLogin">
-
-        </activity>
-
-        <activity android:name=".controller.activities.ActivityMain">
-
-        </activity>
-        <activity android:name=".controller.activities.ActivityAllTasks">
-
-        </activity>
-
-        <activity android:name=".controller.activities.ActivityAddProduct">
-
-        </activity>
-
-        <activity android:name=".controller.activities.ActivityAddReccomendations">
-
-        </activity>
-
-        <activity android:name=".controller.activities.ActivityFullScreen">
-
-        </activity>
-
-        <activity android:name=".controller.activities.ActivtyVisitDetails">
-
-        </activity>
-
-        <activity android:name=".controller.activities.ActivityReportDetails">
-
-        </activity>
-
-        <activity android:name=".controller.activities.ActivityRecords">
-
-        </activity>
-
+        
+        <activity android:name=".controller.activities.ActivityLogin"/>
+        <activity android:name=".controller.activities.ActivityMain"/>
+        <activity android:name=".controller.activities.ActivityAllTasks"/>
+        <activity android:name=".controller.activities.ActivityAddProduct"/>
+        <activity android:name=".controller.activities.ActivityAddReccomendations"/>
+        <activity android:name=".controller.activities.ActivityFullScreen"/>
+        <activity android:name=".controller.activities.ActivtyVisitDetails"/>
+        <activity android:name=".controller.activities.ActivityReportDetails"/>
+        <activity android:name=".controller.activities.ActivityRecords"/>
         <service
             android:name=".utils.LocationForeService"
             android:stopWithTask="false"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="location"/>
-
     </application>
-
-
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-
 </manifest>

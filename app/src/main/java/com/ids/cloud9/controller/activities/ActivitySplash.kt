@@ -36,23 +36,13 @@ class ActivitySplash : Activity() {
     var mFirebaseRemoteConfig: FirebaseRemoteConfig? = null
     private lateinit var binding: ActivityNewSplashBinding
     var token : String ?=""
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewSplashBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
-
         startFirebase()
-
-
-
-
     }
-
-
-
     fun startFirebase() {
-
         mFirebaseRemoteConfig = Firebase.remoteConfig!!
         val configSettings = remoteConfigSettings {
             minimumFetchIntervalInSeconds = 0
@@ -64,19 +54,12 @@ class ActivitySplash : Activity() {
                     setUpFirebase()
                 } else {
                     AppHelper.createDialogAgain(this, getString(R.string.error_getting_data)) {
-
                     }
                 }
-
-
-            }
-
-
     }
-
+    }
     fun startApp(){
         if (MyApplication.mobileConfig!!.forceVersion > BuildConfig.VERSION_NAME.toDouble()) {
-
         } else {
             Handler(Looper.getMainLooper()).postDelayed({
                 if(!MyApplication.loggedIn) {
@@ -90,27 +73,16 @@ class ActivitySplash : Activity() {
             }, 2000)
         }
     }
-
-
     fun setUpFirebase() {
-
-
         var mobConfig = Gson().fromJson(
             mFirebaseRemoteConfig!!.getString(AppConstants.FIREBASE_CONFIG),
             MobileConfigTypes::class.java
         )
-
-
         var locMessages = Gson().fromJson(
             mFirebaseRemoteConfig!!.getString(AppConstants.LOCALISED_MESSAGES),
             LocMessages::class.java
         )
-
-
-
-
         MyApplication.locMessages.addAll(locMessages.values)
-
         MyApplication.mobileConfig = mobConfig.android.find {
             it.version.toDouble() == BuildConfig.VERSION_NAME.toDouble()
         }
@@ -122,15 +94,9 @@ class ActivitySplash : Activity() {
                 startFirebase()
             }
         } else {
-            /*Handler(Looper.getMainLooper()).postDelayed({
-
-            }, 2000)*/
-
             getUnits()
         }
-
     }
-
     fun getUnits(){
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.PRODUCTION_LOOKUP_CODE)
             .enqueue(object : Callback<UnitList> {
@@ -160,7 +126,6 @@ class ActivitySplash : Activity() {
                         }
                     }
                 }
-
                 override fun onFailure(call: Call<UnitList>, t: Throwable) {
                     AppHelper.createDialogAgain(
                         this@ActivitySplash,
@@ -169,13 +134,9 @@ class ActivitySplash : Activity() {
                         startFirebase()
                     }
                 }
-
             })
-
     }
-
     private fun showDialogUpdate(activity: Activity) {
-
         val builder = AlertDialog.Builder(activity)
         val textView: TextView
         val inflater = activity.layoutInflater
@@ -184,49 +145,36 @@ class ActivitySplash : Activity() {
         textView.gravity = Gravity.CENTER
         textView.text = AppHelper.getRemoteString("update_message",this)
         builder.setTitle(AppHelper.getRemoteString("update_title",this))
-
         builder.setView(textEntryView)
             .setPositiveButton(AppHelper.getRemoteString("update_button",this)) { dialog, _ ->
                 dialog.dismiss()
                 val appPackageName = activity.packageName
                 try {
                     activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
-
                     activity.finish()
-
                 } catch (anfe: android.content.ActivityNotFoundException) {
                     activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
                     activity.finish()
-
                 }
             }
             .setNegativeButton(AppHelper.getRemoteString("update_cancel",this)) { dialog, _ ->
                 dialog.dismiss()
-
-
             }
-
         val d = builder.create()
         d.setOnShowListener {
-
             d.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
             d.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
             d.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).transformationMethod = null
             d.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).isAllCaps = false
-
             d.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
             d.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
             d.getButton(android.app.AlertDialog.BUTTON_POSITIVE).transformationMethod = null
             d.getButton(android.app.AlertDialog.BUTTON_POSITIVE).isAllCaps = false
         }
         d.setCancelable(false)
-
         d.show()
-
     }
-
     private fun showDialogForceUpdate(activity: Activity) {
-
         val builder = AlertDialog.Builder(activity)
         val textView: TextView
         val inflater = activity.layoutInflater
@@ -235,15 +183,11 @@ class ActivitySplash : Activity() {
         textView.gravity = Gravity.START
         textView.text = AppHelper.getRemoteString("update_message",this)
         builder.setTitle(AppHelper.getRemoteString("update_title",this))
-
-
-
         builder.setView(textEntryView)
             .setNegativeButton(AppHelper.getRemoteString("update_button",this)) { dialog, _ ->
                 dialog.dismiss()
                 val appPackageName = activity.packageName
                 try {
-
                     activity.startActivity(
                         Intent(
                             Intent.ACTION_VIEW,
@@ -251,9 +195,7 @@ class ActivitySplash : Activity() {
                         )
                     )
                     activity.finish()
-
                 } catch (anfe: ActivityNotFoundException) {
-
                     activity.startActivity(
                         Intent(
                             Intent.ACTION_VIEW,
@@ -261,7 +203,6 @@ class ActivitySplash : Activity() {
                         )
                     )
                     activity.finish()
-
                 }
             }
         val d = builder.create()
@@ -271,11 +212,7 @@ class ActivitySplash : Activity() {
             d.getButton(AlertDialog.BUTTON_NEGATIVE).transformationMethod = null
             d.getButton(AlertDialog.BUTTON_NEGATIVE).isAllCaps = false
         }
-
-
-
         d.setCancelable(false)
         d.show()
     }
-
 }

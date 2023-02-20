@@ -26,69 +26,38 @@ class AdapterDialog(
         val binding = ItemReasonDialogBinding.inflate(con.layoutInflater, parent, false)
         return VhItem(binding, clickListener)
     }
-
     override fun onBindViewHolder(holder: VhItem, position: Int) {
         holder.bind(items[position])
     }
-
     override fun getItemCount(): Int {
         return items.size
     }
-
     inner class VhItem(
         val binding: com.ids.cloud9.databinding.ItemReasonDialogBinding,
         private var clickListener: RVOnItemClickListener
     ) : RecyclerView.ViewHolder(
         binding.root
-
     ), View.OnClickListener {
-
-
         fun bind(item: ItemSpinner) {
-
-
             binding.tvReason.text = item.name
-
-
-
-
-
             if (!item.selectable!!) {
-
                 binding.llItemReason.setBackgroundResource(R.drawable.gray_tint_border)
-
                 AppHelper.setTextColor(con, binding.tvReason, R.color.gray_border_item)
-
-
             } else {
-
                 if (item.selected != null && item.selected!!) {
-
                     binding.llItemReason.setBackgroundResource(R.drawable.rounded_selected_primary)
-
                     AppHelper.setTextColor(con, binding.tvReason, R.color.colorPrimary)
-
                 } else {
                     binding.llItemReason.setBackgroundResource(R.drawable.rounded_white_border)
-
                     AppHelper.setTextColor(con, binding.tvReason, R.color.colorAccent)
-
                 }
             }
-
-
         }
-
-
         init {
             binding.llItemReason.setOnClickListener(this)
-
-
         }
-
         override fun onClick(p0: View?) {
             clickListener.onItemClicked(p0!!, layoutPosition)
         }
     }
-
 }

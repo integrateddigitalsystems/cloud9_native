@@ -17,37 +17,28 @@ import com.ids.cloud9.utils.underline
 
 
 class FragmentCompany : Fragment() {
-
     var binding : LayoutCompanyBinding?=null
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = LayoutCompanyBinding.inflate(inflater, container, false)
         return binding!!.root
     }
-
     fun init(){
         setUpCompanyData()
         listenrs()
     }
-
     fun listenrs(){
-
         binding!!.llGetDirection.setOnClickListener {
             val geoUri =
                 "http://maps.google.com/maps?q=loc:" + MyApplication.selectedVisit!!.company!!.lat + "," + MyApplication.selectedVisit!!.company!!.long + " (" + MyApplication.selectedVisit!!.company!!.companyName + ")"
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
             startActivity(intent)
-
         }
     }
-
     fun setUpCompanyData(){
-
         if(MyApplication.selectedVisit!!.company!=null) {
             binding!!.tvCompanyName.setTextLang(
                 MyApplication.selectedVisit!!.company!!.companyName!!,
@@ -87,11 +78,9 @@ class FragmentCompany : Fragment() {
         }
         binding!!.tvAddress.text = MyApplication.selectedVisit!!.company!!.address
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()

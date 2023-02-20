@@ -12,20 +12,16 @@ class CustomTypeFaceSpan(
     @param:ColorInt val foregroundColor: Int
 ) :
     TypefaceSpan(family) {
-
     override fun updateDrawState(ds: TextPaint) {
         ds.color = foregroundColor
         applyCustomTypeFace(ds, newType)
     }
-
     override fun updateMeasureState(paint: TextPaint) {
         applyCustomTypeFace(paint, newType)
     }
-
     override fun getSpanTypeId(): Int {
         return super.getSpanTypeId()
     }
-
     companion object {
         private fun applyCustomTypeFace(paint: Paint, tf: Typeface) {
             val oldStyle: Int

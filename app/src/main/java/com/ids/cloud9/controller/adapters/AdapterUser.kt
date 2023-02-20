@@ -28,44 +28,26 @@ class AdapterUser(
         val binding = ItemUserBinding.inflate(con.layoutInflater, parent, false)
         return VhItem(binding, clickListener)
     }
-
     override fun onBindViewHolder(holder: VhItem, position: Int) {
         holder.bind(items[position])
     }
-
     override fun getItemCount(): Int {
         return items.size
     }
-
     inner class VhItem(
         val binding: com.ids.cloud9.databinding.ItemUserBinding,
         private var clickListener: RVOnItemClickListener
     ) : RecyclerView.ViewHolder(
         binding.root
-
     ), View.OnClickListener {
-
-
         fun bind(item: ApplicationUserListItem) {
-
-
             binding.tvFilter.text = item.firstName + " "+item.lastName
-
-
-
-
         }
-
-
         init {
             binding.btRemoveMore.setOnClickListener(this)
-
-
         }
-
         override fun onClick(p0: View?) {
             clickListener.onItemClicked(p0!!, layoutPosition)
         }
     }
-
 }

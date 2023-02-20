@@ -22,27 +22,18 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ActivityLogin : AppCompactBase() {
-
-
     var binding : ActivityLoginBinding?=null
     var showPass = true
     var selectedField = -1
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
-
-
-
         binding!!.etEmail.text =Editable.Factory.getInstance().newEditable("info@mte.com.ae")
         binding!!.etPassword.text =Editable.Factory.getInstance().newEditable("P@ssw0rd!@#")
         listeners()
     }
-
-
     fun listeners(){
-
         binding!!.etEmail.setOnFocusChangeListener { view, b ->
             if(selectedField !=1){
                 selectedField = 1
@@ -64,12 +55,10 @@ class ActivityLogin : AppCompactBase() {
                 }else {
                     login(binding!!.etEmail.text.toString(), binding!!.etPassword.text.toString())
                 }
-
             }else{
                 AppHelper.createDialogPositive(this,getString(R.string.fill_details))
             }
         }
-
         binding!!.btShowPassword.setOnClickListener {
                 if(showPass){
                     binding!!.btShowPassword.setImageResource(R.drawable.lock_open)
@@ -83,9 +72,7 @@ class ActivityLogin : AppCompactBase() {
                 }
         }
     }
-
    fun login(email : String , password : String ){
-
        binding!!.btLogin.hide()
        binding!!.loadingLogin.show()
        Log.wtf("TAG_URL",MyApplication.BASE_URL)
@@ -95,9 +82,7 @@ class ActivityLogin : AppCompactBase() {
                newReq
            )?.enqueue(object : Callback<ResponseLogin> {
                override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
-
                    try {
-
                        MyApplication.token = response.body()!!.token!!
                        Log.wtf("TOKEN",MyApplication.token)
                        MyApplication.userItem = JWTDecoding.decoded(MyApplication.token!!)
@@ -109,7 +94,6 @@ class ActivityLogin : AppCompactBase() {
                        binding!!.btLogin.show()
                        Log.wtf("TAG_URL",ex.toString())
                    }
-
                }
                override fun onFailure(call: Call<ResponseLogin>, throwable: Throwable) {
                    binding!!.btLogin.show()

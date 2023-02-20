@@ -80,4 +80,7 @@
     <string name="task">Task</string>
     <string name="email_invalid">Invalid Email</string>
     <string name="no_records">No records added yet</string>
+    <string name="_select_">--Select--</string>
+    <string name="completed">Completed</string>
+    <string name="no_data">No Data</string>
 </resources>

@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import com.ids.cloud9.controller.adapters.AdapterDialog
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.AdapterEdit
+import com.ids.cloud9.controller.adapters.AdapterSpinner
 import com.ids.cloud9.controller.adapters.AdapterText
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.custom.AppCompactBase
@@ -35,6 +37,8 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
     var prodId : Int ?=0
     var unitId : Int ?=0
     var mainPos  = -1
+    var adapterSpin : AdapterSpinner ?=null
+    var arraySpin : ArrayList<ItemSpinner> = arrayListOf()
     var adapterSer : AdapterEdit ?=null
     var arraySer : ArrayList<SerialItem> = arrayListOf()
     var array: ArrayList<ProductAllListItem> = arrayListOf()
@@ -60,12 +64,11 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
         binding!!.llTool.ivDrawer.hide()
         binding!!.llTool.layoutFragment.show()
         binding!!.llTool.tvTitleTool.text = MyApplication.selectedVisit!!.title
-
         getUnits()
         getProductNames()
         createProduct = CreateProduct()
         if(MyApplication.selectedProduct!=null){
-            binding!!.tvUnit.text = MyApplication.units.find {
+            binding!!.tvUnitText.text = MyApplication.units.find {
                 it.id == MyApplication.selectedProduct!!.unitId
             }!!.name
             binding!!.tvProduct.text = MyApplication.selectedProduct!!.product.name
@@ -82,34 +85,64 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
         }else{
             arraySer.add(SerialItem(""))
         }
-
         binding!!.rvSerialised.layoutManager = LinearLayoutManager(this)
         adapterSer = AdapterEdit(arraySer,this,this)
         binding!!.rvSerialised.adapter = adapterSer
-
-
-
     }
 
-    fun setUpUnits() {
+    fun setUpStatusReasonSpinner() {
+        arraySpin.clear()
+        arraySpin
+        adapterSpin =
+            AdapterSpinner(this, R.layout.spinner_text_item, arrSpinner, 0, true)
+        binding!!.spUnit.adapter = adapterSpin
+        adapterSpin!!.setDropDownViewResource(R.layout.spinner_new)
+        binding!!.spUnit.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    var pos = arrSpinner.indexOf(
+                        arrSpinner.find {
+                            it.selected!!
+                        }
+                    )
+                        binding!!.tvUnitText.text = arrSpinner.get(position).name
+                        for (itm in arrSpinner)
+                            itm.selected = false
+                        arrSpinner.get(position).selected = true
+                        unitId = arrSpinner.get(position).id
+                        adapterSpin!!.notifyDataSetChanged()
+                    }
 
-        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
-        var popupItemMultipleBinding = ReasonDialogBinding.inflate(layoutInflater)
 
-        popupItemMultipleBinding.rvReasonStatus.layoutManager = LinearLayoutManager(this)
-        adapterDialog =  AdapterDialog(arrSpinner,this, this, true)
-        popupItemMultipleBinding.rvReasonStatus.adapter = adapterDialog
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+            }
 
+        if(MyApplication.selectedProduct!=null) {
+            var pos = arrSpinner.indexOf(
+                arrSpinner.find {
+                    it.id == MyApplication.selectedProduct!!.unitId
+                }
+            )
+            binding!!.spUnit.setSelection(
+                pos
+            )
+            unitId = arrSpinner.get(pos).id
 
-        builder.setView(popupItemMultipleBinding.root)
-        alertDialog = builder.create()
-        alertDialog!!.setCanceledOnTouchOutside(true)
-        safeCall {
-            alertDialog!!.show()
-            alertDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }else{
+            binding!!.spUnit.setSelection(0)
+            unitId = arrSpinner.get(0).id
         }
 
+
+
     }
+
 
     fun setUpProduct(a : ArrayList<ProductAllListItem>){
         arr.clear()
@@ -134,10 +167,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             else
                 arrSpinner.add(ItemSpinner(item.id, item.name, false))
         }
-
-        if(MyApplication.selectedProduct!=null){
-
-        }
+        setUpStatusReasonSpinner()
     }
 
     fun getUnits(){
@@ -350,10 +380,6 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             binding!!.llNameSelect.hide()
         }
 
-        binding!!.spUnit.setOnClickListener {
-            setUpUnits()
-        }
-
         binding!!.llProductDelete.setOnClickListener {
             AppHelper.createYesNoDialog(this,getString(R.string.you_wanna_delete),0){
                 deleteProduct()
@@ -423,22 +449,6 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
 
 
             adapter!!.notifyDataSetChanged()
-        } else {
-
-            try {
-                arrSpinner.find {
-                    it.selected!!
-                }!!.selected = false
-            }catch (ex:Exception){
-
-            }
-
-            arrSpinner.get(position).selected = true
-
-            binding!!.tvUnit.text = arrSpinner.get(position).name
-            unitId = arrSpinner.get(position).id
-            alertDialog!!.cancel()
-            adapterDialog!!.notifyDataSetChanged()
         }
     }
 }

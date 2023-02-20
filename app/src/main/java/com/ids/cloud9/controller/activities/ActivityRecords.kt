@@ -25,15 +25,11 @@ class ActivityRecords : AppCompactBase(), RVOnItemClickListener {
         super.onCreate(savedInstanceState)
         binding = LayoutReccomendationsBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
-        // getReccomendations()
         listeners()
-
     }
-
     override fun onResume() {
         super.onResume()
     }
-
     fun listeners(){
         binding!!.layoutTool.show()
         binding!!.llTool.ivDrawer.hide()
@@ -41,12 +37,9 @@ class ActivityRecords : AppCompactBase(), RVOnItemClickListener {
         binding!!.llTool.tvTitleTool.text = MyApplication.selectedProduct!!.product.name
         binding!!.tvNotasks.text = getString(R.string.no_records)
         binding!!.layoutAllTasks.setBackgroundResource(R.color.gray_app_bg)
-
-
         binding!!.llTool.btBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
-
         binding!!.llTool.ivCalendar.setOnClickListener {
             finishAffinity()
             startActivity(
@@ -56,14 +49,8 @@ class ActivityRecords : AppCompactBase(), RVOnItemClickListener {
             )
             )
         }
-
         binding!!.btAddReccomend.hide()
     }
-
-
-
-
-
     override fun onItemClicked(view: View, position: Int) {
 
     }

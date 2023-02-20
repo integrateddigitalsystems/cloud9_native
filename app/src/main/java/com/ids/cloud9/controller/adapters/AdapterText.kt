@@ -26,52 +26,31 @@ class AdapterText(
         val binding = ItemTextBinding.inflate(con.layoutInflater, parent, false)
         return VhItem(binding, clickListener)
     }
-
     override fun onBindViewHolder(holder: VhItem, position: Int) {
         holder.bind(items[position])
     }
-
     override fun getItemCount(): Int {
         return items.size
     }
-
     inner class VhItem(
         val binding: com.ids.cloud9.databinding.ItemTextBinding,
         private var clickListener: RVOnItemClickListener
     ) : RecyclerView.ViewHolder(
         binding.root
-
     ), View.OnClickListener {
-
-
         fun bind(item: ItemSpinner) {
-
-
             binding.tvReason.text = item.name
-
-
-
-
             if (item.selected != null && item.selected!!) {
                 binding.llItemText.setBackgroundResource(R.color.colorPrimary)
-
                 AppHelper.setTextColor(con, binding.tvReason, R.color.white)
             } else {
                 binding.llItemText.setBackgroundResource(R.color.white)
-
                 AppHelper.setTextColor(con, binding.tvReason, R.color.colorAccent)
             }
-
-
         }
-
-
         init {
             binding.llItemText.setOnClickListener(this)
-
-
         }
-
         override fun onClick(p0: View?) {
             clickListener.onItemClicked(p0!!, layoutPosition)
         }

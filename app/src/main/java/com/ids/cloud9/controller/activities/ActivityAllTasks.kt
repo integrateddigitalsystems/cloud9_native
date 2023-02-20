@@ -34,28 +34,21 @@ class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
         super.onCreate(savedInstanceState)
         binding = LayoutReccomendationsBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
-       // getReccomendations()
         listeners()
-
     }
-
     override fun onResume() {
         super.onResume()
         getReccomendations()
     }
-
     fun listeners(){
         binding!!.layoutTool.show()
         binding!!.llTool.ivDrawer.hide()
         binding!!.llTool.layoutFragment.show()
         binding!!.llTool.tvTitleTool.text = getString(R.string.all_tasks)
         binding!!.layoutAllTasks.setBackgroundResource(R.color.gray_app_bg)
-
-
         binding!!.llTool.btBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
-
         binding!!.llTool.ivCalendar.setOnClickListener {
             finishAffinity()
             startActivity(Intent(
@@ -63,10 +56,8 @@ class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
                 ActivityMain::class.java
             ))
         }
-
         binding!!.btAddReccomend.hide()
     }
-
     fun getReccomendations() {
         binding!!.llLoading.show()
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getReccomendations(
@@ -79,17 +70,12 @@ class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
                 arrayReccomend.clear()
                 arrayReccomend.addAll(response.body()!!)
                 setDataReccomend()
-
             }
-
             override fun onFailure(call: Call<FilteredActivityList>, t: Throwable) {
                 binding!!.llLoading.hide()
             }
-
         })
     }
-
-
     fun setDataReccomend(){
         if(arrayReccomend.size > 0) {
             binding!!.tvNotasks.hide()
@@ -102,7 +88,6 @@ class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
         }
         binding!!.llLoading.hide()
     }
-
     override fun onItemClicked(view: View, position: Int) {
         var ct = MyApplication.allVisits.count {
             it.title.equals(arrayReccomend.get(position).entity) && it.reasonId==AppConstants.ARRIVED_REASON_ID

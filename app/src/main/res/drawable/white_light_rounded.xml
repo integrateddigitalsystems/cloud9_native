@@ -3,8 +3,9 @@
 
     <corners
         android:radius="@dimen/small_margin_padding" />
-
+    <solid
+        android:color="@color/white" />
     <stroke
-        android:color="@color/text_color"
+        android:color="@color/gray_border_item"
         android:width="1dp"/>
 </shape>

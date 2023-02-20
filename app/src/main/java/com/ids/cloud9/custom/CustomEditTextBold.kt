@@ -13,21 +13,16 @@ class CustomEditTextBold : AppCompatEditText {
     ) {
         init()
     }
-
     constructor(context: Context?, attrs: AttributeSet?) : super(
         context!!, attrs
     ) {
         init()
     }
-
     constructor(context: Context?) : super(context!!) {
         init()
     }
-
     private fun init() {
         this.includeFontPadding = false
         if (!isInEditMode) setTypeface(AppHelper.getTypeFaceExtraBold(context))
-     //   AutofitHelper.create(this)
-
     }
 }

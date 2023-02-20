@@ -41,44 +41,32 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
     var adapterDialog: AdapterDialog? = null
     var arrayProd: ArrayList<ProductListItem> = arrayListOf()
     var arrayReccomend: ArrayList<ActivitiesListItem> = arrayListOf()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = LayoutProductsBinding.inflate(inflater, container, false)
         return binding!!.root
     }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
     }
-
     fun setUpDataVisit(position: Int) {
-
         arrSpin.clear()
         for (item in arrayProd.get(position).reports) {
             arrSpin.add(ItemSpinner(item.id, item.name, item.selected, true, false, position, null))
         }
-
-
         val builder = androidx.appcompat.app.AlertDialog.Builder(requireActivity())
         var popupItemMultipleBinding = ReasonDialogBinding.inflate(layoutInflater)
-
         popupItemMultipleBinding.rvReasonStatus.layoutManager =
             LinearLayoutManager(requireActivity())
         adapterDialog = AdapterDialog(arrSpin, requireActivity(), this, true)
         popupItemMultipleBinding.rvReasonStatus.adapter = adapterDialog
-
-
         builder.setView(popupItemMultipleBinding.root)
         alertDialog = builder.create()
         alertDialog!!.setCanceledOnTouchOutside(true)
@@ -86,13 +74,9 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
             alertDialog!!.show()
             alertDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
-
     }
-
-
     fun init() {
         getProducts()
-
         if (MyApplication.selectedVisit!!.reasonId == AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.ON_THE_WAY_REASON_ID) {
             binding!!.llButton.setBackgroundResource(R.color.disabled_primary)
             binding!!.btAddProducts.isEnabled = false
@@ -106,10 +90,8 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
 
                 )
             )
-            //  overridePendingTransition(R.anim.cycling ,R.anim.cycling)
         }
     }
-
     fun getProducts() {
         binding!!.llLoading.show()
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getProducts(
@@ -119,17 +101,12 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
                 arrayProd.clear()
                 arrayProd.addAll(response.body()!!)
                 setUpProducts()
-
-
             }
-
             override fun onFailure(call: Call<ProductList>, throwable: Throwable) {
-
                 binding!!.llLoading.hide()
             }
         })
     }
-
     fun setUpProductsPage() {
         if (arrayProd.size > 0) {
             binding!!.tvNoData.hide()
@@ -143,7 +120,6 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
         }
         binding!!.llLoading.hide()
     }
-
     fun setUpProducts() {
         ctProd = 0
         if (arrayProd.size > 0) {
@@ -155,9 +131,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
             binding!!.llLoading.hide()
         }
     }
-
     fun getReports(position: Int) {
-
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getReports(
             arrayProd.get(position).product.categoryId
         )?.enqueue(object : Callback<ArrayList<Report>> {
@@ -168,29 +142,22 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
                 if (response.body()!!.size > 0) {
                     arrayProd.get(position).reports.clear()
                     arrayProd.get(position).reports.addAll(response.body()!!)
-
                 }
 
                 ctProd++
                 if (ctProd == arrayProd.size) {
                     setUpProductsPage()
                 }
-
             }
-
             override fun onFailure(call: Call<ArrayList<Report>>, throwable: Throwable) {
-
                 binding!!.llLoading.hide()
             }
         })
-
     }
-
     override fun onResume() {
         super.onResume()
         getProducts()
     }
-
     fun deleteProduct(pos: Int) {
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).deleteProduct(
             arrayProd.get(pos).id
@@ -203,20 +170,16 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
 
                 if (response.body()!!.success.equals("true"))
                     getProducts()
-
             }
 
             override fun onFailure(call: Call<ResponseMessage>, throwable: Throwable) {
-
                 binding!!.llLoading.hide()
             }
         })
     }
-
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.btEditProduct) {
             if (MyApplication.selectedVisit!!.reasonId != AppConstants.PENDING_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID) {
-
                 MyApplication.selectedProduct = arrayProd.get(position)
                 startActivity(
                     Intent(
@@ -227,7 +190,6 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
             }
         } else if (view.id == R.id.btClose) {
             if (MyApplication.selectedVisit!!.reasonId != AppConstants.PENDING_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID) {
-
                 AppHelper.createYesNoDialog(
                     requireActivity(),
                     getString(R.string.you_wanna_delete),

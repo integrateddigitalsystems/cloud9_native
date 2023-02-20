@@ -29,51 +29,31 @@ class AdapterFilteredReccomendations(
         val binding = ItemReccomendationsBinding.inflate(con.layoutInflater,parent,false)
         return VhItem(binding, clickListener)
     }
-
     override fun onBindViewHolder(holder: VhItem, position: Int) {
         holder.bind(items[position])
     }
-
     override fun getItemCount(): Int {
         return items.size
     }
-
     inner class VhItem(
         val binding: ItemReccomendationsBinding,
         private var clickListener: RVOnItemClickListener
     ) : RecyclerView.ViewHolder(
         binding.root
-
     ), View.OnClickListener {
-
-
         fun bind(item: FilteredActivityListItem) {
-
-
             binding.tvAssignedTo.setCheckText(item.assignedTo)
             binding.tvDesc.setCheckText(item.description)
             binding.tvSubject.setCheckText(item.subject)
             binding.tvDueDate.setCheckText(simpTo.format(simpOrg.parse(item.dueDate)))
             if(!item.statusReason.isNullOrEmpty())
                 binding.tvReason.setCheckText(item.statusReason!!)
-
-
-
-
-
-        }
-
-
+  }
         init {
             binding.root.setOnClickListener(this)
-
-
-
         }
-
         override fun onClick(p0: View?) {
             clickListener.onItemClicked(p0!!, layoutPosition)
         }
     }
-
 }

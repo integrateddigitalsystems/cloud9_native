@@ -30,48 +30,30 @@ class AdapterEdit(
         val binding = ItemSerialisedBinding.inflate(con.layoutInflater, parent, false)
         return VhItem(binding, clickListener)
     }
-
     override fun onBindViewHolder(holder: VhItem, position: Int) {
         holder.bind(items[position])
     }
-
     override fun getItemCount(): Int {
         return items.size
     }
-
     inner class VhItem(
         val binding: com.ids.cloud9.databinding.ItemSerialisedBinding,
         private var clickListener: RVOnItemClickListener
     ) : RecyclerView.ViewHolder(
         binding.root
-
     ), View.OnClickListener {
-
-
         fun bind(item: SerialItem) {
-
             binding.etSerialNumber.doOnTextChanged { text, start, before, count ->
-
              items.get(layoutPosition).serial = text.toString()
             }
-
             binding.tvSerialised.text = con.getString(R.string.serial_number) + " "+(layoutPosition+1)+":"
-
             binding.etSerialNumber.text = item.serial!!.toEditable()
-
-
         }
-
-
         init {
             binding.root.setOnClickListener(this)
-
-
         }
-
         override fun onClick(p0: View?) {
             clickListener.onItemClicked(p0!!, layoutPosition)
         }
     }
-
 }
