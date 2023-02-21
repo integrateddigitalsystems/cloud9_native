@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.gson.Gson
+import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.activities.ActivitySplash
 import com.ids.cloud9.model.ResponseMessage
@@ -556,7 +557,7 @@ class LocationForeService : Service() {
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.wtf("auth", "signInAnonymously:failure+"+task.exception)
-                    Toast.makeText(baseContext,AppHelper.getRemoteString("auth_failed",this),
+                    Toast.makeText(baseContext, getString(R.string.auth_error),
                         Toast.LENGTH_SHORT).show()
 
                 }

@@ -99,11 +99,9 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
                                     mPermissionResult.launch(
                                         Intent(android.provider.Settings.ACTION_SETTINGS)
                                     )
+
                                     toast(
-                                        AppHelper.getRemoteString(
-                                            "grant_settings_permission",
-                                            this
-                                        )
+                                        getString(R.string.grant_setting_perm)
                                     )
                                     break
                                 }

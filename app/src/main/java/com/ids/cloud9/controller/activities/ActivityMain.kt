@@ -350,9 +350,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
         var x : ArrayList<testVisitItem> = arrayListOf()
         x.addAll(tempArray)
         tempArray.clear()
-        tempArray.addAll(x.filter {
-            it.reasonId != AppConstants.SCHEDULED_REASON_ID
-        })
+        tempArray.addAll(x)
         if(tempArray.size > 0) {
             var adapter = StickyAdapter(this, tempArray,this)
             binding!!.llHomeMain.rvVisits.layoutManager = LinearLayoutManager(this)

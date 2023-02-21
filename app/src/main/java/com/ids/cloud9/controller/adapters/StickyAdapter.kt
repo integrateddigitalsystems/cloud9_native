@@ -3,11 +3,14 @@ package com.ids.cloud9.controller.adapters
 
 import android.app.Activity
 import android.content.Context
+import android.os.Build
 import android.provider.ContactsContract.Directory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.ids.cloud9.R
@@ -17,9 +20,7 @@ import com.ids.cloud9.databinding.ItemVisitDateBinding
 import com.ids.cloud9.model.VisitDates
 import com.ids.cloud9.model.VisitListItem
 import com.ids.cloud9.model.testVisitItem
-import com.ids.cloud9.utils.AppConstants
-import com.ids.cloud9.utils.AppHelper
-import com.ids.cloud9.utils.hide
+import com.ids.cloud9.utils.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -30,6 +31,7 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<testVisitIte
     private val mContext: Activity
     private val VIEW_HEADER = 1
     private val VIEW_DETAIL = 0
+    var simpFormat = SimpleDateFormat("dd-MM-yyyy")
     var click:RVOnItemClickListener = click
     init {
         mContext = context
@@ -84,8 +86,8 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<testVisitIte
                     binding.tvStatus.text = AppConstants.COMPLETED_REASON
                 }
                 AppConstants.SCHEDULED_REASON_ID -> {
-                    binding.tvStatus.setBackgroundResource(R.color.comp_bg)
-                    AppHelper.setTextColor(mContext,binding.tvStatus,R.color.comp_text)
+                    binding.tvStatus.setBackgroundResource(R.color.scheduled_bg)
+                    AppHelper.setTextColor(mContext,binding.tvStatus,R.color.scheduled_text)
                     binding.tvStatus.text = AppConstants.SCHEDULED_REASON
                 }
                 AppConstants.ON_THE_WAY_REASON_ID -> {
@@ -152,11 +154,20 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<testVisitIte
         val child = mList!![headerPosition]
         val day: TextView = header!!.findViewById(R.id.tvDay)
         val date : TextView = header!!.findViewById(R.id.tvDate)
+        var headerLL : LinearLayout = header!!.findViewById(R.id.llHeaderDate)
+        var sep = header!!.findViewById<LinearLayout>(R.id.sepDate)
         var cal = Calendar.getInstance()
         var dateMil = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss").parse(child.visitDate!!).time
         cal.time.time = dateMil
         day.text = SimpleDateFormat("EEEE").format(Date(dateMil))
         date.text = SimpleDateFormat("MMMM dd, yyyy").format(Date(dateMil))
+        var theDate = simpFormat.parse(simpFormat.format(SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss").parse(child.visitDate!!)))
+        var myDate = simpFormat.parse(simpFormat.format(cal.time))
+        if(theDate.time == myDate.time){
+            headerLL.setBackgroundResource(R.color.colorPrimaryDark)
+            AppHelper.setTextColor(mContext,date,R.color.white)
+        }
+
     }
     override fun isHeader(itemPosition: Int): Boolean {
         return mList!![itemPosition].isHeader!!

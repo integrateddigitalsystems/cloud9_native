@@ -18,8 +18,8 @@
             android:layout_marginTop="500dp"
             android:layout_gravity="center_horizontal"
             style="@style/SpinKitView.Large.Wave"
-            android:layout_width="@dimen/barcode_width_height"
-            android:layout_height="@dimen/barcode_width_height"
+            android:layout_width="@dimen/item_height"
+            android:layout_height="@dimen/item_height"
             android:visibility="visible"
             app:SpinKit_Color="@color/colorPrimary" />
 

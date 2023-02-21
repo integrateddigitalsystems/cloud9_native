@@ -108,7 +108,7 @@ class ActivitySplash : Activity() {
         if (MyApplication.mobileConfig == null) {
             AppHelper.createDialogAgain(
                 this,
-                AppHelper.getRemoteString("error_getting_data", this)
+                getString(R.string.error_getting_data)
             ) {
                 startFirebase()
             }
@@ -123,7 +123,7 @@ class ActivitySplash : Activity() {
         val textEntryView = inflater.inflate(R.layout.item_dialog, null)
         textView = textEntryView.findViewById(R.id.dialogMsg)
         textView.gravity = Gravity.CENTER
-        textView.text = AppHelper.getRemoteString("update_message",this)
+        textView.text =  getString(R.string.update)
         builder.setTitle(AppHelper.getRemoteString("update_title",this))
         builder.setView(textEntryView)
             .setPositiveButton(AppHelper.getRemoteString("update_button",this)) { dialog, _ ->

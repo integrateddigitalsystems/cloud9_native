@@ -17,7 +17,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -186,7 +185,6 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
             ActivityResultContracts.StartActivityForResult()
         ) {
 
-            Toast.makeText(requireActivity(), "TESTWORK", Toast.LENGTH_SHORT).show()
             var file: File? = null
             try {
                 if (code == CODE_CAMERA) {
@@ -205,8 +203,6 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                         arrayMedia.add(ItemSpinner(0, urlImage, false, false, true, 1))
                         adapterMedia!!.notifyDataSetChanged()
                     } catch (e: Exception) {
-                        Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT)
-                            .show()
                     }
                 } else if (code == CODE_GALLERY) {
                     file = getFile(requireActivity(), it.data!!.data!!)
@@ -233,7 +229,6 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                         var urlImage = getRealPathFromURI(videoUri)
                         var file = File(urlImage)
                         if (file.exists()) {
-                            AppHelper.createDialogPositive(requireActivity(), "FILE EXISTS")
                             saveMedia(file)
                         }
                         arrayMedia.add(ItemSpinner(0, urlImage, false, false, true, 0))
@@ -334,7 +329,6 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                 })
                 setUpMedia(sigList)
             }
-
             override fun onFailure(call: Call<SignatureList>, t: Throwable) {
                 binding!!.llLoading.hide()
             }

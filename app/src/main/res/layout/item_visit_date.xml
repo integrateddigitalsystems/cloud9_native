@@ -12,6 +12,7 @@
         android:background="@color/gray_border_item"/>
 
     <LinearLayout
+        android:id="@+id/llHeaderDate"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,6 +47,8 @@
 
 
     <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/sepDate"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray_border_item"/>
