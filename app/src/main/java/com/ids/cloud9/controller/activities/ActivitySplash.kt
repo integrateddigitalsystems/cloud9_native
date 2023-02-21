@@ -58,6 +58,24 @@ class ActivitySplash : Activity() {
                 }
     }
     }
+    fun getUnits(){
+        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.PRODUCTION_LOOKUP_CODE)
+            .enqueue(object : Callback<UnitList> {
+                override fun onResponse(
+                    call: Call<UnitList>,
+                    response: Response<UnitList>
+                ) {
+                    safeCall {
+                        if(response.body()!!.size >0) {
+                            MyApplication.units.clear()
+                            MyApplication.units.addAll(response.body()!!)
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<UnitList>, t: Throwable) {
+                }
+            })
+    }
     fun startApp(){
         if (MyApplication.mobileConfig!!.forceVersion > BuildConfig.VERSION_NAME.toDouble()) {
         } else {
@@ -66,6 +84,7 @@ class ActivitySplash : Activity() {
                     finishAffinity()
                     startActivity(Intent(this, ActivityLogin::class.java))
                 }else{
+                    getUnits()
                     finishAffinity()
                     MyApplication.userItem = JWTDecoding.decoded(MyApplication.token!!)
                     startActivity(Intent(this,ActivityMain::class.java))
@@ -94,47 +113,8 @@ class ActivitySplash : Activity() {
                 startFirebase()
             }
         } else {
-            getUnits()
+            startApp()
         }
-    }
-    fun getUnits(){
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.PRODUCTION_LOOKUP_CODE)
-            .enqueue(object : Callback<UnitList> {
-                override fun onResponse(
-                    call: Call<UnitList>,
-                    response: Response<UnitList>
-                ) {
-                    try {
-                        if(response.body()!!.size >0) {
-                            MyApplication.units.clear()
-                            MyApplication.units.addAll(response.body()!!)
-                            startApp()
-                        }else{
-                            AppHelper.createDialogAgain(
-                                this@ActivitySplash,
-                                AppHelper.getRemoteString("error_getting_data", this@ActivitySplash)
-                            ) {
-                                startFirebase()
-                            }
-                        }
-                    }catch (ex:Exception){
-                        AppHelper.createDialogAgain(
-                            this@ActivitySplash,
-                            AppHelper.getRemoteString("error_getting_data", this@ActivitySplash)
-                        ) {
-                            startFirebase()
-                        }
-                    }
-                }
-                override fun onFailure(call: Call<UnitList>, t: Throwable) {
-                    AppHelper.createDialogAgain(
-                        this@ActivitySplash,
-                        AppHelper.getRemoteString("error_getting_data", this@ActivitySplash)
-                    ) {
-                        startFirebase()
-                    }
-                }
-            })
     }
     private fun showDialogUpdate(activity: Activity) {
         val builder = AlertDialog.Builder(activity)

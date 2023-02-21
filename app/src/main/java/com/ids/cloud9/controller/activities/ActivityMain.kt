@@ -181,10 +181,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                             if (getPermissionStatus(Manifest.permission.ACCESS_FINE_LOCATION) == BLOCKED_OR_NEVER_ASKED) {
                                 Toast.makeText(
                                     this,
-                                    AppHelper.getRemoteString(
-                                        "grant_settings_permission",
-                                       this
-                                    ),
+                                    getString(info.bideens.barcode.R.string.grant_permission),
                                     Toast.LENGTH_LONG
                                 ).show()
                                 break

@@ -16,6 +16,7 @@ import com.ids.cloud9.databinding.ActivityLoginBinding
 import com.ids.cloud9.model.JWTDecoding
 import com.ids.cloud9.model.RequestLogin
 import com.ids.cloud9.model.ResponseLogin
+import com.ids.cloud9.model.UnitList
 import com.ids.cloud9.utils.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -88,6 +89,7 @@ class ActivityLogin : AppCompactBase() {
                        MyApplication.userItem = JWTDecoding.decoded(MyApplication.token!!)
                        binding!!.loadingLogin.hide()
                        binding!!.btLogin.show()
+                       getUnits()
                        MyApplication.loggedIn = true
                        startActivity(Intent(this@ActivityLogin,ActivityMain::class.java))
                    }catch (ex:Exception){
@@ -101,5 +103,23 @@ class ActivityLogin : AppCompactBase() {
                }
            })
    }
+    fun getUnits(){
+        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.PRODUCTION_LOOKUP_CODE)
+            .enqueue(object : Callback<UnitList> {
+                override fun onResponse(
+                    call: Call<UnitList>,
+                    response: Response<UnitList>
+                ) {
+                        safeCall {
+                        if(response.body()!!.size >0) {
+                            MyApplication.units.clear()
+                            MyApplication.units.addAll(response.body()!!)
+                        }
+                        }
+                }
+                override fun onFailure(call: Call<UnitList>, t: Throwable) {
+                }
+            })
+    }
 
 }

@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import com.ids.cloud9.BuildConfig
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import java.util.regex.Matcher
@@ -21,7 +22,7 @@ import java.util.regex.Pattern
 
 
 fun Any.wtf(message: String) {
-    if (MyApplication.showLogs)
+    if (BuildConfig.DEBUG)
         Log.wtf(this::class.java.simpleName, message)
 }
 fun Activity.toast(message: String) {
