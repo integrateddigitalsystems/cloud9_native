@@ -84,7 +84,7 @@ data class testVisitItem(
     var opportunity: Opportunity?=null,
     @JsonInclude
     @SerializedName("opportunityId")
-    var opportunityId: Any?=null,
+    var opportunityId: Int?=null,
     @JsonInclude
     @SerializedName("order")
     var order: Any?=null,

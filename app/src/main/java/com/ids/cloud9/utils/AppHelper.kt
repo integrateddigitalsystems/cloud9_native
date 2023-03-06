@@ -4,12 +4,15 @@ package com.ids.cloud9.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.ContentValues
 import android.content.Context
 import android.content.Context.CONNECTIVITY_SERVICE
+import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Typeface
+import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
 import android.net.Uri
@@ -17,11 +20,13 @@ import android.os.Build
 import android.text.TextUtils
 import android.util.Base64
 import android.util.Base64OutputStream
+import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.VideoView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -227,6 +232,7 @@ class AppHelper {
                 view.setTextColor(context.resources.getColor(color))
             }
         }
+
         fun getTypeFace(context: Context): Typeface? {
             return if (MyApplication.languageCode.equals(AppConstants.LANG_ENGLISH)) Typeface.createFromAsset(
                 context.applicationContext.assets,

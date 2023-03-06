@@ -86,4 +86,5 @@
     <string name="collecting_loc">Collecting location date</string>
     <string name="grant_setting_perm">Please grant permission from settings.</string>
     <string name="auth_error">Authentication Error</string>
+    <string name="please_grant_permission">Please grant permission via Setting!</string>
 </resources>

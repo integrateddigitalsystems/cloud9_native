@@ -9,11 +9,19 @@ object JWTDecoding {
     @Throws(Exception::class)
     fun decoded(JWTEncoded: String):JWTResponse {
         try {
+            if(!JWTEncoded.isNullOrEmpty()){
             val split = JWTEncoded.split("\\.".toRegex()).toTypedArray()
-            Log.d("JWT_DECODED", "Header: " + getJson(split[0]))
-            Log.d("JWT_DECODED", "Body: " + getJson(split[1]))
+            if(split.size > 0 ) {
+                Log.d("JWT_DECODED", "Header: " + getJson(split[0]))
+                Log.d("JWT_DECODED", "Body: " + getJson(split[1]))
 
-            return Gson().fromJson(getJson(split[1]),JWTResponse::class.java)
+                return Gson().fromJson(getJson(split[1]), JWTResponse::class.java)
+            }else {
+                return  JWTResponse()
+            }
+            }else{
+                return  JWTResponse()
+            }
         } catch (e: UnsupportedEncodingException) {
             return JWTResponse()
         }

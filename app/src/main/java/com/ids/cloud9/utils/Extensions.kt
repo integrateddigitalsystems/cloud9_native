@@ -36,7 +36,12 @@ fun Location.toText():String{
         "Unknown location"
     }
 }
-
+fun String.checkIfNull():String{
+    if(this.isNullOrEmpty())
+        return ""
+    else
+        return this
+}
 fun TextView.setCheckText(message: String){
    try{
        if(!message.isNullOrEmpty())

@@ -76,18 +76,83 @@ class ActivitySplash : Activity() {
                 }
             })
     }
+    fun nextStep(token: String){
+        MyApplication.token =token
+        Log.wtf("TOKEN",token)
+        MyApplication.userItem = JWTDecoding.decoded(token)
+        if(MyApplication.userItem != JWTResponse()) {
+            updateToken(MyApplication.userItem!!.applicationUserId!!.toInt())
+            getUnits()
+            MyApplication.loggedIn = true
+            try {
+                var visitId = intent.extras!!.getInt("visitId")
+                if (visitId!=null && visitId!=0) {
+                    startActivity(
+                        Intent(this, ActivityMain::class.java)
+                            .putExtra("visitId", visitId)
+                    )
+                    finishAffinity()
+                } else {
+                    finishAffinity()
+                    startActivity(Intent(this, ActivityMain::class.java))
+                }
+            }catch (ex:Exception){
+                finishAffinity()
+                startActivity(Intent(this, ActivityMain::class.java))
+            }
+        }else{
+            MyApplication.loggedIn = false
+            startApp()
+        }
+    }
+    fun login(){
+        var req = RequestLogin(
+            MyApplication.email,
+            MyApplication.password,
+            true
+        )
+        RetrofitClientAuth.client!!.create(
+            RetrofitInterface::class.java
+        ).logIn(
+            req
+        ).enqueue(object : Callback<ResponseLogin>{
+            override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
+                nextStep(response.body()!!.token!!)
+            }
+
+            override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
+            }
+
+        })
+    }
+    fun updateToken(id:Int){
+        var tokenReq  = TokenResource(
+            MyApplication.firebaseToken,
+            id
+        )
+        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).saveToken(tokenReq)
+            .enqueue(object : Callback<ResponseMessage> {
+                override fun onResponse(
+                    call: Call<ResponseMessage>,
+                    response: Response<ResponseMessage>
+                ) {
+                    wtf("Success")
+                }
+                override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
+                    wtf("Failure")
+                }
+            })
+    }
     fun startApp(){
         if (MyApplication.mobileConfig!!.forceVersion > BuildConfig.VERSION_NAME.toDouble()) {
         } else {
+
             Handler(Looper.getMainLooper()).postDelayed({
                 if(!MyApplication.loggedIn) {
                     finishAffinity()
                     startActivity(Intent(this, ActivityLogin::class.java))
                 }else{
-                    getUnits()
-                    finishAffinity()
-                    MyApplication.userItem = JWTDecoding.decoded(MyApplication.token!!)
-                    startActivity(Intent(this,ActivityMain::class.java))
+                    login()
                 }
             }, 2000)
         }

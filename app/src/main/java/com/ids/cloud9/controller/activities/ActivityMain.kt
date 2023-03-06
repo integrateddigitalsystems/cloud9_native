@@ -82,8 +82,6 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
         setContentView(binding!!.root)
         setUpPermission()
         listeners()
-        getVisits()
-        setUpDate()
         foregroundOnlyBroadcastReceiver = ForegroundOnlyBroadcastReceiver()
     }
 
@@ -181,7 +179,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                             if (getPermissionStatus(Manifest.permission.ACCESS_FINE_LOCATION) == BLOCKED_OR_NEVER_ASKED) {
                                 Toast.makeText(
                                     this,
-                                    getString(info.bideens.barcode.R.string.grant_permission),
+                                    getString(R.string.please_grant_permission),
                                     Toast.LENGTH_LONG
                                 ).show()
                                 break
@@ -235,7 +233,8 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondHalf.format(editingTo.time)
         else
             binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondNoMonthHalf.format(editingTo.time)
-    }fun setUpDate(){
+    }
+    fun setUpDate(){
         var from = Calendar.getInstance()
         var to = Calendar.getInstance()
         from.add(Calendar.DAY_OF_MONTH,-2)
@@ -305,6 +304,16 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                 LocationForeService.ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST
             )
         )
+        var mBroadcastReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent) {
+                getVisits()
+                setUpDate()
+            }
+        }
+        val filter = IntentFilter("msg")
+        registerReceiver(mBroadcastReceiver, filter)
+        getVisits()
+        setUpDate()
     }
     override fun onStart() {
         super.onStart()
@@ -369,6 +378,13 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             binding!!.llHomeMain.loading.hide()
             binding!!.llHomeMain.rvVisits.hide()
             binding!!.llHomeMain.tvNoVisits.show()
+        }
+        var visitId = intent.getIntExtra("visitId",0)
+        if(visitId!=0){
+            MyApplication.selectedVisit =   mainArray.find {
+                it.id == visitId
+            }
+            startActivity(Intent(this,ActivtyVisitDetails::class.java))
         }
     }
     fun getVisits(){

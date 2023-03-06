@@ -2,6 +2,7 @@ package com.ids.cloud9.utils
 
 import com.ids.cloud9.model.*
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -92,13 +93,17 @@ interface RetrofitInterface {
     fun saveAttachment(
         @Body sigReq : ArrayList<SignatureRequest>
     ):Call<ResponseMessage>
-    @POST("VisitLocation/UpdateVisitLocation")
+    @POST("VisitLocation/CreateVisitLocation")
     fun createVisitLocation(
         @Body reqVisit : VisitLocationRequest
     ):Call<ResponseMessage>
     @POST("Attachments/CreateAttachmentSignatureMobile")
     fun saveSignature(
         @Body sigReq : ArrayList<SignatureRequest>
+    ):Call<ResponseMessage>
+    @POST("Tokens/SaveToken")
+    fun saveToken(
+        @Body tokenReq : TokenResource
     ):Call<ResponseMessage>
 
 }

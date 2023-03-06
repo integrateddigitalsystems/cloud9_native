@@ -54,7 +54,10 @@ object AppConstants {
     const val FORM_ITEM_TIME = "time"
     const val PRODUCTION_LOOKUP_CODE = "PROD_UNIT"
     const val LOGGED_IN ="LoggedIn"
+    const val FIREBASE_TOKEN ="firebaseToken"
     const val TOKEN = "token"
+    const val EMAIL ="email"
+    const val PASSWORD ="password"
 
 
 

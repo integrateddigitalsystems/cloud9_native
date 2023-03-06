@@ -166,6 +166,7 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<testVisitIte
         if(theDate.time == myDate.time){
             headerLL.setBackgroundResource(R.color.colorPrimaryDark)
             AppHelper.setTextColor(mContext,date,R.color.white)
+            AppHelper.setTextColor(mContext,day,R.color.white)
         }
 
     }

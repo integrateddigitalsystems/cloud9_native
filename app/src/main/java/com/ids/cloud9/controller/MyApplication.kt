@@ -36,6 +36,8 @@ class MyApplication : Application() {
         var permission =-1
         var onTheWayVisit : testVisitItem ?=null
         var saveLocTracking = false
+        var generalNotificaiton = 1
+        var UNIQUE_REQUEST_CODE = 908
         var address : ResponseAddress ?=null
         var selectedProduct:ProductListItem  ?= null
         var selectedReccomend : FilteredActivityListItem ?=null
@@ -49,12 +51,21 @@ class MyApplication : Application() {
         var showLogs: Boolean = true
         lateinit var sharedPreferences : SharedPreferences
         lateinit var sharedPreferencesEditor : SharedPreferences.Editor
+        var firebaseToken : String
+            get() = sharedPreferences.getString(AppConstants.FIREBASE_TOKEN, "")!!
+            set(value) { sharedPreferencesEditor.putString(AppConstants.FIREBASE_TOKEN, value).apply() }
         var loggedIn : Boolean
             get() = sharedPreferences.getBoolean(AppConstants.LOGGED_IN, false)
             set(value) { sharedPreferencesEditor.putBoolean(AppConstants.LOGGED_IN, value).apply() }
         var token : String
             get() = sharedPreferences.getString(AppConstants.TOKEN, "")!!
             set(value) { sharedPreferencesEditor.putString(AppConstants.TOKEN, value).apply() }
+        var email : String
+            get() = sharedPreferences.getString(AppConstants.EMAIL, "")!!
+            set(value) { sharedPreferencesEditor.putString(AppConstants.EMAIL, value).apply() }
+        var password : String
+            get() = sharedPreferences.getString(AppConstants.PASSWORD, "")!!
+            set(value) { sharedPreferencesEditor.putString(AppConstants.PASSWORD, value).apply() }
     }
     override fun onCreate() {
         super.onCreate()
