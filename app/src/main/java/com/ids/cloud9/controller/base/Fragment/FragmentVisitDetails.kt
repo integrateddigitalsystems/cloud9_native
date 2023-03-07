@@ -1,37 +1,32 @@
 package com.ids.cloud9.controller.base.Fragment
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.adapters.AdapterDialog
 import com.ids.cloud9.controller.MyApplication
+import com.ids.cloud9.controller.activities.ActivtyVisitDetails
 import com.ids.cloud9.controller.adapters.AdapterSpinner
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
-import com.ids.cloud9.databinding.LayoutReccomendationsBinding
 import com.ids.cloud9.databinding.LayoutVisitBinding
-import com.ids.cloud9.databinding.ReasonDialogBinding
 import com.ids.cloud9.model.*
 import com.ids.cloud9.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
-import java.util.ArrayList
 import java.util.Calendar
+import kotlin.collections.ArrayList
 
 class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
     var alertDialog: androidx.appcompat.app.AlertDialog? = null
-    var edtitVisit: testVisitItem? = null
+    var edtitVisit: Visit? = null
     var adapter: AdapterDialog? = null
     var adapterSpin: AdapterSpinner? = null
     var simp: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
@@ -81,7 +76,11 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             else ""
         }
 
-        binding!!.tvCompany.text = edtitVisit!!.company!!.companyName
+            if(edtitVisit!!.company!=null) {
+                binding!!.tvCompany.text = edtitVisit!!.company!!.companyName
+            }else{
+                binding!!.tvCompany.text = ""
+            }
         if (!edtitVisit!!.actualArrivalTime.isNullOrEmpty())
             binding!!.tvActualArrivalTime.text = simpTimeAA.format(
                 simpOrg.parse(
@@ -196,7 +195,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             })
     }
     fun setUpEdit(){
-        edtitVisit = testVisitItem(
+        edtitVisit = Visit(
             MyApplication.selectedVisit!!.account ,
             MyApplication.selectedVisit!!.accountId,
             if(!MyApplication.selectedVisit!!.actualArrivalTime.isNullOrEmpty()) MyApplication.selectedVisit!!.actualArrivalTime else "",
@@ -257,6 +256,58 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
     }
     fun init() {
         listeners()
+       var fromNotf = (requireActivity() as ActivtyVisitDetails).fromNotf
+        if(fromNotf){
+            binding!!.llLoading.show()
+            var visitId = (requireActivity() as ActivtyVisitDetails).visitId
+            getData(visitId)
+        }else{
+            setUpData()
+            initialData()
+        }
+    }
+    fun getCompany(){
+        RetrofitClientAuth.client!!.create(
+            RetrofitInterface::class.java
+        ).getCompanies().enqueue(object : Callback<ArrayList<Company>>{
+            override fun onResponse(
+                call: Call<ArrayList<Company>>,
+                response: Response<ArrayList<Company>>
+            ) {
+                var company = response.body()!!.find {
+                    it.id == MyApplication.selectedVisit!!.companyId
+                }
+                MyApplication.selectedVisit!!.company = company
+                wtf(Gson().toJson(MyApplication.selectedVisit))
+                initialData()
+                setUpData()
+            }
+
+            override fun onFailure(call: Call<ArrayList<Company>>, t: Throwable) {
+                binding!!.llLoading.hide()
+            }
+
+        })
+    }
+    fun getData(id:Int){
+        RetrofitClientAuth.client!!.create(
+            RetrofitInterface::class.java
+        ).getVisitById(id)
+            .enqueue(object :Callback<Visit>{
+                override fun onResponse(call: Call<Visit>, response: Response<Visit>) {
+                    edtitVisit = response.body()
+                    MyApplication.selectedVisit = response.body()
+                    getCompany()
+                }
+
+                override fun onFailure(call: Call<Visit>, t: Throwable) {
+                    binding!!.llLoading.hide()
+                }
+
+            })
+    }
+    fun setUpData(){
+        binding!!.llLoading.hide()
         setUpEdit()
         if (edtitVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID) {
             binding!!.btSave.setBackgroundResource(R.drawable.rounded_trans_primary)
@@ -266,7 +317,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        initialData()
+
     }
     fun initialData() {
         arrSpinner.add(

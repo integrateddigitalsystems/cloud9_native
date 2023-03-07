@@ -88,8 +88,9 @@ class ActivitySplash : Activity() {
                 var visitId = intent.extras!!.getInt("visitId")
                 if (visitId!=null && visitId!=0) {
                     startActivity(
-                        Intent(this, ActivityMain::class.java)
+                        Intent(this, ActivtyVisitDetails::class.java)
                             .putExtra("visitId", visitId)
+                            .putExtra("fromNotf",true)
                     )
                     finishAffinity()
                 } else {

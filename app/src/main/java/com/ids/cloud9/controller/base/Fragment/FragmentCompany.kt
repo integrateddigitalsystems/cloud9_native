@@ -62,9 +62,14 @@ class FragmentCompany : Fragment() {
             }
         }
         binding!!.tvFax.setCheckText(MyApplication.selectedVisit!!.company!!.fax!!)
-        binding!!.tvContactName.setTextLang(
-            MyApplication.selectedVisit!!.contact!!.firstName + " "+ MyApplication.selectedVisit!!.contact!!.lastName,
-            MyApplication.selectedVisit!!.contact!!.firstNameAr + " "+ MyApplication.selectedVisit!!.contact!!.lastNameAr)
+        if(MyApplication.selectedVisit!!.contact!=null) {
+            binding!!.tvContactName.setTextLang(
+                MyApplication.selectedVisit!!.contact!!.firstName + " " + MyApplication.selectedVisit!!.contact!!.lastName,
+                MyApplication.selectedVisit!!.contact!!.firstNameAr + " " + MyApplication.selectedVisit!!.contact!!.lastNameAr
+            )
+        }else{
+            binding!!.tvContactNumber.text = ""
+        }
         binding!!.tvContactNumber.setCheckText(MyApplication.selectedVisit!!.contact!!.personalPhoneNumber)
         if(AppHelper.isValidPhoneNumber(binding!!.tvContactNumber.text.toString()))
         {

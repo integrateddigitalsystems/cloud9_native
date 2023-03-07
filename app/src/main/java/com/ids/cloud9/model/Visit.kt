@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 
 
 @JsonInclude(JsonInclude.Include.ALWAYS)
-data class testVisitItem(
+data class Visit(
     @JsonInclude
     @SerializedName("account")
     var account: Any?=null,

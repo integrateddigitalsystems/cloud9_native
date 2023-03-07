@@ -2,31 +2,23 @@ package com.ids.cloud9.controller.adapters
 
 
 import android.app.Activity
-import android.content.Context
-import android.os.Build
-import android.provider.ContactsContract.Directory
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.databinding.ItemVisitBinding
 import com.ids.cloud9.databinding.ItemVisitDateBinding
-import com.ids.cloud9.model.VisitDates
-import com.ids.cloud9.model.VisitListItem
-import com.ids.cloud9.model.testVisitItem
+import com.ids.cloud9.model.Visit
 import com.ids.cloud9.utils.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class StickyAdapter(context: Activity, private val mList: ArrayList<testVisitItem>,click:RVOnItemClickListener) :
+class StickyAdapter(context: Activity, private val mList: ArrayList<Visit>, click:RVOnItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), HeaderDecoration.StickyHeaderInterface {
     private val mContext: Activity
     private val VIEW_HEADER = 1
@@ -57,7 +49,7 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<testVisitIte
     ) : RecyclerView.ViewHolder(
         binding.root
     ), View.OnClickListener {
-        fun bind(item: testVisitItem) {
+        fun bind(item: Visit) {
             var cal = Calendar.getInstance()
             var dateMil = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss").parse(item.visitDate!!).time
             cal.time.time = dateMil
@@ -76,7 +68,7 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<testVisitIte
     ) : RecyclerView.ViewHolder(
         binding.root
     ), View.OnClickListener {
-        fun bind(child: testVisitItem) {
+        fun bind(child: Visit) {
             binding.tvVisitName.text = child.title
             binding.tvCompany.text = child.company!!.companyName
             when (child.reasonId){
@@ -132,7 +124,7 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<testVisitIte
     override fun getItemCount(): Int {
         return mList?.size ?: 0
     }
-    fun getItem(position: Int): testVisitItem {
+    fun getItem(position: Int): Visit {
         return mList!![position]
     }
     override fun getHeaderPositionForItem(itemPosition: Int): Int {

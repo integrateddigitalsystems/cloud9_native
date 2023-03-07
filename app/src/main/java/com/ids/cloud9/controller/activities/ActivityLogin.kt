@@ -13,10 +13,7 @@ import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.custom.AppCompactBase
 import com.ids.cloud9.databinding.ActivityLoginBinding
-import com.ids.cloud9.model.JWTDecoding
-import com.ids.cloud9.model.RequestLogin
-import com.ids.cloud9.model.ResponseLogin
-import com.ids.cloud9.model.UnitList
+import com.ids.cloud9.model.*
 import com.ids.cloud9.utils.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -86,7 +83,10 @@ class ActivityLogin : AppCompactBase() {
                    try {
                        MyApplication.token = response.body()!!.token!!
                        Log.wtf("TOKEN",MyApplication.token)
+                       MyApplication.email = email
+                       MyApplication.password = password
                        MyApplication.userItem = JWTDecoding.decoded(MyApplication.token!!)
+                       updateToken(MyApplication.userItem!!.applicationUserId!!.toInt())
                        binding!!.loadingLogin.hide()
                        binding!!.btLogin.show()
                        getUnits()
@@ -103,6 +103,24 @@ class ActivityLogin : AppCompactBase() {
                }
            })
    }
+    fun updateToken(id:Int){
+        var tokenReq  = TokenResource(
+            MyApplication.firebaseToken,
+            id
+        )
+        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).saveToken(tokenReq)
+            .enqueue(object : Callback<ResponseMessage> {
+                override fun onResponse(
+                    call: Call<ResponseMessage>,
+                    response: Response<ResponseMessage>
+                ) {
+                    wtf("Success")
+                }
+                override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
+                    wtf("Failure")
+                }
+            })
+    }
     fun getUnits(){
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.PRODUCTION_LOOKUP_CODE)
             .enqueue(object : Callback<UnitList> {

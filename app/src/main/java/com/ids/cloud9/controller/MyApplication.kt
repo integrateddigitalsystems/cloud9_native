@@ -7,7 +7,6 @@ import android.content.SharedPreferences
 import android.content.res.Resources
 import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.fragment.app.Fragment
 import com.ids.cloud9.apis.WifiService
 import com.ids.cloud9.model.*
 import dev.b3nedikt.app_locale.AppLocale
@@ -16,7 +15,6 @@ import dev.b3nedikt.reword.RewordInterceptor
 import dev.b3nedikt.viewpump.ViewPump
 import com.ids.cloud9.utils.AppConstants
 import com.ids.cloud9.utils.AppConstants.LOCALE_ARABIC
-import com.ids.cloud9.utils.LocationForeService
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -29,12 +27,12 @@ class MyApplication : Application() {
         var BASE_URL ="https://crmtest.ids.com.lb/api/"
         var BASE_URL_IMAGE = "https://crmtest.ids.com.lb"
         var arrayVid : ArrayList<ItemSpinner> = arrayListOf()
-        var selectedVisit : testVisitItem ?=null
-        var allVisits : ArrayList<testVisitItem> = arrayListOf()
+        var selectedVisit : Visit ?=null
+        var allVisits : ArrayList<Visit> = arrayListOf()
         var serviceContext : Context ?=null
         var userItem : JWTResponse ?=null
         var permission =-1
-        var onTheWayVisit : testVisitItem ?=null
+        var onTheWayVisit : Visit ?=null
         var saveLocTracking = false
         var generalNotificaiton = 1
         var UNIQUE_REQUEST_CODE = 908

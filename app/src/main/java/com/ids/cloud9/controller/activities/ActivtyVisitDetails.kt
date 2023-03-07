@@ -55,10 +55,26 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
     var CODE_CAMERA = 1
     var CODE_VIDEO = 2
     var CODE_GALLERY = 3
+    var visitId = 0
+    var fromNotf = false
     var code: Int? = -1
     val BLOCKED = -1
     var currLayout: LinearLayout? = null
     var currLayPost = 0
+
+    override fun onBackPressed() {
+        if(fromNotf){
+            finishAffinity()
+            startActivity(
+                Intent(
+                    this,
+                    ActivityMain::class.java
+                )
+            )
+        }else{
+            onBackPressedDispatcher.onBackPressed()
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityVisitDetailsBinding.inflate(layoutInflater)
@@ -70,11 +86,15 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
     fun init() {
         binding!!.llTool.ivDrawer.hide()
         binding!!.llTool.layoutFragment.show()
+        visitId = intent.getIntExtra("visitId",-1)
+        fromNotf = intent.getBooleanExtra("fromNotf",false)
         AppHelper.setTextColor(this, binding!!.tvVisit, R.color.medium_blue)
         binding!!.llBorderVisit.hide()
         binding!!.llSelectedVisitBorder.show()
-        binding!!.llTool.tvTitleTool.text = MyApplication.selectedVisit!!.title
+
     }
+
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onRequestPermissionsResult(
         requestCode: Int,

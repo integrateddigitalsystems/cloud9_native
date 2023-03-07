@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_margin="@dimen/margin_start_end"
+<RelativeLayout android:layout_margin="@dimen/margin_start_end"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/white"
     android:orientation="vertical"
@@ -416,6 +416,15 @@
     </ScrollView>
 
 
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/llLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            layout="@layout/loading" />
+    </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

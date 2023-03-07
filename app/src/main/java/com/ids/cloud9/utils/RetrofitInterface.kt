@@ -2,10 +2,7 @@ package com.ids.cloud9.utils
 
 import com.ids.cloud9.model.*
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -74,7 +71,7 @@ interface RetrofitInterface {
     ):Call<ResponseMessage>
     @POST("Visit/UpdateVisit")
     fun updateVisit(
-        @Body param: testVisitItem
+        @Body param: Visit
     ): Call<ResponseMessage>
     @POST("Activity/UpdateActivityMobile")
     fun updateActivity(
@@ -105,5 +102,18 @@ interface RetrofitInterface {
     fun saveToken(
         @Body tokenReq : TokenResource
     ):Call<ResponseMessage>
+
+    @GET("Record/GetRecordsForProductVisit")
+    fun getProductRecords(
+        @Query("visitProductId") visitProductId : Int
+    ):Call<RecordLists>
+
+    @GET("Visit/GetVisitByID")
+    fun getVisitById(
+        @Query("id") id:Int
+    ):Call<Visit>
+
+    @GET("Companies/GetActiveCompanies")
+    fun getCompanies():Call<ArrayList<Company>>
 
 }

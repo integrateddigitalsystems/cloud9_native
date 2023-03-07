@@ -21,6 +21,7 @@ import com.ids.cloud9.BuildConfig
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.activities.ActivitySplash
+import com.ids.cloud9.model.RemoteMessageType
 import com.ids.cloud9.utils.AppConstants
 import com.ids.cloud9.utils.LocaleUtils
 import com.ids.cloud9.utils.LocationForeService
@@ -54,28 +55,31 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message);
+        wtf(Gson().toJson(message))
         Log.d("msg", "onMessageReceived: " + message.getData().get("message"));
+        var remote = Gson().fromJson(Gson().toJson(message)
+            ,RemoteMessageType::class.java)
 
         val intent = Intent("msg") //action: "msg"
         intent.setPackage(packageName)
         intent.putExtra("message", "")
         applicationContext.sendBroadcast(intent)
-     
 
 
-        var visitId = message.data.get("visitId")
-        sendNotification(message!!.notification!!,visitId!!.toInt(),Gson().toJson(message.data))
+
+        var visitId = remote.bundle.mMap.visitId
+        sendNotification(remote.bundle.mMap.gcmNotificationBody,visitId!!.toInt(),remote.bundle.mMap.gcmNotificationTitle)
     }
 
 
-    fun sendNotification(message : com.google.firebase.messaging.RemoteMessage.Notification , visitId : Int,str : String  ){
+    fun sendNotification(message :String , visitId : Int,title : String  ){
         var intent = Intent(this,ActivitySplash::class.java)
             .putExtra("visitId",visitId)
         val pendingIntent = PendingIntent.getActivity(this, MyApplication.UNIQUE_REQUEST_CODE++, intent, PendingIntent.FLAG_IMMUTABLE)
         var builder = NotificationCompat.Builder(this,NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle(str)
-            .setContentText(str).setAutoCancel(true).setContentIntent(pendingIntent)
+            .setContentTitle(title)
+            .setContentText(message).setAutoCancel(true).setContentIntent(pendingIntent)
 
 
         var manager :  NotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager

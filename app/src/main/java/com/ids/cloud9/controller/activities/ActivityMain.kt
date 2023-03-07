@@ -2,7 +2,6 @@ package com.ids.cloud9.controller.activities
 
 import HeaderDecoration
 import android.Manifest
-import android.app.Activity
 import android.content.*
 import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
@@ -16,18 +15,14 @@ import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Toast
-import android.window.OnBackInvokedDispatcher
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.ids.cloud9.controller.adapters.StickyAdapter
 import com.ids.cloud9.R
@@ -57,13 +52,14 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
     val BLOCKED = -1
     val GRANTED = 0
     val DENIED = 1
+    var visitIdNotf = -1
     val BLOCKED_OR_NEVER_ASKED = 2
     var mPermissionResult: ActivityResultLauncher<Array<String>>? = null
     var prevHeaders : ArrayList<Int> = arrayListOf()
     var editingFrom = Calendar.getInstance()
     var editingTo = Calendar.getInstance()
-    var tempArray : ArrayList<testVisitItem> = arrayListOf()
-    var mainArray : ArrayList<testVisitItem> = arrayListOf()
+    var tempArray : ArrayList<Visit> = arrayListOf()
+    var mainArray : ArrayList<Visit> = arrayListOf()
     private lateinit var foregroundOnlyBroadcastReceiver: ForegroundOnlyBroadcastReceiver
     private var foregroundOnlyLocationServiceBound = false
     private inner class ForegroundOnlyBroadcastReceiver : BroadcastReceiver() {
@@ -80,6 +76,13 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
+        if(visitIdNotf==-1) {
+            visitIdNotf = intent.getIntExtra("visitId", -1)
+        }
+        if(visitIdNotf!=-1){
+            getVisits()
+            setUpDate()
+        }
         setUpPermission()
         listeners()
         foregroundOnlyBroadcastReceiver = ForegroundOnlyBroadcastReceiver()
@@ -259,7 +262,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
         else
             binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondNoMonthHalf.format(editingTo.time)
     }
-    fun filterDate(arrayList: ArrayList<testVisitItem>){
+    fun filterDate(arrayList: ArrayList<Visit>){
         tempArray.clear()
         tempArray.addAll(arrayList.filter {
             simp.parse(it.visitDate).time >= editingFrom.time.time && simp.parse(it.visitDate).time <= editingTo.time.time
@@ -343,7 +346,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                         tempArray.add(indx, item)
                     }
                 } else {
-                    var visHeader = testVisitItem()
+                    var visHeader = Visit()
                     visHeader.isHeader = true
                     visHeader.visitDate = item.visitDate
                     visHeader.dateMill = date.time
@@ -356,7 +359,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
         }else{
             tempArray.clear()
         }
-        var x : ArrayList<testVisitItem> = arrayListOf()
+        var x : ArrayList<Visit> = arrayListOf()
         x.addAll(tempArray)
         tempArray.clear()
         tempArray.addAll(x)
@@ -379,13 +382,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             binding!!.llHomeMain.rvVisits.hide()
             binding!!.llHomeMain.tvNoVisits.show()
         }
-        var visitId = intent.getIntExtra("visitId",0)
-        if(visitId!=0){
-            MyApplication.selectedVisit =   mainArray.find {
-                it.id == visitId
-            }
-            startActivity(Intent(this,ActivtyVisitDetails::class.java))
-        }
+
     }
     fun getVisits(){
         binding!!.llHomeMain.loading.show()
@@ -397,6 +394,15 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                 override fun onResponse(call: Call<VisitList>, response: Response<VisitList>) {
                     mainArray.clear()
                     mainArray.addAll(response.body()!!)
+                    if(visitIdNotf!=-1){
+                        MyApplication.selectedVisit = mainArray.find {
+                            it.id == visitIdNotf
+                        }
+                        startActivity(Intent(
+                            this@ActivityMain,
+                            ActivtyVisitDetails::class.java
+                        ))
+                    }
                     MyApplication.allVisits.clear()
                     MyApplication.allVisits.addAll(response.body()!!)
                     var visit = mainArray.find {
