@@ -19,6 +19,7 @@ import com.ids.cloud9.custom.TouchImageView
 import com.ids.cloud9.model.Videos
 import com.ids.cloud9.utils.AppHelper
 import com.ids.cloud9.utils.IFragmentImages
+import com.ids.cloud9.utils.wtf
 import java.util.ArrayList
 
 class AdapterPagerFiles(
@@ -58,7 +59,7 @@ class AdapterPagerFiles(
                 position
             )
         } else {
-            Log.wtf("file_image_url", "file : " + files[position].url)
+            wtf("file : " + files[position].url)
             (itemView.findViewById<View>(R.id.epView) as StyledPlayerView).visibility = View.GONE
             (itemView.findViewById<View>(R.id.ivImages) as TouchImageView).visibility = View.VISIBLE
             loadImage(
@@ -87,7 +88,7 @@ class AdapterPagerFiles(
                 .findViewById<View>(R.id.epView) as StyledPlayerView).player!!
                 .playbackState
         } catch (e: Exception) {
-            Log.wtf("exception", e.toString())
+            wtf(e.toString())
         }
         try {
             container.removeView(`object` as View)

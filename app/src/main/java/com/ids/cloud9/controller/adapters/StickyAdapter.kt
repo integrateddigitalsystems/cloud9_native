@@ -50,11 +50,23 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<Visit>, clic
         binding.root
     ), View.OnClickListener {
         fun bind(item: Visit) {
-            var cal = Calendar.getInstance()
+            var call = Calendar.getInstance()
             var dateMil = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss").parse(item.visitDate!!).time
-            cal.time.time = dateMil
+            call.time.time = dateMil
             binding.tvDay.text = SimpleDateFormat("EEEE").format(Date(dateMil))
             binding.tvDate.text = SimpleDateFormat("MMMM dd, yyyy").format(Date(dateMil))
+
+            var original = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss")
+            var toForm = SimpleDateFormat("yyyy-MM-dd")
+            var cal = Calendar.getInstance()
+            var visitDate = item.visitDate
+            var visitMil = toForm.parse(toForm.format(original.parse(visitDate)))
+            var today = toForm.parse(toForm.format(cal.time))
+            if(visitMil.time == today.time){
+                binding.llHeaderDate.setBackgroundResource(R.color.colorPrimaryDark)
+                AppHelper.setTextColor(mContext,binding.tvDate,R.color.white)
+                AppHelper.setTextColor(mContext,binding.tvDay,R.color.white)
+            }
         }
         init {
             binding.root.setOnClickListener(this)
@@ -148,14 +160,18 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<Visit>, clic
         val date : TextView = header!!.findViewById(R.id.tvDate)
         var headerLL : LinearLayout = header!!.findViewById(R.id.llHeaderDate)
         var sep = header!!.findViewById<LinearLayout>(R.id.sepDate)
-        var cal = Calendar.getInstance()
+        var call = Calendar.getInstance()
         var dateMil = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss").parse(child.visitDate!!).time
-        cal.time.time = dateMil
+        call.time.time = dateMil
         day.text = SimpleDateFormat("EEEE").format(Date(dateMil))
         date.text = SimpleDateFormat("MMMM dd, yyyy").format(Date(dateMil))
-        var theDate = simpFormat.parse(simpFormat.format(SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss").parse(child.visitDate!!)))
-        var myDate = simpFormat.parse(simpFormat.format(cal.time))
-        if(theDate.time == myDate.time){
+        var original = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss")
+        var toForm = SimpleDateFormat("yyyy-MM-dd")
+        var cal = Calendar.getInstance()
+        var visitDate = child.visitDate
+        var visitMil = toForm.parse(toForm.format(original.parse(visitDate)))
+        var today = toForm.parse(toForm.format(cal.time))
+        if(visitMil.time == today.time){
             headerLL.setBackgroundResource(R.color.colorPrimaryDark)
             AppHelper.setTextColor(mContext,date,R.color.white)
             AppHelper.setTextColor(mContext,day,R.color.white)

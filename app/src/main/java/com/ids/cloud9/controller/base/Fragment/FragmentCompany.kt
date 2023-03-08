@@ -67,10 +67,11 @@ class FragmentCompany : Fragment() {
                 MyApplication.selectedVisit!!.contact!!.firstName + " " + MyApplication.selectedVisit!!.contact!!.lastName,
                 MyApplication.selectedVisit!!.contact!!.firstNameAr + " " + MyApplication.selectedVisit!!.contact!!.lastNameAr
             )
+            binding!!.tvContactNumber.setCheckText(MyApplication.selectedVisit!!.contact!!.personalPhoneNumber)
         }else{
+            binding!!.tvContactName.text = ""
             binding!!.tvContactNumber.text = ""
         }
-        binding!!.tvContactNumber.setCheckText(MyApplication.selectedVisit!!.contact!!.personalPhoneNumber)
         if(AppHelper.isValidPhoneNumber(binding!!.tvContactNumber.text.toString()))
         {
             AppHelper.setTextColor(requireContext(),binding!!.tvContactNumber, R.color.colorPrimaryDark)

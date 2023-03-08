@@ -48,7 +48,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/normal_margin_padding"
                 android:gravity="center_vertical"
-                android:text="@string/status_reason"
+                android:text=""
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/normal_font" />
 
@@ -109,7 +109,7 @@
                 android:id="@+id/tvVisitDate"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="@string/status_reason"/>
+                android:text=""/>
 
         </LinearLayout>
 
@@ -140,7 +140,7 @@
             android:id="@+id/fromTime"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="@string/status_reason"/>
+            android:text=""/>
 
     </LinearLayout>
 
@@ -171,7 +171,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="@string/status_reason"/>
+            android:text=""/>
 
     </LinearLayout>
 
@@ -202,7 +202,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="@string/status_reason"/>
+            android:text=""/>
 
     </LinearLayout>
 
@@ -233,7 +233,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="@string/status_reason"/>
+            android:text=""/>
 
     </LinearLayout>
 
@@ -269,7 +269,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/normal_margin_padding"
                 android:gravity="center_vertical"
-                android:text="@string/status_reason"
+                android:text=""
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/normal_font" />
 
@@ -323,7 +323,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/normal_margin_padding"
                 android:gravity="center_vertical"
-                android:text="@string/status_reason"
+                android:text=""
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/normal_font" />
 
@@ -372,7 +372,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="@string/status_reason"/>
+            android:text=""/>
 
     </LinearLayout>
 

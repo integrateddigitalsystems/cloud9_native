@@ -19,6 +19,7 @@ import com.ids.cloud9.model.Videos
 import com.ids.cloud9.utils.IFragmentImages
 import com.ids.cloud9.utils.hide
 import com.ids.cloud9.utils.show
+import com.ids.cloud9.utils.wtf
 import java.util.*
 
 class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageChangeListener , Player.Listener {
@@ -40,7 +41,7 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
             try {
                 pauseAll()
             } catch (e: java.lang.Exception) {
-                Log.wtf("pause_exception", e.toString())
+                wtf(e.toString())
             }
         }
         binding!!.llTool.ivCalendar.setOnClickListener {

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.adapters.AdapterProducts
 import com.ids.cloud9.controller.MyApplication
@@ -91,6 +92,10 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
                 )
             )
         }
+        binding!!.srProducts.setOnRefreshListener(
+            SwipeRefreshLayout.OnRefreshListener {
+                getProducts()
+            })
     }
     fun getProducts() {
         binding!!.llLoading.show()
@@ -130,6 +135,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
         } else {
             binding!!.llLoading.hide()
         }
+        binding!!.srProducts.isRefreshing = false
     }
     fun getReports(position: Int) {
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getReports(

@@ -21,13 +21,14 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
-import java.util.Calendar
+import java.util.*
 import kotlin.collections.ArrayList
 
 class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
     var alertDialog: androidx.appcompat.app.AlertDialog? = null
     var edtitVisit: Visit? = null
     var adapter: AdapterDialog? = null
+    var changed: Boolean = false
     var adapterSpin: AdapterSpinner? = null
     var simp: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
     var simpTime: SimpleDateFormat = SimpleDateFormat("HH:mm")
@@ -44,67 +45,29 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         binding = LayoutVisitBinding.inflate(inflater, container, false)
         return binding!!.root
     }
+
     fun setUpVisitDetails() {
         var date = ""
         try {
             date = simp.format(simpOrg.parse(edtitVisit!!.visitDate))
-        }catch (ex:Exception){
+        } catch (ex: Exception) {
 
         }
         binding!!.tvVisitDate.text = date
-        try{
-        binding!!.fromTime.text =
-            simpTime.format(simpOrg.parse(edtitVisit!!.fromTime))
-        binding!!.tvToTime.text =
-            simpTime.format(simpOrg.parse(edtitVisit!!.toTime))
-        var millFrom =
-            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss").parse(edtitVisit!!.fromTime).time
-        var millTo =
-            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss").parse(edtitVisit!!.toTime).time
-        var diff = millTo - millFrom
-        var mins = diff / 60000
-        var hours = mins / 60
-        var min = mins % 60
-        binding!!.tvDuration.text = if (hours > 0) {
-            hours.toString() + " hrs " + (if (min > 0)
-                min.toString() + " mins"
-            else
-                "")
-        } else {
-            if (min > 0)
-                min.toString() + " mins"
-            else ""
-        }
-
-            if(edtitVisit!!.company!=null) {
-                binding!!.tvCompany.text = edtitVisit!!.company!!.companyName
-            }else{
-                binding!!.tvCompany.text = ""
-            }
-        if (!edtitVisit!!.actualArrivalTime.isNullOrEmpty())
-            binding!!.tvActualArrivalTime.text = simpTimeAA.format(
-                simpOrg.parse(
-                    edtitVisit!!.actualArrivalTime!!
-                )
-            )
-        else
-            binding!!.tvActualArrivalTime.text = ""
-
-        if (!edtitVisit!!.actualCompletedTime.isNullOrEmpty())
-            binding!!.tvActualCompletedTime.text = simpTimeAA.format(
-                simpOrg.parse(
-                    edtitVisit!!.actualCompletedTime!!
-                )
-            )
-        else
-            binding!!.tvActualCompletedTime.text = ""
-
-        if (edtitVisit!!.actualDuration != null) {
-            var dur = edtitVisit!!.actualDuration!!.toLong()
-            var mins = dur / 60000
+        try {
+            binding!!.fromTime.text =
+                simpTime.format(simpOrg.parse(edtitVisit!!.fromTime))
+            binding!!.tvToTime.text =
+                simpTime.format(simpOrg.parse(edtitVisit!!.toTime))
+            var millFrom =
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss").parse(edtitVisit!!.fromTime).time
+            var millTo =
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss").parse(edtitVisit!!.toTime).time
+            var diff = millTo - millFrom
+            var mins = diff / 60000
             var hours = mins / 60
             var min = mins % 60
-            binding!!.tvActualDurtionTime.text = if (hours > 0) {
+            binding!!.tvDuration.text = if (hours > 0) {
                 hours.toString() + " hrs " + (if (min > 0)
                     min.toString() + " mins"
                 else
@@ -112,29 +75,71 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             } else {
                 if (min > 0)
                     min.toString() + " mins"
-                else
-                    ""
+                else ""
             }
-        } else
-            binding!!.tvActualDurtionTime.text = ""
-        if (!edtitVisit!!.remark.isNullOrEmpty())
-            binding!!.etRemark.text = edtitVisit!!.remark!!.toEditable()
-        else
-            binding!!.etRemark.text = "".toEditable()
 
-        }catch (ex:Exception){
+            if (edtitVisit!!.company != null) {
+                binding!!.tvCompany.text = edtitVisit!!.company!!.companyName
+            } else {
+                binding!!.tvCompany.text = ""
+            }
+            if (!edtitVisit!!.actualArrivalTime.isNullOrEmpty())
+                binding!!.tvActualArrivalTime.text = simpTimeAA.format(
+                    simpOrg.parse(
+                        edtitVisit!!.actualArrivalTime!!
+                    )
+                )
+            else
+                binding!!.tvActualArrivalTime.text = ""
+
+            if (!edtitVisit!!.actualCompletedTime.isNullOrEmpty())
+                binding!!.tvActualCompletedTime.text = simpTimeAA.format(
+                    simpOrg.parse(
+                        edtitVisit!!.actualCompletedTime!!
+                    )
+                )
+            else
+                binding!!.tvActualCompletedTime.text = ""
+
+            if (edtitVisit!!.actualDuration != null) {
+                var dur = edtitVisit!!.actualDuration!!.toLong()
+                var mins = dur / 60000
+                var hours = mins / 60
+                var min = mins % 60
+                binding!!.tvActualDurtionTime.text = if (hours > 0) {
+                    hours.toString() + " hrs " + (if (min > 0)
+                        min.toString() + " mins"
+                    else
+                        "")
+                } else {
+                    if (min > 0)
+                        min.toString() + " mins"
+                    else
+                        ""
+                }
+            } else
+                binding!!.tvActualDurtionTime.text = ""
+            if (!edtitVisit!!.remark.isNullOrEmpty())
+                binding!!.etRemark.text = edtitVisit!!.remark!!.toEditable()
+            else
+                binding!!.etRemark.text = "".toEditable()
+
+        } catch (ex: Exception) {
             wtf("The message")
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
+
     fun listeners() {
         binding!!.btSave.setOnClickListener {
             edtitVisit!!.remark = binding!!.etRemark.text.toString()
             updateVisit()
         }
     }
+
     fun setUpStatusReasonSpinner() {
         adapterSpin =
             AdapterSpinner(requireContext(), R.layout.spinner_text_item, arrSpinner, 0, true)
@@ -148,21 +153,56 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                     position: Int,
                     id: Long
                 ) {
-                    var pos = arrSpinner.indexOf(
-                        arrSpinner.find {
-                            it.selected!!
+                        var pos = arrSpinner.indexOf(
+                            arrSpinner.find {
+                                it.selected!!
+                            }
+                        )
+                        if (arrSpinner.get(position).selectable!!) {
+                            binding!!.tvStatreason.text = arrSpinner.get(position).name
+                            for (itm in arrSpinner)
+                                itm.selected = false
+                            arrSpinner.get(position).selected = true
+                            edtitVisit!!.reasonId = arrSpinner.get(position).id
+                            if (arrSpinner.get(position).id == AppConstants.ARRIVED_REASON_ID) {
+                                if(edtitVisit!!.actualArrivalTime.isNullOrEmpty() || changed) {
+                                    var cal = Calendar.getInstance()
+                                    binding!!.tvActualArrivalTime.text = simpTimeAA.format(cal.time)
+                                    edtitVisit!!.actualArrivalTime = simpOrgss.format(cal.time)
+                                    binding!!.tvActualCompletedTime.text = ""
+                                    binding!!.tvActualDurtionTime.text = ""
+                                }
+                            } else if (arrSpinner.get(position).id == AppConstants.COMPLETED_REASON_ID) {
+                                changed = true
+                                var cal = Calendar.getInstance()
+                                binding!!.tvActualCompletedTime.text = simpTimeAA.format(cal.time)
+                                edtitVisit!!.actualCompletedTime = simpOrgss.format(cal.time)
+                                var millFrom =
+                                    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss").parse(edtitVisit!!.actualArrivalTime).time
+                                var millTo =
+                                    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss").parse(edtitVisit!!.actualCompletedTime).time
+                                var diff = millTo - millFrom
+                                var mins = diff / 60000
+                                var hours = mins / 60
+                                var min = mins % 60
+                                binding!!.tvActualDurtionTime.text =
+                                    if (hours > 0) {
+                                        hours.toString() + "hrs" + min + "mins"
+                                    } else {
+                                        min.toString() + " mins"
+                                    }
+                            } else {
+                                edtitVisit!!.actualArrivalTime = ""
+                                edtitVisit!!.actualCompletedTime = ""
+                                edtitVisit!!.actualDuration = 0.0
+                                binding!!.tvActualArrivalTime.text = ""
+                                binding!!.tvActualCompletedTime.text = ""
+                            }
+                            adapterSpin!!.notifyDataSetChanged()
+                        } else {
+                            binding!!.spStatusReason.setSelection(pos)
                         }
-                    )
-                    if(arrSpinner.get(position).selectable!!) {
-                        binding!!.tvStatreason.text = arrSpinner.get(position).name
-                        for (itm in arrSpinner)
-                            itm.selected = false
-                        arrSpinner.get(position).selected = true
-                        edtitVisit!!.reasonId = arrSpinner.get(position).id
-                        adapterSpin!!.notifyDataSetChanged()
-                    }else{
-                        binding!!.spStatusReason.setSelection(pos)
-                    }
+
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -175,10 +215,12 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         )
         binding!!.spStatusReason.setSelection(pos)
     }
+
     fun updateVisit() {
+        binding!!.llLoading.show()
         for (item in edtitVisit!!.visitResources)
             item.id = 0
-        Log.wtf("TAG_VISIT", Gson().toJson(edtitVisit))
+        wtf(Gson().toJson(edtitVisit))
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
             .updateVisit(edtitVisit!!)
             .enqueue(object : Callback<ResponseMessage> {
@@ -186,20 +228,25 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                     call: Call<ResponseMessage>,
                     response: Response<ResponseMessage>
                 ) {
+                    binding!!.llLoading.hide()
+                    MyApplication.selectedVisit = edtitVisit
                     AppHelper.createDialogPositive(requireActivity(), response.body()!!.message!!)
                 }
+
                 override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
-                    Log.wtf("TAGTAG", "test")
+                    binding!!.llLoading.hide()
+                    wtf(getString(R.string.error_getting_data))
                 }
 
             })
     }
-    fun setUpEdit(){
+
+    fun setUpEdit() {
         edtitVisit = Visit(
-            MyApplication.selectedVisit!!.account ,
+            MyApplication.selectedVisit!!.account,
             MyApplication.selectedVisit!!.accountId,
-            if(!MyApplication.selectedVisit!!.actualArrivalTime.isNullOrEmpty()) MyApplication.selectedVisit!!.actualArrivalTime else "",
-            if(!MyApplication.selectedVisit!!.actualCompletedTime.isNullOrEmpty()) MyApplication.selectedVisit!!.actualCompletedTime else "",
+            if (!MyApplication.selectedVisit!!.actualArrivalTime.isNullOrEmpty()) MyApplication.selectedVisit!!.actualArrivalTime else "",
+            if (!MyApplication.selectedVisit!!.actualCompletedTime.isNullOrEmpty()) MyApplication.selectedVisit!!.actualCompletedTime else "",
             MyApplication.selectedVisit!!.actualDuration,
             MyApplication.selectedVisit!!.assignedTo,
             MyApplication.selectedVisit!!.assignedToId,
@@ -254,22 +301,25 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         )
         setUpVisitDetails()
     }
+
     fun init() {
         listeners()
-       var fromNotf = (requireActivity() as ActivtyVisitDetails).fromNotf
-        if(fromNotf){
+        var fromNotf = (requireActivity() as ActivtyVisitDetails).fromNotf
+        if (fromNotf == 1) {
+            (requireActivity() as ActivtyVisitDetails).fromNotf++
             binding!!.llLoading.show()
             var visitId = (requireActivity() as ActivtyVisitDetails).visitId
             getData(visitId)
-        }else{
+        } else {
             setUpData()
             initialData()
         }
     }
-    fun getCompany(){
+
+    fun getCompany() {
         RetrofitClientAuth.client!!.create(
             RetrofitInterface::class.java
-        ).getCompanies().enqueue(object : Callback<ArrayList<Company>>{
+        ).getCompanies().enqueue(object : Callback<ArrayList<Company>> {
             override fun onResponse(
                 call: Call<ArrayList<Company>>,
                 response: Response<ArrayList<Company>>
@@ -289,11 +339,12 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
 
         })
     }
-    fun getData(id:Int){
+
+    fun getData(id: Int) {
         RetrofitClientAuth.client!!.create(
             RetrofitInterface::class.java
         ).getVisitById(id)
-            .enqueue(object :Callback<Visit>{
+            .enqueue(object : Callback<Visit> {
                 override fun onResponse(call: Call<Visit>, response: Response<Visit>) {
                     edtitVisit = response.body()
                     MyApplication.selectedVisit = response.body()
@@ -306,7 +357,8 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
 
             })
     }
-    fun setUpData(){
+
+    fun setUpData() {
         binding!!.llLoading.hide()
         setUpEdit()
         if (edtitVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID) {
@@ -314,11 +366,13 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             binding!!.btSave.isEnabled = false
         }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
 
     }
+
     fun initialData() {
         arrSpinner.add(
             ItemSpinner(
@@ -379,13 +433,14 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             for (item in arrSpinner)
                 if (item.id == AppConstants.SCHEDULED_REASON_ID || item.id == AppConstants.COMPLETED_REASON_ID)
                     item.selectable = false
-        } else if(edtitVisit!!.reasonId == AppConstants.SCHEDULED_REASON_ID){
+        } else if (edtitVisit!!.reasonId == AppConstants.SCHEDULED_REASON_ID) {
             setUpStatusReasonSpinner()
             for (item in arrSpinner)
-                if (item.id == AppConstants.PENDING_REASON_ID || item.id == AppConstants.COMPLETED_REASON_ID )
+                if (item.id == AppConstants.PENDING_REASON_ID || item.id == AppConstants.COMPLETED_REASON_ID)
                     item.selectable = false
         }
     }
+
     override fun onItemClicked(view: View, position: Int) {
         if (arrSpinner.get(position).selectable!!) {
             for (item in arrSpinner)

@@ -8,6 +8,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.Fragment.FragmentReccomendations
 import com.ids.cloud9.controller.MyApplication
@@ -49,6 +50,9 @@ class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
         binding!!.llTool.btBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
+        binding!!.srReccomendations.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            getReccomendations()
+        })
         binding!!.llTool.ivCalendar.setOnClickListener {
             finishAffinity()
             startActivity(Intent(
@@ -87,6 +91,7 @@ class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
             binding!!.rvReccomendations.hide()
         }
         binding!!.llLoading.hide()
+        binding!!.srReccomendations.isRefreshing = false
     }
     override fun onItemClicked(view: View, position: Int) {
         var ct = MyApplication.allVisits.count {

@@ -73,7 +73,7 @@ class ActivityLogin : AppCompactBase() {
    fun login(email : String , password : String ){
        binding!!.btLogin.hide()
        binding!!.loadingLogin.show()
-       Log.wtf("TAG_URL",MyApplication.BASE_URL)
+       wtf(MyApplication.BASE_URL)
        var newReq = RequestLogin(email , password , true )
        RetrofitClient.client?.create(RetrofitInterface::class.java)
            ?.logIn(
@@ -82,7 +82,7 @@ class ActivityLogin : AppCompactBase() {
                override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
                    try {
                        MyApplication.token = response.body()!!.token!!
-                       Log.wtf("TOKEN",MyApplication.token)
+                       wtf(MyApplication.token)
                        MyApplication.email = email
                        MyApplication.password = password
                        MyApplication.userItem = JWTDecoding.decoded(MyApplication.token!!)
@@ -94,12 +94,12 @@ class ActivityLogin : AppCompactBase() {
                        startActivity(Intent(this@ActivityLogin,ActivityMain::class.java))
                    }catch (ex:Exception){
                        binding!!.btLogin.show()
-                       Log.wtf("TAG_URL",ex.toString())
+                       wtf(ex.toString())
                    }
                }
                override fun onFailure(call: Call<ResponseLogin>, throwable: Throwable) {
                    binding!!.btLogin.show()
-                   Log.wtf("TAG_URL",throwable.toString())
+                   wtf(throwable.toString())
                }
            })
    }

@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.Message
 import android.util.Log
 import android.view.Gravity
 import android.widget.TextView
@@ -78,7 +79,7 @@ class ActivitySplash : Activity() {
     }
     fun nextStep(token: String){
         MyApplication.token =token
-        Log.wtf("TOKEN",token)
+        wtf(token)
         MyApplication.userItem = JWTDecoding.decoded(token)
         if(MyApplication.userItem != JWTResponse()) {
             updateToken(MyApplication.userItem!!.applicationUserId!!.toInt())
@@ -90,7 +91,7 @@ class ActivitySplash : Activity() {
                     startActivity(
                         Intent(this, ActivtyVisitDetails::class.java)
                             .putExtra("visitId", visitId)
-                            .putExtra("fromNotf",true)
+                            .putExtra("fromNotf",1)
                     )
                     finishAffinity()
                 } else {
@@ -190,9 +191,10 @@ class ActivitySplash : Activity() {
         textView = textEntryView.findViewById(R.id.dialogMsg)
         textView.gravity = Gravity.CENTER
         textView.text =  getString(R.string.update)
-        builder.setTitle(AppHelper.getRemoteString("update_title",this))
+        builder.setTitle(getString(R.string.update))
         builder.setView(textEntryView)
-            .setPositiveButton(AppHelper.getRemoteString("update_button",this)) { dialog, _ ->
+            .setPositiveButton(
+                getString(R.string.update)) { dialog, _ ->
                 dialog.dismiss()
                 val appPackageName = activity.packageName
                 try {
@@ -203,7 +205,9 @@ class ActivitySplash : Activity() {
                     activity.finish()
                 }
             }
-            .setNegativeButton(AppHelper.getRemoteString("update_cancel",this)) { dialog, _ ->
+            .setNegativeButton(
+                getString(R.string.cancel)
+               ) { dialog, _ ->
                 dialog.dismiss()
             }
         val d = builder.create()
@@ -220,17 +224,17 @@ class ActivitySplash : Activity() {
         d.setCancelable(false)
         d.show()
     }
-    private fun showDialogForceUpdate(activity: Activity) {
+    private fun showDialogForceUpdate(activity: Activity,message: String) {
         val builder = AlertDialog.Builder(activity)
         val textView: TextView
         val inflater = activity.layoutInflater
         val textEntryView = inflater.inflate(R.layout.item_dialog, null)
         textView = textEntryView.findViewById(R.id.dialogMsg)
         textView.gravity = Gravity.START
-        textView.text = AppHelper.getRemoteString("update_message",this)
-        builder.setTitle(AppHelper.getRemoteString("update_title",this))
+        textView.text = getString(R.string.update)
+        builder.setTitle(message)
         builder.setView(textEntryView)
-            .setNegativeButton(AppHelper.getRemoteString("update_button",this)) { dialog, _ ->
+            .setNegativeButton(getString(R.string.update)) { dialog, _ ->
                 dialog.dismiss()
                 val appPackageName = activity.packageName
                 try {

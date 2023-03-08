@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.activities.ActivityAddReccomendations
@@ -58,6 +59,9 @@ class FragmentReccomendations : Fragment(), RVOnItemClickListener {
                 )
             )
         }
+        binding!!.srReccomendations.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            getReccomendations()
+        })
     }
     fun init() {
         listeners()
@@ -76,6 +80,7 @@ class FragmentReccomendations : Fragment(), RVOnItemClickListener {
             AdapterFilteredReccomendations(arrayReccomend, requireActivity(), this)
 
         binding!!.llLoading.hide()
+        binding!!.srReccomendations.isRefreshing = false
     }
     override fun onResume() {
         super.onResume()

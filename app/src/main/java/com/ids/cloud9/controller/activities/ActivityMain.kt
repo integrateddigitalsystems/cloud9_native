@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.Gson
 import com.ids.cloud9.controller.adapters.StickyAdapter
 import com.ids.cloud9.R
@@ -68,7 +69,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                 LocationForeService.EXTRA_LOCATION
             )
             if (location != null) {
-                Log.wtf("FORE", "Foreground location: ${location.toText()}")
+                wtf("Foreground location: ${location.toText()}")
             }
         }
     }
@@ -128,7 +129,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                             MyApplication.saveLocTracking = true
                             foregroundOnlyLocationService?.subscribeToLocationUpdates()
                                 ?: run {
-                                    Log.d(TAG, "Service Not Bound")
+                                    wtf("Service Not Bound")
                                 }
                     } else {
                         AppHelper.createYesNoDialog(
@@ -140,7 +141,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                         }
                     }
                 } catch (ex: Exception) {
-                    Log.wtf("Ex",ex.toString())
+                    wtf(ex.toString())
                 }
             }
         }
@@ -208,22 +209,12 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             editingFrom.add(Calendar.DAY_OF_MONTH,-7)
             editingTo.add(Calendar.DAY_OF_MONTH,-1)
         }
-        editingFrom.set(Calendar.HOUR,0)
-        editingFrom.set(Calendar.HOUR_OF_DAY,0)
-        editingFrom.set(Calendar.MINUTE,0)
-        editingFrom.set(Calendar.SECOND,0)
-        editingFrom.set(Calendar.MILLISECOND,0)
-        editingTo.set(Calendar.HOUR,0)
-        editingTo.set(Calendar.HOUR_OF_DAY,0)
-        editingTo.set(Calendar.MINUTE,0)
-        editingTo.set(Calendar.SECOND,0)
-        editingTo.set(Calendar.MILLISECOND,0)
         var curr = Calendar.getInstance()
-        curr.set(Calendar.HOUR,0)
-        curr.set(Calendar.HOUR_OF_DAY,0)
-        curr.set(Calendar.MINUTE,0)
-        curr.set(Calendar.SECOND,0)
-        curr.set(Calendar.MILLISECOND,0)
+        editingFrom.time = secondHalf.parse(secondHalf.format(editingFrom.time))
+        editingTo.time = secondHalf.parse(secondHalf.format(editingTo.time))
+        curr.time = secondHalf.parse(secondHalf.format(curr.time))
+
+
         if(curr.time.time >= editingFrom.time.time && curr.time.time <= editingTo.time.time){
             binding!!.llHomeMain.tvToday.setBackgroundResource(R.drawable.rounded_selected)
         }else{
@@ -246,16 +237,8 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
         toDefault = to
         editingFrom = from
         editingTo = to
-        editingFrom.set(Calendar.HOUR,0)
-        editingFrom.set(Calendar.HOUR_OF_DAY,0)
-        editingFrom.set(Calendar.MINUTE,0)
-        editingFrom.set(Calendar.SECOND,0)
-        editingFrom.set(Calendar.MILLISECOND,0)
-        editingTo.set(Calendar.HOUR,0)
-        editingTo.set(Calendar.HOUR_OF_DAY,0)
-        editingTo.set(Calendar.MINUTE,0)
-        editingTo.set(Calendar.SECOND,0)
-        editingTo.set(Calendar.MILLISECOND,0)
+        editingFrom.time = secondHalf.parse(secondHalf.format(editingFrom.time))
+        editingTo.time = secondHalf.parse(secondHalf.format(editingTo.time))
         filterDate(mainArray)
         if(editingFrom.get(Calendar.MONTH) != editingTo.get(Calendar.MONTH))
             binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondHalf.format(editingTo.time)
@@ -268,7 +251,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             simp.parse(it.visitDate).time >= editingFrom.time.time && simp.parse(it.visitDate).time <= editingTo.time.time
         }
         )
-        Log.wtf("TAG_ARRAY",tempArray.size.toString())
+        wtf(tempArray.size.toString())
         var vl = VisitList()
         vl.addAll(tempArray)
         setUpData(vl)
@@ -333,7 +316,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             var headers = 0
             for (item in list) {
                 var date = simp.parse(item.visitDate)
-                Log.wtf("TAG_VISIT", item.title + " ---DATE: " + date.time)
+                wtf(item.title + " ---DATE: " + date.time)
                 var itm = tempArray.find { it.dateMill == date.time }
                 if (itm != null) {
                     var nextHead = tempArray.find {
@@ -373,7 +356,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                     adapter
                 )
             );
-            Log.wtf("Visitors", Gson().toJson(tempArray))
+            wtf(Gson().toJson(tempArray))
             binding!!.llHomeMain.loading.hide()
             binding!!.llHomeMain.rvVisits.show()
             binding!!.llHomeMain.tvNoVisits.hide()
@@ -382,6 +365,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             binding!!.llHomeMain.rvVisits.hide()
             binding!!.llHomeMain.tvNoVisits.show()
         }
+        binding!!.llHomeMain.srVisits.isRefreshing = false
 
     }
     fun getVisits(){
@@ -461,8 +445,11 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             ))
         }
         binding!!.drawerMenu.tvHome.setOnClickListener {
-            finishAffinity()
-            startActivity(Intent(this,ActivityMain::class.java))
+            var  shake =  AnimationUtils.loadAnimation(this, R.anim.close_corner)
+            binding!!.navView.startAnimation(shake)
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding!!.drawerLayout.closeDrawers()
+            }, 300)
         }
         binding!!.drawerMenu.btClose.setOnClickListener {
             var  shake =  AnimationUtils.loadAnimation(this, R.anim.close_corner)
@@ -494,6 +481,9 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             binding!!.llHomeMain.btDateNext.setBackgroundResource(R.drawable.rounded_dark_right)
             binding!!.llHomeMain.btDatePrevious.setBackgroundResource(R.drawable.rounded_dark_left)
         }
+        binding!!.llHomeMain.srVisits.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            getVisits()
+        })
     }
     override fun onItemClicked(view: View, position: Int) {
         MyApplication.selectedVisit = tempArray.get(position)

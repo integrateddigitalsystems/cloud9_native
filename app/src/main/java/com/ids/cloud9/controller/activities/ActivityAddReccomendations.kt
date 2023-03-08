@@ -148,7 +148,7 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
         MyApplication.selectedReccomend!!.dueDate = simpOrg.format(simp.parse(binding!!.tvDueDate.text.toString()))
         MyApplication.selectedReccomend!!.subject = binding!!.etSubject.text.toString()
         MyApplication.selectedReccomend!!.description = binding!!.etDesc.text.toString()
-        Log.wtf("TAG_CREATE", Gson().toJson(MyApplication.selectedReccomend))
+        wtf(Gson().toJson(MyApplication.selectedReccomend))
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
             .updateActivity(
                 MyApplication.selectedReccomend!!
@@ -218,7 +218,7 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
             binding!!.etSubject.text.toString(),
             binding!!.tvDueDate.text.toString()
         )
-        Log.wtf("TAG_CREATE", Gson().toJson(createActivity))
+        wtf(Gson().toJson(createActivity))
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
             .createActivity(
                 createActivity

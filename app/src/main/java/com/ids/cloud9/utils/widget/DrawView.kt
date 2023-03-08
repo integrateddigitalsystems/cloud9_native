@@ -9,6 +9,7 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.core.graphics.ColorUtils
 import com.ids.cloud9.controller.MyApplication
+import com.ids.cloud9.utils.wtf
 import com.ids.cloud9.widget.MyPath
 import com.ids.cloud9.widget.PaintOptions
 import java.util.*
@@ -144,8 +145,8 @@ class DrawView @JvmOverloads constructor(
 
 /*            val frameToDraw = Rect(0, 0, width, height)
             val whereToDraw = RectF(0f, 0f, width.toFloat(), height.toFloat())*/
-            Log.wtf("bitmap_width",bmp!!.width.toString())
-            Log.wtf("bitmap_height",bmp!!.width.toString())
+            wtf(bmp!!.width.toString())
+            wtf(bmp!!.width.toString())
 
            // var scaledbitmap=scale(bmp!!,800,400)
            // var scaledbitmap= Bitmap.createScaledBitmap(bmp!!,(bmp!!.getWidth()*0.8).toInt(), (bmp!!.getHeight()*0.8).toInt(), true);

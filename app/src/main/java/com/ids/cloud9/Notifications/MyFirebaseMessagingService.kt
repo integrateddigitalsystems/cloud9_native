@@ -43,7 +43,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
                // Log.w(TAG, "Fetching FCM registration token failed", task.exception)
                 return@OnCompleteListener
             }
-            Log.wtf("TagNotf",task.result)
+            wtf(task.result)
             MyApplication.firebaseToken = task.result
             sendRegistrationToServer(task.result)
         })
@@ -56,7 +56,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message);
         wtf(Gson().toJson(message))
-        Log.d("msg", "onMessageReceived: " + message.getData().get("message"));
+        wtf("onMessageReceived: " + message.getData().get("message"))
         var remote = Gson().fromJson(Gson().toJson(message)
             ,RemoteMessageType::class.java)
 

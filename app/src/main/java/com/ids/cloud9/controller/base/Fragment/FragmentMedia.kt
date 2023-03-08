@@ -148,12 +148,12 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                     )
                 }
             } catch (ex: java.lang.Exception) {
-                Log.e("Save File", ex.message!!)
+                wtf(ex.message!!)
                 ex.printStackTrace()
             }
             return destinationFilename
         } catch (ex: java.lang.Exception) {
-            Log.wtf("createFile", "error")
+            wtf("error")
             return File("")
         }
     }
@@ -168,7 +168,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                 os.flush()
             }
         } catch (ex: java.lang.Exception) {
-            Log.e("Save File", ex.message!!)
+            wtf(ex.message!!)
             ex.printStackTrace()
         }
     }

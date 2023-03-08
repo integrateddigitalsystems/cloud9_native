@@ -87,4 +87,7 @@
     <string name="grant_setting_perm">Please grant permission from settings.</string>
     <string name="auth_error">Authentication Error</string>
     <string name="please_grant_permission">Please grant permission via Setting!</string>
+    <string name="failure">Failure</string>
+    <string name="loc_callback_removed">Location Callback removed.</string>
+    <string name="failed_rremove_loc">Failed to remove Location Callback.</string>
 </resources>

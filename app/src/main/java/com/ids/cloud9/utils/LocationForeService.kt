@@ -96,7 +96,7 @@ class LocationForeService : Service() {
     }
 
     override fun onCreate() {
-        Log.d(TAG, "onCreate()")
+        wtf("onCreate()")
 
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -162,7 +162,7 @@ class LocationForeService : Service() {
                             generateNotification())*/
                     }
                 } catch (ex: Exception) {
-                    Log.wtf("", ex.toString())
+                    wtf(ex.toString())
                 }
             }
 
@@ -171,7 +171,7 @@ class LocationForeService : Service() {
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        Log.d(TAG, "onStartCommand()")
+        wtf("onStartCommand()")
 
         val cancelLocationTrackingFromNotification =
             intent.getBooleanExtra(EXTRA_CANCEL_LOCATION_TRACKING_FROM_NOTIFICATION, false)
@@ -185,7 +185,6 @@ class LocationForeService : Service() {
     }
 
     override fun onBind(intent: Intent): IBinder {
-        Log.d(TAG, "onBind()")
 
         // MainActivity (client) comes into foreground and binds to service, so the service can
         // become a background services.
@@ -196,7 +195,6 @@ class LocationForeService : Service() {
     }
 
     override fun onRebind(intent: Intent) {
-        Log.d(TAG, "onRebind()")
 
         // MainActivity (client) returns to the foreground and rebinds to service, so the service
         // can become a background services.
@@ -207,14 +205,14 @@ class LocationForeService : Service() {
     }
 
     override fun onUnbind(intent: Intent): Boolean {
-        Log.d(TAG, "onUnbind()")
+
 
         // MainActivity (client) leaves foreground, so service needs to become a foreground service
         // to maintain the 'while-in-use' label.
         // NOTE: If this method is called due to a configuration change in MainActivity,
         // we do nothing.
         if (!configurationChange && MyApplication.saveLocTracking!!) {
-            Log.d(TAG, "Start foreground service")
+            wtf("Start foreground service")
             if(currentLocation!=null) {
                 val notification = generateNotification()
                 startForeground(NOTIFICATION_ID, notification)
@@ -238,7 +236,6 @@ class LocationForeService : Service() {
 
 
     override fun onDestroy() {
-        Log.d(TAG, "onDestroy()")
 
         /* val broadcastIntent = Intent()
          broadcastIntent.action = "restartservice"
@@ -361,7 +358,7 @@ class LocationForeService : Service() {
                 try{
                     currentLocation = location
                     Toast.makeText(applicationContext, "LOC CHANG---"+location.longitude+"--"+location.latitude, Toast.LENGTH_SHORT).show()
-                    Log.wtf("UPDATE_DESTORY",location.latitude.toString()+","+location.longitude.toString())
+                    wtf(location.latitude.toString()+","+location.longitude.toString())
                     MyApplication.address!!.lat=location.latitude.toString()
                     MyApplication.address!!.long=location.longitude.toString()}catch (e:Exception){}
                 generateNotification()
@@ -397,15 +394,15 @@ class LocationForeService : Service() {
             }
 
             override fun onProviderDisabled(provider: String) {
-                Log.wtf("test", provider)
+                wtf(provider)
             }
 
             override fun onProviderEnabled(provider: String) {
-                Log.wtf("test", provider)
+                wtf(provider)
             }
 
             override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
-                Log.wtf("test", provider)
+                wtf(provider)
             }
         }
 
@@ -455,7 +452,7 @@ class LocationForeService : Service() {
 
     }
     fun subscribeToLocationUpdates() {
-            Log.d(TAG, "subscribeToLocationUpdates()")
+
             try {
                 MyApplication.saveLocTracking = true
                 setUpLocations()
@@ -489,7 +486,7 @@ class LocationForeService : Service() {
 
 
         )
-        Log.wtf("TAG_UPDATE",Gson().toJson(visitLocationRequest))
+        wtf(Gson().toJson(visitLocationRequest))
         RetrofitClientAuth.client!!.create(
             RetrofitInterface::class.java
         ).createVisitLocation(
@@ -500,14 +497,14 @@ class LocationForeService : Service() {
                 response: Response<ResponseMessage>
             ) {
                 try {
-                    Log.wtf("LOCATION_UPDATE", response.body()!!.message)
+                    wtf(response.body()!!.message!!)
                 }catch (ex:Exception){
-                    Log.wtf("LOCATION_UPDATE", "error")
+                    wtf(getString(R.string.error_getting_data))
                 }
             }
 
             override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
-                Log.wtf("LOCATION_UPDATE","FAILURE")
+                wtf(getString(R.string.failure))
             }
 
         })
@@ -517,7 +514,6 @@ class LocationForeService : Service() {
 
 
     fun unsubscribeToLocationUpdates() {
-        Log.d(TAG, "unsubscribeToLocationUpdates()")
 
         notificationManager.cancel(NOTIFICATION_ID)
 
@@ -527,17 +523,17 @@ class LocationForeService : Service() {
                 mLocationManager!!.removeUpdates(locationListenerGps!!)
                 removeTask.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Log.d(TAG, "Location Callback removed.")
+                        wtf(getString(R.string.loc_callback_removed))
                         stopSelf()
                     } else {
-                        Log.d(TAG, "Failed to remove Location Callback.")
+                        wtf(getString(R.string.failed_rremove_loc))
                     }
                 }
 
                 MyApplication.saveLocTracking = false
             } catch (unlikely: SecurityException) {
                 MyApplication.saveLocTracking = true
-                Log.e(TAG, "Lost location permissions. Couldn't remove updates. $unlikely")
+                wtf("Lost location permissions. Couldn't remove updates. $unlikely")
             }
 
             this.stopSelf()
@@ -551,12 +547,11 @@ class LocationForeService : Service() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.wtf("auth", "signInAnonymously:success")
                     val user = auth.currentUser
                     setUpLocations()
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.wtf("auth", "signInAnonymously:failure+"+task.exception)
+                    wtf("signInAnonymously:failure+"+task.exception)
                     Toast.makeText(baseContext, getString(R.string.auth_error),
                         Toast.LENGTH_SHORT).show()
 
@@ -570,7 +565,6 @@ class LocationForeService : Service() {
      * Generates a BIG_TEXT_STYLE Notification that represent latest location.
      */
     private fun generateNotification(): Notification {
-        Log.d(TAG, "generateNotification()")
 
         // Main steps for building a BIG_TEXT_STYLE notification:
         //      0. Get data
@@ -581,7 +575,7 @@ class LocationForeService : Service() {
 
         // 0. Get data
         // val mainNotificationText = location?.toText() ?: AppHelper.getRemoteString("collecting_loc",this)
-        val mainNotificationText = AppHelper.getRemoteString("collecting_loc",this)
+        val mainNotificationText = getString(R.string.collecting_loc)
 
             val titleText =
                 currentLocation!!.latitude.toString() + ":" + currentLocation!!.longitude

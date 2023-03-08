@@ -1,103 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layoutAllTasks"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/layoutTool"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <include
-            android:id="@+id/llTool"
-            layout="@layout/toolbar_layout" />
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <include
+                android:id="@+id/llTool"
+                layout="@layout/toolbar_layout" />
 
         </LinearLayout>
 
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:id="@+id/srReccomendations"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
         <com.ids.cloud9.custom.CustomTextViewMedium
+            android:id="@+id/tvNotasks"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/tvNotasks"
-            android:textColor="@color/text_gray"
-            android:gravity="center_horizontal"
             android:layout_marginTop="@dimen/normal_margin"
-            android:text="@string/no_tasks_added_yet"/>
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvReccomendations"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/normal_margin" />
+            android:gravity="center_horizontal"
+            android:text="@string/no_tasks_added_yet"
+            android:textColor="@color/text_gray" />
 
 
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvReccomendations"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/normal_margin" />
 
-
-
+            </LinearLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
     </LinearLayout>
 
 
     <RelativeLayout
-        android:layout_marginBottom="@dimen/with_80"
-        android:background="@color/transparent"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/with_80"
+        android:background="@color/transparent">
 
 
         <androidx.cardview.widget.CardView
-            android:layout_marginEnd="@dimen/margin_start_end"
-            android:layout_alignParentEnd="true"
-            android:layout_width="@dimen/size_image_60"
             android:id="@+id/btAddReccomend"
-            app:cardElevation="@dimen/small_margin_padding"
+            android:layout_width="@dimen/size_image_60"
+            android:layout_height="@dimen/size_image_60"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/margin_start_end"
             android:foreground="?attr/selectableItemBackground"
             app:cardCornerRadius="@dimen/button_height"
-            android:layout_height="@dimen/size_image_60" >
+            app:cardElevation="@dimen/small_margin_padding">
 
 
+            <LinearLayout
+                android:id="@+id/llButton"
+                android:layout_width="@dimen/size_image_60"
+                android:layout_height="@dimen/size_image_60"
+                android:background="@color/colorPrimary"
+                android:gravity="center">
 
 
-        <LinearLayout
-            android:id="@+id/llButton"
-            android:background="@color/colorPrimary"
-            android:gravity="center"
-            android:layout_width="@dimen/size_image_60"
-            android:layout_height="@dimen/size_image_60">
+                <ImageView
+                    android:layout_width="@dimen/margin_30"
+                    android:layout_height="@dimen/margin_30"
+                    android:src="@drawable/plus"
+                    android:tint="@color/white" />
 
-
-            <ImageView
-                android:tint="@color/white"
-                android:layout_width="@dimen/margin_30"
-                android:layout_height="@dimen/margin_30"
-                android:src="@drawable/plus"/>
-
-        </LinearLayout>
+            </LinearLayout>
 
         </androidx.cardview.widget.CardView>
-
 
 
     </RelativeLayout>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/llLoading"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
-        <include
-            layout="@layout/loading" />
+        <include layout="@layout/loading" />
     </LinearLayout>
 </RelativeLayout>

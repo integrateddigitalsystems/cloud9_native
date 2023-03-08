@@ -113,7 +113,7 @@ class FragmentSignature : Fragment() {
         )
         var signs = arrayListOf<SignatureRequest>()
         signs.add(signatureRequest)
-        Log.wtf("LOGTAGE",Gson().toJson(signatureRequest))
+        wtf(Gson().toJson(signatureRequest))
         RetrofitClientAuth.client!!.create(
             RetrofitInterface::class.java
         ).saveSignature(

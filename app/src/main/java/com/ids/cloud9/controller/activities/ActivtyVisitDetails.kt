@@ -56,23 +56,23 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
     var CODE_VIDEO = 2
     var CODE_GALLERY = 3
     var visitId = 0
-    var fromNotf = false
+    var fromNotf = 0
     var code: Int? = -1
     val BLOCKED = -1
     var currLayout: LinearLayout? = null
     var currLayPost = 0
 
     override fun onBackPressed() {
-        if(fromNotf){
-            finishAffinity()
+        if(fromNotf>0){
             startActivity(
                 Intent(
                     this,
                     ActivityMain::class.java
                 )
             )
+            finishAffinity()
         }else{
-            onBackPressedDispatcher.onBackPressed()
+           finish()
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,7 +87,7 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
         binding!!.llTool.ivDrawer.hide()
         binding!!.llTool.layoutFragment.show()
         visitId = intent.getIntExtra("visitId",-1)
-        fromNotf = intent.getBooleanExtra("fromNotf",false)
+        fromNotf = intent.getIntExtra("fromNotf",0)
         AppHelper.setTextColor(this, binding!!.tvVisit, R.color.medium_blue)
         binding!!.llBorderVisit.hide()
         binding!!.llSelectedVisitBorder.show()
@@ -305,7 +305,17 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
             }
         }
         binding!!.llTool.btBack.setOnClickListener {
-            finish()
+            if(fromNotf>0){
+                startActivity(
+                    Intent(
+                        this,
+                        ActivityMain::class.java
+                    )
+                )
+                finishAffinity()
+            }else{
+               finish()
+            }
         }
     }
     override fun onItemClicked(view: View, position: Int) {

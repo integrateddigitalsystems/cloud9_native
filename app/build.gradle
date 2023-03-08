@@ -84,19 +84,19 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20"
     implementation "androidx.room:room-runtime:2.5.0"
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.3.3'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.3.5'
     implementation 'com.google.firebase:firebase-analytics-ktx:21.2.0'
     implementation 'junit:junit:4.13.2'
-    implementation 'androidx.databinding:databinding-runtime:7.4.1'
+    implementation 'androidx.databinding:databinding-runtime:7.4.2'
     kapt "androidx.room:room-compiler:2.5.0"
     implementation "androidx.room:room-ktx:2.5.0"
     implementation 'com.github.dhaval2404:imagepicker:2.1'
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.preference:preference-ktx:1.2.0'
@@ -105,16 +105,16 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:21.2.0'
     implementation 'com.google.firebase:firebase-config-ktx:21.2.1'
     implementation 'com.google.firebase:firebase-core:21.1.1'
-    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.1'
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.2'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.4'
     implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.2'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.4'
 
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.18.2'
-    implementation 'com.google.android.exoplayer:exoplayer-dash:2.18.2'
-    implementation 'com.google.android.exoplayer:exoplayer-hls:2.18.2'
-    implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.18.2'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.18.2'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.18.4'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.18.4'
+    implementation 'com.google.android.exoplayer:exoplayer-hls:2.18.4'
+    implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.18.4'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.18.4'
 
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
     implementation 'com.github.bumptech.glide:glide:4.13.2'
@@ -138,7 +138,7 @@ dependencies {
 
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    api 'com.squareup.okhttp3:okhttp:4.9.3'
+    api 'com.squareup.okhttp3:okhttp:5.0.0-alpha.9'
 
     implementation 'dev.b3nedikt.restring:restring:5.2.2'
     implementation 'dev.b3nedikt.applocale:applocale:3.0.0'

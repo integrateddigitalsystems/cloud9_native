@@ -32,8 +32,7 @@ object RetrofitClientAuth {
                 .create()
 
             /*if (retrofit == null) {*/
-            Log.wtf("the_Used_URL", BASE_URL)
-            var x = MyApplication.BASE_URL
+            wtf(BASE_URL)
             retrofit = Retrofit.Builder()
                 .baseUrl(MyApplication.BASE_URL)
                 .client(requestHeader)
