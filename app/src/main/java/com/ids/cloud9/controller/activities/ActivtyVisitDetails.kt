@@ -3,16 +3,18 @@ package com.ids.cloud9.controller.activities
 import android.Manifest
 import android.animation.AnimatorSet
 import android.app.Activity
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.location.Location
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Log
@@ -24,6 +26,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
@@ -37,7 +41,7 @@ import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.custom.AppCompactBase
 import com.ids.cloud9.databinding.ActivityVisitDetailsBinding
-import com.ids.cloud9.databinding.ReasonDialogBinding
+
 import com.ids.cloud9.model.*
 import com.ids.cloud9.utils.*
 import retrofit2.Call
@@ -51,17 +55,34 @@ import java.util.*
 class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
 
     var binding: ActivityVisitDetailsBinding? = null
-    lateinit var mPermissionResult: ActivityResultLauncher<Intent>
+    private lateinit var foregroundOnlyBroadcastReceiver: ForegroundOnlyBroadcastReceiver
+    private var foregroundOnlyLocationServiceBound = false
     var CODE_CAMERA = 1
     var CODE_VIDEO = 2
+    var foregroundOnlyLocationService: LocationForeService? = null
+    val BLOCKED = -1
+    val GRANTED = 0
+    val DENIED = 1
+    val BLOCKED_OR_NEVER_ASKED = 2
+    var mPermissionResult: ActivityResultLauncher<Array<String>>? = null
+    lateinit var mPermissionResult2: ActivityResultLauncher<Intent>
     var CODE_GALLERY = 3
     var visitId = 0
     var fromNotf = 0
     var code: Int? = -1
-    val BLOCKED = -1
     var currLayout: LinearLayout? = null
     var currLayPost = 0
 
+    private inner class ForegroundOnlyBroadcastReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val location = intent.getParcelableExtra<Location>(
+                LocationForeService.EXTRA_LOCATION
+            )
+            if (location != null) {
+                wtf("Foreground location: ${location.toText()}")
+            }
+        }
+    }
     override fun onBackPressed() {
         if(fromNotf>0){
             startActivity(
@@ -81,6 +102,8 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
         setContentView(binding!!.root)
         init()
         setUp()
+        setUpPermission()
+        foregroundOnlyBroadcastReceiver = ForegroundOnlyBroadcastReceiver()
         listeners()
     }
     fun init() {
@@ -95,6 +118,151 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
     }
 
 
+    fun setUpPermission() {
+        mPermissionResult =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions())
+            { result ->
+                var permission = false
+                for (item in result) {
+                    permission = item.value
+                }
+                if (permission) {
+
+                } else {
+                    toast(getString(R.string.location_updates_disabled))
+                    for (item in result) {
+                        if (ContextCompat.checkSelfPermission(
+                                this,
+                                item.key
+                            ) == BLOCKED
+                        ) {
+
+                            if (getPermissionStatus(Manifest.permission.ACCESS_FINE_LOCATION) == BLOCKED_OR_NEVER_ASKED) {
+                                Toast.makeText(
+                                    this,
+                                    getString(R.string.please_grant_permission),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+    }
+    private fun foregroundPermissionApproved(): Boolean {
+        return PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
+    }
+    private fun openChooser() {
+        mPermissionResult!!.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        )
+    }
+    fun changeState(track: Boolean, indx: Int) {
+        var gps_enabled = false
+        var mLocationManager =
+            getSystemService(LOCATION_SERVICE) as LocationManager
+
+        try {
+            gps_enabled = mLocationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        } catch (ex: Exception) {
+        }
+        if (gps_enabled) {
+            if (!track) {
+                MyApplication.saveLocTracking = false
+                try {
+                    foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
+                    val intent = Intent()
+                    intent.setClass(this, LocationForeService::class.java)
+                    stopService(intent)
+                } catch (ex: Exception) {
+                }
+            } else {
+                try {
+                    // TODO: Step 1.0, Review Permissions: Checks and requests if needed.
+                    if (foregroundPermissionApproved()) {
+
+                        MyApplication.saveLocTracking = true
+                        foregroundOnlyLocationService?.subscribeToLocationUpdates()
+                            ?: run {
+                                wtf("Service Not Bound")
+                            }
+                    } else {
+                        AppHelper.createYesNoDialog(
+                            this,
+                            getString(R.string.permission_background_android),
+                            0
+                        ){
+                            openChooser()
+                        }
+                    }
+                } catch (ex: Exception) {
+                    wtf(ex.toString())
+                }
+            }
+        }
+    }
+    override fun onStop() {
+        if (foregroundOnlyLocationServiceBound) {
+            unbindService(foregroundOnlyServiceConnection)
+            foregroundOnlyLocationServiceBound = false
+        }
+        super.onStop()
+    }
+    private val foregroundOnlyServiceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName, service: IBinder) {
+            val binder = service as LocationForeService.LocalBinder
+            foregroundOnlyLocationService = binder.foreService
+            foregroundOnlyLocationServiceBound = true
+            if (MyApplication.saveLocTracking!!)
+                changeState(true, 0)
+        }
+        override fun onServiceDisconnected(name: ComponentName) {
+            foregroundOnlyLocationService = null
+            foregroundOnlyLocationServiceBound = false
+        }
+    }
+    override fun onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(
+            foregroundOnlyBroadcastReceiver
+        )
+        super.onPause()
+    }
+    override fun onStart() {
+        super.onStart()
+        MyApplication.serviceContext = this
+        val serviceIntent = Intent(this, LocationForeService::class.java)
+        bindService(serviceIntent, foregroundOnlyServiceConnection, Context.BIND_AUTO_CREATE)
+    }
+    override fun onResume() {
+        super.onResume()
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+            foregroundOnlyBroadcastReceiver,
+            IntentFilter(
+                LocationForeService.ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST
+            )
+        )
+    }
+    fun getPermissionStatus(androidPermissionName: String?): Int {
+        return if (ContextCompat.checkSelfPermission(
+                this,
+                androidPermissionName!!
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    androidPermissionName
+                )
+            ) {
+                BLOCKED_OR_NEVER_ASKED
+            } else DENIED
+        } else GRANTED
+    }
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -116,8 +284,8 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
                             for (item in permissions) {
                                 var x = checkSelfPermission(item)
                                 if (checkSelfPermission(item) == BLOCKED) {
-                                    mPermissionResult.launch(
-                                        Intent(android.provider.Settings.ACTION_SETTINGS)
+                                    mPermissionResult2!!.launch(
+                                        Intent(android.provider.Settings.ACTION_SETTINGS)!!
                                     )
 
                                     toast(

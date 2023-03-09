@@ -32,33 +32,35 @@
             android:gravity="center_vertical"
             android:textColor="@color/text_color"
             android:textSize="@dimen/normal_font"
+            android:layout_marginEnd="@dimen/small_margin_padding"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/status_reason"/>
 
         <RelativeLayout
-            android:background="@drawable/light_rounded_border"
+            android:id="@+id/rlStatusSpinner"
+            android:layout_marginStart="@dimen/small_margin_padding"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_40"
             android:layout_weight="1">
 
             <com.ids.cloud9.custom.CustomTextViewMedium
                 android:id="@+id/tvStatreason"
+                android:padding="@dimen/mini_radius"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/normal_margin_padding"
                 android:gravity="center_vertical"
                 android:text=""
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/normal_font" />
 
             <Spinner
+                android:background="@drawable/light_rounded_border"
                 android:id="@+id/spStatusReason"
                 android:dropDownVerticalOffset="@dimen/big_margin"
                 android:popupBackground="@drawable/white_light_rounded"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/transparent"/>
+                android:layout_height="match_parent" />
 
 
             <ImageView
@@ -96,6 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:layout_marginEnd="@dimen/small_margin_padding"
                 android:gravity="center_vertical"
                 android:text="@string/visit_date"
                 android:textColor="@color/text_color"
@@ -105,6 +108,7 @@
                 android:layout_weight="1"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/normal_font"
+                android:layout_marginStart="@dimen/small_margin_padding"
                 android:layout_width="match_parent"
                 android:id="@+id/tvVisitDate"
                 android:layout_height="match_parent"
@@ -128,12 +132,14 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
+            android:layout_marginEnd="@dimen/small_margin_padding"
             android:text="@string/from_time"
             android:textColor="@color/text_color"
             android:textSize="@dimen/normal_font" />
 
         <com.ids.cloud9.custom.CustomTextViewMedium
             android:layout_weight="1"
+            android:layout_marginStart="@dimen/small_margin_padding"
             android:textColor="@color/text_color"
             android:textSize="@dimen/normal_font"
             android:layout_width="match_parent"
@@ -158,6 +164,7 @@
             android:layout_weight="1"
             android:textColor="@color/text_color"
             android:textSize="@dimen/normal_font"
+            android:layout_marginEnd="@dimen/small_margin_padding"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
@@ -167,6 +174,7 @@
             android:layout_weight="1"
             android:id="@+id/tvToTime"
             android:textColor="@color/text_color"
+            android:layout_marginStart="@dimen/small_margin_padding"
             android:textSize="@dimen/normal_font"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -267,7 +275,7 @@
                 android:id="@+id/tvActualArrivalTime"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/normal_margin_padding"
+                android:paddingStart="@dimen/normal_margin_padding"
                 android:gravity="center_vertical"
                 android:text=""
                 android:textColor="@color/text_color"
@@ -282,6 +290,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/settings_item_height"
                 android:rotation="90"
+                android:visibility="gone"
                 android:src="@drawable/arrow_submit"
                />
 
@@ -321,7 +330,7 @@
                 android:id="@+id/tvActualCompletedTime"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/normal_margin_padding"
+                android:paddingStart="@dimen/normal_margin_padding"
                 android:gravity="center_vertical"
                 android:text=""
                 android:textColor="@color/text_color"
@@ -332,6 +341,7 @@
             <ImageView
                 android:layout_width="@dimen/radius_10"
                 android:layout_height="@dimen/radius_10"
+                android:visibility="gone"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/settings_item_height"

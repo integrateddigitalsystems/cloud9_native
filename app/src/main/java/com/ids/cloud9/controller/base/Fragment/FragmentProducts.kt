@@ -78,7 +78,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
     }
     fun init() {
         getProducts()
-        if (MyApplication.selectedVisit!!.reasonId == AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.ON_THE_WAY_REASON_ID) {
+        if (MyApplication.selectedVisit!!.reasonId == AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.ON_THE_WAY_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.SCHEDULED_REASON_ID) {
             binding!!.llButton.setBackgroundResource(R.color.disabled_primary)
             binding!!.btAddProducts.isEnabled = false
         }

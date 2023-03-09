@@ -230,7 +230,15 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                 ) {
                     binding!!.llLoading.hide()
                     MyApplication.selectedVisit = edtitVisit
-                    AppHelper.createDialogPositive(requireActivity(), response.body()!!.message!!)
+                    if(edtitVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID || !response.body()!!.message.equals("Visit updated successfully")){
+                        AppHelper.createDialogPositive(requireActivity(), response.body()!!.message!!)
+                    }else{
+                        AppHelper.createDialogAgain(requireActivity(), response.body()!!.message!!){
+                            MyApplication.onTheWayVisit = edtitVisit
+                            (requireActivity() as ActivtyVisitDetails).changeState(true,0)
+                        }
+                    }
+
                 }
 
                 override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
@@ -422,7 +430,16 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                     item.selectable = false
         } else if (edtitVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID) {
             binding!!.spStatusReason.hide()
+            binding!!.ivArrowSpin.hide()
+            binding!!.rlStatusSpinner.setBackgroundResource(R.drawable.disabled_rounded)
             binding!!.tvStatreason.text = getString(R.string.completed)
+            binding!!.etRemark.isEnabled = false
+            binding!!.etRemark.setTextColor(AppHelper.getColor(requireContext(),R.color.text_color))
+            binding!!.etRemark.setBackgroundResource(R.drawable.disabled_rounded)
+            binding!!.tvActualArrivalTime.setBackgroundResource(R.drawable.disabled_rounded)
+            binding!!.tvActualArrivalTime.setTextColor(AppHelper.getColor(requireContext(),R.color.text_color))
+            binding!!.tvActualCompletedTime.setBackgroundResource(R.drawable.disabled_rounded)
+            binding!!.tvActualCompletedTime.setTextColor(AppHelper.getColor(requireContext(),R.color.text_color))
         } else if (edtitVisit!!.reasonId == AppConstants.PENDING_REASON_ID) {
             setUpStatusReasonSpinner()
             for (item in arrSpinner)
