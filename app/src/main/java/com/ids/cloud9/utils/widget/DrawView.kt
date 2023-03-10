@@ -252,7 +252,8 @@ class DrawView @JvmOverloads constructor(
 
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                MyApplication.isSignatureEmpty=false
+                MyApplication.isSignatureEmptyClient=false
+                MyApplication.isSignatureEmptyClient = false
                 mStartX = x
                 mStartY = y
                 actionDown(x, y)

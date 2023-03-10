@@ -83,11 +83,13 @@
     <string name="_select_">--Select--</string>
     <string name="completed">Completed</string>
     <string name="no_data">No Data</string>
-    <string name="collecting_loc">Collecting location date</string>
+    <string name="collecting_loc">Collecting location data</string>
     <string name="grant_setting_perm">Please grant permission from settings.</string>
     <string name="auth_error">Authentication Error</string>
     <string name="please_grant_permission">Please grant permission via Setting!</string>
     <string name="failure">Failure</string>
     <string name="loc_callback_removed">Location Callback removed.</string>
     <string name="failed_rremove_loc">Failed to remove Location Callback.</string>
+    <string name="visit_succ">Visit updated successfully</string>
+    <string name="visit_arrived_completed">Visit has not arrived , or is already completed.</string>
 </resources>

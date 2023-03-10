@@ -152,9 +152,6 @@ class LocationForeService : Service() {
                         startForeground(NOTIFICATION_ID, generateNotification())
                     }
 
-
-                    Toast.makeText(applicationContext, "LOC CHANG---"+locationResult.lastLocation!!.longitude+"--"+locationResult.lastLocation!!.latitude, Toast.LENGTH_SHORT).show()
-
                     changeLocation(currentLocation!!)
                     if (serviceRunningInForeground) {
                         /*notificationManager.notify(
@@ -334,7 +331,6 @@ class LocationForeService : Service() {
                 if (location != null) {
                     currentLocation = location
                     changeLocation(currentLocation!!)
-                    Toast.makeText(applicationContext, "LOC CHANG---"+location.longitude+"--"+location.latitude, Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(applicationContext, "cannot detect location", Toast.LENGTH_SHORT)
                         .show()
@@ -357,7 +353,6 @@ class LocationForeService : Service() {
             override fun onLocationChanged(location: Location) {
                 try{
                     currentLocation = location
-                    Toast.makeText(applicationContext, "LOC CHANG---"+location.longitude+"--"+location.latitude, Toast.LENGTH_SHORT).show()
                     wtf(location.latitude.toString()+","+location.longitude.toString())
                     MyApplication.address!!.lat=location.latitude.toString()
                     MyApplication.address!!.long=location.longitude.toString()}catch (e:Exception){}
@@ -479,7 +474,7 @@ class LocationForeService : Service() {
         var visitLocationRequest = VisitLocationRequest(
             MyApplication.userItem!!.applicationUserId!!.toInt(),
             0,
-            false,
+            true,
             location.latitude ,
             location.longitude ,
             MyApplication.onTheWayVisit!!.id!!
@@ -628,9 +623,9 @@ class LocationForeService : Service() {
 
             currNotf = notificationCompatBuilder
                 .setStyle(bigTextStyle)
-                .setContentTitle(titleText)
+                //.setContentTitle(titleText)
                 .setContentText(mainNotificationText)
-                .setSmallIcon(com.ids.cloud9.R.drawable.google)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setOngoing(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)

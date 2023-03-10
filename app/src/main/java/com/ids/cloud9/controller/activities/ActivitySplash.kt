@@ -54,7 +54,9 @@ class ActivitySplash : Activity() {
                 if (task.isSuccessful) {
                     setUpFirebase()
                 } else {
-                    AppHelper.createDialogAgain(this, getString(R.string.error_getting_data)) {
+                    createRetryDialog(
+                        getString(R.string.error_getting_data)) {
+                        startFirebase()
                     }
                 }
     }
@@ -173,8 +175,7 @@ class ActivitySplash : Activity() {
             it.version.toDouble() == BuildConfig.VERSION_NAME.toDouble()
         }
         if (MyApplication.mobileConfig == null) {
-            AppHelper.createDialogAgain(
-                this,
+            createRetryDialog(
                 getString(R.string.error_getting_data)
             ) {
                 startFirebase()

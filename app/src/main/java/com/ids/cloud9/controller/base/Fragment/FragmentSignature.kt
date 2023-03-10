@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
+import com.ids.cloud9.custom.MyDrawView
 import com.ids.cloud9.databinding.LayoutSignatureBinding
 import com.ids.cloud9.model.ResponseMessage
 import com.ids.cloud9.model.SignatureList
@@ -27,6 +28,8 @@ import java.util.Calendar
 class FragmentSignature : Fragment() {
     var emEy : SignatureListItem ?=null
     var emCl : SignatureListItem ?=null
+    var myDrawViewEmpl : MyDrawView ?=null
+    var myDrawViewClient : MyDrawView ?=null
     var simpDate = SimpleDateFormat("yyyy-MM-dd_hhmmaa")
     var simpDateSec = SimpleDateFormat("ss")
     var binding : LayoutSignatureBinding?=null
@@ -61,29 +64,41 @@ class FragmentSignature : Fragment() {
     }
     fun listeners(){
         binding!!.redoClient.setOnClickListener {
-            binding!!.drawClient.redo()
+           myDrawViewClient!!.onClickRedo()
         }
         binding!!.undoClient.setOnClickListener {
-            binding!!.drawClient.undo()
+            myDrawViewClient!!.onClickUndo()
         }
         binding!!.redoEmployee.setOnClickListener {
-            binding!!.drawEmployee.redo()
+            myDrawViewEmpl!!.onClickRedo()
         }
         binding!!.undoEmployee.setOnClickListener {
-            binding!!.drawEmployee.undo()
+            myDrawViewEmpl!!.onClickUndo()
         }
         binding!!.btClearClient.setOnClickListener {
-            if(binding!!.drawClient.visibility == View.VISIBLE)
-                binding!!.drawClient.clearCanvas()
-            else{
+            if(binding!!.drawClient.visibility == View.VISIBLE) {
+                try{
+                    binding!!.drawClient.removeView(myDrawViewClient)
+                }catch (ex:Exception){
+
+                }
+                addClientSign()
+                MyApplication.isSignatureEmptyClient = true
+            }else{
                 binding!!.drawClient.show()
                 binding!!.ivSelectedDrawClient.hide()
             }
         }
         binding!!.btClearEmployee.setOnClickListener {
-            if(binding!!.drawEmployee.visibility == View.VISIBLE)
-                binding!!.drawEmployee.clearCanvas()
-            else{
+            if(binding!!.drawEmployee.visibility == View.VISIBLE) {
+                try{
+                    binding!!.drawEmployee.removeView(myDrawViewEmpl)
+                }catch (ex:Exception){
+
+                }
+                addEmplSign()
+                MyApplication.isSignatureEmptyEmp = true
+            }else{
                 binding!!.drawEmployee.show()
                 binding!!.ivSelectedDrawEmployee.hide()
             }
@@ -125,9 +140,9 @@ class FragmentSignature : Fragment() {
                     response: Response<ResponseMessage>
                 ) {
                     if(response.body()!!.success.equals("true")){
-                        AppHelper.createDialogPositive(requireActivity(),response.body()!!.message!!)
+                        createDialog(response.body()!!.message!!)
                     }else{
-                        AppHelper.createDialogPositive(requireActivity(),response.body()!!.message!!)
+                        createDialog(response.body()!!.message!!)
                     }
                     binding!!.llLoading.hide()
                 }
@@ -137,8 +152,18 @@ class FragmentSignature : Fragment() {
             }
         )
     }
+    fun addEmplSign(){
+        myDrawViewEmpl = MyDrawView(requireActivity())
+        binding!!.drawEmployee.addView(myDrawViewEmpl)
+    }
+    fun addClientSign(){
+        myDrawViewClient = MyDrawView(requireActivity())
+        binding!!.drawClient.addView(myDrawViewClient)
+    }
     fun init(){
         getSignatures()
+        addEmplSign()
+        addClientSign()
         if(MyApplication.selectedVisit!!.reasonId == AppConstants.PENDING_REASON_ID)
         {
             binding!!.drawEmployee.hide()

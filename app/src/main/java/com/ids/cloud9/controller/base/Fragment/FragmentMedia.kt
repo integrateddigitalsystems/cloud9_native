@@ -276,8 +276,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                 ) {
                     binding!!.llLoading.hide()
                     try {
-                        AppHelper.createDialogAgain(
-                            requireActivity(),
+                        requireContext().createRetryDialog(
                             response.body()!!.message!!
                         ) {
                             getSignatures()
@@ -346,8 +345,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                     response: Response<ResponseMessage>
                 ) {
                     try {
-                        AppHelper.createDialogPositive(
-                            requireActivity(),
+                        createDialog(
                             response.body()!!.message!!
                         )
                         if (response.body()!!.success.equals("true")) {
@@ -369,11 +367,10 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.btClose) {
             if (MyApplication.selectedVisit!!.reasonId != AppConstants.PENDING_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID) {
-                AppHelper.createYesNoDialog(
-                    requireActivity(),
+                requireContext().createActionDialog(
                     getString(R.string.sure_delete_media),
                     0
-                ) {
+                ){
                     deleteMedia(position)
                 }
             }

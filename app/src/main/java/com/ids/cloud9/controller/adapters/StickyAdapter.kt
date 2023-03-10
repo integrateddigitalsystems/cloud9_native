@@ -85,27 +85,27 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<Visit>, clic
             binding.tvCompany.text = child.company!!.companyName
             when (child.reasonId){
                 AppConstants.COMPLETED_REASON_ID -> {
-                    binding.tvStatus.setBackgroundResource(R.color.comp_bg)
+                    binding.tvStatus.setBackgroundResource(R.drawable.completed_bg)
                     AppHelper.setTextColor(mContext,binding.tvStatus,R.color.comp_text)
                     binding.tvStatus.text = AppConstants.COMPLETED_REASON
                 }
                 AppConstants.SCHEDULED_REASON_ID -> {
-                    binding.tvStatus.setBackgroundResource(R.color.scheduled_bg)
+                    binding.tvStatus.setBackgroundResource(R.drawable.scheduled_bg)
                     AppHelper.setTextColor(mContext,binding.tvStatus,R.color.scheduled_text)
                     binding.tvStatus.text = AppConstants.SCHEDULED_REASON
                 }
                 AppConstants.ON_THE_WAY_REASON_ID -> {
-                    binding.tvStatus.setBackgroundResource(R.color.on_the_way_bg)
+                    binding.tvStatus.setBackgroundResource(R.drawable.on_the_way_bg)
                     AppHelper.setTextColor(mContext,binding.tvStatus,R.color.otw_text)
                     binding.tvStatus.text = AppConstants.ON_THE_WAY_REASON
                 }
                 AppConstants.ARRIVED_REASON_ID -> {
-                    binding.tvStatus.setBackgroundResource(R.color.arrived_bg)
+                    binding.tvStatus.setBackgroundResource(R.drawable.arrived_bg)
                     AppHelper.setTextColor(mContext,binding.tvStatus,R.color.arrived_text)
                     binding.tvStatus.text = AppConstants.ARRIVED_REASON
                 }
                 AppConstants.PENDING_REASON_ID -> {
-                    binding.tvStatus.setBackgroundResource(R.color.pending_bg)
+                    binding.tvStatus.setBackgroundResource(R.drawable.pending_bg)
                     AppHelper.setTextColor(mContext,binding.tvStatus,R.color.pending_text)
                     binding.tvStatus.text = AppConstants.PENDING_REASON
                 }

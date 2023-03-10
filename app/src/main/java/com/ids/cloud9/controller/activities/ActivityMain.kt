@@ -132,12 +132,11 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                                     wtf("Service Not Bound")
                                 }
                     } else {
-                        AppHelper.createYesNoDialog(
-                            this,
+                        createActionDialog(
                             getString(R.string.permission_background_android),
                             0
                         ){
-                           openChooser()
+                            openChooser()
                         }
                     }
                 } catch (ex: Exception) {
@@ -299,7 +298,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
         val filter = IntentFilter("msg")
         registerReceiver(mBroadcastReceiver, filter)
         getVisits()
-        setUpDate()
+        //setUpDate()
     }
     override fun onStart() {
         super.onStart()
@@ -390,7 +389,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                     MyApplication.allVisits.clear()
                     MyApplication.allVisits.addAll(response.body()!!)
                     var visit = mainArray.find {
-                        it.reasonId == AppConstants.ON_THE_WAY_REASON_ID
+                        it.reasonId == AppConstants.ON_THE_WAY_REASON_ID || it.reasonId == AppConstants.ARRIVED_REASON_ID
                     }
                     MyApplication.onTheWayVisit = visit
                     if(visit!=null)
@@ -411,7 +410,10 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             binding!!.drawerLayout.openDrawer(GravityCompat.START)
         }
         binding!!.drawerMenu.llLogout.setOnClickListener {
-            AppHelper.createYesNoDialog(this,getString(R.string.sure_logout),0){
+            createActionDialog(
+                getString(R.string.sure_logout),
+                0
+            ){
                 try {
                     foregroundOnlyLocationService!!.unsubscribeToLocationUpdates()
                     val intent = Intent()
@@ -460,7 +462,10 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
         }
         onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                AppHelper.createYesNoDialog(this@ActivityMain,getString(R.string.are_you_sure_exit),0){
+                createActionDialog(
+                    getString(R.string.are_you_sure_exit),
+                    0
+                ){
                     finish()
                 }
             }

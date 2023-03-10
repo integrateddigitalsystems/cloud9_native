@@ -102,27 +102,15 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                 binding!!.tvActualCompletedTime.text = ""
 
             if (edtitVisit!!.actualDuration != null) {
-                var dur = edtitVisit!!.actualDuration!!.toLong()
-                var mins = dur / 60000
-                var hours = mins / 60
-                var min = mins % 60
-                binding!!.tvActualDurtionTime.text = if (hours > 0) {
-                    hours.toString() + " hrs " + (if (min > 0)
-                        min.toString() + " mins"
-                    else
-                        "")
-                } else {
-                    if (min > 0)
-                        min.toString() + " mins"
-                    else
-                        ""
-                }
+                binding!!.tvActualDurtionTime.text = edtitVisit!!.actualDuration.toString()
             } else
                 binding!!.tvActualDurtionTime.text = ""
             if (!edtitVisit!!.remark.isNullOrEmpty())
                 binding!!.etRemark.text = edtitVisit!!.remark!!.toEditable()
             else
                 binding!!.etRemark.text = "".toEditable()
+
+            (requireActivity() as ActivtyVisitDetails).binding!!.llTool.tvTitleTool.text = edtitVisit!!.title!!
 
         } catch (ex: Exception) {
             wtf("The message")
@@ -220,7 +208,8 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         binding!!.llLoading.show()
         for (item in edtitVisit!!.visitResources)
             item.id = 0
-        wtf(Gson().toJson(edtitVisit))
+        var str = Gson().toJson(edtitVisit)
+        wtf(str)
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
             .updateVisit(edtitVisit!!)
             .enqueue(object : Callback<ResponseMessage> {
@@ -230,13 +219,25 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                 ) {
                     binding!!.llLoading.hide()
                     MyApplication.selectedVisit = edtitVisit
-                    if(edtitVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID || !response.body()!!.message.equals("Visit updated successfully")){
-                        AppHelper.createDialogPositive(requireActivity(), response.body()!!.message!!)
+                    if(edtitVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID && edtitVisit!!.reasonId!=AppConstants.ARRIVED_REASON_ID&&edtitVisit!!.reasonId!=AppConstants.COMPLETED_REASON_ID || !response.body()!!.message.equals("Visit updated successfully")){
+                        createDialog( response.body()!!.message!!)
+                    }else if(edtitVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID) {
+                        requireContext().createRetryDialog(
+                            response.body()!!.message!!){
+                            MyApplication.onTheWayVisit = edtitVisit
+                            (requireActivity() as ActivtyVisitDetails).changeState(false,0)
+                        }
                     }else{
-                        AppHelper.createDialogAgain(requireActivity(), response.body()!!.message!!){
+                        requireContext().createRetryDialog(
+                            response.body()!!.message!!){
                             MyApplication.onTheWayVisit = edtitVisit
                             (requireActivity() as ActivtyVisitDetails).changeState(true,0)
                         }
+                    }
+
+                    if(response.body()!!.message.equals(getString(R.string.visit_succ))){
+                        initialData()
+                        setUpVisitDetails()
                     }
 
                 }
@@ -382,6 +383,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
     }
 
     fun initialData() {
+        arrSpinner.clear()
         arrSpinner.add(
             ItemSpinner(
                 AppConstants.SCHEDULED_REASON_ID,

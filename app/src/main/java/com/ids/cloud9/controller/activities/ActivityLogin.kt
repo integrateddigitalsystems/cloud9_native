@@ -49,12 +49,12 @@ class ActivityLogin : AppCompactBase() {
         binding!!.btLogin.setOnClickListener {
             if(!binding!!.etEmail.text.toString().isNullOrEmpty() && !binding!!.etPassword.text.toString().isNullOrEmpty()) {
                 if(!binding!!.etEmail.text.toString().isEmailValid()){
-                    AppHelper.createDialogPositive(this,getString(R.string.email_invalid))
+                    createDialog(getString(R.string.email_invalid))
                 }else {
                     login(binding!!.etEmail.text.toString(), binding!!.etPassword.text.toString())
                 }
             }else{
-                AppHelper.createDialogPositive(this,getString(R.string.fill_details))
+                createDialog(getString(R.string.fill_details))
             }
         }
         binding!!.btShowPassword.setOnClickListener {

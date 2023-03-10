@@ -172,7 +172,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
                 call: Call<ResponseMessage>,
                 response: Response<ResponseMessage>
             ) {
-                AppHelper.createDialogPositive(requireActivity(), response.body()!!.message!!)
+                createDialog( response.body()!!.message!!)
 
                 if (response.body()!!.success.equals("true"))
                     getProducts()
@@ -185,7 +185,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
     }
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.btEditProduct) {
-            if (MyApplication.selectedVisit!!.reasonId != AppConstants.PENDING_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID) {
+            if (MyApplication.selectedVisit!!.reasonId == AppConstants.ARRIVED_REASON_ID) {
                 MyApplication.selectedProduct = arrayProd.get(position)
                 startActivity(
                     Intent(
@@ -195,12 +195,11 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
                 )
             }
         } else if (view.id == R.id.btClose) {
-            if (MyApplication.selectedVisit!!.reasonId != AppConstants.PENDING_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID) {
-                AppHelper.createYesNoDialog(
-                    requireActivity(),
+            if (MyApplication.selectedVisit!!.reasonId == AppConstants.ARRIVED_REASON_ID) {
+                requireContext().createActionDialog(
                     getString(R.string.you_wanna_delete),
                     0
-                ) {
+                ){
                     deleteProduct(position)
                 }
             }

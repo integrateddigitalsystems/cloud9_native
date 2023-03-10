@@ -94,8 +94,7 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
             popupDate()
         }
         binding!!.lLDelete.setOnClickListener {
-            AppHelper.createYesNoDialog(
-                this,
+            createActionDialog(
                 getString(R.string.you_wanna_delete),
                 0
             ){
@@ -111,7 +110,7 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
                 if(binding!!.etSubject.text!!.length >=5)
                     createReccomend()
                 else{
-                    AppHelper.createDialogPositive(this, getString(R.string.less_than_5))
+                    createDialog( getString(R.string.less_than_5))
                 }
 
             } else if (!binding!!.etSubject.text.toString()
@@ -123,10 +122,10 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
                 if(binding!!.etSubject.text!!.length >=5)
                     updateReccomend()
                 else{
-                    AppHelper.createDialogPositive(this, getString(R.string.less_than_5))
+                    createDialog( getString(R.string.less_than_5))
                 }
             } else {
-                AppHelper.createDialogPositive(this, getString(R.string.fill_details))
+                createDialog( getString(R.string.fill_details))
             }
         }
         if (MyApplication.selectedReccomend == null) {
@@ -158,15 +157,12 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
                     response: Response<ResponseMessage>
                 ) {
                     if (response.body()!!.success.equals("true")) {
-                        AppHelper.createDialogAgain(
-                            this@ActivityAddReccomendations,
-                            response.body()!!.message!!
+                        createRetryDialog( response.body()!!.message!!
                         ) {
                             finish()
                         }
                     } else {
-                        AppHelper.createDialogPositive(
-                            this@ActivityAddReccomendations,
+                        createDialog(
                             response.body()!!.message!!
                         )
                         binding!!.llLoading.hide()
@@ -228,16 +224,14 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
                     response: Response<ResponseMessage>
                 ) {
                     if (response.body()!!.success.equals("true")) {
-                        AppHelper.createDialogAgain(
-                            this@ActivityAddReccomendations,
+                        createRetryDialog(
                             response.body()!!.message!!
                         ) {
                             finish()
                         }
                     } else {
                         binding!!.llLoading.hide()
-                        AppHelper.createDialogPositive(
-                            this@ActivityAddReccomendations,
+                        createDialog(
                             response.body()!!.message!!
                         )
                     }

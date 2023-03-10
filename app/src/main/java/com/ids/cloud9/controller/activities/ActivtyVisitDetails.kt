@@ -193,8 +193,7 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
                                 wtf("Service Not Bound")
                             }
                     } else {
-                        AppHelper.createYesNoDialog(
-                            this,
+                        createActionDialog(
                             getString(R.string.permission_background_android),
                             0
                         ){

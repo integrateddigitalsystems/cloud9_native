@@ -4,6 +4,7 @@ package com.ids.cloud9.utils
 
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.location.Location
 import android.text.Editable
@@ -14,6 +15,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.ids.cloud9.BuildConfig
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
@@ -51,6 +53,52 @@ fun TextView.setCheckText(message: String){
    }catch (ex:Exception){
        this.text = ""
    }
+}
+fun Activity.createDialog( message: String) {
+
+    val builder = AlertDialog.Builder(this)
+    builder
+        .setMessage(message)
+        .setCancelable(true)
+        .setNegativeButton(this.getString(R.string.ok)) { dialog, _ -> dialog.cancel() }
+    val alert = builder.create()
+    alert.show()
+}
+fun Context.createRetryDialog(message: String,doAction: () -> Unit){
+    val builder = AlertDialog.Builder(this)
+    builder
+        .setMessage(message)
+        .setCancelable(true)
+        .setNegativeButton(this.getString(R.string.ok)) { dialog, _ ->
+           doAction()
+        }
+    val alert = builder.create()
+    alert.show()
+}
+fun Context.createActionDialog(message: String,position: Int, doAction: (position: Int) -> Unit) {
+
+    val builder = AlertDialog.Builder(this)
+    builder
+        .setMessage(message)
+        .setCancelable(true)
+        .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+            dialog.cancel()
+        }
+        .setPositiveButton(getString(R.string.yes)) { dialog, _ ->
+            doAction(position)
+        }
+    val alert = builder.create()
+    alert.show()
+}
+fun Fragment.createDialog(message: String) {
+
+    val builder = AlertDialog.Builder(requireActivity())
+    builder
+        .setMessage(message)
+        .setCancelable(true)
+        .setNegativeButton(this.getString(R.string.ok)) { dialog, _ -> dialog.cancel() }
+    val alert = builder.create()
+    alert.show()
 }
 fun ImageView.setTintImage(color : Int){
     this.setColorFilter(ContextCompat.getColor(context, color), android.graphics.PorterDuff.Mode.MULTIPLY);

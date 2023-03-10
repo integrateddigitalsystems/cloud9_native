@@ -33,7 +33,8 @@
 
 
 
-    <com.ids.cloud9.utils.widget.DrawView
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_marginTop="@dimen/normal_margin_padding"
         android:background="@color/white"
         android:layout_width="match_parent"
@@ -137,7 +138,8 @@
 
 
 
-    <com.ids.cloud9.utils.widget.DrawView
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_marginTop="@dimen/normal_margin_padding"
         android:background="@color/white"
         android:layout_width="match_parent"

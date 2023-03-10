@@ -246,11 +246,11 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
                     response: Response<ResponseMessage>
                 ) {
                     if(response.body()!!.success!!.equals("true")){
-                        AppHelper.createDialogAgain(this@ActivityAddProduct,response.body()!!.message!!){
+                        createRetryDialog(response.body()!!.message!!){
                             finish()
                         }
                     }else{
-                        AppHelper.createDialogPositive(this@ActivityAddProduct,response.body()!!.message!!)
+                        createDialog(response.body()!!.message!!)
                     }
                 }
 
@@ -298,11 +298,12 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
                     response: Response<ResponseMessage>
                 ) {
                     if(response.body()!!.success!!.equals("true")){
-                        AppHelper.createDialogAgain(this@ActivityAddProduct,response.body()!!.message!!){
+                        createRetryDialog(
+                            response.body()!!.message!!){
                             finish()
                         }
                     }else{
-                        AppHelper.createDialogPositive(this@ActivityAddProduct,response.body()!!.message!!)
+                        createDialog(response.body()!!.message!!)
                     }
                 }
 
@@ -358,7 +359,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
                 else
                     editProduct()
             }else{
-                AppHelper.createDialogPositive(this,getString(R.string.fill_details))
+                createDialog(getString(R.string.fill_details))
             }
         }
 
@@ -381,7 +382,10 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
         }
 
         binding!!.llProductDelete.setOnClickListener {
-            AppHelper.createYesNoDialog(this,getString(R.string.you_wanna_delete),0){
+            createActionDialog(
+                getString(R.string.you_wanna_delete),
+                0
+            ){
                 deleteProduct()
             }
         }
