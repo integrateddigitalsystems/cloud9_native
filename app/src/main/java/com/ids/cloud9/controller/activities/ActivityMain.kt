@@ -53,6 +53,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
     val BLOCKED = -1
     val GRANTED = 0
     val DENIED = 1
+    var doneOnce = 0
     var visitIdNotf = -1
     val BLOCKED_OR_NEVER_ASKED = 2
     var mPermissionResult: ActivityResultLauncher<Array<String>>? = null
@@ -82,7 +83,6 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
         }
         if(visitIdNotf!=-1){
             getVisits()
-            setUpDate()
         }
         setUpPermission()
         listeners()
@@ -205,7 +205,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             var oldEdge = editingFrom.time
             editingFrom.time = oldEdge
             editingTo.time = oldEdge
-            editingFrom.add(Calendar.DAY_OF_MONTH,-7)
+            editingFrom.add(Calendar.DAY_OF_MONTH,-6)
             editingTo.add(Calendar.DAY_OF_MONTH,-1)
         }
         var curr = Calendar.getInstance()
@@ -292,13 +292,16 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
         var mBroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent) {
                 getVisits()
-                setUpDate()
             }
         }
         val filter = IntentFilter("msg")
         registerReceiver(mBroadcastReceiver, filter)
+        if(doneOnce == 0) {
+            doneOnce = 1
+            setUpDate()
+        }
         getVisits()
-        //setUpDate()
+
     }
     override fun onStart() {
         super.onStart()

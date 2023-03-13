@@ -3,6 +3,6 @@
     <solid
         android:color="@color/scheduled_bg" />
     <corners
-        android:radius="@dimen/normal_margin_padding" />
+        android:radius="@dimen/small_margin_padding" />
 
 </shape>
