@@ -205,7 +205,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             var oldEdge = editingFrom.time
             editingFrom.time = oldEdge
             editingTo.time = oldEdge
-            editingFrom.add(Calendar.DAY_OF_MONTH,-6)
+            editingFrom.add(Calendar.DAY_OF_MONTH,-7)
             editingTo.add(Calendar.DAY_OF_MONTH,-1)
         }
         var curr = Calendar.getInstance()
@@ -230,7 +230,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
     fun setUpDate(){
         var from = Calendar.getInstance()
         var to = Calendar.getInstance()
-        from.add(Calendar.DAY_OF_MONTH,-2)
+        from.add(Calendar.DAY_OF_MONTH,-3)
         to.add(Calendar.DAY_OF_MONTH,3)
         fromDefault = from
         toDefault = to
