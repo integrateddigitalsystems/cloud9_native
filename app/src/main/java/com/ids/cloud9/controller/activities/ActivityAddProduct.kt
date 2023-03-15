@@ -1,18 +1,11 @@
 package com.ids.cloud9.controller.activities
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ids.cloud9.controller.adapters.AdapterDialog
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.AdapterEdit
@@ -21,15 +14,14 @@ import com.ids.cloud9.controller.adapters.AdapterText
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.custom.AppCompactBase
 import com.ids.cloud9.databinding.ActivityAddProductBinding
-import com.ids.cloud9.databinding.ActivityVisitDetailsBinding
-import com.ids.cloud9.databinding.ReasonDialogBinding
 import com.ids.cloud9.model.*
 import com.ids.cloud9.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
-import java.util.Calendar
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
 
@@ -43,12 +35,9 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
     var arraySer : ArrayList<SerialItem> = arrayListOf()
     var array: ArrayList<ProductAllListItem> = arrayListOf()
     var createProduct : CreateProduct ?=null
-    var simp : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-    var tempArray : ArrayList<ProductAllListItem> = arrayListOf()
+    var simp : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
     var arrSpinner : ArrayList<ItemSpinner> = arrayListOf()
-    var alertDialog : AlertDialog ?=null
     var adapter : AdapterText?=null
-    var adapterDialog :AdapterDialog ?=null
     var arr : ArrayList<ItemSpinner> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,12 +61,12 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
                 it.id == MyApplication.selectedProduct!!.unitId
             }!!.name
             binding!!.tvProduct.text = MyApplication.selectedProduct!!.product.name
-            binding!!.etQuantity.text = MyApplication.selectedProduct!!.quantity!!.toString().toEditable()
+            binding!!.etQuantity.text = MyApplication.selectedProduct!!.quantity.toString().toEditable()
             for(i in 1..MyApplication.selectedProduct!!.quantity){
                 arraySer.add(SerialItem(""))
             }
-            for(item in MyApplication.selectedProduct!!.serialNumbers!!.indices)
-                arraySer.get(item).serial = MyApplication.selectedProduct!!.serialNumbers!!.get(item)
+            for(item in MyApplication.selectedProduct!!.serialNumbers.indices)
+                arraySer.get(item).serial = MyApplication.selectedProduct!!.serialNumbers.get(item)
             if(MyApplication.selectedProduct!!.product.unit.visitProducts.size>0)
                 unitId = MyApplication.selectedProduct!!.product.unit.visitProducts.get(0).unitId
             prodId = MyApplication.selectedProduct!!.productId
@@ -94,7 +83,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
         arraySpin.clear()
         arraySpin
         adapterSpin =
-            AdapterSpinner(this, R.layout.spinner_text_item, arrSpinner, 0, true)
+            AdapterSpinner(this, R.layout.spinner_text_item, arrSpinner)
         binding!!.spUnit.adapter = adapterSpin
         adapterSpin!!.setDropDownViewResource(R.layout.spinner_new)
         binding!!.spUnit.onItemSelectedListener =
@@ -105,12 +94,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
                     position: Int,
                     id: Long
                 ) {
-                    var pos = arrSpinner.indexOf(
-                        arrSpinner.find {
-                            it.selected!!
-                        }
-                    )
-                        binding!!.tvUnitText.text = arrSpinner.get(position).name
+                    binding!!.tvUnitText.text = arrSpinner.get(position).name
                         for (itm in arrSpinner)
                             itm.selected = false
                         arrSpinner.get(position).selected = true
@@ -124,7 +108,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             }
 
         if(MyApplication.selectedProduct!=null) {
-            var pos = arrSpinner.indexOf(
+            val pos = arrSpinner.indexOf(
                 arrSpinner.find {
                     it.id == MyApplication.selectedProduct!!.unitId
                 }
@@ -212,13 +196,13 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
 
     fun addProduct(){
         binding!!.llLoading.show()
-        var cal = Calendar.getInstance()
-        var arr:ArrayList<String> = arrayListOf()
+        val cal = Calendar.getInstance()
+        val arr:ArrayList<String> = arrayListOf()
         for(item in arraySer)
             arr.add(item.serial!!)
         createProduct = CreateProduct(
             simp.format(cal.time),
-            if(!array.get(mainPos).description.isNullOrEmpty()) array.get(mainPos).description  else "" ,
+            if(!array.get(mainPos).description!!.isEmpty()) array.get(mainPos).description  else "" ,
             array.get(mainPos).name,
             0,
             0,
@@ -263,8 +247,8 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
 
     fun editProduct(){
         binding!!.llLoading.show()
-        var cal = Calendar.getInstance()
-        var arr:ArrayList<String> = arrayListOf()
+        val cal = Calendar.getInstance()
+        val arr:ArrayList<String> = arrayListOf()
         for(item in arraySer)
             arr.add(item.serial!!)
         createProduct = CreateProduct(
@@ -332,28 +316,28 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             if(text!=null && text.length >0) {
                 while (ct <= text.toString().toInt()) {
                     arraySer.add(SerialItem(""))
-                    adapterSer!!.notifyDataSetChanged()
+                    adapterSer!!.notifyItemChanged(ct-1)
                     ct++
                 }
             }else{
                 arraySer.add(SerialItem(""))
-                adapterSer!!.notifyDataSetChanged()
+                adapterSer!!.notifyItemChanged(arraySer.size-1)
             }
         }
 
         binding!!.etFilterName.doOnTextChanged { text, start, before, count ->
 
-            var items = array.filter {
+            val items = array.filter {
                 it.name.contains(text!!)
             }
-            var arrayList : ArrayList<ProductAllListItem> = arrayListOf()
+            val arrayList : ArrayList<ProductAllListItem> = arrayListOf()
             arrayList.addAll(items)
             setUpProduct(arrayList)
         }
 
 
         binding!!.btAddProduct.setOnClickListener {
-            if(prodId!=0 && unitId!=0 && !binding!!.etQuantity.text.toString().isNullOrEmpty() && arraySer.size > 0) {
+            if(prodId!=0 && unitId!=0 && !binding!!.etQuantity.text.toString().isEmpty() && arraySer.size > 0) {
                 if(MyApplication.selectedProduct==null)
                     addProduct()
                 else
@@ -394,8 +378,8 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
     fun deleteProduct(){
         binding!!.llLoading.show()
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).deleteProduct(
-            MyApplication.selectedProduct!!.id
-        )?.enqueue(object : Callback<ResponseMessage> {
+            MyApplication.selectedProduct!!.id!!
+        ).enqueue(object : Callback<ResponseMessage> {
             override fun onResponse(
                 call: Call<ResponseMessage>,
                 response: Response<ResponseMessage>
@@ -422,16 +406,14 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
     override fun onItemClicked(view: View, position: Int) {
 
         if (view.id == R.id.llItemText) {
-            var old = arr.get(position).selected
-            try {
+            val old = arr.get(position).selected
+            safeCall {
                 arr.find {
                     it.selected!!
                 }!!.selected = false
                 array.find {
                     it.selected!!
                 }!!.selected = false
-            } catch (ex: Exception) {
-
             }
 
             if (!old!!)
@@ -445,12 +427,8 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             mainPos = array.indexOf(array.find {
                 it.id == arr.get(position).id
             })
-
             binding!!.tvProduct.text = arr.get(position).name
             binding!!.llNameSelect.hide()
-
-
-
 
             adapter!!.notifyDataSetChanged()
         }

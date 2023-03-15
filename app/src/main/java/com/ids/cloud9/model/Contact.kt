@@ -11,7 +11,7 @@ data class Contact(
     @SerializedName("active")
     val active: Boolean,
     @SerializedName("address")
-    val address: String,
+    val address: String?="",
     @SerializedName("address2")
     val address2: String,
     @SerializedName("certificates")
@@ -41,7 +41,7 @@ data class Contact(
     @SerializedName("email")
     val email: String,
     @SerializedName("fax")
-    val fax: String,
+    val fax: String?="",
     @SerializedName("firstName")
     val firstName: String,
     @SerializedName("firstNameAr")
@@ -71,7 +71,7 @@ data class Contact(
     @SerializedName("ownerId")
     val ownerId: Int,
     @SerializedName("personalPhoneNumber")
-    val personalPhoneNumber: String,
+    val personalPhoneNumber: String?="",
     @SerializedName("phoneNumberSecondary")
     val phoneNumberSecondary: String,
     @SerializedName("pid")

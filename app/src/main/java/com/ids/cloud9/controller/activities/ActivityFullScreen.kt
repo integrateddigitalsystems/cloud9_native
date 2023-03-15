@@ -2,24 +2,17 @@ package com.ids.cloud9.controller.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Html
-import android.util.Log
 import android.view.View
 import androidx.viewpager.widget.ViewPager
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.AdapterPagerFiles
 import com.ids.cloud9.custom.AppCompactBase
-import com.ids.cloud9.databinding.ActivityLoginBinding
 import com.ids.cloud9.databinding.ActivityMediaFullscreenBinding
 import com.ids.cloud9.model.Videos
-import com.ids.cloud9.utils.IFragmentImages
-import com.ids.cloud9.utils.hide
-import com.ids.cloud9.utils.show
-import com.ids.cloud9.utils.wtf
+import com.ids.cloud9.utils.*
 import java.util.*
 
 class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageChangeListener , Player.Listener {
@@ -82,15 +75,14 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
         for(i in arrayVideos.indices){
             if(arrayVideos.get(i).player!=null) {
-                if (i == position) {
-                } else {
+                if (i != position)
                     arrayVideos.get(i).player!!.pause()
-                }
+
             }
         }
     }
     override fun onPageSelected(position: Int) {
-        try{pauseAll()}catch (e:java.lang.Exception){}
+       safeCall {  pauseAll()}
     }
     private fun pauseAll() {
         for (i in arrayVideos.indices) {
@@ -98,22 +90,20 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
                 (binding!!.vpMediaFull.getChildAt(i)
                     .findViewById(R.id.epView) as StyledPlayerView).player!!.playWhenReady =
                     false
-                (binding!!.vpMediaFull.getChildAt(i).findViewById(R.id.epView) as PlayerView).player!!
+                (binding!!.vpMediaFull.getChildAt(i).findViewById(R.id.epView) as StyledPlayerView).player!!
                     .playbackState
             }
         }
     }
     override fun onPause() {
-        try {
+        safeCall {
             pauseAll()
-        } catch (e: Exception) {
         }
         super.onPause()
     }
     override fun onStop() {
-        try {
+        safeCall {
             pauseAll()
-        } catch (e: java.lang.Exception) {
         }
         super.onStop()
     }

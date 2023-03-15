@@ -1,12 +1,10 @@
 package com.ids.cloud9.controller.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ProgressBar
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -19,6 +17,7 @@ import com.ids.cloud9.custom.TouchImageView
 import com.ids.cloud9.model.Videos
 import com.ids.cloud9.utils.AppHelper
 import com.ids.cloud9.utils.IFragmentImages
+import com.ids.cloud9.utils.safeCall
 import com.ids.cloud9.utils.wtf
 import java.util.ArrayList
 
@@ -29,7 +28,6 @@ class AdapterPagerFiles(
     private val list : Player.Listener
 ) : PagerAdapter(), View.OnClickListener {
     var currentPosition: Long? = null
-    var isPlaying = false
     override fun getCount(): Int {
         return files.size
     }
@@ -49,25 +47,23 @@ class AdapterPagerFiles(
         if (files[position].type == 0) {
             (itemView.findViewById<View>(R.id.epView) as StyledPlayerView).visibility =
                 View.VISIBLE
-            (itemView.findViewById<View>(R.id.ivImages) as TouchImageView).visibility = View.GONE
+            (itemView.findViewById<View>(R.id.ivImages) as ImageView).visibility = View.GONE
             loadVideo(
                 itemView.context,
                 itemView.findViewById<View>(R.id.epView) as StyledPlayerView,
                 files[position].url,
-                itemView.findViewById<View>(R.id.progress) as ProgressBar,
-                itemView.findViewById<View>(R.id.btFullScreen) as ImageView,
                 position
             )
         } else {
             wtf("file : " + files[position].url)
             (itemView.findViewById<View>(R.id.epView) as StyledPlayerView).visibility = View.GONE
-            (itemView.findViewById<View>(R.id.ivImages) as TouchImageView).visibility = View.VISIBLE
-            loadImage(
+            (itemView.findViewById<View>(R.id.ivImages) as ImageView).visibility = View.VISIBLE
+            /*loadImage(
                 itemView.context,
-                itemView.findViewById<View>(R.id.ivImages) as TouchImageView,
-                files[position].url,
-                itemView.findViewById<View>(R.id.progress) as ProgressBar
-            )
+                itemView.findViewById<View>(R.id.ivImages) as ImageView,
+                files[position].url
+            )*/
+            AppHelper.setImage(itemView.context,itemView.findViewById<View>(R.id.ivImages) as ImageView,files[position].url!!,false)
         }
         return itemView
     }
@@ -90,17 +86,15 @@ class AdapterPagerFiles(
         } catch (e: Exception) {
             wtf(e.toString())
         }
-        try {
+        safeCall {
             container.removeView(`object` as View)
             Glide.with(context).clear(`object`)
-        } catch (e: Exception) {
         }
     }
     private fun loadImage(
         context: Context,
         imageView: TouchImageView,
-        url: String?,
-        progressBar: ProgressBar
+        url: String?
     ) {
         val options: RequestOptions = RequestOptions()
             .fitCenter()
@@ -113,19 +107,15 @@ class AdapterPagerFiles(
         context: Context,
         exoPlayerView: StyledPlayerView,
         url: String?,
-        progressBar: ProgressBar,
-        ivFullScreen: ImageView,
         position: Int
     ) {
-        var player = ExoPlayer.Builder(context).build()
+        val player = ExoPlayer.Builder(context).build()
         exoPlayerView.player = player
         player.addListener(list)
-        var mediaItem = MediaItem.fromUri(url!!)
+        val mediaItem = MediaItem.fromUri(url!!)
         player.addMediaItem(mediaItem)
         player.prepare()
         files.get(position).player = player
     }
-    fun pausePlayer() {
-        isPlaying = true
-    }
+
 }

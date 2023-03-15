@@ -6,15 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
-import com.ids.cloud9.databinding.ItemReasonDialogBinding
 import com.ids.cloud9.databinding.ItemTextBinding
-import com.ids.cloud9.databinding.ItemVisitDateBinding
 import com.ids.cloud9.model.ItemSpinner
-import com.ids.cloud9.model.VisitDates
 import com.ids.cloud9.utils.AppHelper
-import com.ids.cloud9.utils.hide
-import com.ids.cloud9.utils.show
-import java.text.SimpleDateFormat
 import java.util.*
 
 class AdapterText(
@@ -33,7 +27,7 @@ class AdapterText(
         return items.size
     }
     inner class VhItem(
-        val binding: com.ids.cloud9.databinding.ItemTextBinding,
+        val binding: ItemTextBinding,
         private var clickListener: RVOnItemClickListener
     ) : RecyclerView.ViewHolder(
         binding.root

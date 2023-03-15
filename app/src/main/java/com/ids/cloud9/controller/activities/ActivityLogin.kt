@@ -1,14 +1,11 @@
 package com.ids.cloud9.controller.activities
 
-import android.app.Activity
+
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
 import android.text.method.PasswordTransformationMethod
-import android.util.Log
-import androidx.annotation.RequiresApi
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.custom.AppCompactBase
@@ -47,7 +44,7 @@ class ActivityLogin : AppCompactBase() {
             }
         }
         binding!!.btLogin.setOnClickListener {
-            if(!binding!!.etEmail.text.toString().isNullOrEmpty() && !binding!!.etPassword.text.toString().isNullOrEmpty()) {
+            if(!binding!!.etEmail.text.toString().isEmpty() && !binding!!.etPassword.text.toString().isEmpty()) {
                 if(!binding!!.etEmail.text.toString().isEmailValid()){
                     createDialog(getString(R.string.email_invalid))
                 }else {
@@ -65,7 +62,7 @@ class ActivityLogin : AppCompactBase() {
                     showPass = false
                 }else{
                     binding!!.btShowPassword.setImageResource(R.drawable.lock)
-                    binding!!.etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    binding!!.etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance())
                     showPass = true
                 }
         }
@@ -74,7 +71,7 @@ class ActivityLogin : AppCompactBase() {
        binding!!.btLogin.hide()
        binding!!.loadingLogin.show()
        wtf(MyApplication.BASE_URL)
-       var newReq = RequestLogin(email , password , true )
+       val newReq = RequestLogin(email , password , true )
        RetrofitClient.client?.create(RetrofitInterface::class.java)
            ?.logIn(
                newReq
@@ -85,7 +82,7 @@ class ActivityLogin : AppCompactBase() {
                        wtf(MyApplication.token)
                        MyApplication.email = email
                        MyApplication.password = password
-                       MyApplication.userItem = JWTDecoding.decoded(MyApplication.token!!)
+                       MyApplication.userItem = JWTDecoding.decoded(MyApplication.token)
                        updateToken(MyApplication.userItem!!.applicationUserId!!.toInt())
                        binding!!.loadingLogin.hide()
                        binding!!.btLogin.show()
@@ -104,7 +101,7 @@ class ActivityLogin : AppCompactBase() {
            })
    }
     fun updateToken(id:Int){
-        var tokenReq  = TokenResource(
+        val tokenReq  = TokenResource(
             MyApplication.firebaseToken,
             id
         )

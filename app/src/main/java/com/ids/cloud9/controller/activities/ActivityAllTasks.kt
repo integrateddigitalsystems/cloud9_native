@@ -1,25 +1,15 @@
 package com.ids.cloud9.controller.activities
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.AttributeSet
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ids.cloud9.R
-import com.ids.cloud9.controller.Fragment.FragmentReccomendations
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.AdapterFilteredReccomendations
-import com.ids.cloud9.controller.adapters.AdapterReccomendations
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.custom.AppCompactBase
-import com.ids.cloud9.databinding.ActivityVisitDetailsBinding
 import com.ids.cloud9.databinding.LayoutReccomendationsBinding
-import com.ids.cloud9.model.ActivitiesList
-import com.ids.cloud9.model.ActivitiesListItem
 import com.ids.cloud9.model.FilteredActivityList
 import com.ids.cloud9.model.FilteredActivityListItem
 import com.ids.cloud9.utils.*
@@ -50,9 +40,9 @@ class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
         binding!!.llTool.btBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
-        binding!!.srReccomendations.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+        binding!!.srReccomendations.setOnRefreshListener{
             getReccomendations()
-        })
+        }
         binding!!.llTool.ivCalendar.setOnClickListener {
             finishAffinity()
             startActivity(Intent(
@@ -62,7 +52,7 @@ class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
         }
         binding!!.btAddReccomend.hide()
     }
-    fun getReccomendations() {
+    private fun getReccomendations() {
         binding!!.llLoading.show()
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getReccomendations(
             MyApplication.userItem!!.applicationUserId!!.toInt()
@@ -85,7 +75,7 @@ class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
             binding!!.tvNotasks.hide()
             binding!!.rvReccomendations.show()
             binding!!.rvReccomendations.layoutManager = LinearLayoutManager(this)
-            binding!!.rvReccomendations.adapter = AdapterFilteredReccomendations(arrayReccomend!!, this, this)
+            binding!!.rvReccomendations.adapter = AdapterFilteredReccomendations(arrayReccomend, this, this)
         }else{
             binding!!.tvNotasks.show()
             binding!!.rvReccomendations.hide()
@@ -94,11 +84,11 @@ class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
         binding!!.srReccomendations.isRefreshing = false
     }
     override fun onItemClicked(view: View, position: Int) {
-        var ct = MyApplication.allVisits.count {
-            it.title.equals(arrayReccomend.get(position).entity) && it.reasonId==AppConstants.ARRIVED_REASON_ID
+        val ct = MyApplication.allVisits.count {
+            it.title.equals(arrayReccomend[position].entity) && it.reasonId==AppConstants.ARRIVED_REASON_ID
         }
         if(ct>0) {
-            MyApplication.selectedReccomend = arrayReccomend.get(position)!!
+            MyApplication.selectedReccomend = arrayReccomend[position]
             startActivity(
                 Intent(
                     this,

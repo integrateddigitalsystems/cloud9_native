@@ -7,18 +7,9 @@ import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
-import com.ids.cloud9.databinding.ItemReasonDialogBinding
 import com.ids.cloud9.databinding.ItemSerialisedBinding
-import com.ids.cloud9.databinding.ItemTextBinding
-import com.ids.cloud9.databinding.ItemVisitDateBinding
-import com.ids.cloud9.model.ItemSpinner
 import com.ids.cloud9.model.SerialItem
-import com.ids.cloud9.model.VisitDates
-import com.ids.cloud9.utils.AppHelper
-import com.ids.cloud9.utils.hide
-import com.ids.cloud9.utils.show
 import com.ids.cloud9.utils.toEditable
-import java.text.SimpleDateFormat
 import java.util.*
 
 class AdapterEdit(
@@ -37,7 +28,7 @@ class AdapterEdit(
         return items.size
     }
     inner class VhItem(
-        val binding: com.ids.cloud9.databinding.ItemSerialisedBinding,
+        val binding: ItemSerialisedBinding,
         private var clickListener: RVOnItemClickListener
     ) : RecyclerView.ViewHolder(
         binding.root

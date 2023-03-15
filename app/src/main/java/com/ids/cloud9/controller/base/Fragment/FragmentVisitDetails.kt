@@ -130,7 +130,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
 
     fun setUpStatusReasonSpinner() {
         adapterSpin =
-            AdapterSpinner(requireContext(), R.layout.spinner_text_item, arrSpinner, 0, true)
+            AdapterSpinner(requireContext(), R.layout.spinner_text_item, arrSpinner)
         binding!!.spStatusReason.adapter = adapterSpin
         adapterSpin!!.setDropDownViewResource(R.layout.spinner_new)
         binding!!.spStatusReason.onItemSelectedListener =
@@ -225,13 +225,13 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                         requireContext().createRetryDialog(
                             response.body()!!.message!!){
                             MyApplication.onTheWayVisit = edtitVisit
-                            (requireActivity() as ActivtyVisitDetails).changeState(false,0)
+                            (requireActivity() as ActivtyVisitDetails).changeState(false)
                         }
                     }else{
                         requireContext().createRetryDialog(
                             response.body()!!.message!!){
                             MyApplication.onTheWayVisit = edtitVisit
-                            (requireActivity() as ActivtyVisitDetails).changeState(true,0)
+                            (requireActivity() as ActivtyVisitDetails).changeState(true)
                         }
                     }
 

@@ -1,27 +1,16 @@
 package com.ids.cloud9.controller.activities
 
 import android.Manifest
-import android.animation.AnimatorSet
-import android.app.Activity
 import android.content.*
 import android.content.pm.PackageManager
-import android.database.Cursor
-import android.graphics.Bitmap
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.location.Location
 import android.location.LocationManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.provider.MediaStore
-import android.provider.OpenableColumns
-import android.util.Log
 import android.view.View
-import android.view.animation.AnimationUtils
-import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -30,12 +19,6 @@ import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.ids.cloud9.controller.adapters.AdapterDialog
-import com.ids.cloud9.controller.adapters.AdapterMedia
-import com.ids.cloud9.controller.adapters.AdapterProducts
-import com.ids.cloud9.controller.adapters.AdapterReccomendations
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
@@ -44,11 +27,7 @@ import com.ids.cloud9.databinding.ActivityVisitDetailsBinding
 
 import com.ids.cloud9.model.*
 import com.ids.cloud9.utils.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -58,7 +37,6 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
     private lateinit var foregroundOnlyBroadcastReceiver: ForegroundOnlyBroadcastReceiver
     private var foregroundOnlyLocationServiceBound = false
     var CODE_CAMERA = 1
-    var CODE_VIDEO = 2
     var foregroundOnlyLocationService: LocationForeService? = null
     val BLOCKED = -1
     val GRANTED = 0
@@ -70,30 +48,19 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
     var visitId = 0
     var fromNotf = 0
     var code: Int? = -1
-    var currLayout: LinearLayout? = null
     var currLayPost = 0
 
     private inner class ForegroundOnlyBroadcastReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            val location = intent.getParcelableExtra<Location>(
-                LocationForeService.EXTRA_LOCATION
-            )
+            val location = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.getParcelableExtra(LocationForeService.EXTRA_LOCATION,Location::class.java)
+            } else {
+                intent.getParcelableExtra(
+                    LocationForeService.EXTRA_LOCATION)
+            }
             if (location != null) {
                 wtf("Foreground location: ${location.toText()}")
             }
-        }
-    }
-    override fun onBackPressed() {
-        if(fromNotf>0){
-            startActivity(
-                Intent(
-                    this,
-                    ActivityMain::class.java
-                )
-            )
-            finishAffinity()
-        }else{
-           finish()
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -126,9 +93,7 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
                 for (item in result) {
                     permission = item.value
                 }
-                if (permission) {
-
-                } else {
+                if (!permission) {
                     toast(getString(R.string.location_updates_disabled))
                     for (item in result) {
                         if (ContextCompat.checkSelfPermission(
@@ -163,24 +128,22 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
             )
         )
     }
-    fun changeState(track: Boolean, indx: Int) {
+    fun changeState(track: Boolean) {
         var gps_enabled = false
-        var mLocationManager =
+        val mLocationManager =
             getSystemService(LOCATION_SERVICE) as LocationManager
 
-        try {
-            gps_enabled = mLocationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        } catch (ex: Exception) {
+        safeCall {
+            gps_enabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         }
         if (gps_enabled) {
             if (!track) {
                 MyApplication.saveLocTracking = false
-                try {
+                safeCall {
                     foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
                     val intent = Intent()
                     intent.setClass(this, LocationForeService::class.java)
                     stopService(intent)
-                } catch (ex: Exception) {
                 }
             } else {
                 try {
@@ -218,8 +181,8 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
             val binder = service as LocationForeService.LocalBinder
             foregroundOnlyLocationService = binder.foreService
             foregroundOnlyLocationServiceBound = true
-            if (MyApplication.saveLocTracking!!)
-                changeState(true, 0)
+            if (MyApplication.saveLocTracking)
+                changeState(true)
         }
         override fun onServiceDisconnected(name: ComponentName) {
             foregroundOnlyLocationService = null
@@ -278,15 +241,12 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
                 if (permissioned) {
                     MyApplication.permission = 0
                 } else {
-                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                        if (MyApplication.permission!! >= 2) {
+                        if (MyApplication.permission >= 2) {
                             for (item in permissions) {
-                                var x = checkSelfPermission(item)
                                 if (checkSelfPermission(item) == BLOCKED) {
-                                    mPermissionResult2!!.launch(
-                                        Intent(android.provider.Settings.ACTION_SETTINGS)!!
+                                    mPermissionResult2.launch(
+                                        Intent(android.provider.Settings.ACTION_SETTINGS)
                                     )
-
                                     toast(
                                         getString(R.string.grant_setting_perm)
                                     )
@@ -294,9 +254,8 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
                                 }
                             }
                         } else {
-                            MyApplication.permission = MyApplication.permission!! + 1
+                            MyApplication.permission = MyApplication.permission + 1
                         }
-                    }
                 }
             }
 
@@ -342,6 +301,21 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
         binding!!.llSelectedSignatureBorder.hide()
     }
     fun listeners() {
+        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if(fromNotf>0){
+                    startActivity(
+                        Intent(
+                            this@ActivtyVisitDetails,
+                            ActivityMain::class.java
+                        )
+                    )
+                    finishAffinity()
+                }else{
+                    finish()
+                }
+            }
+        })
         binding!!.llCompany.setOnClickListener {
             if (currLayPost != 1) {
                 restartLayouts()

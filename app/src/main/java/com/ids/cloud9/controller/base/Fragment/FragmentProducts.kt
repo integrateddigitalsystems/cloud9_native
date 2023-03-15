@@ -166,7 +166,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
     }
     fun deleteProduct(pos: Int) {
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).deleteProduct(
-            arrayProd.get(pos).id
+            arrayProd.get(pos).id!!
         )?.enqueue(object : Callback<ResponseMessage> {
             override fun onResponse(
                 call: Call<ResponseMessage>,

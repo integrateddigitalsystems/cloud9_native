@@ -39,7 +39,7 @@ data class FilteredActivityListItem(
     @SerializedName("statusId")
     var statusId: Int,
     @SerializedName("statusReason")
-    var statusReason: String,
+    var statusReason: String?="",
     @SerializedName("statusReasonCode")
     var statusReasonCode: String,
     @SerializedName("subject")

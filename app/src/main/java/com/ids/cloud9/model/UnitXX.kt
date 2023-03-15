@@ -67,7 +67,7 @@ data class UnitXX(
     @SerializedName("modiciationDate")
     val modiciationDate: Any,
     @SerializedName("name")
-    val name: String,
+    val name: String?="",
     @SerializedName("opportunityBranchNavigations")
     val opportunityBranchNavigations: List<Any>,
     @SerializedName("opportunityCurrencies")

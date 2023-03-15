@@ -5,21 +5,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
-import com.ids.cloud9.databinding.ItemReccomendationsBinding
 import com.ids.cloud9.databinding.ItemRecordBinding
-import com.ids.cloud9.model.ActivitiesListItem
 import com.ids.cloud9.model.RecordListsItem
-import com.ids.cloud9.utils.setCheckText
 import java.text.SimpleDateFormat
-import java.util.ArrayList
+import java.util.*
 
 class AdapterRecords(
     var items : ArrayList<RecordListsItem>,
     var con: Activity,
     private var clickListener: RVOnItemClickListener
 ) : RecyclerView.Adapter<AdapterRecords.VhItem>() {
-    var simpOrg = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-    var simpTo = SimpleDateFormat("dd/MM/yyyy")
+    var simpOrg = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
+    var simpTo = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VhItem {
         val binding = ItemRecordBinding.inflate(con.layoutInflater,parent,false)
         return VhItem(binding, clickListener)
@@ -40,7 +37,7 @@ class AdapterRecords(
         fun bind(item: RecordListsItem) {
             binding.tvSubject.text = item.name
             binding.tvDesc.text = item.code
-            binding.tvDate.text = simpTo.format(simpOrg.parse(item.creationDate))
+            binding.tvDate.text = simpTo.format(simpOrg.parse(item.creationDate)!!)
         }
         init {
             binding.root.setOnClickListener(this)

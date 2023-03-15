@@ -3,15 +3,11 @@ package com.ids.cloud9.controller.activities
 import HeaderDecoration
 import android.Manifest
 import android.content.*
-import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import android.os.*
 import android.os.Bundle
-import android.os.Handler
-import android.os.IBinder
-import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Toast
@@ -23,7 +19,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.Gson
 import com.ids.cloud9.controller.adapters.StickyAdapter
 import com.ids.cloud9.R
@@ -42,10 +37,10 @@ import kotlin.collections.ArrayList
 
 
 class ActivityMain: AppCompactBase() , RVOnItemClickListener{
-    var simp = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss")
-    var half = SimpleDateFormat("MMM dd")
-    var secondHalf = SimpleDateFormat("MMM dd yyyy")
-    var secondNoMonthHalf = SimpleDateFormat("dd, yyyy")
+    var simp = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.ENGLISH)
+    var half = SimpleDateFormat("MMM dd", Locale.ENGLISH)
+    var secondHalf = SimpleDateFormat("MMM dd yyyy", Locale.ENGLISH)
+    var secondNoMonthHalf = SimpleDateFormat("dd, yyyy", Locale.ENGLISH)
     var binding : ActivityMainBinding?=null
     var fromDefault = Calendar.getInstance()
     var toDefault = Calendar.getInstance()
@@ -57,7 +52,6 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
     var visitIdNotf = -1
     val BLOCKED_OR_NEVER_ASKED = 2
     var mPermissionResult: ActivityResultLauncher<Array<String>>? = null
-    var prevHeaders : ArrayList<Int> = arrayListOf()
     var editingFrom = Calendar.getInstance()
     var editingTo = Calendar.getInstance()
     var tempArray : ArrayList<Visit> = arrayListOf()
@@ -66,9 +60,12 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
     private var foregroundOnlyLocationServiceBound = false
     private inner class ForegroundOnlyBroadcastReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            val location = intent.getParcelableExtra<Location>(
-                LocationForeService.EXTRA_LOCATION
-            )
+            val location = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.getParcelableExtra(LocationForeService.EXTRA_LOCATION,Location::class.java)
+            } else {
+                intent.getParcelableExtra(
+                    LocationForeService.EXTRA_LOCATION)
+            }
             if (location != null) {
                 wtf("Foreground location: ${location.toText()}")
             }
@@ -102,24 +99,22 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             )
         )
        }
-    fun changeState(track: Boolean, indx: Int) {
+    fun changeState(track: Boolean) {
         var gps_enabled = false
-        var mLocationManager =
+        val mLocationManager =
             getSystemService(LOCATION_SERVICE) as LocationManager
 
-        try {
-            gps_enabled = mLocationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        } catch (ex: Exception) {
+        safeCall {
+            gps_enabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         }
         if (gps_enabled) {
             if (!track) {
                 MyApplication.saveLocTracking = false
-                try {
+                safeCall {
                     foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
                     val intent = Intent()
                     intent.setClass(this, LocationForeService::class.java)
                     stopService(intent)
-                } catch (ex: Exception) {
                 }
             } else {
                 try {
@@ -168,9 +163,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                 for (item in result) {
                     permission = item.value
                 }
-                if (permission) {
-
-                } else {
+                if (!permission) {
                     toast(getString(R.string.location_updates_disabled))
                     for (item in result) {
                         if (ContextCompat.checkSelfPermission(
@@ -195,23 +188,23 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
 
     fun editDate(isNext : Boolean ){
         if(isNext){
-            var oldEdge = editingTo.time
+            val oldEdge = editingTo.time
             editingFrom.time = oldEdge
             editingTo.time = oldEdge
             editingFrom.add(Calendar.DAY_OF_MONTH,1)
             editingTo.add(Calendar.DAY_OF_MONTH,7)
 
         }else{
-            var oldEdge = editingFrom.time
+            val oldEdge = editingFrom.time
             editingFrom.time = oldEdge
             editingTo.time = oldEdge
             editingFrom.add(Calendar.DAY_OF_MONTH,-7)
             editingTo.add(Calendar.DAY_OF_MONTH,-1)
         }
-        var curr = Calendar.getInstance()
-        editingFrom.time = secondHalf.parse(secondHalf.format(editingFrom.time))
-        editingTo.time = secondHalf.parse(secondHalf.format(editingTo.time))
-        curr.time = secondHalf.parse(secondHalf.format(curr.time))
+        val curr = Calendar.getInstance()
+        editingFrom.time = secondHalf.parse(secondHalf.format(editingFrom.time))!!
+        editingTo.time = secondHalf.parse(secondHalf.format(editingTo.time))!!
+        curr.time = secondHalf.parse(secondHalf.format(curr.time))!!
 
 
         if(curr.time.time >= editingFrom.time.time && curr.time.time <= editingTo.time.time){
@@ -219,7 +212,6 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
         }else{
             binding!!.llHomeMain.tvToday.setBackgroundResource(R.drawable.rounded_dark_blue)
         }
-        var vl = VisitList()
         binding!!.llHomeMain.loading.show()
         filterDate(mainArray)
         if(editingFrom.get(Calendar.MONTH) != editingTo.get(Calendar.MONTH))
@@ -228,16 +220,16 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondNoMonthHalf.format(editingTo.time)
     }
     fun setUpDate(){
-        var from = Calendar.getInstance()
-        var to = Calendar.getInstance()
+        val from = Calendar.getInstance()
+        val to = Calendar.getInstance()
         from.add(Calendar.DAY_OF_MONTH,-3)
         to.add(Calendar.DAY_OF_MONTH,3)
         fromDefault = from
         toDefault = to
         editingFrom = from
         editingTo = to
-        editingFrom.time = secondHalf.parse(secondHalf.format(editingFrom.time))
-        editingTo.time = secondHalf.parse(secondHalf.format(editingTo.time))
+        editingFrom.time = secondHalf.parse(secondHalf.format(editingFrom.time))!!
+        editingTo.time = secondHalf.parse(secondHalf.format(editingTo.time))!!
         filterDate(mainArray)
         if(editingFrom.get(Calendar.MONTH) != editingTo.get(Calendar.MONTH))
             binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondHalf.format(editingTo.time)
@@ -247,11 +239,11 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
     fun filterDate(arrayList: ArrayList<Visit>){
         tempArray.clear()
         tempArray.addAll(arrayList.filter {
-            simp.parse(it.visitDate).time >= editingFrom.time.time && simp.parse(it.visitDate).time <= editingTo.time.time
+            simp.parse(it.visitDate!!)!!.time >= editingFrom.time.time && simp.parse(it.visitDate!!)!!.time <= editingTo.time.time
         }
         )
         wtf(tempArray.size.toString())
-        var vl = VisitList()
+        val vl = VisitList()
         vl.addAll(tempArray)
         setUpData(vl)
     }
@@ -267,8 +259,8 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             val binder = service as LocationForeService.LocalBinder
             foregroundOnlyLocationService = binder.foreService
             foregroundOnlyLocationServiceBound = true
-            if (MyApplication.saveLocTracking!!)
-                changeState(true, 0)
+            if (MyApplication.saveLocTracking)
+                changeState(true)
         }
         override fun onServiceDisconnected(name: ComponentName) {
             foregroundOnlyLocationService = null
@@ -289,7 +281,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                 LocationForeService.ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST
             )
         )
-        var mBroadcastReceiver = object : BroadcastReceiver() {
+        val mBroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent) {
                 getVisits()
             }
@@ -312,26 +304,26 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
     fun setUpData(list: VisitList){
         if(list.size >0) {
             list.sortBy {
-                simp.parse(it.visitDate).time
+                simp.parse(it.visitDate!!)!!.time
             }
             tempArray.clear()
             var headers = 0
             for (item in list) {
-                var date = simp.parse(item.visitDate)
-                wtf(item.title + " ---DATE: " + date.time)
-                var itm = tempArray.find { it.dateMill == date.time }
+                val date = simp.parse(item.visitDate!!)
+                wtf(item.title + " ---DATE: " + date!!.time)
+                val itm = tempArray.find { it.dateMill == date.time }
                 if (itm != null) {
-                    var nextHead = tempArray.find {
+                    val nextHead = tempArray.find {
                         it.headerOrder == (itm.headerOrder + 1)
                     }
                     if (nextHead == null)
                         tempArray.add(item)
                     else {
-                        var indx = tempArray.indexOf(nextHead)
+                        val indx = tempArray.indexOf(nextHead)
                         tempArray.add(indx, item)
                     }
                 } else {
-                    var visHeader = Visit()
+                    val visHeader = Visit()
                     visHeader.isHeader = true
                     visHeader.visitDate = item.visitDate
                     visHeader.dateMill = date.time
@@ -344,12 +336,12 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
         }else{
             tempArray.clear()
         }
-        var x : ArrayList<Visit> = arrayListOf()
-        x.addAll(tempArray)
+        val currTemp : ArrayList<Visit> = arrayListOf()
+        currTemp.addAll(tempArray)
         tempArray.clear()
-        tempArray.addAll(x)
+        tempArray.addAll(currTemp)
         if(tempArray.size > 0) {
-            var adapter = StickyAdapter(this, tempArray,this)
+            val adapter = StickyAdapter(this, tempArray,this)
             binding!!.llHomeMain.rvVisits.layoutManager = LinearLayoutManager(this)
             binding!!.llHomeMain.rvVisits.adapter = adapter
             binding!!.llHomeMain.rvVisits.addItemDecoration(
@@ -357,7 +349,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                     binding!!.llHomeMain.rvVisits,
                     adapter
                 )
-            );
+            )
             wtf(Gson().toJson(tempArray))
             binding!!.llHomeMain.loading.hide()
             binding!!.llHomeMain.rvVisits.show()
@@ -391,14 +383,14 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                     }
                     MyApplication.allVisits.clear()
                     MyApplication.allVisits.addAll(response.body()!!)
-                    var visit = mainArray.find {
+                    val visit = mainArray.find {
                         it.reasonId == AppConstants.ON_THE_WAY_REASON_ID || it.reasonId == AppConstants.ARRIVED_REASON_ID
                     }
                     MyApplication.onTheWayVisit = visit
                     if(visit!=null)
-                        changeState(true,0)
+                        changeState(true)
                     else
-                        changeState(false , 0 )
+                        changeState(false )
                     filterDate(response.body()!!)
                 }
                 override fun onFailure(call: Call<VisitList>, throwable: Throwable) {
@@ -408,7 +400,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
     fun listeners(){
         binding!!.drawerMenu.tvWelcome.text = binding!!.drawerMenu.tvWelcome.text.toString() + MyApplication.userItem!!.firstName + " "+MyApplication.userItem!!.lastName
         binding!!.llHomeMain.ivDrawer.setOnClickListener {
-            var  shake =  AnimationUtils.loadAnimation(this, R.anim.corner)
+            val shake =  AnimationUtils.loadAnimation(this, R.anim.corner)
             binding!!.navView.startAnimation(shake)
             binding!!.drawerLayout.openDrawer(GravityCompat.START)
         }
@@ -417,12 +409,11 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                 getString(R.string.sure_logout),
                 0
             ){
-                try {
+                safeCall {
                     foregroundOnlyLocationService!!.unsubscribeToLocationUpdates()
                     val intent = Intent()
                     intent.setClass(this, LocationForeService::class.java)
                     stopService(intent)
-                }catch (ex:Exception){
                 }
                 finishAffinity()
                 MyApplication.loggedIn = false
@@ -450,14 +441,14 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             ))
         }
         binding!!.drawerMenu.tvHome.setOnClickListener {
-            var  shake =  AnimationUtils.loadAnimation(this, R.anim.close_corner)
+            val shake =  AnimationUtils.loadAnimation(this, R.anim.close_corner)
             binding!!.navView.startAnimation(shake)
             Handler(Looper.getMainLooper()).postDelayed({
                 binding!!.drawerLayout.closeDrawers()
             }, 300)
         }
         binding!!.drawerMenu.btClose.setOnClickListener {
-            var  shake =  AnimationUtils.loadAnimation(this, R.anim.close_corner)
+            val shake =  AnimationUtils.loadAnimation(this, R.anim.close_corner)
             binding!!.navView.startAnimation(shake)
             Handler(Looper.getMainLooper()).postDelayed({
                 binding!!.drawerLayout.closeDrawers()
@@ -489,9 +480,9 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             binding!!.llHomeMain.btDateNext.setBackgroundResource(R.drawable.rounded_dark_right)
             binding!!.llHomeMain.btDatePrevious.setBackgroundResource(R.drawable.rounded_dark_left)
         }
-        binding!!.llHomeMain.srVisits.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+        binding!!.llHomeMain.srVisits.setOnRefreshListener() {
             getVisits()
-        })
+        }
     }
     override fun onItemClicked(view: View, position: Int) {
         MyApplication.selectedVisit = tempArray.get(position)

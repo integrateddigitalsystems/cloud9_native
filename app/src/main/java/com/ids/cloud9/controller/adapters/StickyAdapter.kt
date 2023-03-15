@@ -18,13 +18,11 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class StickyAdapter(context: Activity, private val mList: ArrayList<Visit>, click:RVOnItemClickListener) :
+class StickyAdapter(context: Activity, private val mList: ArrayList<Visit>, var click:RVOnItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), HeaderDecoration.StickyHeaderInterface {
     private val mContext: Activity
     private val VIEW_HEADER = 1
     private val VIEW_DETAIL = 0
-    var simpFormat = SimpleDateFormat("dd-MM-yyyy")
-    var click:RVOnItemClickListener = click
     init {
         mContext = context
     }
@@ -50,19 +48,19 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<Visit>, clic
         binding.root
     ), View.OnClickListener {
         fun bind(item: Visit) {
-            var call = Calendar.getInstance()
-            var dateMil = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss").parse(item.visitDate!!).time
+            val call = Calendar.getInstance()
+            val dateMil = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.ENGLISH).parse(item.visitDate!!)!!.time
             call.time.time = dateMil
-            binding.tvDay.text = SimpleDateFormat("EEEE").format(Date(dateMil))
-            binding.tvDate.text = SimpleDateFormat("MMMM dd, yyyy").format(Date(dateMil))
+            binding.tvDay.text = SimpleDateFormat("EEEE", Locale.ENGLISH).format(Date(dateMil))
+            binding.tvDate.text = SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH).format(Date(dateMil))
 
-            var original = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss")
-            var toForm = SimpleDateFormat("yyyy-MM-dd")
-            var cal = Calendar.getInstance()
-            var visitDate = item.visitDate
-            var visitMil = toForm.parse(toForm.format(original.parse(visitDate)))
-            var today = toForm.parse(toForm.format(cal.time))
-            if(visitMil.time == today.time){
+            val original = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.ENGLISH)
+            val toForm = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+            val cal = Calendar.getInstance()
+            val visitDate = item.visitDate
+            val visitMil = toForm.parse(toForm.format(original.parse(visitDate!!)!!))
+            val today = toForm.parse(toForm.format(cal.time))
+            if(visitMil!!.time == today!!.time){
                 binding.llHeaderDate.setBackgroundResource(R.color.colorPrimaryDark)
                 AppHelper.setTextColor(mContext,binding.tvDate,R.color.white)
                 AppHelper.setTextColor(mContext,binding.tvDay,R.color.white)
@@ -110,15 +108,13 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<Visit>, clic
                     binding.tvStatus.text = AppConstants.PENDING_REASON
                 }
             }
-            var calFrom = Calendar.getInstance()
-            var calTo = Calendar.getInstance()
-            var millFrom = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss").parse(child.fromTime).time
-            var millTo = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss").parse(child.toTime).time
-            var diff = millTo - millFrom
-            var mins = diff / 60000
-            var hours = mins/60
-            var min = mins%60
-            binding.tvDuration.text = SimpleDateFormat("hh:mm aa").format(Date(millFrom)) +"-\n"+SimpleDateFormat("hh:mm aa").format(Date(millTo))+"\n("+if(hours>0) {hours.toString()+"hrs"+min+"mins"+")"}else {min.toString()+" mins"+")"}
+            val millFrom = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH).parse(child.fromTime!!)!!.time
+            val millTo = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH).parse(child.toTime!!)!!.time
+            val diff = millTo - millFrom
+            val mins = diff / 60000
+            val hours = mins/60
+            val min = mins%60
+            binding.tvDuration.text = SimpleDateFormat("hh:mm aa", Locale.ENGLISH).format(Date(millFrom)) +"-\n"+SimpleDateFormat("hh:mm aa", Locale.ENGLISH).format(Date(millTo))+"\n("+if(hours>0) {hours.toString()+"hrs"+min+"mins"+")"}else {min.toString()+" mins"+")"}
             if(layoutPosition+1 < mList.size) {
                 if (mList.get(layoutPosition + 1).isHeader!!)
                     binding.llUnderLine.hide()
@@ -134,13 +130,13 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<Visit>, clic
         }
     }
     override fun getItemCount(): Int {
-        return mList?.size ?: 0
+        return mList.size
     }
     fun getItem(position: Int): Visit {
-        return mList!![position]
+        return mList[position]
     }
-    override fun getHeaderPositionForItem(itemPosition: Int): Int {
-        var itemPosition = itemPosition
+    override fun getHeaderPositionForItem(itePosition: Int): Int {
+        var itemPosition = itePosition
         var headerPosition = 0
         do {
             if (isHeader(itemPosition)) {
@@ -155,23 +151,23 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<Visit>, clic
         return R.layout.item_visit_date
     }
     override fun bindHeaderData(header: View?, headerPosition: Int) {
-        val child = mList!![headerPosition]
+        val child = mList[headerPosition]
         val day: TextView = header!!.findViewById(R.id.tvDay)
-        val date : TextView = header!!.findViewById(R.id.tvDate)
-        var headerLL : LinearLayout = header!!.findViewById(R.id.llHeaderDate)
-        var sep = header!!.findViewById<LinearLayout>(R.id.sepDate)
-        var call = Calendar.getInstance()
-        var dateMil = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss").parse(child.visitDate!!).time
+        val date : TextView = header.findViewById(R.id.tvDate)
+        val headerLL : LinearLayout = header.findViewById(R.id.llHeaderDate)
+        var sep = header.findViewById<LinearLayout>(R.id.sepDate)
+        val call = Calendar.getInstance()
+        val dateMil = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.ENGLISH).parse(child.visitDate!!)!!.time
         call.time.time = dateMil
-        day.text = SimpleDateFormat("EEEE").format(Date(dateMil))
-        date.text = SimpleDateFormat("MMMM dd, yyyy").format(Date(dateMil))
-        var original = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss")
-        var toForm = SimpleDateFormat("yyyy-MM-dd")
-        var cal = Calendar.getInstance()
-        var visitDate = child.visitDate
-        var visitMil = toForm.parse(toForm.format(original.parse(visitDate)))
-        var today = toForm.parse(toForm.format(cal.time))
-        if(visitMil.time == today.time){
+        day.text = SimpleDateFormat("EEEE", Locale.ENGLISH).format(Date(dateMil))
+        date.text = SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH).format(Date(dateMil))
+        val original = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.ENGLISH)
+        val toForm = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+        val cal = Calendar.getInstance()
+        val visitDate = child.visitDate
+        val visitMil = toForm.parse(toForm.format(original.parse(visitDate!!)!!))
+        val today = toForm.parse(toForm.format(cal.time))
+        if(visitMil!!.time == today!!.time){
             headerLL.setBackgroundResource(R.color.colorPrimaryDark)
             AppHelper.setTextColor(mContext,date,R.color.white)
             AppHelper.setTextColor(mContext,day,R.color.white)

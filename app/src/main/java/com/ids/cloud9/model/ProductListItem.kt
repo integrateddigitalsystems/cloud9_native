@@ -13,7 +13,7 @@ data class ProductListItem(
     @SerializedName("formId")
     val formId: Int,
     @SerializedName("id")
-    val id: Int,
+    val id: Int?=0,
     @SerializedName("isDeleted")
     val isDeleted: Boolean,
     @SerializedName("modificationDate")
@@ -33,11 +33,11 @@ data class ProductListItem(
     @SerializedName("serialNumber")
     val serialNumber: String,
     @SerializedName("serialNumbers")
-    val serialNumbers: List<String>,
+    val serialNumbers: ArrayList<String> = arrayListOf(),
     @SerializedName("unit")
     val unit: Any,
     @SerializedName("unitId")
-    val unitId: Int,
+    val unitId: Int?=0,
     @SerializedName("visit")
     val visit: Any,
     @SerializedName("visitId")

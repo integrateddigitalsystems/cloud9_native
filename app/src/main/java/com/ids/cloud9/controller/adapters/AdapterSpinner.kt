@@ -15,8 +15,6 @@ import com.ids.cloud9.utils.AppHelper
 class AdapterSpinner(
     context: Context, textViewResourceId: Int,
     private val values: ArrayList<ItemSpinner>,
-    private val type:Int,
-    val roundedSpin : Boolean?=false
 ) : ArrayAdapter<ItemSpinner>(context, textViewResourceId, values) {
     var con = context
     override fun getCount(): Int {

@@ -9,12 +9,8 @@ import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.databinding.ItemProductsBinding
-import com.ids.cloud9.databinding.ItemReasonDialogBinding
 import com.ids.cloud9.model.ItemSpinner
-import com.ids.cloud9.model.ProductList
 import com.ids.cloud9.model.ProductListItem
-import com.ids.cloud9.model.ProductsItem
-import com.ids.cloud9.utils.AppConstants
 import com.ids.cloud9.utils.AppHelper
 import com.ids.cloud9.utils.setCheckText
 import com.ids.cloud9.utils.setTintImage
@@ -36,18 +32,17 @@ class AdapterProducts(
         return items.size
     }
     fun setUpStatusReasonSpinner(pos: Int, binding: ItemProductsBinding) {
-        var arrSpin: ArrayList<ItemSpinner> = arrayListOf()
-        var adapterSpin: AdapterSpinner? = null
+        val arrSpin: ArrayList<ItemSpinner> = arrayListOf()
         arrSpin.clear()
-        var reps = items.get(pos).reports
+        val reps = items.get(pos).reports
         for (item in reps)
             arrSpin.add(ItemSpinner(item.id, item.name, false, true))
         arrSpin.get(0).selected = true
-        adapterSpin =
-            AdapterSpinner(con, R.layout.spinner_text_item, arrSpin, 0, true)
-        binding!!.spReports.adapter = adapterSpin
-        adapterSpin!!.setDropDownViewResource(R.layout.spinner_new)
-        binding!!.spReports.onItemSelectedListener =
+        val adapterSpin =
+            AdapterSpinner(con, R.layout.spinner_text_item, arrSpin)
+        binding.spReports.adapter = adapterSpin
+        adapterSpin.setDropDownViewResource(R.layout.spinner_new)
+        binding.spReports.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>,
@@ -55,12 +50,12 @@ class AdapterProducts(
                     position: Int,
                     id: Long
                 ) {
-                    binding!!.tvReport.text = arrSpin.get(position).name
+                    binding.tvReport.text = arrSpin.get(position).name
                     for (itm in arrSpin)
                         itm.selected = false
                     arrSpin.get(position).selected = true
                     items.get(pos).reports.get(position).selected = true
-                    adapterSpin!!.notifyDataSetChanged()
+                    adapterSpin.notifyDataSetChanged()
                 }
                 override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
@@ -74,8 +69,8 @@ class AdapterProducts(
         fun bind(item: ProductListItem) {
             binding.tvProductName.setCheckText(item.product.name)
             try {
-                if (item.unitId != null && MyApplication.units != null && MyApplication.units.size > 0) {
-                    var unit = MyApplication.units.find {
+                if (item.unitId != null && MyApplication.units.size > 0) {
+                    val unit = MyApplication.units.find {
                         if (item.id != null) {
                             it.id == item.unitId
                         } else {
@@ -93,8 +88,8 @@ class AdapterProducts(
             } catch (ex: Exception) {
                 binding.tvUnit.text = ""
             }
-            binding.tvSN.text = if (item.serialNumbers != null && item.serialNumbers!!.size > 0) {
-                item.serialNumbers!!.get(0)
+            binding.tvSN.text = if (item.serialNumbers.size > 0) {
+                item.serialNumbers.get(0)
             } else {
                 "N/A"
             }
@@ -106,7 +101,7 @@ class AdapterProducts(
                 )
             }else {
                 binding.tvReport.text = con.getString(R.string.no_data)
-                AppHelper.setTextColor(con, binding!!.tvReport, R.color.gray_border_item)
+                AppHelper.setTextColor(con, binding.tvReport, R.color.gray_border_item)
             }
         }
         init {

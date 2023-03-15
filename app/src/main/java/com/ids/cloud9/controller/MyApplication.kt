@@ -9,14 +9,13 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import com.ids.cloud9.apis.WifiService
 import com.ids.cloud9.model.*
+import com.ids.cloud9.utils.AppConstants
+import com.ids.cloud9.utils.AppConstants.LOCALE_ARABIC
 import dev.b3nedikt.app_locale.AppLocale
 import dev.b3nedikt.restring.Restring
 import dev.b3nedikt.reword.RewordInterceptor
 import dev.b3nedikt.viewpump.ViewPump
-import com.ids.cloud9.utils.AppConstants
-import com.ids.cloud9.utils.AppConstants.LOCALE_ARABIC
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class MyApplication : Application() {
@@ -35,13 +34,14 @@ class MyApplication : Application() {
         var onTheWayVisit : Visit ?=null
         var saveLocTracking = false
         var generalNotificaiton = 1
+        var activityVisible = false
         var UNIQUE_REQUEST_CODE = 908
         var address : ResponseAddress ?=null
         var selectedProduct:ProductListItem  ?= null
         var selectedReccomend : FilteredActivityListItem ?=null
         var mobileConfig : MobileConfig?=null
         var languageCode : String ?="en"
-        var units : kotlin.collections.ArrayList<UnitListItem> = arrayListOf()
+        var units : ArrayList<UnitListItem> = arrayListOf()
         var isSignatureEmptyEmp = false
         var isSignatureEmptyClient = false
         var locMessages : ArrayList<LocalisedMessage> = arrayListOf()
@@ -65,6 +65,18 @@ class MyApplication : Application() {
         var password : String
             get() = sharedPreferences.getString(AppConstants.PASSWORD, "")!!
             set(value) { sharedPreferencesEditor.putString(AppConstants.PASSWORD, value).apply() }
+    }
+
+    fun isActivityVisible(): Boolean {
+        return activityVisible
+    }
+
+    fun activityResumed() {
+        activityVisible = true
+    }
+
+    fun activityPaused() {
+        activityVisible = false
     }
     override fun onCreate() {
         super.onCreate()

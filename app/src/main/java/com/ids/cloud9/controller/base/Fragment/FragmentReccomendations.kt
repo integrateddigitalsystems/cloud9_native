@@ -13,7 +13,6 @@ import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.activities.ActivityAddReccomendations
 import com.ids.cloud9.controller.adapters.AdapterFilteredReccomendations
-import com.ids.cloud9.controller.adapters.AdapterReccomendations
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.databinding.LayoutProductsBinding
 import com.ids.cloud9.databinding.LayoutReccomendationsBinding
