@@ -1,10 +1,13 @@
 package com.ids.cloud9.controller.activities
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
@@ -13,6 +16,7 @@ import com.google.gson.Gson
 import com.ids.cloud9.BuildConfig
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
+import com.ids.cloud9.custom.AppCompactBase
 import com.ids.cloud9.databinding.ActivityNewSplashBinding
 import com.ids.cloud9.model.*
 import com.ids.cloud9.utils.*
@@ -20,9 +24,16 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ActivitySplash : Activity() {
+class ActivitySplash : AppCompactBase() {
 
     var mFirebaseRemoteConfig: FirebaseRemoteConfig? = null
+    private val permReqLauncher = this.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        val granted = permissions.entries.all {
+            it.value
+        }
+
+        startApp()
+    }
     private lateinit var binding: ActivityNewSplashBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -166,6 +177,15 @@ class ActivitySplash : Activity() {
                 startFirebase()
             }
         } else {
+            permissionSendNotifications()
+        }
+    }
+
+    private fun permissionSendNotifications() {
+        val permissions = arrayOf(Manifest.permission.POST_NOTIFICATIONS)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&!AppHelper.hasPermission(this, permissions)){
+            permReqLauncher.launch(permissions)
+        }else{
             startApp()
         }
     }

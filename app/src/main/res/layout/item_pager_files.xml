@@ -9,11 +9,11 @@
         android:layout_gravity="center"
         />
 
-    <ImageView
+    <com.ids.cloud9.custom.TouchImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/ivImages"
-        android:clickable="true"/>
+        android:scaleType="centerInside" />
 
 
     <com.google.android.exoplayer2.ui.StyledPlayerView

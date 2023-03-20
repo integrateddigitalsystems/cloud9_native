@@ -26,7 +26,7 @@ class CustomTypeFaceSpan(
         private fun applyCustomTypeFace(paint: Paint, tf: Typeface) {
             val oldStyle: Int
             val old: Typeface = paint.getTypeface()
-            oldStyle = old?.style ?: 0
+            oldStyle = old.style
             val fake = oldStyle and tf.style.inv()
             if (fake and Typeface.BOLD != 0) {
                 paint.setFakeBoldText(true)

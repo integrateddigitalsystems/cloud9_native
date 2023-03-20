@@ -17,11 +17,13 @@
             layout="@layout/toolbar_layout" />
 
         <ScrollView
+            android:fillViewport="true"
         android:layout_marginTop="@dimen/normal_margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/llMainLayout"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">

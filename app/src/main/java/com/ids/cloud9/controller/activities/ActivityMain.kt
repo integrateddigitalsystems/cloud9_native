@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
@@ -36,49 +37,47 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ActivityMain: AppCompactBase() , RVOnItemClickListener{
+class ActivityMain : AppCompactBase(), RVOnItemClickListener {
     var simp = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.ENGLISH)
     var half = SimpleDateFormat("MMM dd", Locale.ENGLISH)
     var secondHalf = SimpleDateFormat("MMM dd yyyy", Locale.ENGLISH)
     var secondNoMonthHalf = SimpleDateFormat("dd, yyyy", Locale.ENGLISH)
-    var binding : ActivityMainBinding?=null
+    var binding: ActivityMainBinding? = null
     var fromDefault = Calendar.getInstance()
     var toDefault = Calendar.getInstance()
-    var foregroundOnlyLocationService: LocationForeService? = null
-    val BLOCKED = -1
-    val GRANTED = 0
-    val DENIED = 1
+    var afterApi = false
     var doneOnce = 0
     var visitIdNotf = -1
-    val BLOCKED_OR_NEVER_ASKED = 2
-    var mPermissionResult: ActivityResultLauncher<Array<String>>? = null
     var editingFrom = Calendar.getInstance()
     var editingTo = Calendar.getInstance()
-    var tempArray : ArrayList<Visit> = arrayListOf()
-    var mainArray : ArrayList<Visit> = arrayListOf()
+    var tempArray: ArrayList<Visit> = arrayListOf()
+    var mainArray: ArrayList<Visit> = arrayListOf()
     private lateinit var foregroundOnlyBroadcastReceiver: ForegroundOnlyBroadcastReceiver
     private var foregroundOnlyLocationServiceBound = false
+
     private inner class ForegroundOnlyBroadcastReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val location = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent.getParcelableExtra(LocationForeService.EXTRA_LOCATION,Location::class.java)
+                intent.getParcelableExtra(LocationForeService.EXTRA_LOCATION, Location::class.java)
             } else {
                 intent.getParcelableExtra(
-                    LocationForeService.EXTRA_LOCATION)
+                    LocationForeService.EXTRA_LOCATION
+                )
             }
             if (location != null) {
                 wtf("Foreground location: ${location.toText()}")
             }
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
-        if(visitIdNotf==-1) {
+        if (visitIdNotf == -1) {
             visitIdNotf = intent.getIntExtra("visitId", -1)
         }
-        if(visitIdNotf!=-1){
+        if (visitIdNotf != -1) {
             getVisits()
         }
         setUpPermission()
@@ -92,114 +91,32 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             Manifest.permission.ACCESS_FINE_LOCATION
         )
     }
+
     private fun openChooser() {
         mPermissionResult!!.launch(
             arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION
             )
         )
-       }
-    fun changeState(track: Boolean) {
-        var gps_enabled = false
-        val mLocationManager =
-            getSystemService(LOCATION_SERVICE) as LocationManager
-
-        safeCall {
-            gps_enabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        }
-        if (gps_enabled) {
-            if (!track) {
-                MyApplication.saveLocTracking = false
-                safeCall {
-                    foregroundOnlyLocationService?.unsubscribeToLocationUpdates()
-                    val intent = Intent()
-                    intent.setClass(this, LocationForeService::class.java)
-                    stopService(intent)
-                }
-            } else {
-                try {
-                    // TODO: Step 1.0, Review Permissions: Checks and requests if needed.
-                    if (foregroundPermissionApproved()) {
-
-                            MyApplication.saveLocTracking = true
-                            foregroundOnlyLocationService?.subscribeToLocationUpdates()
-                                ?: run {
-                                    wtf("Service Not Bound")
-                                }
-                    } else {
-                        createActionDialog(
-                            getString(R.string.permission_background_android),
-                            0
-                        ){
-                            openChooser()
-                        }
-                    }
-                } catch (ex: Exception) {
-                    wtf(ex.toString())
-                }
-            }
-        }
-    }
-    fun getPermissionStatus(androidPermissionName: String?): Int {
-        return if (ContextCompat.checkSelfPermission(
-                this,
-                androidPermissionName!!
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
-                    androidPermissionName
-                )
-            ) {
-                BLOCKED_OR_NEVER_ASKED
-            } else DENIED
-        } else GRANTED
-    }
-    fun setUpPermission() {
-        mPermissionResult =
-            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions())
-            { result ->
-                var permission = false
-                for (item in result) {
-                    permission = item.value
-                }
-                if (!permission) {
-                    toast(getString(R.string.location_updates_disabled))
-                    for (item in result) {
-                        if (ContextCompat.checkSelfPermission(
-                               this,
-                                item.key
-                            ) == BLOCKED
-                        ) {
-
-                            if (getPermissionStatus(Manifest.permission.ACCESS_FINE_LOCATION) == BLOCKED_OR_NEVER_ASKED) {
-                                Toast.makeText(
-                                    this,
-                                    getString(R.string.please_grant_permission),
-                                    Toast.LENGTH_LONG
-                                ).show()
-                                break
-                            }
-                        }
-                    }
-                }
-            }
     }
 
-    fun editDate(isNext : Boolean ){
-        if(isNext){
+
+
+
+    fun editDate(isNext: Boolean) {
+        if (isNext) {
             val oldEdge = editingTo.time
             editingFrom.time = oldEdge
             editingTo.time = oldEdge
-            editingFrom.add(Calendar.DAY_OF_MONTH,1)
-            editingTo.add(Calendar.DAY_OF_MONTH,7)
+            editingFrom.add(Calendar.DAY_OF_MONTH, 1)
+            editingTo.add(Calendar.DAY_OF_MONTH, 7)
 
-        }else{
+        } else {
             val oldEdge = editingFrom.time
             editingFrom.time = oldEdge
             editingTo.time = oldEdge
-            editingFrom.add(Calendar.DAY_OF_MONTH,-7)
-            editingTo.add(Calendar.DAY_OF_MONTH,-1)
+            editingFrom.add(Calendar.DAY_OF_MONTH, -7)
+            editingTo.add(Calendar.DAY_OF_MONTH, -1)
         }
         val curr = Calendar.getInstance()
         editingFrom.time = secondHalf.parse(secondHalf.format(editingFrom.time))!!
@@ -207,23 +124,26 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
         curr.time = secondHalf.parse(secondHalf.format(curr.time))!!
 
 
-        if(curr.time.time >= editingFrom.time.time && curr.time.time <= editingTo.time.time){
+        if (curr.time.time >= editingFrom.time.time && curr.time.time <= editingTo.time.time) {
             binding!!.llHomeMain.tvToday.setBackgroundResource(R.drawable.rounded_selected)
-        }else{
+        } else {
             binding!!.llHomeMain.tvToday.setBackgroundResource(R.drawable.rounded_dark_blue)
         }
         binding!!.llHomeMain.loading.show()
         filterDate(mainArray)
-        if(editingFrom.get(Calendar.MONTH) != editingTo.get(Calendar.MONTH))
-            binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondHalf.format(editingTo.time)
+        if (editingFrom.get(Calendar.MONTH) != editingTo.get(Calendar.MONTH))
+            binding!!.llHomeMain.tvDate.text =
+                half.format(editingFrom.time) + " - " + secondHalf.format(editingTo.time)
         else
-            binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondNoMonthHalf.format(editingTo.time)
+            binding!!.llHomeMain.tvDate.text =
+                half.format(editingFrom.time) + " - " + secondNoMonthHalf.format(editingTo.time)
     }
-    fun setUpDate(){
+
+    fun setUpDate() {
         val from = Calendar.getInstance()
         val to = Calendar.getInstance()
-        from.add(Calendar.DAY_OF_MONTH,-3)
-        to.add(Calendar.DAY_OF_MONTH,3)
+        from.add(Calendar.DAY_OF_MONTH, -3)
+        to.add(Calendar.DAY_OF_MONTH, 3)
         fromDefault = from
         toDefault = to
         editingFrom = from
@@ -231,12 +151,15 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
         editingFrom.time = secondHalf.parse(secondHalf.format(editingFrom.time))!!
         editingTo.time = secondHalf.parse(secondHalf.format(editingTo.time))!!
         filterDate(mainArray)
-        if(editingFrom.get(Calendar.MONTH) != editingTo.get(Calendar.MONTH))
-            binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondHalf.format(editingTo.time)
+        if (editingFrom.get(Calendar.MONTH) != editingTo.get(Calendar.MONTH))
+            binding!!.llHomeMain.tvDate.text =
+                half.format(editingFrom.time) + " - " + secondHalf.format(editingTo.time)
         else
-            binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - "+secondNoMonthHalf.format(editingTo.time)
+            binding!!.llHomeMain.tvDate.text =
+                half.format(editingFrom.time) + " - " + secondNoMonthHalf.format(editingTo.time)
     }
-    fun filterDate(arrayList: ArrayList<Visit>){
+
+    fun filterDate(arrayList: ArrayList<Visit>) {
         tempArray.clear()
         tempArray.addAll(arrayList.filter {
             simp.parse(it.visitDate!!)!!.time >= editingFrom.time.time && simp.parse(it.visitDate!!)!!.time <= editingTo.time.time
@@ -247,6 +170,7 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
         vl.addAll(tempArray)
         setUpData(vl)
     }
+
     override fun onStop() {
         if (foregroundOnlyLocationServiceBound) {
             unbindService(foregroundOnlyServiceConnection)
@@ -254,27 +178,35 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
         }
         super.onStop()
     }
+
     private val foregroundOnlyServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             val binder = service as LocationForeService.LocalBinder
             foregroundOnlyLocationService = binder.foreService
             foregroundOnlyLocationServiceBound = true
-            if (MyApplication.saveLocTracking)
+            if (MyApplication.saveLocTracking) {
+                MyApplication.gettingTracked = true
                 changeState(true)
+            }
         }
+
         override fun onServiceDisconnected(name: ComponentName) {
             foregroundOnlyLocationService = null
             foregroundOnlyLocationServiceBound = false
         }
     }
+
     override fun onPause() {
+        MyApplication.activityPaused()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(
             foregroundOnlyBroadcastReceiver
         )
         super.onPause()
     }
+
     override fun onResume() {
         super.onResume()
+        MyApplication.activityResumed()
         LocalBroadcastManager.getInstance(this).registerReceiver(
             foregroundOnlyBroadcastReceiver,
             IntentFilter(
@@ -288,21 +220,23 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
         }
         val filter = IntentFilter("msg")
         registerReceiver(mBroadcastReceiver, filter)
-        if(doneOnce == 0) {
+        if (doneOnce == 0) {
             doneOnce = 1
             setUpDate()
         }
         getVisits()
 
     }
+
     override fun onStart() {
         super.onStart()
         MyApplication.serviceContext = this
         val serviceIntent = Intent(this, LocationForeService::class.java)
         bindService(serviceIntent, foregroundOnlyServiceConnection, Context.BIND_AUTO_CREATE)
     }
-    fun setUpData(list: VisitList){
-        if(list.size >0) {
+
+    fun setUpData(list: VisitList) {
+        if (list.size > 0) {
             list.sortBy {
                 simp.parse(it.visitDate!!)!!.time
             }
@@ -333,15 +267,101 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                     tempArray.add(item)
                 }
             }
-        }else{
+        } else {
             tempArray.clear()
         }
-        val currTemp : ArrayList<Visit> = arrayListOf()
+        val currTemp: ArrayList<Visit> = arrayListOf()
         currTemp.addAll(tempArray)
         tempArray.clear()
         tempArray.addAll(currTemp)
-        if(tempArray.size > 0) {
-            val adapter = StickyAdapter(this, tempArray,this)
+        val stickyArray: ArrayList<ShowStickyItem> = arrayListOf()
+        for (it in tempArray) {
+            it.appearDuration = AppHelper.durationToString(it.duration!!.toFloat())
+            var millFrom  = Calendar.getInstance().timeInMillis
+            var millTo = Calendar.getInstance().timeInMillis
+            safeCall {
+                 millFrom = SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mm:ssss",
+                    Locale.ENGLISH
+                ).parse(it.fromTime!!)!!.time
+            }
+            safeCall{
+                millTo = SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mm:ssss",
+                    Locale.ENGLISH
+                ).parse(it.toTime!!)!!.time
+            }
+            var reasonStatus = ""
+            var reasonBg = 0
+            var reasonText = 0
+            when (it.reasonId) {
+                AppConstants.COMPLETED_REASON_ID -> {
+                    reasonBg = R.drawable.completed_bg
+                    reasonText = R.color.comp_text
+                    reasonStatus = AppConstants.COMPLETED_REASON
+                }
+                AppConstants.SCHEDULED_REASON_ID -> {
+                    reasonBg = R.drawable.scheduled_bg
+                    reasonText = R.color.scheduled_text
+                    reasonStatus = AppConstants.SCHEDULED_REASON
+                }
+                AppConstants.ON_THE_WAY_REASON_ID -> {
+                    reasonBg = R.drawable.on_the_way_bg
+                    reasonText = R.color.otw_text
+                    reasonStatus = AppConstants.ON_THE_WAY_REASON
+                }
+                AppConstants.ARRIVED_REASON_ID -> {
+                    reasonBg = R.drawable.arrived_bg
+                    reasonText = R.color.arrived_text
+                    reasonStatus = AppConstants.ARRIVED_REASON
+                }
+                AppConstants.PENDING_REASON_ID -> {
+                    reasonBg = R.drawable.pending_bg
+                    reasonText = R.color.pending_text
+                    reasonStatus = AppConstants.PENDING_REASON
+                }
+            }
+            val call = Calendar.getInstance()
+            val dateMil = SimpleDateFormat(
+                "yyyy-MM-dd'T'hh:mm:ss",
+                Locale.ENGLISH
+            ).parse(it.visitDate!!)!!.time
+            call.time.time = dateMil
+            val day = SimpleDateFormat("EEEE", Locale.ENGLISH).format(Date(dateMil))
+            val date = SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH).format(Date(dateMil))
+            val cal = Calendar.getInstance()
+            val visitDate = it.visitDate
+            val original = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.ENGLISH)
+            val toForm = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+            val visitMil = toForm.parse(toForm.format(original.parse(visitDate!!)!!))
+            val today = toForm.parse(toForm.format(cal.time))
+            var tod = false
+            if (visitMil!!.time == today!!.time  && it.isHeader!!) {
+                tod = true
+            }
+            val show = ShowStickyItem(
+                it.isHeader,
+                it.title,
+                if(it.company!=null && !it.company!!.companyName.isNullOrEmpty()) it.company!!.companyName else "",
+                SimpleDateFormat(
+                    "hh:mm aa",
+                    Locale.ENGLISH
+                ).format(Date(millFrom)) + "-\n" + SimpleDateFormat(
+                    "hh:mm aa",
+                    Locale.ENGLISH
+                ).format(Date(millTo)) + " (" + it.appearDuration + ")",
+                reasonStatus,
+                day,
+                date,
+                it.reasonId,
+                tod,
+                reasonText,
+                reasonBg
+            )
+            it.showData = show
+        }
+        if (tempArray.size > 0) {
+            val adapter = StickyAdapter(this, tempArray, this)
             binding!!.llHomeMain.rvVisits.layoutManager = LinearLayoutManager(this)
             binding!!.llHomeMain.rvVisits.adapter = adapter
             binding!!.llHomeMain.rvVisits.addItemDecoration(
@@ -354,32 +374,37 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             binding!!.llHomeMain.loading.hide()
             binding!!.llHomeMain.rvVisits.show()
             binding!!.llHomeMain.tvNoVisits.hide()
-        }else{
-            binding!!.llHomeMain.loading.hide()
-            binding!!.llHomeMain.rvVisits.hide()
-            binding!!.llHomeMain.tvNoVisits.show()
+        } else {
+            if (afterApi) {
+                binding!!.llHomeMain.loading.hide()
+                binding!!.llHomeMain.rvVisits.hide()
+                binding!!.llHomeMain.tvNoVisits.show()
+            }
         }
         binding!!.llHomeMain.srVisits.isRefreshing = false
 
     }
-    fun getVisits(){
+
+    fun getVisits() {
         binding!!.llHomeMain.loading.show()
         RetrofitClientAuth.client?.create(RetrofitInterface::class.java)
             ?.getVisits(
-               -1,
+                -1,
                 MyApplication.userItem!!.applicationUserId!!.toInt()
             )?.enqueue(object : Callback<VisitList> {
                 override fun onResponse(call: Call<VisitList>, response: Response<VisitList>) {
                     mainArray.clear()
                     mainArray.addAll(response.body()!!)
-                    if(visitIdNotf!=-1){
+                    if (visitIdNotf != -1) {
                         MyApplication.selectedVisit = mainArray.find {
                             it.id == visitIdNotf
                         }
-                        startActivity(Intent(
-                            this@ActivityMain,
-                            ActivtyVisitDetails::class.java
-                        ))
+                        startActivity(
+                            Intent(
+                                this@ActivityMain,
+                                ActivtyVisitDetails::class.java
+                            )
+                        )
                     }
                     MyApplication.allVisits.clear()
                     MyApplication.allVisits.addAll(response.body()!!)
@@ -387,20 +412,29 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                         it.reasonId == AppConstants.ON_THE_WAY_REASON_ID || it.reasonId == AppConstants.ARRIVED_REASON_ID
                     }
                     MyApplication.onTheWayVisit = visit
-                    if(visit!=null)
+                    if (visit != null) {
+                        MyApplication.gettingTracked = true
                         changeState(true)
-                    else
-                        changeState(false )
+                    }else {
+                        MyApplication.gettingTracked = false
+                        changeState(false)
+                    }
+                    afterApi = true
+
+
                     filterDate(response.body()!!)
                 }
+
                 override fun onFailure(call: Call<VisitList>, throwable: Throwable) {
                 }
             })
     }
-    fun listeners(){
-        binding!!.drawerMenu.tvWelcome.text = binding!!.drawerMenu.tvWelcome.text.toString() + MyApplication.userItem!!.firstName + " "+MyApplication.userItem!!.lastName
+
+    fun listeners() {
+        binding!!.drawerMenu.tvWelcome.text =
+            binding!!.drawerMenu.tvWelcome.text.toString() + MyApplication.userItem!!.firstName + " " + MyApplication.userItem!!.lastName
         binding!!.llHomeMain.ivDrawer.setOnClickListener {
-            val shake =  AnimationUtils.loadAnimation(this, R.anim.corner)
+            val shake = AnimationUtils.loadAnimation(this, R.anim.corner)
             binding!!.navView.startAnimation(shake)
             binding!!.drawerLayout.openDrawer(GravityCompat.START)
         }
@@ -408,8 +442,10 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             createActionDialog(
                 getString(R.string.sure_logout),
                 0
-            ){
+            ) {
                 safeCall {
+                    MyApplication.saveLocTracking = false
+                    MyApplication.gettingTracked = false
                     foregroundOnlyLocationService!!.unsubscribeToLocationUpdates()
                     val intent = Intent()
                     intent.setClass(this, LocationForeService::class.java)
@@ -417,49 +453,51 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
                 }
                 finishAffinity()
                 MyApplication.loggedIn = false
-                startActivity(Intent(this,ActivityLogin::class.java))
+                startActivity(Intent(this, ActivityLogin::class.java))
             }
         }
         binding!!.drawerMenu.btArabic.hide()
         binding!!.drawerMenu.btEnglish.hide()
         binding!!.drawerMenu.btArabic.setOnClickListener {
-            AppHelper.changeLanguage(this,"ar")
+            AppHelper.changeLanguage(this, "ar")
             val intent = Intent(this, ActivityMain::class.java)
             startActivity(intent)
             finishAffinity()
         }
         binding!!.drawerMenu.btEnglish.setOnClickListener {
-            AppHelper.changeLanguage(this,"en")
+            AppHelper.changeLanguage(this, "en")
             val intent = Intent(this, ActivityMain::class.java)
             startActivity(intent)
             finishAffinity()
         }
         binding!!.drawerMenu.tvAllTasks.setOnClickListener {
-            startActivity(Intent(
-                this,
-                ActivityAllTasks::class.java
-            ))
+            startActivity(
+                Intent(
+                    this,
+                    ActivityAllTasks::class.java
+                )
+            )
         }
         binding!!.drawerMenu.tvHome.setOnClickListener {
-            val shake =  AnimationUtils.loadAnimation(this, R.anim.close_corner)
+            val shake = AnimationUtils.loadAnimation(this, R.anim.close_corner)
             binding!!.navView.startAnimation(shake)
             Handler(Looper.getMainLooper()).postDelayed({
                 binding!!.drawerLayout.closeDrawers()
             }, 300)
         }
         binding!!.drawerMenu.btClose.setOnClickListener {
-            val shake =  AnimationUtils.loadAnimation(this, R.anim.close_corner)
+            val shake = AnimationUtils.loadAnimation(this, R.anim.close_corner)
             binding!!.navView.startAnimation(shake)
             Handler(Looper.getMainLooper()).postDelayed({
                 binding!!.drawerLayout.closeDrawers()
             }, 300)
         }
-        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 createActionDialog(
                     getString(R.string.are_you_sure_exit),
                     0
-                ){
+                ) {
                     finish()
                 }
             }
@@ -484,8 +522,9 @@ class ActivityMain: AppCompactBase() , RVOnItemClickListener{
             getVisits()
         }
     }
+
     override fun onItemClicked(view: View, position: Int) {
         MyApplication.selectedVisit = tempArray.get(position)
-        startActivity(Intent(this,ActivtyVisitDetails::class.java))
+        startActivity(Intent(this, ActivtyVisitDetails::class.java))
     }
 }

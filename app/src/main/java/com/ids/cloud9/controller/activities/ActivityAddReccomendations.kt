@@ -3,6 +3,8 @@ package com.ids.cloud9.controller.activities
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +23,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
 
@@ -34,6 +36,16 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
     var arrayUsers: ArrayList<ApplicationUserListItem> = arrayListOf()
     private var arrayUserSelected: ArrayList<ApplicationUserListItem> = arrayListOf()
 
+
+    override fun onResume() {
+        super.onResume()
+        MyApplication.activityResumed()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MyApplication.activityPaused()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddReccomendBinding.inflate(layoutInflater)
@@ -63,8 +75,16 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
         binding!!.llTool.layoutFragment.show()
         if(MyApplication.selectedReccomend!=null)
             binding!!.llTool.tvTitleTool.text = MyApplication.selectedReccomend!!.subject
-        else
+        else {
             binding!!.llTool.tvTitleTool.text = getString(R.string.task)
+            binding!!.lLDelete.hide()
+        }
+
+        binding!!.llMainLayout.setOnClickListener {
+            if(binding!!.llNameSelect.visibility == View.VISIBLE){
+                binding!!.llNameSelect.hide()
+            }
+        }
         binding!!.llTool.ivCalendar.setOnClickListener {
             finishAffinity()
             startActivity(
@@ -92,6 +112,11 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
                 0
             ){
                 deleteReccomend()
+            }
+        }
+        binding!!.llTool.llToolbarLayout.setOnClickListener {
+            if(binding!!.llNameSelect.visibility == View.VISIBLE){
+                binding!!.llNameSelect.hide()
             }
         }
         binding!!.btSave.setOnClickListener {
@@ -188,17 +213,12 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
         })
     }
     private fun createReccomend() {
-        var id = 0
         binding!!.llLoading.show()
         val arrId: ArrayList<Int> = arrayListOf()
-        if (arrayUserSelected.size == 1)
-            id = arrayUserSelected[0].id
-        else {
             for (item in arrayUserSelected)
                 arrId.add(item.id)
-        }
         val createActivity = CreateActivity(
-            if (arrId.size > 0) null else id,
+            null,
             binding!!.etDesc.text.toString(),
             MyApplication.selectedVisit!!.id,
             arrId,
@@ -235,6 +255,7 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
             })
     }
     private fun setUpData() {
+        binding!!.tvDueDate.text = simp.format(Calendar.getInstance().time)
         binding!!.rvSelectedUser.layoutManager =
             GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false)
         adapterUser = AdapterUser(arrayUserSelected, this, this)
@@ -294,8 +315,15 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
                 binding!!.llNameSelect.hide()
                 arrayUserSelected.add(arrayUsers[position])
                 arraySpinner[position].selected = true
-                adapter!!.notifyItemChanged(position)
+                adapter!!.notifyDataSetChanged()
                 adapterUser!!.notifyItemChanged(position)
+            }else{
+                binding!!.rvSelectedUser.show()
+                binding!!.llNameSelect.hide()
+                arrayUserSelected.remove(arrayUsers[position])
+                arraySpinner[position].selected = false
+                adapter!!.notifyDataSetChanged()
+                adapterUser!!.notifyDataSetChanged()
             }
         }
     }

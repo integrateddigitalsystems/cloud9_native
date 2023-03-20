@@ -149,7 +149,10 @@ class LocationForeService : Service() {
 
                     currentLocation = locationResult.lastLocation
                     if(currentLocation!=null) {
-                        startForeground(NOTIFICATION_ID, generateNotification())
+                        if(!MyApplication.isActivityVisible())
+                            startForeground(NOTIFICATION_ID, generateNotification())
+                        else
+                            stopNotification()
                     }
 
                     changeLocation(currentLocation!!)
@@ -212,7 +215,10 @@ class LocationForeService : Service() {
             wtf("Start foreground service")
             if(currentLocation!=null) {
                 val notification = generateNotification()
-                startForeground(NOTIFICATION_ID, notification)
+                if(!MyApplication.isActivityVisible())
+                    startForeground(NOTIFICATION_ID, generateNotification())
+                else
+                    stopNotification()
             }
             serviceRunningInForeground = true
         }
@@ -356,7 +362,10 @@ class LocationForeService : Service() {
                     wtf(location.latitude.toString()+","+location.longitude.toString())
                     MyApplication.address!!.lat=location.latitude.toString()
                     MyApplication.address!!.long=location.longitude.toString()}catch (e:Exception){}
-                generateNotification()
+                if(!MyApplication.isActivityVisible())
+                   generateNotification()
+                else
+                    stopNotification()
 
                 var update = com.google.android.gms.maps.model.LatLng(location.latitude,location.longitude)
                 if(location!=null)
@@ -378,7 +387,10 @@ class LocationForeService : Service() {
 
                 if(currentLocation!=null) {
 
-                    startForeground(NOTIFICATION_ID, generateNotification())
+                    if(!MyApplication.isActivityVisible())
+                        startForeground(NOTIFICATION_ID, generateNotification())
+                    else
+                        stopNotification()
                 }
                 if (serviceRunningInForeground) {
 
@@ -436,7 +448,10 @@ class LocationForeService : Service() {
             }
             if(firstLocation!=null) {
                 currentLocation = firstLocation
-                generateNotification()
+                if(!MyApplication.isActivityVisible())
+                    generateNotification()
+                else
+                    stopNotification()
                 changeLocation(currentLocation!!)
             }
 
@@ -460,10 +475,14 @@ class LocationForeService : Service() {
             }
 
         if(currentLocation!=null) {
-            notificationManager.notify(
-                NOTIFICATION_ID,
-                generateNotification()
-            )
+            if(!MyApplication.isActivityVisible())
+                notificationManager.notify(
+                    NOTIFICATION_ID,
+                    generateNotification()
+                )
+            else
+                stopNotification()
+
         }
         startService(Intent(applicationContext, LocationForeService::class.java))
 
@@ -591,7 +610,6 @@ class LocationForeService : Service() {
             // 2. Build the BIG_TEXT_STYLE.
             val bigTextStyle = NotificationCompat.BigTextStyle()
                 .bigText(mainNotificationText)
-                .setBigContentTitle(titleText)
 
             // 3. Set up main Intent/Pending Intents for notification.
             var launchActivityIntent: Intent? = null
@@ -631,6 +649,15 @@ class LocationForeService : Service() {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .build()
             return currNotf!!
+
+    }
+
+
+
+    private fun stopNotification(){
+        safeCall {
+            notificationManager.cancel(NOTIFICATION_ID)
+        }
 
     }
 

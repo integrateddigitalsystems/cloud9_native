@@ -30,6 +30,12 @@ class ActivityRecords : AppCompactBase(), RVOnItemClickListener {
     }
     override fun onResume() {
         super.onResume()
+        MyApplication.activityResumed()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MyApplication.activityPaused()
     }
     fun init(){
         getRecords()

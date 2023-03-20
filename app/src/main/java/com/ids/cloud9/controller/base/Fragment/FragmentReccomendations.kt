@@ -5,19 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.activities.ActivityAddReccomendations
 import com.ids.cloud9.controller.adapters.AdapterFilteredReccomendations
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
-import com.ids.cloud9.databinding.LayoutProductsBinding
 import com.ids.cloud9.databinding.LayoutReccomendationsBinding
-import com.ids.cloud9.model.ActivitiesList
-import com.ids.cloud9.model.ActivitiesListItem
 import com.ids.cloud9.model.FilteredActivityList
 import com.ids.cloud9.model.FilteredActivityListItem
 import com.ids.cloud9.utils.*
@@ -58,9 +53,9 @@ class FragmentReccomendations : Fragment(), RVOnItemClickListener {
                 )
             )
         }
-        binding!!.srReccomendations.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+        binding!!.srReccomendations.setOnRefreshListener{
             getReccomendations()
-        })
+        }
     }
     fun init() {
         listeners()

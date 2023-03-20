@@ -71,6 +71,7 @@
     <string name="contract_number_p">Contract Number:</string>
     <string name="fax_p">Fax:</string>
     <string name="site_location_p">Site Location:</string>
+    <string name="grant_settings_permission">You have to grant permission manually in settings</string>
     <string name="date_p">Date:</string>
     <string name="opportunity_p">Opportunity:</string>
     <string name="matco_eng_p">Matco Eng:</string>
@@ -91,5 +92,7 @@
     <string name="loc_callback_removed">Location Callback removed.</string>
     <string name="failed_rremove_loc">Failed to remove Location Callback.</string>
     <string name="visit_succ">Visit updated successfully</string>
+    <string name="go_back">Go Back</string>
     <string name="visit_arrived_completed">Visit has not arrived , or is already completed.</string>
+    <string name="not_saved_signature">You haven\'t saved your signature! \nClick \"Go Back\" to go back and save it , or click cancel to discard it</string>
 </resources>

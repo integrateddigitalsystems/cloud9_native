@@ -24,11 +24,18 @@ import java.util.regex.Pattern
 
 
 fun Any.wtf(message: String) {
-    if (BuildConfig.DEBUG)
+    debugOnly {
         Log.wtf(this::class.java.simpleName, message)
+    }
+
 }
 fun Activity.toast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+}
+inline fun debugOnly(block: () -> Unit) {
+    if (BuildConfig.DEBUG) {
+        block()
+    }
 }
 
 fun Location.toText():String{
@@ -71,6 +78,36 @@ fun Context.createRetryDialog(message: String,doAction: () -> Unit){
         .setCancelable(true)
         .setNegativeButton(this.getString(R.string.ok)) { dialog, _ ->
            doAction()
+        }
+    val alert = builder.create()
+    alert.show()
+}
+fun Context.createReverseDialog(message: String,posButton : String ,position: Int, doAction: (position: Int) -> Unit) {
+
+    val builder = AlertDialog.Builder(this)
+    builder
+        .setMessage(message)
+        .setCancelable(true)
+        .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+            doAction(position)
+        }
+        .setPositiveButton(posButton) { dialog, _ ->
+            dialog.cancel()
+        }
+    val alert = builder.create()
+    alert.show()
+}
+fun Context.createActionDialog(message: String,posButton : String ,position: Int, doAction: (position: Int) -> Unit) {
+
+    val builder = AlertDialog.Builder(this)
+    builder
+        .setMessage(message)
+        .setCancelable(true)
+        .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+            dialog.cancel()
+        }
+        .setPositiveButton(posButton) { dialog, _ ->
+            doAction(position)
         }
     val alert = builder.create()
     alert.show()

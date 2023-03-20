@@ -162,7 +162,7 @@
             android:gravity="center"
             android:text="No visits set for this week"
             android:textSize="@dimen/normal_font"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"

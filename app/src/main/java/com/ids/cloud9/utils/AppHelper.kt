@@ -4,29 +4,24 @@ package com.ids.cloud9.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.ContentValues
 import android.content.Context
 import android.content.Context.CONNECTIVITY_SERVICE
-import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Typeface
-import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
-import android.net.Uri
 import android.os.Build
 import android.text.TextUtils
 import android.util.Base64
 import android.util.Base64OutputStream
-import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.VideoView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -40,6 +35,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.util.*
+import kotlin.math.roundToInt
 
 
 class AppHelper {
@@ -71,15 +67,19 @@ class AppHelper {
 
         }
 
+        fun hasPermission(context: Context, permissions: Array<String>): Boolean = permissions.all {
+            ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+        }
+
         fun setLocalStrings(activity: Activity,language: String,locale: Locale) {
             Restring.stringRepository.toMutableRepository().strings.clear()
-            if(MyApplication.locMessages != null){
+            if(MyApplication.locMessages.size > 0){
             try {
                 val myStringsMap: HashMap<String, String> = HashMap()
                 MyApplication.locMessages.forEachIndexed { index, _ ->
                     run {
-                        myStringsMap[MyApplication.locMessages!![index].key!!] =
-                            if(language == "en") MyApplication.locMessages!![index].valueEn!! else MyApplication.locMessages!![index].valueAr!!
+                        myStringsMap[MyApplication.locMessages[index].key] =
+                            if(language == "en") MyApplication.locMessages[index].valueEn else MyApplication.locMessages[index].valueAr
                     }
                 }
                 Restring.putStrings(locale, myStringsMap)
@@ -93,9 +93,9 @@ class AppHelper {
 
         fun isImageFile(path: String?): Boolean {
           if(path!!.contains("png")||
-              path!!.contains("jpg")||
-              path!!.contains("jpeg")||
-              path!!.contains("png")){
+              path.contains("jpg")||
+              path.contains("jpeg")||
+              path.contains("png")){
               return true
           }else{
               return false
@@ -107,14 +107,6 @@ class AppHelper {
             return !TextUtils.isEmpty(phoneNumber) && Patterns.PHONE.matcher(phoneNumber).matches()
         }
 
-        fun loadVideo(view:VideoView, video :String){
-
-                view.setVideoURI(Uri.parse(video))
-                view.requestFocus()
-                view.start()
-
-
-        }
 
         fun convertImageFileToBase64(imageFile: File): String {
             return ByteArrayOutputStream().use { outputStream ->
@@ -135,13 +127,13 @@ class AppHelper {
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 java.util.Base64.getEncoder().encodeToString(byteArray)
             } else {
-                return android.util.Base64.encodeToString(byteArray, 0)
+                return Base64.encodeToString(byteArray, 0)
             }
         }
 
 
         fun setImage(context: Context, img: ImageView, ImgUrl: String, isLocal: Boolean) {
-            try {
+            safeCall {
                 if (isLocal) {
                     Glide.with(context)
                         .load(File(ImgUrl))
@@ -161,7 +153,6 @@ class AppHelper {
                 }
 
 
-            } catch (e: Exception) {
             }
 
         }
@@ -187,43 +178,7 @@ class AppHelper {
             return capabilities?.hasCapability(NET_CAPABILITY_INTERNET) == true
         }
 
-        fun createDialogAgain(c: Activity, message: String,doAction: () -> Unit) {
-            val builder = AlertDialog.Builder(c)
-            val textView: TextView
-            val inflater = c.layoutInflater
-            val textEntryView = inflater.inflate(R.layout.item_dialog, null)
-            textView = textEntryView.findViewById(R.id.dialogMsg)
-            textView.text = message
-            builder.setView(textEntryView)
-                .setCancelable(true)
-                .setNegativeButton(c.getString(R.string.ok)) {
-                        dialog, _ ->  doAction() }
-            val alert = builder.create()
-            alert.setCancelable(false)
-            alert.show()
-        }
 
-        fun getRemoteString(key: String, con: Context): String {
-            if (MyApplication.locMessages != null) {
-                return try {
-                    MyApplication.locMessages!!.find { it.key == key }!!
-                        .getMessage()!!
-                } catch (e: Exception) {
-                    try {
-                        val resId = con.resources.getIdentifier(key, "string", con.packageName)
-                        con.resources.getString(resId)
-                    } catch (e: Exception) {
-                        ""
-                    }
-                }
-
-            } else {
-                val resId = con.resources.getIdentifier(key, "string", con.packageName)
-                return con.resources.getString(resId)
-            }
-
-
-        }
         fun setTextColor(context: Context, view: TextView, color: Int) {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -271,15 +226,6 @@ class AppHelper {
             )
         }
 
-        fun createDialogPositive(c: Activity, message: String) {
-            val builder = AlertDialog.Builder(c)
-            builder
-                .setMessage(message)
-                .setCancelable(true)
-                .setNegativeButton(c.getString(R.string.ok)){ dialog, _ -> dialog.cancel() }
-            val alert = builder.create()
-            alert.show()
-        }
 
         @SuppressLint("ResourceAsColor")
         fun createDialogError(activity: Activity, errorMessage: String, titleMessage:String, isSuccess:Boolean) {
@@ -312,26 +258,22 @@ class AppHelper {
             d.show()
         }
 
+        fun durationToString(duratio:Float):String{
+            return if(duratio > 1.0){
+                val hrs = duratio.toInt()
+                val minutes = ((duratio - hrs)*60).roundToInt()
+                hrs.toString()+"hrs "+minutes+"mins"
+            }else{
+                val minutes = ((duratio)*60).roundToInt()
+                minutes.toString()+"mins"
+            }
+        }
+
         fun handleCrashes(context: Activity) {
             Thread.getDefaultUncaughtExceptionHandler()
             Thread.setDefaultUncaughtExceptionHandler(MyExceptionHandler(context))
         }
 
-        fun createYesNoDialog(c: Activity, message: String,position: Int, doAction: (position: Int) -> Unit) {
-
-            val builder = AlertDialog.Builder(c)
-            builder
-                .setMessage(message)
-                .setCancelable(true)
-                .setNegativeButton(c.getString(R.string.no)) { dialog, _ ->
-                    dialog.cancel()
-                }
-                .setPositiveButton(c.getString(R.string.yes)) { dialog, _ ->
-                    doAction(position)
-                }
-            val alert = builder.create()
-            alert.show()
-        }
 
     }
 

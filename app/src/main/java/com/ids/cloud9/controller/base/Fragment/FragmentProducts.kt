@@ -8,17 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.adapters.AdapterProducts
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.activities.ActivityAddProduct
 import com.ids.cloud9.controller.activities.ActivityRecords
 import com.ids.cloud9.controller.activities.ActivityReportDetails
-import com.ids.cloud9.controller.activities.ActivtyVisitDetails
 import com.ids.cloud9.controller.adapters.AdapterDialog
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.databinding.LayoutProductsBinding
@@ -41,7 +38,6 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
     var alertDialog: AlertDialog? = null
     var adapterDialog: AdapterDialog? = null
     var arrayProd: ArrayList<ProductListItem> = arrayListOf()
-    var arrayReccomend: ArrayList<ActivitiesListItem> = arrayListOf()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,8 +58,8 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
         for (item in arrayProd.get(position).reports) {
             arrSpin.add(ItemSpinner(item.id, item.name, item.selected, true, false, position, null))
         }
-        val builder = androidx.appcompat.app.AlertDialog.Builder(requireActivity())
-        var popupItemMultipleBinding = ReasonDialogBinding.inflate(layoutInflater)
+        val builder = AlertDialog.Builder(requireActivity())
+        val popupItemMultipleBinding = ReasonDialogBinding.inflate(layoutInflater)
         popupItemMultipleBinding.rvReasonStatus.layoutManager =
             LinearLayoutManager(requireActivity())
         adapterDialog = AdapterDialog(arrSpin, requireActivity(), this, true)
@@ -92,16 +88,15 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
                 )
             )
         }
-        binding!!.srProducts.setOnRefreshListener(
-            SwipeRefreshLayout.OnRefreshListener {
-                getProducts()
-            })
+        binding!!.srProducts.setOnRefreshListener{
+            getProducts()
+        }
     }
     fun getProducts() {
         binding!!.llLoading.show()
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getProducts(
             MyApplication.selectedVisit!!.id!!
-        )?.enqueue(object : Callback<ProductList> {
+        ).enqueue(object : Callback<ProductList> {
             override fun onResponse(call: Call<ProductList>, response: Response<ProductList>) {
                 arrayProd.clear()
                 arrayProd.addAll(response.body()!!)
@@ -133,6 +128,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
                 getReports(i)
             }
         } else {
+            setUpProductsPage()
             binding!!.llLoading.hide()
         }
         binding!!.srProducts.isRefreshing = false
@@ -140,7 +136,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
     fun getReports(position: Int) {
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getReports(
             arrayProd.get(position).product.categoryId
-        )?.enqueue(object : Callback<ArrayList<Report>> {
+        ).enqueue(object : Callback<ArrayList<Report>> {
             override fun onResponse(
                 call: Call<ArrayList<Report>>,
                 response: Response<ArrayList<Report>>
@@ -167,7 +163,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
     fun deleteProduct(pos: Int) {
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).deleteProduct(
             arrayProd.get(pos).id!!
-        )?.enqueue(object : Callback<ResponseMessage> {
+        ).enqueue(object : Callback<ResponseMessage> {
             override fun onResponse(
                 call: Call<ResponseMessage>,
                 response: Response<ResponseMessage>
@@ -215,12 +211,12 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
             for (item in arrayProd.get(arrSpin.get(position).type!!).reports)
                 item.selected = false
             arrayProd.get(arrSpin.get(position).type!!).reports.get(position).selected = true
-            adapterDialog!!.notifyDataSetChanged()
-            adapterProd!!.notifyDataSetChanged()
+            adapterDialog!!.notifyItemChanged(position)
+            adapterProd!!.notifyItemChanged(position)
         } else if (view.id == R.id.ivReport) {
             if (MyApplication.selectedVisit!!.reasonId == AppConstants.ARRIVED_REASON_ID) {
                 MyApplication.selectedProduct = arrayProd.get(position)
-                var ct = arrayProd.get(position).reports.count {
+                val ct = arrayProd.get(position).reports.count {
                     it.selected
                 }
                 if (ct > 0) {

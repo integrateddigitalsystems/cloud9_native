@@ -49,6 +49,8 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
         pos = intent.getIntExtra("ID_MEDIA",0)
         setMediaPager()
     }
+
+
     private fun setMediaPager(){
         arrayVideos.clear()
         var ct = 1
@@ -57,6 +59,7 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
             arrayVideos.get(ct-1).isLocal = item.isLocal
             ct++
         }
+
         val adapterVideos = AdapterPagerFiles(arrayVideos, this,this,this)
         binding!!.vpMediaFull.adapter = adapterVideos
         binding!!.tbMedia.setupWithViewPager(binding!!.vpMediaFull)
@@ -77,10 +80,22 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
             if(arrayVideos.get(i).player!=null) {
                 if (i != position)
                     arrayVideos.get(i).player!!.pause()
+                else{
+                    arrayVideos.get(i).player!!.play()
+                }
 
+            }else{
+               /* if(arrayVideos.get(i).zoomer!=null)
+                    arrayVideos.get(i).zoomer!!.currentZoom*/
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        MyApplication.activityResumed()
+    }
+
     override fun onPageSelected(position: Int) {
        safeCall {  pauseAll()}
     }
@@ -99,6 +114,7 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
         safeCall {
             pauseAll()
         }
+        MyApplication.activityPaused()
         super.onPause()
     }
     override fun onStop() {

@@ -36,8 +36,8 @@
             android:id="@+id/tvNotasks"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/normal_margin"
-            android:gravity="center_horizontal"
+            android:gravity="center"
+            android:visibility="gone"
             android:text="@string/no_tasks_added_yet"
             android:textColor="@color/text_gray" />
 

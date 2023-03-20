@@ -2,6 +2,7 @@ package com.ids.cloud9.controller.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.widget.AdapterView
 import androidx.core.widget.doOnTextChanged
@@ -49,6 +50,15 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
     }
 
 
+    override fun onResume() {
+        super.onResume()
+        MyApplication.activityResumed()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MyApplication.activityPaused()
+    }
     fun init() {
         binding!!.llTool.ivDrawer.hide()
         binding!!.llTool.layoutFragment.show()
@@ -72,6 +82,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             prodId = MyApplication.selectedProduct!!.productId
             binding!!.btAddProduct.text = getString(R.string.update)
         }else{
+            binding!!.llProductDelete.hide()
             arraySer.add(SerialItem(""))
         }
         binding!!.rvSerialised.layoutManager = LinearLayoutManager(this)
@@ -81,7 +92,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
 
     fun setUpStatusReasonSpinner() {
         arraySpin.clear()
-        arraySpin
+        arrSpinner.add(0,ItemSpinner(0,getString(R.string._select_)))
         adapterSpin =
             AdapterSpinner(this, R.layout.spinner_text_item, arrSpinner)
         binding!!.spUnit.adapter = adapterSpin
@@ -202,7 +213,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             arr.add(item.serial!!)
         createProduct = CreateProduct(
             simp.format(cal.time),
-            if(!array.get(mainPos).description!!.isEmpty()) array.get(mainPos).description  else "" ,
+            if(!array.get(mainPos).description.isNullOrEmpty()) array.get(mainPos).description  else "" ,
             array.get(mainPos).name,
             0,
             0,
@@ -309,19 +320,23 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
                 binding!!.rlProductName.setBackgroundResource(R.drawable.rounded_white_gray_border)
             }
         }
-
+        binding!!.rlAddProdcut.setOnClickListener {
+            if(binding!!.llNameSelect.visibility == View.VISIBLE){
+                binding!!.llNameSelect.hide()
+            }
+        }
         binding!!.etQuantity.doOnTextChanged { text, start, before, count ->
             arraySer.clear()
             var ct = 1
             if(text!=null && text.length >0) {
                 while (ct <= text.toString().toInt()) {
                     arraySer.add(SerialItem(""))
-                    adapterSer!!.notifyItemChanged(ct-1)
                     ct++
                 }
+                adapterSer!!.notifyDataSetChanged()
             }else{
                 arraySer.add(SerialItem(""))
-                adapterSer!!.notifyItemChanged(arraySer.size-1)
+                adapterSer!!.notifyDataSetChanged()
             }
         }
 
@@ -337,7 +352,12 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
 
 
         binding!!.btAddProduct.setOnClickListener {
-            if(prodId!=0 && unitId!=0 && !binding!!.etQuantity.text.toString().isEmpty() && arraySer.size > 0) {
+            var serialised_filled = true
+            for(item in arraySer)
+                if(item.serial.isNullOrEmpty())
+                    serialised_filled = false
+
+            if(prodId!=0 && unitId!=0 && !binding!!.etQuantity.text.toString().isEmpty() && serialised_filled) {
                 if(MyApplication.selectedProduct==null)
                     addProduct()
                 else

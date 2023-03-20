@@ -22,7 +22,6 @@ class MyApplication : Application() {
 
     companion object {
         internal lateinit var instance: MyApplication
-        var selectedFragmentTag : String ?=""
         var BASE_URL ="https://crmtest.ids.com.lb/api/"
         var BASE_URL_IMAGE = "https://crmtest.ids.com.lb"
         var arrayVid : ArrayList<ItemSpinner> = arrayListOf()
@@ -33,7 +32,8 @@ class MyApplication : Application() {
         var permission =-1
         var onTheWayVisit : Visit ?=null
         var saveLocTracking = false
-        var generalNotificaiton = 1
+        var showNotfs = false
+        var gettingTracked = false
         var activityVisible = false
         var UNIQUE_REQUEST_CODE = 908
         var address : ResponseAddress ?=null
@@ -44,10 +44,11 @@ class MyApplication : Application() {
         var units : ArrayList<UnitListItem> = arrayListOf()
         var isSignatureEmptyEmp = false
         var isSignatureEmptyClient = false
+        var permissionAllow11  : Int?
+            get() = sharedPreferences.getInt(AppConstants.PERMISSION,0)
+            set(value) { sharedPreferencesEditor.putInt(AppConstants.PERMISSION, value!!).apply() }
         var locMessages : ArrayList<LocalisedMessage> = arrayListOf()
-        var selectedFragmentConstant:String=""
         @SuppressLint("StaticFieldLeak")
-        var showLogs: Boolean = true
         lateinit var sharedPreferences : SharedPreferences
         lateinit var sharedPreferencesEditor : SharedPreferences.Editor
         var firebaseToken : String
@@ -65,19 +66,23 @@ class MyApplication : Application() {
         var password : String
             get() = sharedPreferences.getString(AppConstants.PASSWORD, "")!!
             set(value) { sharedPreferencesEditor.putString(AppConstants.PASSWORD, value).apply() }
+
+        fun isActivityVisible(): Boolean {
+            return activityVisible
+        }
+
+        fun activityResumed() {
+            activityVisible = true
+            showNotfs = false
+        }
+
+        fun activityPaused() {
+            activityVisible = false
+            showNotfs = true
+        }
     }
 
-    fun isActivityVisible(): Boolean {
-        return activityVisible
-    }
 
-    fun activityResumed() {
-        activityVisible = true
-    }
-
-    fun activityPaused() {
-        activityVisible = false
-    }
     override fun onCreate() {
         super.onCreate()
         AppLocale.supportedLocales = listOf(Locale.ENGLISH, LOCALE_ARABIC)
@@ -96,8 +101,8 @@ class MyApplication : Application() {
         return Restring.wrapResources(applicationContext, super.getResources())
     }
 
-    override fun attachBaseContext(newBase: Context) {
-        var newBase = newBase
+    override fun attachBaseContext(newBa: Context) {
+        var newBase = newBa
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val config = newBase.resources.configuration
             config.setLocale(Locale.getDefault())

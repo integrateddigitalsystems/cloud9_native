@@ -29,7 +29,13 @@ class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
     }
     override fun onResume() {
         super.onResume()
+        MyApplication.activityResumed()
         getReccomendations()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MyApplication.activityPaused()
     }
     fun listeners(){
         binding!!.layoutTool.show()

@@ -54,6 +54,7 @@ object AppConstants {
     const val PRODUCTION_LOOKUP_CODE = "PROD_UNIT"
     const val LOGGED_IN ="LoggedIn"
     const val FIREBASE_TOKEN ="firebaseToken"
+    const val PERMISSION ="permission"
     const val TOKEN = "token"
     const val EMAIL ="email"
     const val PASSWORD ="password"

@@ -32,6 +32,16 @@ class ActivityReportDetails : AppCompactBase() {
         setUpWeb()
     }
 
+    override fun onResume() {
+        super.onResume()
+        MyApplication.activityResumed()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MyApplication.activityPaused()
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
     fun setUpWeb() {
         val web = "https://www.formsite.com/templates/registration-form-templates/club-registration-signup-form/"

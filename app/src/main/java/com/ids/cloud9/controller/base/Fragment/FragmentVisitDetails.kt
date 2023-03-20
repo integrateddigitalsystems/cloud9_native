@@ -1,12 +1,12 @@
 package com.ids.cloud9.controller.base.Fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.adapters.AdapterDialog
@@ -30,11 +30,11 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
     var adapter: AdapterDialog? = null
     var changed: Boolean = false
     var adapterSpin: AdapterSpinner? = null
-    var simp: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
-    var simpTime: SimpleDateFormat = SimpleDateFormat("HH:mm")
-    var simpTimeAA: SimpleDateFormat = SimpleDateFormat("hh:mm aa")
-    var simpOrg: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss")
-    var simpOrgss: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssss")
+    var simp: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
+    var simpTime: SimpleDateFormat = SimpleDateFormat("HH:mm", Locale.ENGLISH)
+    var simpTimeAA: SimpleDateFormat = SimpleDateFormat("hh:mm aa", Locale.ENGLISH)
+    var simpOrg: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.ENGLISH)
+    var simpOrgss: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssss", Locale.ENGLISH)
     var arrSpinner: ArrayList<ItemSpinner> = arrayListOf()
     var binding: LayoutVisitBinding? = null
     override fun onCreateView(
@@ -48,35 +48,22 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
 
     fun setUpVisitDetails() {
         var date = ""
-        try {
-            date = simp.format(simpOrg.parse(edtitVisit!!.visitDate))
-        } catch (ex: Exception) {
-
+        safeCall {
+            date = simp.format(simpOrg.parse(edtitVisit!!.visitDate!!)!!)
         }
         binding!!.tvVisitDate.text = date
         try {
             binding!!.fromTime.text =
-                simpTime.format(simpOrg.parse(edtitVisit!!.fromTime))
+                simpTime.format(simpOrg.parse(edtitVisit!!.fromTime!!)!!)
             binding!!.tvToTime.text =
-                simpTime.format(simpOrg.parse(edtitVisit!!.toTime))
-            var millFrom =
-                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss").parse(edtitVisit!!.fromTime).time
-            var millTo =
-                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss").parse(edtitVisit!!.toTime).time
-            var diff = millTo - millFrom
-            var mins = diff / 60000
-            var hours = mins / 60
-            var min = mins % 60
-            binding!!.tvDuration.text = if (hours > 0) {
-                hours.toString() + " hrs " + (if (min > 0)
-                    min.toString() + " mins"
-                else
-                    "")
-            } else {
-                if (min > 0)
-                    min.toString() + " mins"
-                else ""
-            }
+                simpTime.format(simpOrg.parse(edtitVisit!!.toTime!!)!!)
+            val millFrom =
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH).parse(edtitVisit!!.fromTime!!)!!.time
+            val millTo =
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH).parse(edtitVisit!!.toTime!!)!!.time
+            val diff = millTo - millFrom
+            val mins = diff / 60000
+            binding!!.tvDuration.text = edtitVisit!!.appearDuration
 
             if (edtitVisit!!.company != null) {
                 binding!!.tvCompany.text = edtitVisit!!.company!!.companyName
@@ -87,7 +74,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                 binding!!.tvActualArrivalTime.text = simpTimeAA.format(
                     simpOrg.parse(
                         edtitVisit!!.actualArrivalTime!!
-                    )
+                    )!!
                 )
             else
                 binding!!.tvActualArrivalTime.text = ""
@@ -96,7 +83,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                 binding!!.tvActualCompletedTime.text = simpTimeAA.format(
                     simpOrg.parse(
                         edtitVisit!!.actualCompletedTime!!
-                    )
+                    )!!
                 )
             else
                 binding!!.tvActualCompletedTime.text = ""
@@ -111,6 +98,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                 binding!!.etRemark.text = "".toEditable()
 
             (requireActivity() as ActivtyVisitDetails).binding!!.llTool.tvTitleTool.text = edtitVisit!!.title!!
+
 
         } catch (ex: Exception) {
             wtf("The message")
@@ -141,7 +129,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                     position: Int,
                     id: Long
                 ) {
-                        var pos = arrSpinner.indexOf(
+                        val pos = arrSpinner.indexOf(
                             arrSpinner.find {
                                 it.selected!!
                             }
@@ -154,7 +142,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                             edtitVisit!!.reasonId = arrSpinner.get(position).id
                             if (arrSpinner.get(position).id == AppConstants.ARRIVED_REASON_ID) {
                                 if(edtitVisit!!.actualArrivalTime.isNullOrEmpty() || changed) {
-                                    var cal = Calendar.getInstance()
+                                    val cal = Calendar.getInstance()
                                     binding!!.tvActualArrivalTime.text = simpTimeAA.format(cal.time)
                                     edtitVisit!!.actualArrivalTime = simpOrgss.format(cal.time)
                                     binding!!.tvActualCompletedTime.text = ""
@@ -162,17 +150,17 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                                 }
                             } else if (arrSpinner.get(position).id == AppConstants.COMPLETED_REASON_ID) {
                                 changed = true
-                                var cal = Calendar.getInstance()
+                                val cal = Calendar.getInstance()
                                 binding!!.tvActualCompletedTime.text = simpTimeAA.format(cal.time)
                                 edtitVisit!!.actualCompletedTime = simpOrgss.format(cal.time)
-                                var millFrom =
-                                    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss").parse(edtitVisit!!.actualArrivalTime).time
-                                var millTo =
-                                    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss").parse(edtitVisit!!.actualCompletedTime).time
-                                var diff = millTo - millFrom
-                                var mins = diff / 60000
-                                var hours = mins / 60
-                                var min = mins % 60
+                                val millFrom =
+                                    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH).parse(edtitVisit!!.actualArrivalTime!!)!!.time
+                                val millTo =
+                                    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH).parse(edtitVisit!!.actualCompletedTime!!)!!.time
+                                val diff = millTo - millFrom
+                                val mins = diff / 60000
+                                val hours = mins / 60
+                                val min = mins % 60
                                 binding!!.tvActualDurtionTime.text =
                                     if (hours > 0) {
                                         hours.toString() + "hrs" + min + "mins"
@@ -196,7 +184,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                 override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
             }
-        var pos = arrSpinner.indexOf(
+        val pos = arrSpinner.indexOf(
             arrSpinner.find {
                 it.id == edtitVisit!!.reasonId
             }
@@ -208,7 +196,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         binding!!.llLoading.show()
         for (item in edtitVisit!!.visitResources)
             item.id = 0
-        var str = Gson().toJson(edtitVisit)
+        val str = Gson().toJson(edtitVisit)
         wtf(str)
         RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
             .updateVisit(edtitVisit!!)
@@ -219,27 +207,48 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                 ) {
                     binding!!.llLoading.hide()
                     MyApplication.selectedVisit = edtitVisit
-                    if(edtitVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID && edtitVisit!!.reasonId!=AppConstants.ARRIVED_REASON_ID&&edtitVisit!!.reasonId!=AppConstants.COMPLETED_REASON_ID || !response.body()!!.message.equals("Visit updated successfully")){
-                        createDialog( response.body()!!.message!!)
-                    }else if(edtitVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID) {
+                    if (response.code() != 500) {
+                        FirebaseCrashlytics.getInstance().log("UPDATED:\n"+str)
+                        FirebaseCrashlytics.getInstance().recordException(RuntimeException("UPDATED:\n"+str))
+                        if (edtitVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID && edtitVisit!!.reasonId != AppConstants.ARRIVED_REASON_ID && edtitVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID || !response.body()!!.message.equals(
+                                "Visit updated successfully"
+                            )
+                        ) {
+                            createDialog(response.body()!!.message!!)
+                        } else if (edtitVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID) {
+                            requireContext().createRetryDialog(
+                                response.body()!!.message!!
+                            ) {
+                                MyApplication.onTheWayVisit = edtitVisit
+                                MyApplication.gettingTracked = false
+                                (requireActivity() as ActivtyVisitDetails).changeState(false)
+                            }
+                        } else {
+                            requireContext().createRetryDialog(
+                                response.body()!!.message!!
+                            ) {
+                                MyApplication.gettingTracked = true
+                                MyApplication.onTheWayVisit = edtitVisit
+                                (requireActivity() as ActivtyVisitDetails).changeState(true)
+                            }
+                        }
+
+                        if (response.body()!!.message.equals(getString(R.string.visit_succ))) {
+                            initialData()
+                            setUpVisitDetails()
+                        }
+
+                    } else {
+                        FirebaseCrashlytics.getInstance().log("UPDATE ERROR 500+ITEM:\n"+str)
+                        FirebaseCrashlytics.getInstance().recordException(RuntimeException("UPDATE ERROR 500+ITEM:\n"+str))
                         requireContext().createRetryDialog(
-                            response.body()!!.message!!){
+                            getString(R.string.visit_succ)
+                        ) {
                             MyApplication.onTheWayVisit = edtitVisit
+                            MyApplication.gettingTracked = false
                             (requireActivity() as ActivtyVisitDetails).changeState(false)
                         }
-                    }else{
-                        requireContext().createRetryDialog(
-                            response.body()!!.message!!){
-                            MyApplication.onTheWayVisit = edtitVisit
-                            (requireActivity() as ActivtyVisitDetails).changeState(true)
-                        }
                     }
-
-                    if(response.body()!!.message.equals(getString(R.string.visit_succ))){
-                        initialData()
-                        setUpVisitDetails()
-                    }
-
                 }
 
                 override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
@@ -308,16 +317,17 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             MyApplication.selectedVisit!!.dateMill,
             MyApplication.selectedVisit!!.headerOrder
         )
+        edtitVisit!!.appearDuration = MyApplication.selectedVisit!!.appearDuration
         setUpVisitDetails()
     }
 
     fun init() {
         listeners()
-        var fromNotf = (requireActivity() as ActivtyVisitDetails).fromNotf
+        val fromNotf = (requireActivity() as ActivtyVisitDetails).fromNotf
         if (fromNotf == 1) {
             (requireActivity() as ActivtyVisitDetails).fromNotf++
             binding!!.llLoading.show()
-            var visitId = (requireActivity() as ActivtyVisitDetails).visitId
+            val visitId = (requireActivity() as ActivtyVisitDetails).visitId
             getData(visitId)
         } else {
             setUpData()
@@ -333,7 +343,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                 call: Call<ArrayList<Company>>,
                 response: Response<ArrayList<Company>>
             ) {
-                var company = response.body()!!.find {
+                val company = response.body()!!.find {
                     it.id == MyApplication.selectedVisit!!.companyId
                 }
                 MyApplication.selectedVisit!!.company = company
@@ -357,6 +367,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                 override fun onResponse(call: Call<Visit>, response: Response<Visit>) {
                     edtitVisit = response.body()
                     MyApplication.selectedVisit = response.body()
+                    MyApplication.selectedVisit!!.appearDuration = AppHelper.durationToString(MyApplication.selectedVisit!!.duration!!.toFloat())
                     getCompany()
                 }
 
@@ -468,11 +479,11 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             alertDialog!!.dismiss()
             adapter!!.notifyDataSetChanged()
             if (arrSpinner.get(position).id == AppConstants.ARRIVED_REASON_ID) {
-                var cal = Calendar.getInstance()
+                val cal = Calendar.getInstance()
                 binding!!.tvActualArrivalTime.text = simpTimeAA.format(cal.time)
                 edtitVisit!!.actualArrivalTime = simpOrgss.format(cal.time)
             } else if (arrSpinner.get(position).id == AppConstants.COMPLETED_REASON_ID) {
-                var cal = Calendar.getInstance()
+                val cal = Calendar.getInstance()
                 binding!!.tvActualCompletedTime.text = simpTimeAA.format(cal.time)
                 edtitVisit!!.actualCompletedTime = simpOrgss.format(cal.time)
             } else {

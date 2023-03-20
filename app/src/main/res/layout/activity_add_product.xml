@@ -18,7 +18,7 @@
          android:id="@+id/llTool"
          layout="@layout/toolbar_layout" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:background="@color/white"
         android:layout_margin="@dimen/margin_start_end"
         android:layout_width="match_parent"
@@ -126,7 +126,6 @@
                                 android:layout_height="match_parent"
                                 android:layout_marginStart="@dimen/normal_margin_padding"
                                 android:gravity="center_vertical"
-                                android:text="@string/status_reason"
                                 android:textColor="@color/text_color"
                                 android:textSize="@dimen/normal_font" />
 
@@ -317,7 +316,7 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
  </LinearLayout>
 

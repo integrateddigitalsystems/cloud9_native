@@ -7,7 +7,7 @@ data class SignatureListItem(
     @SerializedName("creationDate")
     val creationDate: String,
     @SerializedName("directory")
-    val directory: String,
+    val directory: String?="",
     @SerializedName("entity")
     val entity: Any,
     @SerializedName("entityType")
@@ -25,5 +25,5 @@ data class SignatureListItem(
     @SerializedName("signatureType")
     val signatureType: Boolean,
     @SerializedName("signatureTypeLookup")
-    val signatureTypeLookup: String
+    val signatureTypeLookup: String?=""
 )

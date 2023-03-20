@@ -2,7 +2,6 @@ package com.ids.cloud9.custom
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.AppCompatTextView
 import com.ids.cloud9.utils.AppHelper
 class CustomButton : AppCompatButton {
     constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(

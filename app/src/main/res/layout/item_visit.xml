@@ -17,6 +17,7 @@
     <com.ids.cloud9.custom.CustomTextViewBold
         android:layout_marginStart="@dimen/margin_start_end"
         android:layout_marginTop="@dimen/margin_start_end"
+        android:layout_marginEnd="@dimen/normal_margin"
         android:textSize="@dimen/normal_font"
         android:textColor="@color/medium_blue"
         android:layout_width="match_parent"
