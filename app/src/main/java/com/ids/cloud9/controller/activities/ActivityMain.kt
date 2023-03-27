@@ -1,30 +1,24 @@
 package com.ids.cloud9.controller.activities
 
-import HeaderDecoration
 import android.Manifest
 import android.content.*
 import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationManager
 import android.os.*
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
-import com.ids.cloud9.controller.adapters.StickyAdapter
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
+import com.ids.cloud9.controller.adapters.StickyAdapter
 import com.ids.cloud9.custom.AppCompactBase
 import com.ids.cloud9.databinding.ActivityMainBinding
 import com.ids.cloud9.model.*
@@ -34,7 +28,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class ActivityMain : AppCompactBase(), RVOnItemClickListener {
@@ -364,12 +357,13 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
             val adapter = StickyAdapter(this, tempArray, this)
             binding!!.llHomeMain.rvVisits.layoutManager = LinearLayoutManager(this)
             binding!!.llHomeMain.rvVisits.adapter = adapter
-            binding!!.llHomeMain.rvVisits.addItemDecoration(
+            binding!!.llHomeMain.rvVisits.isNestedScrollingEnabled = false
+       /*     binding!!.llHomeMain.rvVisits.addItemDecoration(
                 HeaderDecoration(
                     binding!!.llHomeMain.rvVisits,
                     adapter
                 )
-            )
+            )*/
             wtf(Gson().toJson(tempArray))
             binding!!.llHomeMain.loading.hide()
             binding!!.llHomeMain.rvVisits.show()
@@ -431,8 +425,31 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
     }
 
     fun listeners() {
-        binding!!.drawerMenu.tvWelcome.text =
-            binding!!.drawerMenu.tvWelcome.text.toString() + MyApplication.userItem!!.firstName + " " + MyApplication.userItem!!.lastName
+        binding!!.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+
+            }
+            override fun onDrawerOpened(drawerView: View) {
+
+            }
+            override fun onDrawerClosed(drawerView: View) {
+                val shake = AnimationUtils.loadAnimation(this@ActivityMain, R.anim.close_corner)
+                binding!!.navView.startAnimation(shake)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding!!.drawerLayout.closeDrawers()
+                }, 300)
+            }
+
+            override fun onDrawerStateChanged(newState: Int) {
+                if( newState == DrawerLayout.STATE_DRAGGING && !binding!!.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    val shake = AnimationUtils.loadAnimation(this@ActivityMain, R.anim.corner)
+                    binding!!.navView.startAnimation(shake)
+                    binding!!.drawerLayout.openDrawer(GravityCompat.START)
+                }
+            }
+        })
+
+        binding!!.drawerMenu.tvWelcome.text = binding!!.drawerMenu.tvWelcome.text.toString() + MyApplication.userItem!!.firstName + " " + MyApplication.userItem!!.lastName
         binding!!.llHomeMain.ivDrawer.setOnClickListener {
             val shake = AnimationUtils.loadAnimation(this, R.anim.corner)
             binding!!.navView.startAnimation(shake)
@@ -527,4 +544,5 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
         MyApplication.selectedVisit = tempArray.get(position)
         startActivity(Intent(this, ActivtyVisitDetails::class.java))
     }
+
 }
