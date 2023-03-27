@@ -69,6 +69,7 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
             }
         }
     }
+    
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
