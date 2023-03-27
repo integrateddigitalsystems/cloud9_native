@@ -37,8 +37,10 @@ class AdapterPagerFiles(
         return view === `object`
     }
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val itemView = LayoutInflater.from(container.context)
+        var itemView = LayoutInflater.from(container.context)
             .inflate(R.layout.item_pager_files, container, false)
+
+
         val touch = itemView.findViewById<View>(R.id.ivImages) as TouchImageView
         itemView.findViewById<View>(R.id.ivImages).setOnClickListener(this)
         container.addView(itemView)
