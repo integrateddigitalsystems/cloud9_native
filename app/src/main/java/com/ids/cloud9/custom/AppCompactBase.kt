@@ -175,11 +175,14 @@ open class AppCompactBase : AppCompatActivity() {
                                 wtf("Service Not Bound")
                             }
                     } else {
-                        createActionDialog(
-                            getString(R.string.permission_background_android),
-                            0
-                        ){
-                            openChooser()
+                        if (MyApplication.isFirstLocation){
+                            MyApplication.isFirstLocation =false
+                            createActionDialog(
+                                getString(R.string.permission_background_android),
+                                0
+                            ){
+                                openChooser()
+                            }
                         }
                     }
                 } catch (ex: Exception) {
@@ -190,7 +193,7 @@ open class AppCompactBase : AppCompatActivity() {
     }
     init {
         foregroundOnlyBroadcastReceiver = ForegroundOnlyBroadcastReceiver()
-        setUpPermission()
+      /*  setUpPermission()*/
         AppHelper.setLocal()
     }
     override fun getDelegate(): AppCompatDelegate {

@@ -241,10 +241,12 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
                     response: Response<ResponseMessage>
                 ) {
                     if(response.body()!!.success!!.equals("true")){
+                        binding!!.llLoading.hide()
                         createRetryDialog(response.body()!!.message!!){
                             finish()
                         }
                     }else{
+                        binding!!.llLoading.hide()
                         createDialog(response.body()!!.message!!)
                     }
                 }
@@ -357,7 +359,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
                 if(item.serial.isNullOrEmpty())
                     serialised_filled = false
 
-            if(prodId!=0 && unitId!=0 && !binding!!.etQuantity.text.toString().isEmpty() && serialised_filled) {
+            if(prodId!=0 && unitId!=0 && !binding!!.etQuantity.text.toString().isEmpty() && serialised_filled && binding!!.tvProduct.text.toString().trim() != getString(R.string.product)) {
                 if(MyApplication.selectedProduct==null)
                     addProduct()
                 else
@@ -436,10 +438,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
                 }!!.selected = false
             }
 
-            if (!old!!)
-                arr.get(position).selected = true
-            else
-                arr.get(position).selected = false
+            arr.get(position).selected = !old!!
             array.find {
                 it.id == arr.get(position).id
             }!!.selected = arr.get(position).selected
@@ -447,7 +446,9 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             mainPos = array.indexOf(array.find {
                 it.id == arr.get(position).id
             })
+            if (arr[position].selected!!)
             binding!!.tvProduct.text = arr.get(position).name
+            else  binding!!.tvProduct.text = getString(R.string.product)
             binding!!.llNameSelect.hide()
 
             adapter!!.notifyDataSetChanged()

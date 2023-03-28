@@ -121,6 +121,7 @@ dependencies {
 
     implementation 'com.github.didikk:sticky-nestedscrollview:1.0.1'
 
+
     //noinspection GradleCompatible
     implementation 'com.android.support:recyclerview-v7:21.0.0'
     //noinspection GradleCompatible

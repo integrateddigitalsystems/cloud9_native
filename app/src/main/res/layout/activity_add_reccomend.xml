@@ -238,10 +238,11 @@
                     android:id="@+id/llNameSelect"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/with_200"
+                    android:layout_marginTop="2dp"
+                    android:padding="1.5dp"
                     android:layout_marginStart="@dimen/margin_start_end"
-                    android:layout_marginTop="-1dp"
                     android:layout_marginEnd="@dimen/margin_start_end"
-                    android:background="@drawable/rounded_bottom_white_gray_border"
+                    android:background="@drawable/rounded_white_gray_border"
                     android:orientation="vertical"
                     android:visibility="gone">
 

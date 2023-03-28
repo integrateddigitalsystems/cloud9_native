@@ -171,6 +171,7 @@
             <me.didik.component.StickyNestedScrollView
                 android:layout_width="match_parent"
                 android:scrollbars="none"
+                android:id="@+id/nvTop"
                 android:layout_height="wrap_content">
 
             <LinearLayout

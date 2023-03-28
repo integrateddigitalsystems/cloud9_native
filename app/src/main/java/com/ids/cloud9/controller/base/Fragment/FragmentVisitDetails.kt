@@ -88,8 +88,20 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             else
                 binding!!.tvActualCompletedTime.text = ""
 
-            if (edtitVisit!!.actualDuration != null) {
-                binding!!.tvActualDurtionTime.text = edtitVisit!!.actualDuration.toString()
+            if (edtitVisit!!.actualDuration != null && edtitVisit!!.actualDuration.toString()!="0.0") {
+                val millFrom = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH).parse(edtitVisit!!.actualArrivalTime!!)!!.time
+                val millTo = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH).parse(edtitVisit!!.actualCompletedTime!!)!!.time
+                val diff = millTo- millFrom
+                val mins = diff / 60000
+                val hours = mins / 60
+                val min = mins % 60 + if (millTo!=millFrom)1 else 0
+                binding!!.tvActualDurtionTime.text =
+                    if (hours > 0) {
+                        hours.toString() + "hrs" + min.toString() + "mins"
+                    } else {
+                        min.toString() + " mins"
+                    }
+        /*        binding!!.tvActualDurtionTime.text = edtitVisit!!.actualDuration.toString()*/
             } else
                 binding!!.tvActualDurtionTime.text = ""
             if (!edtitVisit!!.remark.isNullOrEmpty())
@@ -229,6 +241,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                             ) {
                                 MyApplication.gettingTracked = true
                                 MyApplication.onTheWayVisit = edtitVisit
+                           /*     MyApplication.isFirstLocation =true*/
                                 (requireActivity() as ActivtyVisitDetails).changeState(true)
                             }
                         }

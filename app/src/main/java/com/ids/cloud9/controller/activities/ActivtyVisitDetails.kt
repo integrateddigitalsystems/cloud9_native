@@ -179,39 +179,82 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
             }
         })
         binding!!.llCompany.setOnClickListener {
-            if (currLayPost != 1) {
-                restartLayouts()
-                AppHelper.setTextColor(this, binding!!.tvCompany, R.color.medium_blue)
-                binding!!.llSelectedCompanyBorder.show()
-                Navigation.findNavController(binding!!.fragmentContainerView)
-                    .navigate(R.id.fragmentCompany)
-                val navBuilder = NavOptions.Builder()
-                if (currLayPost > 1) {
-                    navBuilder.setEnterAnim(R.anim.right_in).setExitAnim(R.anim.right_out)
-                        .setPopEnterAnim(R.anim.right_in).setPopExitAnim(R.anim.right_out)
-                } else {
-                    navBuilder.setEnterAnim(R.anim.left_in).setExitAnim(R.anim.left_out)
-                        .setPopEnterAnim(R.anim.left_in).setPopExitAnim(R.anim.left_out)
+            if(currLayPost != 4) {
+                if (currLayPost != 1) {
+                    restartLayouts()
+                    AppHelper.setTextColor(this, binding!!.tvCompany, R.color.medium_blue)
+                    binding!!.llSelectedCompanyBorder.show()
+                    Navigation.findNavController(binding!!.fragmentContainerView)
+                        .navigate(R.id.fragmentCompany)
+                    val navBuilder = NavOptions.Builder()
+                    if (currLayPost > 1) {
+                        navBuilder.setEnterAnim(R.anim.right_in).setExitAnim(R.anim.right_out)
+                            .setPopEnterAnim(R.anim.right_in).setPopExitAnim(R.anim.right_out)
+                    } else {
+                        navBuilder.setEnterAnim(R.anim.left_in).setExitAnim(R.anim.left_out)
+                            .setPopEnterAnim(R.anim.left_in).setPopExitAnim(R.anim.left_out)
+                    }
+                    val navController = Navigation.findNavController(this, R.id.fragmentContainerView)
+                    navController.navigate(R.id.fragmentCompany, null, navBuilder.build())
                 }
-                val navController = Navigation.findNavController(this, R.id.fragmentContainerView)
-                navController.navigate(R.id.fragmentCompany, null, navBuilder.build())
+                currLayPost = 1
+            }else{
+                fromSign {
+                    restartLayouts()
+                    AppHelper.setTextColor(this, binding!!.tvCompany, R.color.medium_blue)
+                    binding!!.llSelectedCompanyBorder.show()
+                    Navigation.findNavController(binding!!.fragmentContainerView)
+                        .navigate(R.id.fragmentCompany)
+                    val navBuilder = NavOptions.Builder()
+                    if (currLayPost > 1) {
+                        navBuilder.setEnterAnim(R.anim.right_in).setExitAnim(R.anim.right_out)
+                            .setPopEnterAnim(R.anim.right_in).setPopExitAnim(R.anim.right_out)
+                    } else {
+                        navBuilder.setEnterAnim(R.anim.left_in).setExitAnim(R.anim.left_out)
+                            .setPopEnterAnim(R.anim.left_in).setPopExitAnim(R.anim.left_out)
+                    }
+                    val navController =
+                        Navigation.findNavController(this, R.id.fragmentContainerView)
+                    navController.navigate(R.id.fragmentCompany, null, navBuilder.build())
+                    currLayPost = 1 }
             }
-            currLayPost = 1
         }
         binding!!.llVisit.setOnClickListener {
-            if (currLayPost != 0) {
-                restartLayouts()
-                AppHelper.setTextColor(this, binding!!.tvVisit, R.color.medium_blue)
-                binding!!.llBorderVisit.hide()
-                binding!!.llSelectedVisitBorder.show()
-                Navigation.findNavController(binding!!.fragmentContainerView)
-                    .navigate(R.id.fragmentVisitDetails)
-                val navBuilder = NavOptions.Builder()
-                navBuilder.setEnterAnim(R.anim.right_in).setExitAnim(R.anim.right_out)
-                    .setPopEnterAnim(R.anim.right_in).setPopExitAnim(R.anim.right_out)
-                val navController = Navigation.findNavController(this, R.id.fragmentContainerView)
-                navController.navigate(R.id.fragmentVisitDetails, null, navBuilder.build())
-                currLayPost = 0
+            if(currLayPost != 4) {
+                if (currLayPost != 0) {
+                    restartLayouts()
+                    AppHelper.setTextColor(this, binding!!.tvVisit, R.color.medium_blue)
+                    binding!!.llBorderVisit.hide()
+                    binding!!.llSelectedVisitBorder.show()
+                    Navigation.findNavController(binding!!.fragmentContainerView)
+                        .navigate(R.id.fragmentVisitDetails)
+                    val navBuilder = NavOptions.Builder()
+                    navBuilder.setEnterAnim(R.anim.right_in).setExitAnim(R.anim.right_out)
+                        .setPopEnterAnim(R.anim.right_in).setPopExitAnim(R.anim.right_out)
+                    val navController = Navigation.findNavController(this, R.id.fragmentContainerView)
+                    navController.navigate(R.id.fragmentVisitDetails, null, navBuilder.build())
+                    currLayPost = 0
+                }
+            }else{
+                fromSign {
+                    restartLayouts()
+                    AppHelper.setTextColor(this, binding!!.tvVisit, R.color.medium_blue)
+                    binding!!.llBorderVisit.hide()
+                    binding!!.llSelectedVisitBorder.show()
+                    Navigation.findNavController(binding!!.fragmentContainerView)
+                        .navigate(R.id.fragmentVisitDetails)
+                    val navBuilder = NavOptions.Builder()
+                    if (currLayPost > 0) {
+                        navBuilder.setEnterAnim(R.anim.right_in).setExitAnim(R.anim.right_out)
+                            .setPopEnterAnim(R.anim.right_in).setPopExitAnim(R.anim.right_out)
+                    } else {
+                        navBuilder.setEnterAnim(R.anim.left_in).setExitAnim(R.anim.left_out)
+                            .setPopEnterAnim(R.anim.left_in).setPopExitAnim(R.anim.left_out)
+                    }
+                    val navController =
+                        Navigation.findNavController(this, R.id.fragmentContainerView)
+                    navController.navigate(R.id.fragmentVisitDetails, null, navBuilder.build())
+                    currLayPost = 0 }
             }
         }
         binding!!.llTool.ivCalendar.setOnClickListener {
@@ -224,46 +267,92 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
             )
         }
         binding!!.llMedia.setOnClickListener {
-            if (currLayPost != 5) {
-                restartLayouts()
-                AppHelper.setTextColor(this, binding!!.tvMedia, R.color.medium_blue)
-                binding!!.llMediaBorder.hide()
-                binding!!.llSelectedMediaBorder.show()
-                Navigation.findNavController(binding!!.fragmentContainerView)
-                    .navigate(R.id.fragmentMedia)
-                val navBuilder = NavOptions.Builder()
-                if (currLayPost > 5) {
-                    navBuilder.setEnterAnim(R.anim.right_in).setExitAnim(R.anim.right_out)
-                        .setPopEnterAnim(R.anim.right_in).setPopExitAnim(R.anim.right_out)
-                } else {
-                    navBuilder.setEnterAnim(R.anim.left_in).setExitAnim(R.anim.left_out)
-                        .setPopEnterAnim(R.anim.left_in).setPopExitAnim(R.anim.left_out)
+            if(currLayPost != 4) {
+                if (currLayPost != 5) {
+                    restartLayouts()
+                    AppHelper.setTextColor(this, binding!!.tvMedia, R.color.medium_blue)
+                    binding!!.llMediaBorder.hide()
+                    binding!!.llSelectedMediaBorder.show()
+                    Navigation.findNavController(binding!!.fragmentContainerView)
+                        .navigate(R.id.fragmentMedia)
+                    val navBuilder = NavOptions.Builder()
+                    if (currLayPost > 5) {
+                        navBuilder.setEnterAnim(R.anim.right_in).setExitAnim(R.anim.right_out)
+                            .setPopEnterAnim(R.anim.right_in).setPopExitAnim(R.anim.right_out)
+                    } else {
+                        navBuilder.setEnterAnim(R.anim.left_in).setExitAnim(R.anim.left_out)
+                            .setPopEnterAnim(R.anim.left_in).setPopExitAnim(R.anim.left_out)
+                    }
+                    val navController = Navigation.findNavController(this, R.id.fragmentContainerView)
+                    navController.navigate(R.id.fragmentMedia, null, navBuilder.build())
+                    currLayPost = 5
                 }
-                val navController = Navigation.findNavController(this, R.id.fragmentContainerView)
-                navController.navigate(R.id.fragmentMedia, null, navBuilder.build())
-                currLayPost = 5
+            }else{
+                fromSign {
+                    restartLayouts()
+                    AppHelper.setTextColor(this, binding!!.tvMedia, R.color.medium_blue)
+                    binding!!.llMediaBorder.hide()
+                    binding!!.llSelectedMediaBorder.show()
+                    Navigation.findNavController(binding!!.fragmentContainerView)
+                        .navigate(R.id.fragmentMedia)
+                    val navBuilder = NavOptions.Builder()
+                    if (currLayPost > 5) {
+                        navBuilder.setEnterAnim(R.anim.right_in).setExitAnim(R.anim.right_out)
+                            .setPopEnterAnim(R.anim.right_in).setPopExitAnim(R.anim.right_out)
+                    } else {
+                        navBuilder.setEnterAnim(R.anim.left_in).setExitAnim(R.anim.left_out)
+                            .setPopEnterAnim(R.anim.left_in).setPopExitAnim(R.anim.left_out)
+                    }
+                    val navController =
+                        Navigation.findNavController(this, R.id.fragmentContainerView)
+                    navController.navigate(R.id.fragmentMedia, null, navBuilder.build())
+                    currLayPost = 5 }
             }
+
         }
         binding!!.llProducts.setOnClickListener {
-            if (currLayPost != 2) {
-                restartLayouts()
-                AppHelper.setTextColor(this, binding!!.tvProducts, R.color.medium_blue)
-                binding!!.llProductsBorder.hide()
-                binding!!.llSelectedProductsBorder.show()
-                Navigation.findNavController(binding!!.fragmentContainerView)
-                    .navigate(R.id.fragmentProducts)
-                val navBuilder = NavOptions.Builder()
-                if (currLayPost > 2) {
-                    navBuilder.setEnterAnim(R.anim.right_in).setExitAnim(R.anim.right_out)
-                        .setPopEnterAnim(R.anim.right_in).setPopExitAnim(R.anim.right_out)
-                } else {
-                    navBuilder.setEnterAnim(R.anim.left_in).setExitAnim(R.anim.left_out)
-                        .setPopEnterAnim(R.anim.left_in).setPopExitAnim(R.anim.left_out)
+            if(currLayPost != 4) {
+                if (currLayPost != 2) {
+                    restartLayouts()
+                    AppHelper.setTextColor(this, binding!!.tvProducts, R.color.medium_blue)
+                    binding!!.llProductsBorder.hide()
+                    binding!!.llSelectedProductsBorder.show()
+                    Navigation.findNavController(binding!!.fragmentContainerView)
+                        .navigate(R.id.fragmentProducts)
+                    val navBuilder = NavOptions.Builder()
+                    if (currLayPost > 2) {
+                        navBuilder.setEnterAnim(R.anim.right_in).setExitAnim(R.anim.right_out)
+                            .setPopEnterAnim(R.anim.right_in).setPopExitAnim(R.anim.right_out)
+                    } else {
+                        navBuilder.setEnterAnim(R.anim.left_in).setExitAnim(R.anim.left_out)
+                            .setPopEnterAnim(R.anim.left_in).setPopExitAnim(R.anim.left_out)
+                    }
+                    val navController = Navigation.findNavController(this, R.id.fragmentContainerView)
+                    navController.navigate(R.id.fragmentProducts, null, navBuilder.build())
+                    currLayPost = 2
                 }
-                val navController = Navigation.findNavController(this, R.id.fragmentContainerView)
-                navController.navigate(R.id.fragmentProducts, null, navBuilder.build())
-                currLayPost = 2
+            }else{
+                fromSign {
+                    restartLayouts()
+                    AppHelper.setTextColor(this, binding!!.tvProducts, R.color.medium_blue)
+                    binding!!.llProductsBorder.hide()
+                    binding!!.llSelectedProductsBorder.show()
+                    Navigation.findNavController(binding!!.fragmentContainerView)
+                        .navigate(R.id.fragmentProducts)
+                    val navBuilder = NavOptions.Builder()
+                    if (currLayPost > 2) {
+                        navBuilder.setEnterAnim(R.anim.right_in).setExitAnim(R.anim.right_out)
+                            .setPopEnterAnim(R.anim.right_in).setPopExitAnim(R.anim.right_out)
+                    } else {
+                        navBuilder.setEnterAnim(R.anim.left_in).setExitAnim(R.anim.left_out)
+                            .setPopEnterAnim(R.anim.left_in).setPopExitAnim(R.anim.left_out)
+                    }
+                    val navController =
+                        Navigation.findNavController(this, R.id.fragmentContainerView)
+                    navController.navigate(R.id.fragmentProducts, null, navBuilder.build())
+                    currLayPost = 2 }
             }
+
         }
         binding!!.llRecommendations.setOnClickListener {
             if(currLayPost != 4) {

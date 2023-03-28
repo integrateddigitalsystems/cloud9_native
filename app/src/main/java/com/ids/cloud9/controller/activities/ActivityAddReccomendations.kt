@@ -1,5 +1,6 @@
 package com.ids.cloud9.controller.activities
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
@@ -98,10 +99,14 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
            onBackPressedDispatcher.onBackPressed()
         }
         binding!!.llAssignTo.setOnClickListener {
-            binding!!.llNameSelect.show()
+            if (binding!!.llNameSelect.visibility == View.GONE)
+                  binding!!.llNameSelect.show()
+            else  binding!!.llNameSelect.hide()
         }
         binding!!.ivSelectUser.setOnClickListener {
-            binding!!.llNameSelect.show()
+            if (binding!!.llNameSelect.visibility == View.GONE)
+                 binding!!.llNameSelect.show()
+            else binding!!.llNameSelect.hide()
         }
         binding!!.tvDueDate.setOnClickListener {
             popupDate()
@@ -202,7 +207,8 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
                 if(response.body()!!.success.equals("true")){
                     binding!!.llLoading.hide()
                     finish()
-                    toast(response.body()!!.message!!)
+                    toast(getString(R.string.task_deleted_successfully))
+                 /*   toast(response.body()!!.message!!)*/
                 }else{
                     binding!!.llLoading.hide()
                 }
@@ -256,8 +262,7 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
     }
     private fun setUpData() {
         binding!!.tvDueDate.text = simp.format(Calendar.getInstance().time)
-        binding!!.rvSelectedUser.layoutManager =
-            GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false)
+        binding!!.rvSelectedUser.layoutManager = GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false)
         adapterUser = AdapterUser(arrayUserSelected, this, this)
         binding!!.rvSelectedUser.adapter = adapterUser
     }
@@ -299,16 +304,19 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
                 }
             })
     }
+    @SuppressLint("NotifyDataSetChanged")
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.btRemoveMore) {
             arraySpinner.find {
-                it.id == arrayUsers[position].id
+                it.id == arrayUserSelected[position].id
             }!!.selected = false
-            arrayUserSelected.removeAt(position)
+            arrayUserSelected.remove(arrayUserSelected[position])
             if (arrayUsers.size == 0)
                 binding!!.rvSelectedUser.hide()
-            else
-                adapterUser!!.notifyItemChanged(position)
+            else{
+                adapterUser!!.notifyDataSetChanged()
+                adapter!!.notifyDataSetChanged()
+            }
         } else {
             if (!arraySpinner[position].selected!!) {
                 binding!!.rvSelectedUser.show()
@@ -316,7 +324,7 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
                 arrayUserSelected.add(arrayUsers[position])
                 arraySpinner[position].selected = true
                 adapter!!.notifyDataSetChanged()
-                adapterUser!!.notifyItemChanged(position)
+                adapterUser!!.notifyDataSetChanged()
             }else{
                 binding!!.rvSelectedUser.show()
                 binding!!.llNameSelect.hide()

@@ -2,7 +2,9 @@ package com.ids.cloud9.controller.activities
 
 import android.Manifest
 import android.content.*
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.location.Location
 import android.os.*
 import android.os.Bundle
@@ -125,8 +127,7 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
         binding!!.llHomeMain.loading.show()
         filterDate(mainArray)
         if (editingFrom.get(Calendar.MONTH) != editingTo.get(Calendar.MONTH))
-            binding!!.llHomeMain.tvDate.text =
-                half.format(editingFrom.time) + " - " + secondHalf.format(editingTo.time)
+            binding!!.llHomeMain.tvDate.text = half.format(editingFrom.time) + " - " + secondHalf.format(editingTo.time)
         else
             binding!!.llHomeMain.tvDate.text =
                 half.format(editingFrom.time) + " - " + secondNoMonthHalf.format(editingTo.time)
@@ -354,6 +355,7 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
             it.showData = show
         }
         if (tempArray.size > 0) {
+            binding!!.llHomeMain.nvTop.smoothScrollTo(0,0)
             val adapter = StickyAdapter(this, tempArray, this)
             binding!!.llHomeMain.rvVisits.layoutManager = LinearLayoutManager(this)
             binding!!.llHomeMain.rvVisits.adapter = adapter
@@ -433,11 +435,11 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
 
             }
             override fun onDrawerClosed(drawerView: View) {
-                val shake = AnimationUtils.loadAnimation(this@ActivityMain, R.anim.close_corner)
+               /* val shake = AnimationUtils.loadAnimation(this@ActivityMain, R.anim.close_corner)
                 binding!!.navView.startAnimation(shake)
                 Handler(Looper.getMainLooper()).postDelayed({
                     binding!!.drawerLayout.closeDrawers()
-                }, 300)
+                }, 300)*/
             }
 
             override fun onDrawerStateChanged(newState: Int) {
@@ -446,8 +448,17 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
                     binding!!.navView.startAnimation(shake)
                     binding!!.drawerLayout.openDrawer(GravityCompat.START)
                 }
+                else if( newState == DrawerLayout.STATE_DRAGGING && binding!!.drawerLayout.isDrawerVisible(GravityCompat.START)){
+                    val shake = AnimationUtils.loadAnimation(this@ActivityMain, R.anim.close_corner)
+                    binding!!.navView.startAnimation(shake)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                     binding!!.drawerLayout.closeDrawers()
+                      }, 300)
+
+                }
             }
         })
+
 
         binding!!.drawerMenu.tvWelcome.text = binding!!.drawerMenu.tvWelcome.text.toString() + MyApplication.userItem!!.firstName + " " + MyApplication.userItem!!.lastName
         binding!!.llHomeMain.ivDrawer.setOnClickListener {
@@ -494,6 +505,11 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
                     ActivityAllTasks::class.java
                 )
             )
+            val shake = AnimationUtils.loadAnimation(this, R.anim.close_corner)
+            binding!!.navView.startAnimation(shake)
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding!!.drawerLayout.closeDrawers()
+            }, 300)
         }
         binding!!.drawerMenu.tvHome.setOnClickListener {
             val shake = AnimationUtils.loadAnimation(this, R.anim.close_corner)
@@ -525,24 +541,26 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
             editDate(false)
         }
         binding!!.llHomeMain.btDateNext.setOnClickListener {
+            binding!!.llHomeMain.nvTop.smoothScrollTo(0,0)
             binding!!.llHomeMain.btDateNext.setBackgroundResource(R.drawable.rounded_darker_right)
             binding!!.llHomeMain.btDatePrevious.setBackgroundResource(R.drawable.rounded_dark_left)
             editDate(true)
         }
         binding!!.llHomeMain.tvToday.setOnClickListener {
-            setUpDate()
+            binding!!.llHomeMain.nvTop.smoothScrollTo(0,0)
             binding!!.llHomeMain.tvToday.setBackgroundResource(R.drawable.rounded_selected)
             binding!!.llHomeMain.btDateNext.setBackgroundResource(R.drawable.rounded_dark_right)
             binding!!.llHomeMain.btDatePrevious.setBackgroundResource(R.drawable.rounded_dark_left)
+            setUpDate()
         }
-        binding!!.llHomeMain.srVisits.setOnRefreshListener() {
+        binding!!.llHomeMain.srVisits.setOnRefreshListener {
             getVisits()
         }
     }
-
     override fun onItemClicked(view: View, position: Int) {
         MyApplication.selectedVisit = tempArray.get(position)
         startActivity(Intent(this, ActivtyVisitDetails::class.java))
     }
+
 
 }

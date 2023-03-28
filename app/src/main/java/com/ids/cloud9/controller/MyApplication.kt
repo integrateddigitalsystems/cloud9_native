@@ -57,6 +57,9 @@ class MyApplication : Application() {
         var loggedIn : Boolean
             get() = sharedPreferences.getBoolean(AppConstants.LOGGED_IN, false)
             set(value) { sharedPreferencesEditor.putBoolean(AppConstants.LOGGED_IN, value).apply() }
+        var isFirstLocation : Boolean
+            get() = sharedPreferences.getBoolean(AppConstants.IS_SHOW, true)
+            set(value) { sharedPreferencesEditor.putBoolean(AppConstants.IS_SHOW, value).apply() }
         var token : String
             get() = sharedPreferences.getString(AppConstants.TOKEN, "")!!
             set(value) { sharedPreferencesEditor.putString(AppConstants.TOKEN, value).apply() }

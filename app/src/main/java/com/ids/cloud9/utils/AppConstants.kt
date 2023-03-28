@@ -58,6 +58,7 @@ object AppConstants {
     const val TOKEN = "token"
     const val EMAIL ="email"
     const val PASSWORD ="password"
+    const val IS_SHOW ="is_show"
 
 
 
