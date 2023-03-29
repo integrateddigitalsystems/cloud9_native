@@ -96,4 +96,5 @@
     <string name="visit_arrived_completed">Visit has not arrived , or is already completed.</string>
     <string name="not_saved_signature">You haven\'t saved your signature! \nClick \"Go Back\" to go back and save it , or click cancel to discard it</string>
     <string name="task_deleted_successfully">Task deleted successfully!</string>
+    <string name="gps_settings">GPS disabled , do you want to turn it on through settings ?</string>
 </resources>

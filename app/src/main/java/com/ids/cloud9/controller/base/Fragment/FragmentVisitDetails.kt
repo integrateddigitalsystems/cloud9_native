@@ -9,20 +9,22 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
 import com.ids.cloud9.R
-import com.ids.cloud9.controller.adapters.AdapterDialog
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.activities.ActivtyVisitDetails
+import com.ids.cloud9.controller.adapters.AdapterDialog
 import com.ids.cloud9.controller.adapters.AdapterSpinner
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.databinding.LayoutVisitBinding
-import com.ids.cloud9.model.*
+import com.ids.cloud9.model.Company
+import com.ids.cloud9.model.ItemSpinner
+import com.ids.cloud9.model.ResponseMessage
+import com.ids.cloud9.model.Visit
 import com.ids.cloud9.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
     var alertDialog: androidx.appcompat.app.AlertDialog? = null
@@ -33,8 +35,8 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
     var simp: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
     var simpTime: SimpleDateFormat = SimpleDateFormat("HH:mm", Locale.ENGLISH)
     var simpTimeAA: SimpleDateFormat = SimpleDateFormat("hh:mm aa", Locale.ENGLISH)
-    var simpOrg: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.ENGLISH)
-    var simpOrgss: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssss", Locale.ENGLISH)
+    var simpOrg: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
+    var simpOrgss: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH)
     var arrSpinner: ArrayList<ItemSpinner> = arrayListOf()
     var binding: LayoutVisitBinding? = null
     override fun onCreateView(
@@ -88,20 +90,17 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             else
                 binding!!.tvActualCompletedTime.text = ""
 
-            if (edtitVisit!!.actualDuration != null && edtitVisit!!.actualDuration.toString()!="0.0") {
-                val millFrom = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH).parse(edtitVisit!!.actualArrivalTime!!)!!.time
-                val millTo = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH).parse(edtitVisit!!.actualCompletedTime!!)!!.time
-                val diff = millTo- millFrom
-                val mins = diff / 60000
+            if (edtitVisit!!.actualDuration != null) {
+                val mins =  edtitVisit!!.actualDuration!!.toInt()  / 60000
                 val hours = mins / 60
-                val min = mins % 60 + if (millTo!=millFrom)1 else 0
-                binding!!.tvActualDurtionTime.text =
-                    if (hours > 0) {
-                        hours.toString() + "hrs" + min.toString() + "mins"
-                    } else {
-                        min.toString() + " mins"
-                    }
-        /*        binding!!.tvActualDurtionTime.text = edtitVisit!!.actualDuration.toString()*/
+                val min = mins % 60
+
+                val requiredFormat =   if (hours > 0) {
+                    hours.toString() + "hrs" + min + "mins"
+                } else {
+                    "$min mins"
+                }
+                binding!!.tvActualDurtionTime.text = requiredFormat
             } else
                 binding!!.tvActualDurtionTime.text = ""
             if (!edtitVisit!!.remark.isNullOrEmpty())
@@ -153,6 +152,9 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                             arrSpinner.get(position).selected = true
                             edtitVisit!!.reasonId = arrSpinner.get(position).id
                             if (arrSpinner.get(position).id == AppConstants.ARRIVED_REASON_ID) {
+                                MyApplication.toSettings =true
+                                MyApplication.toSettingsGps =true
+                                (requireActivity() as ActivtyVisitDetails).changeState(true)
                                 if(edtitVisit!!.actualArrivalTime.isNullOrEmpty() || changed) {
                                     val cal = Calendar.getInstance()
                                     binding!!.tvActualArrivalTime.text = simpTimeAA.format(cal.time)
@@ -179,7 +181,14 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                                     } else {
                                         min.toString() + " mins"
                                     }
-                            } else {
+                             edtitVisit!!.actualDuration=diff.toDouble()
+
+                            }else if (arrSpinner.get(position).id == AppConstants.ON_THE_WAY_REASON_ID){
+                                MyApplication.toSettings =true
+                                MyApplication.toSettingsGps =true
+                                (requireActivity() as ActivtyVisitDetails).changeState(true)
+                            }
+                            else {
                                 edtitVisit!!.actualArrivalTime = ""
                                 edtitVisit!!.actualCompletedTime = ""
                                 edtitVisit!!.actualDuration = 0.0
@@ -505,4 +514,10 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             edtitVisit!!.reasonId = arrSpinner.get(position).id
         }
     }
+   /* override fun onResume() {
+        super.onResume()
+        MyApplication.activityResumed()
+        if (accessLocation)
+            (requireActivity() as ActivtyVisitDetails).changeState(true)
+    }*/
 }

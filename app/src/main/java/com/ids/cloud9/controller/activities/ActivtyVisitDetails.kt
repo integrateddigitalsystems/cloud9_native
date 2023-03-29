@@ -43,7 +43,6 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
     var fromNotf = 0
     var currLayPost = 0
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityVisitDetailsBinding.inflate(layoutInflater)
@@ -435,4 +434,5 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
     }
     override fun onItemClicked(view: View, position: Int) {
     }
+
 }

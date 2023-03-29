@@ -127,6 +127,21 @@ fun Context.createActionDialog(message: String,position: Int, doAction: (positio
     val alert = builder.create()
     alert.show()
 }
+fun Context.createActionDialogCancel(message: String,position: Int, doAction: (position: Int) -> Unit, doActionCancel: (position: Int) -> Unit) {
+
+    val builder = AlertDialog.Builder(this)
+    builder
+        .setMessage(message)
+        .setCancelable(true)
+        .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+            doActionCancel(position)
+        }
+        .setPositiveButton(getString(R.string.yes)) { dialog, _ ->
+            doAction(position)
+        }
+    val alert = builder.create()
+    alert.show()
+}
 fun Fragment.createDialog(message: String) {
 
     val builder = AlertDialog.Builder(requireActivity())

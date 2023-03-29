@@ -132,9 +132,8 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
     fun setUp(array : Array<String>) {
         mPermissionResult2!!.launch(
             arrayOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.CAMERA,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                Manifest.permission.CAMERA
+
             )
         )
     }
@@ -151,9 +150,8 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
         binding!!.llCamera.setOnClickListener {
             code = CODE_CAMERA
             var arrayPermissions =  arrayOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.CAMERA,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                Manifest.permission.CAMERA
+
             )
             if(AppHelper.hasPermission(requireContext(), arrayPermissions)) {
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
@@ -177,10 +175,8 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
             code = CODE_VIDEO
 
             var arrayPermissions =  arrayOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.CAMERA,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )
+                Manifest.permission.CAMERA
+                )
             if(AppHelper.hasPermission(requireContext(), arrayPermissions)) {
                 val cameraIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
                 mPermissionResult.launch(cameraIntent)
@@ -193,9 +189,8 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
             code = CODE_GALLERY
 
             var arrayPermissions =  arrayOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.CAMERA,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                Manifest.permission.CAMERA
+
             )
             if(AppHelper.hasPermission(requireContext(), arrayPermissions)) {
                 val intent = Intent(Intent.ACTION_PICK)

@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
+import com.ids.cloud9.controller.MyApplication.Companion.isFirst
+import com.ids.cloud9.controller.MyApplication.Companion.toSettingsGps
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.controller.adapters.StickyAdapter
 import com.ids.cloud9.custom.AppCompactBase
@@ -75,6 +77,10 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
         if (visitIdNotf != -1) {
             getVisits()
         }
+        if (isFirst){
+            toSettingsGps =true
+            isFirst=false
+        }
         setUpPermission()
         listeners()
         foregroundOnlyBroadcastReceiver = ForegroundOnlyBroadcastReceiver()
@@ -94,10 +100,6 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
             )
         )
     }
-
-
-
-
     fun editDate(isNext: Boolean) {
         if (isNext) {
             val oldEdge = editingTo.time
@@ -165,13 +167,13 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
         setUpData(vl)
     }
 
-    override fun onStop() {
+/*    override fun onStop() {
         if (foregroundOnlyLocationServiceBound) {
             unbindService(foregroundOnlyServiceConnection)
             foregroundOnlyLocationServiceBound = false
         }
         super.onStop()
-    }
+    }*/
 
     private val foregroundOnlyServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
@@ -222,12 +224,12 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
 
     }
 
-    override fun onStart() {
+/*    override fun onStart() {
         super.onStart()
         MyApplication.serviceContext = this
         val serviceIntent = Intent(this, LocationForeService::class.java)
         bindService(serviceIntent, foregroundOnlyServiceConnection, Context.BIND_AUTO_CREATE)
-    }
+    }*/
 
     fun setUpData(list: VisitList) {
         if (list.size > 0) {
@@ -532,6 +534,8 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
                     0
                 ) {
                     finish()
+                    isFirst =true
+
                 }
             }
         })

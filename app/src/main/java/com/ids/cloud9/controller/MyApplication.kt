@@ -36,6 +36,9 @@ class MyApplication : Application() {
         var gettingTracked = false
         var activityVisible = false
         var UNIQUE_REQUEST_CODE = 908
+        var toSettings : Boolean = true
+        var toSettingsGps : Boolean = false
+        var isFirst : Boolean = true
         var address : ResponseAddress ?=null
         var selectedProduct:ProductListItem  ?= null
         var selectedReccomend : FilteredActivityListItem ?=null
@@ -57,9 +60,6 @@ class MyApplication : Application() {
         var loggedIn : Boolean
             get() = sharedPreferences.getBoolean(AppConstants.LOGGED_IN, false)
             set(value) { sharedPreferencesEditor.putBoolean(AppConstants.LOGGED_IN, value).apply() }
-        var isFirstLocation : Boolean
-            get() = sharedPreferences.getBoolean(AppConstants.IS_SHOW, true)
-            set(value) { sharedPreferencesEditor.putBoolean(AppConstants.IS_SHOW, value).apply() }
         var token : String
             get() = sharedPreferences.getString(AppConstants.TOKEN, "")!!
             set(value) { sharedPreferencesEditor.putString(AppConstants.TOKEN, value).apply() }

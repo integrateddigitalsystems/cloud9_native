@@ -16,6 +16,7 @@ import com.google.gson.Gson
 import com.ids.cloud9.BuildConfig
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
+import com.ids.cloud9.controller.MyApplication.Companion.toSettingsGps
 import com.ids.cloud9.custom.AppCompactBase
 import com.ids.cloud9.databinding.ActivityNewSplashBinding
 import com.ids.cloud9.model.*
