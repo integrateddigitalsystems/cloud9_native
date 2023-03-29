@@ -445,19 +445,20 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
             }
 
             override fun onDrawerStateChanged(newState: Int) {
-                if( newState == DrawerLayout.STATE_DRAGGING && !binding!!.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    val shake = AnimationUtils.loadAnimation(this@ActivityMain, R.anim.corner)
-                    binding!!.navView.startAnimation(shake)
-                    binding!!.drawerLayout.openDrawer(GravityCompat.START)
+                if (newState == DrawerLayout.STATE_DRAGGING){
+                    if (!binding!!.drawerLayout.isDrawerOpen(GravityCompat.START)){
+                        val shake = AnimationUtils.loadAnimation(this@ActivityMain, R.anim.corner)
+                        binding!!.navView.startAnimation(shake)
+                        binding!!.drawerLayout.openDrawer(GravityCompat.START)
+                    }else{
+                        val shake = AnimationUtils.loadAnimation(this@ActivityMain, R.anim.close_corner)
+                        binding!!.navView.startAnimation(shake)
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            binding!!.drawerLayout.closeDrawers()
+                        }, 300)
+                    }
                 }
-                else if( newState == DrawerLayout.STATE_DRAGGING && binding!!.drawerLayout.isDrawerVisible(GravityCompat.START)){
-                    val shake = AnimationUtils.loadAnimation(this@ActivityMain, R.anim.close_corner)
-                    binding!!.navView.startAnimation(shake)
-                    Handler(Looper.getMainLooper()).postDelayed({
-                     binding!!.drawerLayout.closeDrawers()
-                      }, 300)
 
-                }
             }
         })
 
