@@ -20,7 +20,9 @@ import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
-import com.ids.cloud9.controller.MyApplication.Companion.isFirst
+import com.ids.cloud9.controller.MyApplication.Companion.isFirstHome
+import com.ids.cloud9.controller.MyApplication.Companion.isFirstSettings
+import com.ids.cloud9.controller.MyApplication.Companion.isFirstGps
 import com.ids.cloud9.controller.MyApplication.Companion.toSettings
 import com.ids.cloud9.controller.MyApplication.Companion.toSettingsGps
 import com.ids.cloud9.utils.*
@@ -179,9 +181,10 @@ open class AppCompactBase : AppCompatActivity() {
                             }
                     } else {
                         if (toSettings){
-                            toSettings =false
+                            toSettings=false
                             createActionDialogCancel(getString(R.string.permission_background_android), 0,{  openChooser()},{
                                 toast(getString(R.string.location_updates_disabled))
+                                if (!toSettings)isFirstSettings=false
                             })
                         }
                     }
@@ -191,13 +194,15 @@ open class AppCompactBase : AppCompatActivity() {
             }
         }
         else{
-            if (MyApplication.gettingTracked) isFirst=true
+          /*  if (MyApplication.gettingTracked) isFirst=true*/
             if (toSettingsGps){
                 toSettingsGps=false
                 createActionDialogCancel(getString(R.string.gps_settings), 0,{  startActivity( Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));},{
                     if (foregroundOnlyLocationServiceBound) {
                         unbindService(foregroundOnlyServiceConnection)
                         foregroundOnlyLocationServiceBound = false
+                        if (!isFirstHome) isFirstGps=false
+                        isFirstHome=false
                     }
                 })
 

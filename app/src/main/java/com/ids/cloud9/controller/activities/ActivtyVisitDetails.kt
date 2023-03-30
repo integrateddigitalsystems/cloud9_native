@@ -3,27 +3,23 @@ package com.ids.cloud9.controller.activities
 import android.Manifest
 import android.content.*
 import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
-import android.os.IBinder
 import android.view.View
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.Fragment.FragmentSignature
 import com.ids.cloud9.controller.MyApplication
+import com.ids.cloud9.controller.MyApplication.Companion.isFirstSettings
+import com.ids.cloud9.controller.MyApplication.Companion.isFirstVisit
+import com.ids.cloud9.controller.MyApplication.Companion.isFirstGps
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.custom.AppCompactBase
 import com.ids.cloud9.databinding.ActivityVisitDetailsBinding
@@ -61,6 +57,10 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
         AppHelper.setTextColor(this, binding!!.tvVisit, R.color.medium_blue)
         binding!!.llBorderVisit.hide()
         binding!!.llSelectedVisitBorder.show()
+        if (isFirstVisit){
+            isFirstSettings=true
+            isFirstVisit=false
+        }
 
     }
 
@@ -164,6 +164,8 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
     fun listeners() {
         onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                isFirstGps =false
+                isFirstSettings=false
                 if(fromNotf>0){
                     startActivity(
                         Intent(

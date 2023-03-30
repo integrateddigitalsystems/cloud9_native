@@ -38,7 +38,10 @@ class MyApplication : Application() {
         var UNIQUE_REQUEST_CODE = 908
         var toSettings : Boolean = true
         var toSettingsGps : Boolean = false
-        var isFirst : Boolean = true
+        var isFirstGps : Boolean = true
+        var isFirstSettings  : Boolean = true
+        var isFirstHome : Boolean = true
+        var isFirstVisit : Boolean = true
         var address : ResponseAddress ?=null
         var selectedProduct:ProductListItem  ?= null
         var selectedReccomend : FilteredActivityListItem ?=null

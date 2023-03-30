@@ -10,6 +10,10 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
+import com.ids.cloud9.controller.MyApplication.Companion.isFirstSettings
+import com.ids.cloud9.controller.MyApplication.Companion.isFirstGps
+import com.ids.cloud9.controller.MyApplication.Companion.toSettings
+import com.ids.cloud9.controller.MyApplication.Companion.toSettingsGps
 import com.ids.cloud9.controller.activities.ActivtyVisitDetails
 import com.ids.cloud9.controller.adapters.AdapterDialog
 import com.ids.cloud9.controller.adapters.AdapterSpinner
@@ -32,6 +36,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
     var adapter: AdapterDialog? = null
     var changed: Boolean = false
     var adapterSpin: AdapterSpinner? = null
+    var isScheduled=false
     var simp: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
     var simpTime: SimpleDateFormat = SimpleDateFormat("HH:mm", Locale.ENGLISH)
     var simpTimeAA: SimpleDateFormat = SimpleDateFormat("hh:mm aa", Locale.ENGLISH)
@@ -152,8 +157,14 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                             arrSpinner.get(position).selected = true
                             edtitVisit!!.reasonId = arrSpinner.get(position).id
                             if (arrSpinner.get(position).id == AppConstants.ARRIVED_REASON_ID) {
-                                MyApplication.toSettings =true
-                                MyApplication.toSettingsGps =true
+                                if (isScheduled){
+                                    toSettings =true
+                                    toSettingsGps =true
+                                }
+                               else{
+                                   toSettings =isFirstSettings
+                                   toSettingsGps =isFirstGps
+                                }
                                 (requireActivity() as ActivtyVisitDetails).changeState(true)
                                 if(edtitVisit!!.actualArrivalTime.isNullOrEmpty() || changed) {
                                     val cal = Calendar.getInstance()
@@ -165,6 +176,8 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                             } else if (arrSpinner.get(position).id == AppConstants.COMPLETED_REASON_ID) {
                                 changed = true
                                 val cal = Calendar.getInstance()
+                                isFirstGps=true
+                                isFirstSettings=true
                                 binding!!.tvActualCompletedTime.text = simpTimeAA.format(cal.time)
                                 edtitVisit!!.actualCompletedTime = simpOrgss.format(cal.time)
                                 val millFrom =
@@ -184,11 +197,19 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                              edtitVisit!!.actualDuration=diff.toDouble()
 
                             }else if (arrSpinner.get(position).id == AppConstants.ON_THE_WAY_REASON_ID){
-                                MyApplication.toSettings =true
-                                MyApplication.toSettingsGps =true
+                                if (isScheduled){
+                                    toSettings =true
+                                    toSettingsGps =true
+                                }
+                                else{
+                                    toSettings =isFirstSettings
+                                    toSettingsGps =isFirstGps
+                                }
                                 (requireActivity() as ActivtyVisitDetails).changeState(true)
                             }
                             else {
+                                isFirstGps=true
+                                isFirstSettings=true
                                 edtitVisit!!.actualArrivalTime = ""
                                 edtitVisit!!.actualCompletedTime = ""
                                 edtitVisit!!.actualDuration = 0.0
@@ -486,6 +507,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                 if (item.id == AppConstants.SCHEDULED_REASON_ID || item.id == AppConstants.COMPLETED_REASON_ID)
                     item.selectable = false
         } else if (edtitVisit!!.reasonId == AppConstants.SCHEDULED_REASON_ID) {
+            isScheduled=true
             setUpStatusReasonSpinner()
             for (item in arrSpinner)
                 if (item.id == AppConstants.PENDING_REASON_ID || item.id == AppConstants.COMPLETED_REASON_ID)

@@ -2,9 +2,7 @@ package com.ids.cloud9.controller.activities
 
 import android.Manifest
 import android.content.*
-import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.location.Location
 import android.os.*
 import android.os.Bundle
@@ -19,7 +17,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
-import com.ids.cloud9.controller.MyApplication.Companion.isFirst
+import com.ids.cloud9.controller.MyApplication.Companion.isFirstHome
+import com.ids.cloud9.controller.MyApplication.Companion.isFirstVisit
+import com.ids.cloud9.controller.MyApplication.Companion.isFirstGps
+import com.ids.cloud9.controller.MyApplication.Companion.toSettings
 import com.ids.cloud9.controller.MyApplication.Companion.toSettingsGps
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.controller.adapters.StickyAdapter
@@ -77,9 +78,9 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
         if (visitIdNotf != -1) {
             getVisits()
         }
-        if (isFirst){
+        if (isFirstHome){
             toSettingsGps =true
-            isFirst=false
+            toSettings =true
         }
         setUpPermission()
         listeners()
@@ -535,7 +536,9 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
                     0
                 ) {
                     finish()
-                    isFirst =true
+                    isFirstHome =true
+                    isFirstGps =true
+                    isFirstVisit=true
 
                 }
             }
