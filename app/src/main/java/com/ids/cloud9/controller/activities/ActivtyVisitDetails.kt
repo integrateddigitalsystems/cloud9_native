@@ -164,8 +164,6 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
     fun listeners() {
         onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                isFirstGps =false
-                isFirstSettings=false
                 if(fromNotf>0){
                     startActivity(
                         Intent(
