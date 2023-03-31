@@ -544,6 +544,7 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
             }
         })
         binding!!.llHomeMain.btDatePrevious.setOnClickListener {
+            binding!!.llHomeMain.nvTop.smoothScrollTo(0,0)
             binding!!.llHomeMain.btDatePrevious.setBackgroundResource(R.drawable.rounded_darker_left)
             binding!!.llHomeMain.btDateNext.setBackgroundResource(R.drawable.rounded_dark_right)
             editDate(false)
