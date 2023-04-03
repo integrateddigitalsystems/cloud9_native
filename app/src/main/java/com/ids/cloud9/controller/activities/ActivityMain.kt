@@ -452,11 +452,13 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
                         binding!!.navView.startAnimation(shake)
                         binding!!.drawerLayout.openDrawer(GravityCompat.START)
                     }else{
+
                         val shake = AnimationUtils.loadAnimation(this@ActivityMain, R.anim.close_corner)
                         binding!!.navView.startAnimation(shake)
-                        Handler(Looper.getMainLooper()).postDelayed({
+                        binding!!.drawerLayout.closeDrawers()
+                      /*  Handler(Looper.getMainLooper()).postDelayed({
                             binding!!.drawerLayout.closeDrawers()
-                        }, 300)
+                        }, 300)*/
                     }
                 }
 
@@ -511,23 +513,26 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
             )
             val shake = AnimationUtils.loadAnimation(this, R.anim.close_corner)
             binding!!.navView.startAnimation(shake)
-            Handler(Looper.getMainLooper()).postDelayed({
+            binding!!.drawerLayout.closeDrawers()
+          /*  Handler(Looper.getMainLooper()).postDelayed({
                 binding!!.drawerLayout.closeDrawers()
-            }, 300)
+            }, 300)*/
         }
         binding!!.drawerMenu.tvHome.setOnClickListener {
             val shake = AnimationUtils.loadAnimation(this, R.anim.close_corner)
             binding!!.navView.startAnimation(shake)
-            Handler(Looper.getMainLooper()).postDelayed({
+            binding!!.drawerLayout.closeDrawers()
+   /*         Handler(Looper.getMainLooper()).postDelayed({
                 binding!!.drawerLayout.closeDrawers()
-            }, 300)
+            }, 300)*/
         }
         binding!!.drawerMenu.btClose.setOnClickListener {
             val shake = AnimationUtils.loadAnimation(this, R.anim.close_corner)
             binding!!.navView.startAnimation(shake)
-            Handler(Looper.getMainLooper()).postDelayed({
+            binding!!.drawerLayout.closeDrawers()
+        /*    Handler(Looper.getMainLooper()).postDelayed({
                 binding!!.drawerLayout.closeDrawers()
-            }, 300)
+            }, 300)*/
         }
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
