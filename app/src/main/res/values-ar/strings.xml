@@ -77,7 +77,7 @@
     <string name="matco_eng_p">Matco Eng:</string>
     <string name="n_a">N/A</string>
     <string name="contact_number_p">Contact Number:</string>
-    <string name="update">Update</string>
+    <string name="update">تحديث</string>
     <string name="task">Task</string>
     <string name="email_invalid">Invalid Email</string>
     <string name="no_records">No records added yet</string>
@@ -97,4 +97,6 @@
     <string name="visit_arrived_completed">Visit has not arrived , or is already completed.</string>
     <string name="task_deleted_successfully">تم حذف المهمة بنجاح!</string>
     <string name="gps_settings">خدمات الموقع غير مفعلة هل تريد التفعيل عبر التجهيزات؟</string>
+    <string name="update_message">نسخة جديدة متاحة ، يرجى التحديث</string>
+    <string name="update_cancel">الغاء</string>
 </resources>

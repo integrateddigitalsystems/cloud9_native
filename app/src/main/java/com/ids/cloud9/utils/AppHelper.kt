@@ -275,6 +275,24 @@ class AppHelper {
         }
 
 
+        fun createActionDialog(
+            c: Activity,
+            positiveButton: String,
+            message: String,
+            cancelable:Boolean?=true,
+            doAction: () -> Unit,
+
+            ) {
+            val builder = AlertDialog.Builder(c)
+            builder
+                .setMessage(message)
+                .setCancelable(cancelable!!)
+                .setPositiveButton(positiveButton) { dialog, _ ->
+                    doAction()
+                }
+            val alert = builder.create()
+            alert.show()
+        }
     }
 
 }

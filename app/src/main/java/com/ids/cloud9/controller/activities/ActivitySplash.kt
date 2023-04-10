@@ -2,7 +2,10 @@ package com.ids.cloud9.controller.activities
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -147,15 +150,20 @@ class ActivitySplash : AppCompactBase() {
             })
     }
     fun startApp(){
-        if (MyApplication.mobileConfig!!.forceVersion >= BuildConfig.VERSION_NAME.toDouble()) {
-            Handler(Looper.getMainLooper()).postDelayed({
-                if(!MyApplication.loggedIn) {
-                    finishAffinity()
-                    startActivity(Intent(this, ActivityLogin::class.java))
-                }else{
-                    login()
+        if (MyApplication.mobileConfig!!.forceVersion > BuildConfig.VERSION_NAME.toDouble()) {
+            if (MyApplication.mobileConfig!!.force)
+                AppHelper.createActionDialog(
+                    this,
+                    getString(R.string.update),
+                    getString(R.string.update_message),
+                    false
+                ) {
+                    goToPlayStore()
                 }
-            }, 2000)
+            else showForceUpdateDialog(this)
+
+        } else{
+            goNext()
         }
     }
     fun setUpFirebase() {
@@ -189,5 +197,40 @@ class ActivitySplash : AppCompactBase() {
         }else{
             startApp()
         }
+    }
+    private fun goNext(){
+        Handler(Looper.getMainLooper()).postDelayed({
+            if(!MyApplication.loggedIn) {
+                finishAffinity()
+                startActivity(Intent(this, ActivityLogin::class.java))
+            }else{
+                login()
+            }
+        }, 2000)
+    }
+    private fun goToPlayStore(){
+        val appPackageName = packageName
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
+            finish()
+        } catch (anfe: android.content.ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
+            finish()
+        }
+    }
+
+    private fun showForceUpdateDialog(c: Context){
+        val builder = AlertDialog.Builder(c)
+        builder
+            .setMessage(getString(R.string.update_message))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.update)) { dialog, _ ->
+                goToPlayStore()
+            }
+            .setNegativeButton(getString(R.string.update_cancel)) { dialog, _ ->
+                goNext()
+            }
+        val alert = builder.create()
+        alert.show()
     }
 }
