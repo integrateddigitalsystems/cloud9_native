@@ -29,6 +29,7 @@
     <dimen name="huge_margin">20dp</dimen>
     <dimen name="barcode_width_height">70dp</dimen>
     <dimen name="normal_margin_padding">8dp</dimen>
+    <dimen name="medium_margin_padding">6dp</dimen>
     <dimen name="small_margin_padding">4dp</dimen>
     <dimen name="edit_text_height">40dp</dimen>
     <dimen name="button_2_height">50dp</dimen>

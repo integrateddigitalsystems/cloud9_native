@@ -153,39 +153,48 @@
 
     </androidx.cardview.widget.CardView>
 
-        <com.ids.cloud9.custom.CustomTextViewMedium
-            android:id="@+id/tvNoVisits"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/llDate"
-            android:background="@color/gray_app_bg"
-            android:gravity="center"
-            android:text="No visits set for this week"
-            android:textSize="@dimen/normal_font"
-            android:visibility="gone" />
+
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:id="@+id/srVisits"
             android:layout_height="match_parent">
-            <me.didik.component.StickyNestedScrollView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:scrollbars="none"
-                android:id="@+id/nvTop"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
-            <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/gray_app_bg">
+                <me.didik.component.StickyNestedScrollView
+                    android:layout_width="match_parent"
+                    android:scrollbars="none"
+                    android:id="@+id/nvTop"
+                    android:layout_height="wrap_content">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvVisits"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/gray_app_bg">
 
-        </LinearLayout>
-            </me.didik.component.StickyNestedScrollView>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvVisits"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+
+                    </LinearLayout>
+                </me.didik.component.StickyNestedScrollView>
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:id="@+id/tvNoVisits"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/llDate"
+                    android:background="@color/gray_app_bg"
+                    android:gravity="center"
+                    android:text="No visits set for this week"
+                    android:textSize="@dimen/normal_font"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

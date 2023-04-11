@@ -168,6 +168,10 @@ fun View.show() {
     try{ visibility = View.VISIBLE}catch (e:Exception){}
 }
 
+fun View.invisible() {
+    try{ visibility = View.INVISIBLE}catch (e:Exception){}
+}
+
 fun View.hide() {
     try{visibility = View.GONE}catch (e:Exception){}
 }

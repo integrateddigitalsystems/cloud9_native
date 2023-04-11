@@ -13,6 +13,7 @@
     <string name="log_out">تسجيل خروج</string>
     <string name="sure_logout">هل انت متأكد من تسجيل خروج؟</string>
     <string name="location_updates_disabled">لن يتم ارسال تغير موقعك الى العميل لأنك منعت تحديثات الموقع</string>
+    <string name="location_updates_disabled_arr">Orders flagged on track will not send updates to client because you disabled location updates</string>
     <string name="permission_background_android">يجمع هذا التطبيق بيانات الموقع لتمكين ميزة تتبع تطبيق العميل ، حتى عندما يكون التطبيق مغلقًا أو غير مستخدم. \n \n إذا كنت ترغب في تمكين هذه الميزات ، يرجى الضغط على موافق. \n \n بالضغط على إلغاء ، لن يفعل العميل تكون قادرة على تتبع موقعك.</string>
     <string name="are_you_sure_exit">هل انت متأكد من الخروج من التطبيق؟</string>
     <string name="cancel">الغاء</string>

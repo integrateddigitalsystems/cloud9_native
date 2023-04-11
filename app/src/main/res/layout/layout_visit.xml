@@ -275,8 +275,8 @@
                 android:id="@+id/tvActualArrivalTime"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingStart="@dimen/normal_margin_padding"
                 android:gravity="center_vertical"
+                android:paddingStart="@dimen/normal_margin_padding"
                 android:text=""
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/normal_font" />
