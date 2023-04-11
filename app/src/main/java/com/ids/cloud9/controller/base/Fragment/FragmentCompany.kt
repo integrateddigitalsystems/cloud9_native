@@ -35,6 +35,9 @@ class FragmentCompany : Fragment() {
             startActivity(intent)
         }
 
+        if(MyApplication.selectedVisit!!.reasonId != AppConstants.ARRIVED_REASON_ID)
+            binding!!.ivEditCompany.hide()
+
         binding!!.ivEditCompany.setOnClickListener {
             binding!!.tvEmail.setBackgroundResource(R.drawable.light_rounded_border)
             binding!!.tvWebite.setBackgroundResource(R.drawable.light_rounded_border)
