@@ -15,39 +15,39 @@ interface RetrofitInterface {
     ): Call<ResponseLogin>
     @GET("ApplicationUsers/GetAllApplicationUsers")
     fun getAllAppUsers(
-        @Query("statusId") statusId : Int
+        @Query(ApiParameters.STATUS_ID) statusId : Int
     ) : Call<ApplicationUserList>
     @GET("visit/GetVisitsListMobile")
     fun getVisits(
-        @Query("statusId") statusId : Int ,
-        @Query("userId") userId : Int
+        @Query(ApiParameters.STATUS_ID) statusId : Int ,
+        @Query(ApiParameters.USER_ID) userId : Int
     ):Call<VisitList>
     @GET("VisitProduct/GetByVisitId")
     fun getProducts(
-        @Query("VisitId") visitId : Int
+        @Query(ApiParameters.VISIT_ID) visitId : Int
     ):Call<ProductList>
     @GET("Form/GetFormsByProductCategoryId")
     fun getReports(
-        @Query("productCategoryId") prodCat : Int
+        @Query(ApiParameters.PRODUCT_CATEGORY_ID) prodCat : Int
     ):Call<ArrayList<Report>>
     @GET("Activity/GetActivitiesToUserMobile")
     fun getReccomendations(
-        @Query("loggedUser") userId: Int
+        @Query(ApiParameters.LOGGED_USER) userId: Int
     ):Call<FilteredActivityList>
     @GET("Activity/GetActivitiesMobile")
     fun getReccomendationsFilter(
-        @Query("entityId") entityId : Int ,
-        @Query("statusId") statId : Int
+        @Query(ApiParameters.ENTITY_ID) entityId : Int ,
+        @Query(ApiParameters.STATUS_ID) statId : Int
     ):Call<FilteredActivityList>
     @GET("Products/GetAllActiveProductsMobile")
     fun getAllProducts():Call<ProductAllList>
     @GET("Lookups/GetLookupByParantCode")
     fun getUnits(
-        @Query("code")code :String
+        @Query(ApiParameters.CODE)code :String
     ):Call<UnitList>
     @GET("ApplicationUsers/GetAllApplicationUsers")
     fun getAllUsers(
-        statusId:Int
+        @Query(ApiParameters.STATUS_ID) statId : Int
     ):Call<UnitList>
     @POST("VisitProduct/CreateMobile")
     fun createMobile(
@@ -59,7 +59,7 @@ interface RetrofitInterface {
     ):Call<ResponseMessage>
     @POST("VisitProduct/Delete")
     fun deleteProduct(
-        @Query("id") id  : Int
+        @Query(ApiParameters.ID) id  : Int
     ):Call<ResponseMessage>
     @POST("Activity/CreateActivityMobile")
     fun createActivity(
@@ -67,7 +67,7 @@ interface RetrofitInterface {
     ):Call<ResponseMessage>
     @POST("Activity/DeleteActivity")
     fun deleteActivity(
-        @Query("id") id : Int
+        @Query(ApiParameters.ID) id : Int
     ):Call<ResponseMessage>
     @POST("Visit/UpdateVisit")
     fun updateVisit(
@@ -79,12 +79,12 @@ interface RetrofitInterface {
     ): Call<ResponseMessage>
     @GET("Attachments/GetAttachmentsMobile")
     fun getSignatures(
-        @Query("entityTypeCode") entityType : String ,
-        @Query("entityId") entity_id : Int
+        @Query(ApiParameters.ENTITY_TYPE_CODE) entityType : String ,
+        @Query(ApiParameters.ENTITY_ID) entity_id : Int
     ):Call<SignatureList>
     @POST("Attachments/DeleteAttachment")
     fun deleteMedia(
-        @Query("id") id  : Int
+        @Query(ApiParameters.ID) id  : Int
     ):Call<ResponseMessage>
     @POST("Attachments/CreateAttachmentMobile")
     fun saveAttachment(
@@ -105,12 +105,12 @@ interface RetrofitInterface {
 
     @GET("Record/GetRecordsForProductVisit")
     fun getProductRecords(
-        @Query("visitProductId") visitProductId : Int
+        @Query(ApiParameters.VISIT_PRODUCT_ID) visitProductId : Int
     ):Call<RecordLists>
 
     @GET("Visit/GetVisitByID")
     fun getVisitById(
-        @Query("id") id:Int
+        @Query(ApiParameters.ID) id:Int
     ):Call<Visit>
 
     @GET("Companies/GetActiveCompanies")

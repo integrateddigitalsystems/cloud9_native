@@ -1,10 +1,23 @@
 package com.ids.cloud9.controller.base.Fragment
 
+import android.Manifest
+import android.app.Service
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
@@ -18,11 +31,9 @@ import com.ids.cloud9.controller.activities.ActivtyVisitDetails
 import com.ids.cloud9.controller.adapters.AdapterDialog
 import com.ids.cloud9.controller.adapters.AdapterSpinner
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
+import com.ids.cloud9.custom.AppCompactBase
 import com.ids.cloud9.databinding.LayoutVisitBinding
-import com.ids.cloud9.model.Company
-import com.ids.cloud9.model.ItemSpinner
-import com.ids.cloud9.model.ResponseMessage
-import com.ids.cloud9.model.Visit
+import com.ids.cloud9.model.*
 import com.ids.cloud9.utils.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -35,7 +46,15 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
     var edtitVisit: Visit? = null
     var adapter: AdapterDialog? = null
     var changed: Boolean = false
+    val BLOCKED = -1
+    val BLOCKED_OR_NEVER_ASKED = 2
+    val GRANTED = 0
+    val DENIED = 1
     var adapterSpin: AdapterSpinner? = null
+    var LOCATION_REFRESH_DISTANCE = 5
+    private val NOTIFICATION_ID = 12345678
+    var mPermissionResult: ActivityResultLauncher<Array<String>>? = null
+    var LOCATION_REFRESH_TIME = 5000
     var isScheduled=false
     var simp: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
     var simpTime: SimpleDateFormat = SimpleDateFormat("HH:mm", Locale.ENGLISH)
@@ -53,6 +72,13 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         return binding!!.root
     }
 
+    fun openChooser(){
+        mPermissionResult!!.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        )
+    }
     fun setUpVisitDetails() {
         var date = ""
         safeCall {
@@ -165,7 +191,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                                    toSettings =isFirstSettings
                                    toSettingsGps =isFirstGps
                                 }
-                                (requireActivity() as ActivtyVisitDetails).changeState(true)
+                                (requireActivity() as ActivtyVisitDetails).changeState(false)
                                 if(edtitVisit!!.actualArrivalTime.isNullOrEmpty() || changed) {
                                     val cal = Calendar.getInstance()
                                     binding!!.tvActualArrivalTime.text = simpTimeAA.format(cal.time)
@@ -234,6 +260,92 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         binding!!.spStatusReason.setSelection(pos)
     }
 
+    fun changeLocation(id:Int){
+        var firstLocation : Location ?=null
+        var gps_enabled = false
+        var network_enabled = false
+        var mLocationManager =
+            requireActivity().getSystemService(Service.LOCATION_SERVICE) as LocationManager
+        try {
+            gps_enabled = mLocationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        } catch (ex: Exception) {
+        }
+
+        try {
+            network_enabled =
+                mLocationManager!!.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+        } catch (ex: Exception) {
+        }
+
+
+
+        if ((ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+                    )&& (gps_enabled || network_enabled)) {
+
+
+
+            if (gps_enabled && firstLocation == null)
+                firstLocation =
+                    mLocationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            else if (network_enabled && firstLocation == null ) {
+                firstLocation =
+                    mLocationManager!!.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+            }
+
+
+            var visitLocationRequest = VisitLocationRequest(
+                MyApplication.userItem!!.applicationUserId!!.toInt(),
+                0,
+                true,
+                firstLocation!!.latitude,
+                firstLocation.longitude,
+               id
+
+
+            )
+            wtf(Gson().toJson(visitLocationRequest))
+            RetrofitClientAuth.client!!.create(
+                RetrofitInterface::class.java
+            ).createVisitLocation(
+                visitLocationRequest
+            ).enqueue(object : Callback<ResponseMessage> {
+                override fun onResponse(
+                    call: Call<ResponseMessage>,
+                    response: Response<ResponseMessage>
+                ) {
+                    try {
+                        createDialog("IT HAS BEEN DONE"+firstLocation.latitude.toString()+firstLocation.longitude.toString())
+                        wtf(response.body()!!.message!!)
+                    } catch (ex: Exception) {
+                        wtf(getString(R.string.error_getting_data))
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
+                    wtf(getString(R.string.failure))
+                }
+
+            })
+
+        }else{
+            if(gps_enabled && network_enabled)
+                openChooser()
+            else{
+                requireActivity().createActionDialog(getString(R.string.gps_settings)
+                ,0){
+                    startActivity( Intent(
+                        Settings.ACTION_LOCATION_SOURCE_SETTINGS) );
+                }
+            }
+
+        }
+    }
     fun updateVisit() {
         binding!!.llLoading.show()
         for (item in edtitVisit!!.visitResources)
@@ -265,7 +377,15 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                                 MyApplication.gettingTracked = false
                                 (requireActivity() as ActivtyVisitDetails).changeState(false)
                             }
-                        } else {
+                        }  else if (edtitVisit!!.reasonId == AppConstants.ARRIVED_REASON_ID) {
+                            requireContext().createRetryDialog(
+                                response.body()!!.message!!
+                            ) {
+                                changeLocation(edtitVisit!!.id!!);
+                                MyApplication.gettingTracked = false
+                                (requireActivity() as ActivtyVisitDetails).changeState(false)
+                            }
+                        }else {
                             requireContext().createRetryDialog(
                                 response.body()!!.message!!
                             ) {
@@ -364,6 +484,39 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         setUpVisitDetails()
     }
 
+
+    fun setUpPermission() {
+        mPermissionResult =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions())
+            { result ->
+                var permission = true
+                for (item in result) {
+                    permission = item.value && permission
+                }
+                if (!permission) {
+                    requireActivity().toast(getString(R.string.location_updates_disabled_arr))
+                    for (item in result) {
+                        if (ContextCompat.checkSelfPermission(
+                                requireContext(),
+                                item.key
+                            ) == BLOCKED
+                        ) {
+
+                            if (getPermissionStatus(Manifest.permission.ACCESS_FINE_LOCATION) == BLOCKED_OR_NEVER_ASKED) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    getString(R.string.please_grant_permission),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                break
+                            }
+                        }
+                    }
+                }else{
+                    changeLocation(edtitVisit!!.id!!)
+                }
+            }
+    }
     fun init() {
         listeners()
         val fromNotf = (requireActivity() as ActivtyVisitDetails).fromNotf
@@ -430,8 +583,24 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         }
     }
 
+    fun getPermissionStatus(androidPermissionName: String?): Int {
+        return if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                androidPermissionName!!
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(
+                    requireActivity(),
+                    androidPermissionName
+                )
+            ) {
+                BLOCKED_OR_NEVER_ASKED
+            } else DENIED
+        } else GRANTED
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUpPermission()
         init()
 
     }

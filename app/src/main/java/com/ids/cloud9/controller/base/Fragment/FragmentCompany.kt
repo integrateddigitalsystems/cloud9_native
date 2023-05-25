@@ -10,10 +10,7 @@ import androidx.fragment.app.Fragment
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.databinding.LayoutCompanyBinding
-import com.ids.cloud9.utils.AppHelper
-import com.ids.cloud9.utils.setCheckText
-import com.ids.cloud9.utils.setTextLang
-import com.ids.cloud9.utils.underline
+import com.ids.cloud9.utils.*
 
 
 class FragmentCompany : Fragment() {
@@ -37,6 +34,66 @@ class FragmentCompany : Fragment() {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
             startActivity(intent)
         }
+
+        if(MyApplication.selectedVisit!!.reasonId != AppConstants.ARRIVED_REASON_ID)
+            binding!!.ivEditCompany.hide()
+
+        binding!!.ivEditCompany.setOnClickListener {
+            binding!!.tvEmail.setBackgroundResource(R.drawable.light_rounded_border)
+            binding!!.tvWebite.setBackgroundResource(R.drawable.light_rounded_border)
+            binding!!.tvPhone.setBackgroundResource(R.drawable.light_rounded_border)
+            binding!!.tvFax.setBackgroundResource(R.drawable.light_rounded_border)
+            binding!!.tvContactName.setBackgroundResource(R.drawable.light_rounded_border)
+            binding!!.tvContactNumber.setBackgroundResource(R.drawable.light_rounded_border)
+            binding!!.tvAddress.setBackgroundResource(R.drawable.light_rounded_border)
+            binding!!.tvEmail.isEnabled = true
+            binding!!.tvWebite.isEnabled = true
+            binding!!.tvPhone.isEnabled = true
+            binding!!.tvFax.isEnabled = true
+            binding!!.tvContactName.isEnabled = true
+            binding!!.tvContactNumber.isEnabled = true
+            binding!!.tvAddress.isEnabled = true
+            binding!!.llButtons.show()
+            binding!!.ivEditCompany.hide()
+        }
+
+        binding!!.btCancel.setOnClickListener {
+            hideTexts()
+            setUpCompanyData()
+            binding!!.llButtons.hide()
+            binding!!.ivEditCompany.show()
+        }
+        binding!!.btSave.setOnClickListener {
+            hideTexts()
+            MyApplication.selectedVisit!!.company!!.email = binding!!.tvEmail.text.toString()
+            MyApplication.selectedVisit!!.company!!.website = binding!!.tvWebite.text.toString()
+            MyApplication.selectedVisit!!.company!!.phoneNumber = binding!!.tvPhone.text.toString()
+            MyApplication.selectedVisit!!.company!!.fax = binding!!.tvFax.text.toString()
+            MyApplication.selectedVisit!!.contact!!.firstName= binding!!.tvContactName.text.toString()
+            MyApplication.selectedVisit!!.contact!!.personalPhoneNumber = binding!!.tvContactNumber.text.toString()
+            MyApplication.selectedVisit!!.company!!.address = binding!!.tvAddress.text.toString()
+            binding!!.llButtons.hide()
+            binding!!.ivEditCompany.show()
+        }
+
+
+    }
+
+    fun hideTexts(){
+        binding!!.tvEmail.setBackgroundResource(R.color.transparent)
+        binding!!.tvWebite.setBackgroundResource(R.color.transparent)
+        binding!!.tvPhone.setBackgroundResource(R.color.transparent)
+        binding!!.tvFax.setBackgroundResource(R.color.transparent)
+        binding!!.tvContactName.setBackgroundResource(R.color.transparent)
+        binding!!.tvContactNumber.setBackgroundResource(R.color.transparent)
+        binding!!.tvAddress.setBackgroundResource(R.color.transparent)
+        binding!!.tvEmail.isEnabled = false
+        binding!!.tvWebite.isEnabled = false
+        binding!!.tvPhone.isEnabled = false
+        binding!!.tvFax.isEnabled = false
+        binding!!.tvContactName.isEnabled = false
+        binding!!.tvContactNumber.isEnabled = false
+        binding!!.tvAddress.isEnabled = false
     }
     fun setUpCompanyData(){
         if(MyApplication.selectedVisit!!.company!=null) {
@@ -49,7 +106,7 @@ class FragmentCompany : Fragment() {
             if(MyApplication.selectedVisit!!.company!!.phoneNumber!=null && MyApplication.selectedVisit!!.company!!.phoneNumber!!.isNotEmpty())
                 binding!!.tvPhone.setCheckText(MyApplication.selectedVisit!!.company!!.phoneNumber!!)
             else
-                binding!!.tvPhone.text = ""
+                binding!!.tvPhone.setText("")
         }
         if(AppHelper.isValidPhoneNumber(binding!!.tvPhone.text.toString()))
         {
@@ -69,8 +126,8 @@ class FragmentCompany : Fragment() {
             )
             binding!!.tvContactNumber.setCheckText(MyApplication.selectedVisit!!.contact!!.personalPhoneNumber!!)
         }else{
-            binding!!.tvContactName.text = ""
-            binding!!.tvContactNumber.text = ""
+            binding!!.tvContactName.setText("")
+            binding!!.tvContactNumber.setText("")
         }
         if(AppHelper.isValidPhoneNumber(binding!!.tvContactNumber.text.toString()))
         {
@@ -82,7 +139,7 @@ class FragmentCompany : Fragment() {
                 startActivity(intent)
             }
         }
-        binding!!.tvAddress.text = MyApplication.selectedVisit!!.company!!.address
+        binding!!.tvAddress.setText(MyApplication.selectedVisit!!.company!!.address)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
