@@ -186,6 +186,7 @@ class ActivitySplash : AppCompactBase() {
                 startFirebase()
             }
         } else {
+            MyApplication.BASE_URL = MyApplication.mobileConfig!!.mainUrl
             permissionSendNotifications()
         }
     }
