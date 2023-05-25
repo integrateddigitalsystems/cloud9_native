@@ -149,10 +149,20 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
     fun listeners() {
         binding!!.llCamera.setOnClickListener {
             code = CODE_CAMERA
-            var arrayPermissions =  arrayOf(
-                Manifest.permission.CAMERA
-
-            )
+            val arrayPermissions: Array<String>
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                arrayPermissions = arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.READ_MEDIA_IMAGES
+                )
+            }
+            else{
+                arrayPermissions =  arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+            }
             if(AppHelper.hasPermission(requireContext(), arrayPermissions)) {
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
                     ImagePicker.with(this)
@@ -173,10 +183,20 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
         }
         binding!!.llVideo.setOnClickListener {
             code = CODE_VIDEO
-
-            var arrayPermissions =  arrayOf(
-                Manifest.permission.CAMERA
+            val arrayPermissions: Array<String>
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                arrayPermissions = arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.READ_MEDIA_VIDEO
                 )
+            }
+            else{
+                arrayPermissions =  arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+            }
             if(AppHelper.hasPermission(requireContext(), arrayPermissions)) {
                 val cameraIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
                 mPermissionResult.launch(cameraIntent)
@@ -186,12 +206,22 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
         }
 
         binding!!.llGallery.setOnClickListener {
+            val arrayPermissions: Array<String>
             code = CODE_GALLERY
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                arrayPermissions = arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.READ_MEDIA_IMAGES
+                )
+            }
+            else{
+                arrayPermissions =  arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+            }
 
-            var arrayPermissions =  arrayOf(
-                Manifest.permission.CAMERA
-
-            )
             if(AppHelper.hasPermission(requireContext(), arrayPermissions)) {
                 val intent = Intent(Intent.ACTION_PICK)
                 intent.type = "image/* video/*"
