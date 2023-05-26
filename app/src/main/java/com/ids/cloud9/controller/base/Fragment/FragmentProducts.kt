@@ -214,7 +214,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
             adapterDialog!!.notifyItemChanged(position)
             adapterProd!!.notifyItemChanged(position)
         } else if (view.id == R.id.ivReport) {
-            if (MyApplication.selectedVisit!!.reasonId == AppConstants.ARRIVED_REASON_ID) {
+         /*   if (MyApplication.selectedVisit!!.reasonId == AppConstants.ARRIVED_REASON_ID) {*/
                 MyApplication.selectedProduct = arrayProd.get(position)
                 val ct = arrayProd.get(position).reports.count {
                     it.selected
@@ -224,16 +224,14 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
                         Intent(
                             requireContext(),
                             ActivityReportDetails::class.java
-                        ).putExtra(
-                            "RepId",
-                            arrayProd.get(position).reports.find {
-                                it.selected
+                        ).putExtra("RepId", arrayProd.get(position).reports.find {
+                            it.selected
                             }!!.id
 
-                        )
+                        ).putExtra("visitProductId",arrayProd[position].id)
                     )
                 }
-            }
+           /* }*/
         }
     }
 }

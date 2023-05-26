@@ -116,4 +116,9 @@ interface RetrofitInterface {
     @GET("Companies/GetActiveCompanies")
     fun getCompanies():Call<ArrayList<Company>>
 
+    @GET("Record/GetFormByVisitProductId")
+    fun getFormByVisitProductId(
+        @Query(ApiParameters.VISIT_PRODUCT_ID) id:Int
+    ):Call<Forms>
+
 }

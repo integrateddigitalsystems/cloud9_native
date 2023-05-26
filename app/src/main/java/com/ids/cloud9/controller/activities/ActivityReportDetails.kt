@@ -3,24 +3,29 @@ package com.ids.cloud9.controller.activities
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.custom.AppCompactBase
 import com.ids.cloud9.databinding.ActivityReportDetailsBinding
-import com.ids.cloud9.utils.AppConstants
-import com.ids.cloud9.utils.hide
-import com.ids.cloud9.utils.show
+import com.ids.cloud9.model.Forms
+import com.ids.cloud9.model.FormsItem
+import com.ids.cloud9.utils.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
+
 
 class ActivityReportDetails : AppCompactBase() {
 
     var binding: ActivityReportDetailsBinding? = null
     var simp = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.ENGLISH)
     var simpDMY = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
+    var reportId =0
+    var url =""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityReportDetailsBinding.inflate(layoutInflater)
@@ -29,7 +34,9 @@ class ActivityReportDetails : AppCompactBase() {
     }
     fun init() {
         setUpData()
-        setUpWeb()
+        val id = intent.getIntExtra("visitProductId", 0)
+        getWeb(id)
+
     }
 
     override fun onResume() {
@@ -37,6 +44,26 @@ class ActivityReportDetails : AppCompactBase() {
         MyApplication.activityResumed()
     }
 
+    fun getWeb(id: Int) {
+        binding!!.llLoading.show()
+        RetrofitClientAuthTest.client!!.create(
+            RetrofitInterface::class.java
+        ).getFormByVisitProductId(id)
+            .enqueue(object : Callback<Forms> {
+                override fun onResponse(call: Call<Forms>, response: Response<Forms>) {
+                    if (response.isSuccessful){
+                        val element = response.body()!!.find { it.id==reportId }
+                        url = element!!.url + MyApplication.token
+                        setUpWeb()
+                    }
+                    else binding!!.llLoading.hide()
+                }
+                override fun onFailure(call: Call<Forms>, t: Throwable) {
+                    binding!!.llLoading.hide()
+                }
+
+            })
+    }
     override fun onPause() {
         super.onPause()
         MyApplication.activityPaused()
@@ -44,7 +71,7 @@ class ActivityReportDetails : AppCompactBase() {
 
     @SuppressLint("SetJavaScriptEnabled")
     fun setUpWeb() {
-        val web = "https://www.formsite.com/templates/registration-form-templates/club-registration-signup-form/"
+      /*  val web = "https://www.formsite.com/templates/registration-form-templates/club-registration-signup-form/"*/
         binding!!.wvReport.settings.javaScriptEnabled = true
         binding!!.wvReport.settings.loadWithOverviewMode = true
         binding!!.wvReport.settings.useWideViewPort = false
@@ -52,29 +79,35 @@ class ActivityReportDetails : AppCompactBase() {
         binding!!.wvReport.settings.builtInZoomControls = false
         binding!!.wvReport.settings.displayZoomControls = false
         binding!!.wvReport.settings.domStorageEnabled = true
-        binding!!.wvReport.loadUrl(web)
+        binding!!.wvReport.loadUrl(url)
         binding!!.wvReport.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
                 binding!!.llLoading.hide()
             }
-
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
-
             }
+
+            override fun doUpdateVisitedHistory(view: WebView, url: String?, isReload: Boolean) {
+                if (url!!.contains(MyApplication.url_contains)){
+                    onBackPressedDispatcher.onBackPressed()
+                }
+                super.doUpdateVisitedHistory(view, url, isReload)
+            }
+
         }
     }
 
     fun setUpData() {
-        val id = intent.getIntExtra("RepId", 0)
+        reportId = intent.getIntExtra("RepId", 0)
         binding!!.llTool.ivDrawer.hide()
         binding!!.llTool.btBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
         binding!!.llTool.layoutFragment.show()
         binding!!.llTool.tvTitleTool.text = MyApplication.selectedProduct!!.reports.find {
-            it.id == id
+            it.id == reportId
         }!!.name
         binding!!.tvVisit.text = MyApplication.selectedVisit!!.title
         binding!!.tvProductName.text = MyApplication.selectedProduct!!.product.name

@@ -28,6 +28,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LibraScan"
         tools:targetApi="31"
+        android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
         
         <activity

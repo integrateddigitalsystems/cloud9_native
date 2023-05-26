@@ -186,6 +186,7 @@ class ActivitySplash : AppCompactBase() {
                 startFirebase()
             }
         } else {
+            MyApplication.url_contains=MyApplication.mobileConfig!!.url_contains
             permissionSendNotifications()
         }
     }

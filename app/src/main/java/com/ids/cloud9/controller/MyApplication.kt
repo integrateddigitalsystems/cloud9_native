@@ -23,7 +23,9 @@ class MyApplication : Application() {
     companion object {
         internal lateinit var instance: MyApplication
         var BASE_URL ="https://crmtest.ids.com.lb/api/"
+        var BASE_URL_Test ="https://crmtest.ids.com.lb/mobile-api/api/v1/"
         var BASE_URL_IMAGE = "https://crmtest.ids.com.lb"
+        var url_contains = ""
         var arrayVid : ArrayList<ItemSpinner> = arrayListOf()
         var selectedVisit : Visit ?=null
         var allVisits : ArrayList<Visit> = arrayListOf()
