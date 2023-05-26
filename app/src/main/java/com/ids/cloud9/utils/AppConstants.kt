@@ -52,6 +52,7 @@ object AppConstants {
     const val FORM_ITEM_DATE = "date"
     const val FORM_ITEM_TIME = "time"
     const val PRODUCTION_LOOKUP_CODE = "PROD_UNIT"
+    const val REASON_LOOKUP_CODE = "V_STTSR"
     const val LOGGED_IN ="LoggedIn"
     const val FIREBASE_TOKEN ="firebaseToken"
     const val PERMISSION ="permission"
@@ -59,6 +60,14 @@ object AppConstants {
     const val EMAIL ="email"
     const val PASSWORD ="password"
     const val IS_SHOW ="is_show"
+
+    const val REASON_UNSCHEDULED = "V_STTSR_U"
+    const val REASON_SCHEDULED = "V_STTSR_S"
+    const val REASON_COMPLETED = "V_STTSR_COM"
+    const val REASON_CANCELLED = "V_STTSR_CAN"
+    const val REASON_ARRIVED = "V_STTSR_A"
+    const val REASON_PENDING = "V_STTSR_P"
+    const val REASON_ON_THE_WAY = "V_STTSR_OTW"
 
 
 

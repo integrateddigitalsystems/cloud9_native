@@ -40,7 +40,7 @@ class FragmentReccomendations : Fragment(), RVOnItemClickListener {
         init()
     }
     fun listeners() {
-        if (MyApplication.selectedVisit!!.reasonId!= AppConstants.ARRIVED_REASON_ID) {
+        if (MyApplication.selectedVisit!!.reasonId!= AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
            binding!!.btAddReccomend.isEnabled = false
             binding!!.llButton.setBackgroundResource(R.color.disabled_primary)
         }
@@ -101,7 +101,7 @@ class FragmentReccomendations : Fragment(), RVOnItemClickListener {
         })
     }
     override fun onItemClicked(view: View, position: Int) {
-        if (MyApplication.selectedVisit!!.reasonId == AppConstants.ARRIVED_REASON_ID) {
+        if (MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
             MyApplication.selectedReccomend = arrayReccomend.get(position)
             startActivity(
                 Intent(

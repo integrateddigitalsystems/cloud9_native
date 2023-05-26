@@ -24,8 +24,8 @@ class ActivityLogin : AppCompactBase() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
-        binding!!.etEmail.text =Editable.Factory.getInstance().newEditable("info@mte.com.ae")
-        binding!!.etPassword.text =Editable.Factory.getInstance().newEditable("P@ssw0rd!@#")
+        binding!!.etEmail.text =Editable.Factory.getInstance().newEditable("mobile@crm.ids.com.lb")
+        binding!!.etPassword.text =Editable.Factory.getInstance().newEditable("P@ssw0rd1")
         listeners()
     }
     fun listeners(){
@@ -73,12 +73,14 @@ class ActivityLogin : AppCompactBase() {
        wtf(MyApplication.BASE_URL)
        val newReq = RequestLogin(email , password , true )
        RetrofitClient.client?.create(RetrofitInterface::class.java)
-           ?.logIn(
-               newReq
+           ?.loginUser(
+              email,
+               password
            )?.enqueue(object : Callback<ResponseLogin> {
                override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
                    try {
                        MyApplication.token = response.body()!!.token!!
+                       MyApplication.BASE_USER_URL = response.body()!!.apiURL!!
                        wtf(MyApplication.token)
                        MyApplication.email = email
                        MyApplication.password = password
@@ -87,6 +89,7 @@ class ActivityLogin : AppCompactBase() {
                        binding!!.loadingLogin.hide()
                        binding!!.btLogin.show()
                        getUnits()
+                       getReasons()
                        MyApplication.loggedIn = true
                        startActivity(Intent(this@ActivityLogin,ActivityMain::class.java))
                    }catch (ex:Exception){
@@ -118,8 +121,26 @@ class ActivityLogin : AppCompactBase() {
                 }
             })
     }
+    fun getReasons(){
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.REASON_LOOKUP_CODE)
+            .enqueue(object : Callback<UnitList> {
+                override fun onResponse(
+                    call: Call<UnitList>,
+                    response: Response<UnitList>
+                ) {
+                    safeCall {
+                        if(response.body()!!.size >0) {
+                            MyApplication.lookupsReason.clear()
+                            MyApplication.lookupsReason.addAll(response.body()!!)
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<UnitList>, t: Throwable) {
+                }
+            })
+    }
     fun getUnits(){
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.PRODUCTION_LOOKUP_CODE)
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.PRODUCTION_LOOKUP_CODE)
             .enqueue(object : Callback<UnitList> {
                 override fun onResponse(
                     call: Call<UnitList>,

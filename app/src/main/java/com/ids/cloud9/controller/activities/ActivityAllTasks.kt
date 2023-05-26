@@ -91,7 +91,7 @@ class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
     }
     override fun onItemClicked(view: View, position: Int) {
         val ct = MyApplication.allVisits.count {
-            it.title.equals(arrayReccomend[position].entity) && it.reasonId==AppConstants.ARRIVED_REASON_ID
+            it.title.equals(arrayReccomend[position].entity) && it.reasonId==AppHelper.getReasonID(AppConstants.REASON_ARRIVED)
         }
         if(ct>0) {
             MyApplication.selectedReccomend = arrayReccomend[position]

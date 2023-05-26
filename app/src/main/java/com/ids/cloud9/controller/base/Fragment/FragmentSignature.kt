@@ -246,7 +246,7 @@ class FragmentSignature : Fragment() {
         getSignatures()
         addEmplSign()
         addClientSign()
-        if (MyApplication.selectedVisit!!.reasonId == AppConstants.PENDING_REASON_ID) {
+        if (MyApplication.selectedVisit!!.reasonId ==  AppHelper.getReasonID(AppConstants.PENDING_REASON)) {
             binding!!.drawEmployee.hide()
             binding!!.drawClient.hide()
             AppHelper.setImage(requireContext(), binding!!.ivSelectedDrawClient, "", true)
@@ -298,7 +298,7 @@ class FragmentSignature : Fragment() {
             binding!!.ivSelectedDrawClient.hide()
             binding!!.drawClient.show()
         }
-        if (MyApplication.selectedVisit!!.reasonId == AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.ON_THE_WAY_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.SCHEDULED_REASON_ID) {
+        if (MyApplication.selectedVisit!!.reasonId ==  AppHelper.getReasonID(AppConstants.PENDING_REASON) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.ON_THE_WAY_REASON) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_SCHEDULED)) {
             binding!!.drawEmployee.hide()
             binding!!.drawClient.hide()
             if (emCl == null)

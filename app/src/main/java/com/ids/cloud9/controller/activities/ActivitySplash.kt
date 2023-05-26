@@ -88,6 +88,7 @@ class ActivitySplash : AppCompactBase() {
         if(MyApplication.userItem != JWTResponse()) {
             updateToken(MyApplication.userItem!!.applicationUserId!!.toInt())
             getUnits()
+            getReasons()
             MyApplication.loggedIn = true
             try {
                 val visitId = intent.extras!!.getInt("visitId",0)
@@ -119,10 +120,13 @@ class ActivitySplash : AppCompactBase() {
         )
         RetrofitClientAuth.client!!.create(
             RetrofitInterface::class.java
-        ).logIn(
-            req
+        ).loginUser(
+            MyApplication.email,
+            MyApplication.password
         ).enqueue(object : Callback<ResponseLogin>{
             override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
+                MyApplication.BASE_USER_URL = response.body()!!.apiURL!!
+
                 nextStep(response.body()!!.token!!)
             }
 
@@ -233,5 +237,24 @@ class ActivitySplash : AppCompactBase() {
             }
         val alert = builder.create()
         alert.show()
+    }
+
+    fun getReasons(){
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.REASON_LOOKUP_CODE)
+            .enqueue(object : Callback<UnitList> {
+                override fun onResponse(
+                    call: Call<UnitList>,
+                    response: Response<UnitList>
+                ) {
+                    safeCall {
+                        if(response.body()!!.size >0) {
+                            MyApplication.lookupsReason.clear()
+                            MyApplication.lookupsReason.addAll(response.body()!!)
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<UnitList>, t: Throwable) {
+                }
+            })
     }
 }

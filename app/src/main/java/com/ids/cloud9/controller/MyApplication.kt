@@ -24,6 +24,8 @@ class MyApplication : Application() {
         internal lateinit var instance: MyApplication
         var BASE_URL ="https://crmtest.ids.com.lb/api/"
         var BASE_URL_IMAGE = "https://crmtest.ids.com.lb"
+        var BASE_USER_URL = ""
+        var lookupsReason : ArrayList<UnitListItem> = arrayListOf()
         var arrayVid : ArrayList<ItemSpinner> = arrayListOf()
         var selectedVisit : Visit ?=null
         var allVisits : ArrayList<Visit> = arrayListOf()

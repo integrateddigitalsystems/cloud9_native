@@ -201,7 +201,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                 setUp(arrayPermissions)
             }
         }
-        if (MyApplication.selectedVisit!!.reasonId == AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.ON_THE_WAY_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.SCHEDULED_REASON_ID) {
+        if (MyApplication.selectedVisit!!.reasonId ==  AppHelper.getReasonID(AppConstants.PENDING_REASON) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.ON_THE_WAY_REASON) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_SCHEDULED)) {
             binding!!.llMediaButtons.hide()
         }
     }
@@ -536,7 +536,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
 
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.btClose) {
-            if (MyApplication.selectedVisit!!.reasonId != AppConstants.PENDING_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.COMPLETED_REASON_ID && MyApplication.selectedVisit!!.reasonId != AppConstants.ON_THE_WAY_REASON_ID) {
+            if (MyApplication.selectedVisit!!.reasonId !=  AppHelper.getReasonID(AppConstants.PENDING_REASON) && MyApplication.selectedVisit!!.reasonId != AppHelper.getReasonID(AppConstants.REASON_COMPLETED) && MyApplication.selectedVisit!!.reasonId != AppHelper.getReasonID(AppConstants.ON_THE_WAY_REASON)) {
                 requireContext().createActionDialog(
                     getString(R.string.sure_delete_media),
                     0

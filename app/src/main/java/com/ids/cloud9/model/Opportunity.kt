@@ -11,7 +11,7 @@ data class Opportunity(
     @SerializedName("actualClosureDate")
     val actualClosureDate: String,
     @SerializedName("actualValue")
-    val actualValue: Int,
+    val actualValue: Double,
     @SerializedName("assignedTo")
     val assignedTo: Any,
     @SerializedName("assignedToId")

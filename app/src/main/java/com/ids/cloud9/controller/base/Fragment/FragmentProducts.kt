@@ -74,7 +74,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
     }
     fun init() {
         getProducts()
-        if (MyApplication.selectedVisit!!.reasonId == AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.ON_THE_WAY_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.SCHEDULED_REASON_ID) {
+        if (MyApplication.selectedVisit!!.reasonId ==  AppHelper.getReasonID(AppConstants.PENDING_REASON) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.ON_THE_WAY_REASON) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_SCHEDULED)) {
             binding!!.llButton.setBackgroundResource(R.color.disabled_primary)
             binding!!.btAddProducts.isEnabled = false
         }
@@ -181,7 +181,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
     }
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.btEditProduct) {
-            if (MyApplication.selectedVisit!!.reasonId == AppConstants.ARRIVED_REASON_ID) {
+            if (MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
                 MyApplication.selectedProduct = arrayProd.get(position)
                 startActivity(
                     Intent(
@@ -191,7 +191,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
                 )
             }
         } else if (view.id == R.id.btClose) {
-            if (MyApplication.selectedVisit!!.reasonId == AppConstants.ARRIVED_REASON_ID) {
+            if (MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
                 requireContext().createActionDialog(
                     getString(R.string.you_wanna_delete),
                     0
@@ -214,7 +214,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
             adapterDialog!!.notifyItemChanged(position)
             adapterProd!!.notifyItemChanged(position)
         } else if (view.id == R.id.ivReport) {
-            if (MyApplication.selectedVisit!!.reasonId == AppConstants.ARRIVED_REASON_ID) {
+            if (MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
                 MyApplication.selectedProduct = arrayProd.get(position)
                 val ct = arrayProd.get(position).reports.count {
                     it.selected
