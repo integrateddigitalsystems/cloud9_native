@@ -125,4 +125,9 @@ interface RetrofitInterface {
 
 
 
+    @GET("Record/GetFormByVisitProductId")
+    fun getFormByVisitProductId(
+        @Query(ApiParameters.VISIT_PRODUCT_ID) id:Int
+    ):Call<Forms>
+
 }

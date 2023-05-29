@@ -54,6 +54,11 @@ class AdapterProducts(
                     for (itm in arrSpin)
                         itm.selected = false
                     arrSpin.get(position).selected = true
+
+                    if (items.get(pos).reports.isNotEmpty()){
+                        for (i in items.get(pos).reports)
+                            i.selected =false
+                    }
                     items.get(pos).reports.get(position).selected = true
                     adapterSpin.notifyDataSetChanged()
                 }

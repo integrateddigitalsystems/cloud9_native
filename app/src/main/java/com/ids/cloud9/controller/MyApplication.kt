@@ -26,6 +26,7 @@ class MyApplication : Application() {
         var BASE_URL_IMAGE = "https://crmtest.ids.com.lb"
         var BASE_USER_URL = ""
         var lookupsReason : ArrayList<UnitListItem> = arrayListOf()
+        var url_contains = ""
         var arrayVid : ArrayList<ItemSpinner> = arrayListOf()
         var selectedVisit : Visit ?=null
         var allVisits : ArrayList<Visit> = arrayListOf()

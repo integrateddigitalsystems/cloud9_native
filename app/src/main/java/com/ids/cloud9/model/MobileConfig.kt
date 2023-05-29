@@ -10,6 +10,8 @@ data class MobileConfig(
     val forceVersion: Double,
     @SerializedName("main_url")
     val mainUrl: String,
+    @SerializedName("url_contains")
+    val url_contains: String,
     @SerializedName("version")
     val version: Double
 )
