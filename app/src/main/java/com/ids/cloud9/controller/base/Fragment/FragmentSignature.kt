@@ -172,7 +172,7 @@ class FragmentSignature : Fragment() {
         val signs = arrayListOf<SignatureRequest>()
         signs.add(signatureRequest)
         wtf(Gson().toJson(signatureRequest))
-        RetrofitClientAuth.client!!.create(
+        RetrofitClientSpecificAuth.client!!.create(
             RetrofitInterface::class.java
         ).saveSignature(
             signs
@@ -330,7 +330,7 @@ class FragmentSignature : Fragment() {
 
     fun getSignatures() {
         binding!!.llLoading.show()
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getSignatures(
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getSignatures(
             AppConstants.ENTITY_TYPE_CODE_SIGNATURE,
             MyApplication.selectedVisit!!.id!!
         ).enqueue(object : Callback<SignatureList> {

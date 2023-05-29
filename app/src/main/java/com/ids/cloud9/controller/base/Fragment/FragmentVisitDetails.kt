@@ -310,7 +310,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
 
             )
             wtf(Gson().toJson(visitLocationRequest))
-            RetrofitClientAuth.client!!.create(
+            RetrofitClientSpecificAuth.client!!.create(
                 RetrofitInterface::class.java
             ).createVisitLocation(
                 visitLocationRequest
@@ -352,7 +352,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             item.id = 0
         val str = Gson().toJson(edtitVisit)
         wtf(str)
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .updateVisit(edtitVisit!!)
             .enqueue(object : Callback<ResponseMessage> {
                 override fun onResponse(
@@ -532,7 +532,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
     }
 
     fun getCompany() {
-        RetrofitClientAuth.client!!.create(
+        RetrofitClientSpecificAuth.client!!.create(
             RetrofitInterface::class.java
         ).getCompanies().enqueue(object : Callback<ArrayList<Company>> {
             override fun onResponse(
@@ -556,7 +556,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
     }
 
     fun getData(id: Int) {
-        RetrofitClientAuth.client!!.create(
+        RetrofitClientSpecificAuth.client!!.create(
             RetrofitInterface::class.java
         ).getVisitById(id)
             .enqueue(object : Callback<Visit> {

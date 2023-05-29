@@ -94,7 +94,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
     }
     fun getProducts() {
         binding!!.llLoading.show()
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getProducts(
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getProducts(
             MyApplication.selectedVisit!!.id!!
         ).enqueue(object : Callback<ProductList> {
             override fun onResponse(call: Call<ProductList>, response: Response<ProductList>) {
@@ -134,7 +134,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
         binding!!.srProducts.isRefreshing = false
     }
     fun getReports(position: Int) {
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getReports(
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getReports(
             arrayProd.get(position).product.categoryId
         ).enqueue(object : Callback<ArrayList<Report>> {
             override fun onResponse(
@@ -161,7 +161,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
         getProducts()
     }
     fun deleteProduct(pos: Int) {
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).deleteProduct(
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).deleteProduct(
             arrayProd.get(pos).id!!
         ).enqueue(object : Callback<ResponseMessage> {
             override fun onResponse(

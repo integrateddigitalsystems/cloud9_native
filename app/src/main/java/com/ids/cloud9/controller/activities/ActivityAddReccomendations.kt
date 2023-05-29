@@ -170,7 +170,7 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
         MyApplication.selectedReccomend!!.subject = binding!!.etSubject.text.toString()
         MyApplication.selectedReccomend!!.description = binding!!.etDesc.text.toString()
         wtf(Gson().toJson(MyApplication.selectedReccomend))
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .updateActivity(
                 MyApplication.selectedReccomend!!
             ).enqueue(object : Callback<ResponseMessage> {
@@ -197,7 +197,7 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
     }
     private fun deleteReccomend(){
         binding!!.llLoading.show()
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).deleteActivity(
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).deleteActivity(
             MyApplication.selectedReccomend!!.id
         ).enqueue(object : Callback<ResponseMessage> {
             override fun onResponse(
@@ -233,7 +233,7 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
             binding!!.tvDueDate.text.toString()
         )
         wtf(Gson().toJson(createActivity))
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .createActivity(
                 createActivity
             ).enqueue(object : Callback<ResponseMessage> {
@@ -288,7 +288,7 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
     }
     private fun getUsers() {
         binding!!.llLoading.show()
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .getAllAppUsers(1)
             .enqueue(object : Callback<ApplicationUserList> {
                 override fun onResponse(

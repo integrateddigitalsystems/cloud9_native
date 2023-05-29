@@ -430,7 +430,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
         )
         val arr: ArrayList<SignatureRequest> = arrayListOf()
         arr.add(sigReq)
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .saveAttachment(arr)
             .enqueue(object : Callback<ResponseMessage> {
                 override fun onResponse(
@@ -483,7 +483,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
 
     fun getSignatures() {
         binding!!.llLoading.show()
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getSignatures(
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getSignatures(
             AppConstants.ENTITY_TYPE_CODE_SIGNATURE,
             MyApplication.selectedVisit!!.id!!
         ).enqueue(object : Callback<SignatureList> {
@@ -504,7 +504,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
 
     fun deleteMedia(pos: Int) {
         binding!!.llLoading.show()
-        RetrofitClientAuth.client!!.create(
+        RetrofitClientSpecificAuth.client!!.create(
             RetrofitInterface::class.java
         ).deleteMedia(arrayMedia.get(pos).id!!)
             .enqueue(object : Callback<ResponseMessage> {

@@ -82,7 +82,7 @@ class FragmentReccomendations : Fragment(), RVOnItemClickListener {
     }
     fun getReccomendations() {
         binding!!.llLoading.show()
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getReccomendationsFilter(
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getReccomendationsFilter(
             MyApplication.selectedVisit!!.id!!,
             -1
         ).enqueue(object : Callback<FilteredActivityList> {

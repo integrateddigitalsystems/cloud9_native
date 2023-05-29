@@ -60,7 +60,7 @@ class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
     }
     private fun getReccomendations() {
         binding!!.llLoading.show()
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getReccomendations(
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getReccomendations(
             MyApplication.userItem!!.applicationUserId!!.toInt()
         ).enqueue(object : Callback<FilteredActivityList> {
             override fun onResponse(
