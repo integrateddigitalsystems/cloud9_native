@@ -46,7 +46,7 @@ class ActivityReportDetails : AppCompactBase() {
 
     fun getWeb(id: Int) {
         binding!!.llLoading.show()
-        RetrofitClientAuthTest.client!!.create(
+        RetrofitClientSpecificAuth.client!!.create(
             RetrofitInterface::class.java
         ).getFormByVisitProductId(id)
             .enqueue(object : Callback<Forms> {
