@@ -42,7 +42,7 @@ class ActivityRecords : AppCompactBase(), RVOnItemClickListener {
     }
     fun getRecords(){
         binding!!.llLoading.show()
-        RetrofitClientAuth.client!!
+        RetrofitClientSpecificAuth.client!!
             .create(RetrofitInterface::class.java)
             .getProductRecords(
                 MyApplication.selectedProduct!!.id!!

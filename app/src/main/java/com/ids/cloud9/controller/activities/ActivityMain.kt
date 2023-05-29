@@ -291,32 +291,30 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
             var reasonStatus = ""
             var reasonBg = 0
             var reasonText = 0
-            when (it.reasonId) {
-                AppConstants.COMPLETED_REASON_ID -> {
-                    reasonBg = R.drawable.completed_bg
-                    reasonText = R.color.comp_text
-                    reasonStatus = AppConstants.COMPLETED_REASON
-                }
-                AppConstants.SCHEDULED_REASON_ID -> {
-                    reasonBg = R.drawable.scheduled_bg
-                    reasonText = R.color.scheduled_text
-                    reasonStatus = AppConstants.SCHEDULED_REASON
-                }
-                AppConstants.ON_THE_WAY_REASON_ID -> {
-                    reasonBg = R.drawable.on_the_way_bg
-                    reasonText = R.color.otw_text
-                    reasonStatus = AppConstants.ON_THE_WAY_REASON
-                }
-                AppConstants.ARRIVED_REASON_ID -> {
-                    reasonBg = R.drawable.arrived_bg
-                    reasonText = R.color.arrived_text
-                    reasonStatus = AppConstants.ARRIVED_REASON
-                }
-                AppConstants.PENDING_REASON_ID -> {
-                    reasonBg = R.drawable.pending_bg
-                    reasonText = R.color.pending_text
-                    reasonStatus = AppConstants.PENDING_REASON
-                }
+            if(it.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)){
+                reasonBg = R.drawable.arrived_bg
+                reasonText = R.color.arrived_text
+                reasonStatus = AppConstants.ARRIVED_REASON
+            }else if(it.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED)){
+                reasonBg = R.drawable.completed_bg
+                reasonText = R.color.comp_text
+                reasonStatus = AppConstants.COMPLETED_REASON
+            }else if(it.reasonId == AppHelper.getReasonID(AppConstants.REASON_SCHEDULED)){
+                reasonBg = R.drawable.scheduled_bg
+                reasonText = R.color.scheduled_text
+                reasonStatus = AppConstants.SCHEDULED_REASON
+            }else if(it.reasonId == AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY)){
+                reasonBg = R.drawable.on_the_way_bg
+                reasonText = R.color.otw_text
+                reasonStatus = AppConstants.ON_THE_WAY_REASON
+            }else if(it.reasonId == AppHelper.getReasonID(AppConstants.REASON_PENDING)){
+                reasonBg = R.drawable.pending_bg
+                reasonText = R.color.pending_text
+                reasonStatus = AppConstants.PENDING_REASON
+            }else{
+                reasonBg = R.drawable.on_the_way_bg
+                reasonText = R.color.otw_text
+                reasonStatus = AppConstants.ON_THE_WAY_REASON
             }
             val call = Calendar.getInstance()
             val dateMil = SimpleDateFormat(
@@ -386,7 +384,7 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
 
     fun getVisits() {
         binding!!.llHomeMain.loading.show()
-        RetrofitClientAuth.client?.create(RetrofitInterface::class.java)
+        RetrofitClientSpecificAuth.client?.create(RetrofitInterface::class.java)
             ?.getVisits(
                 -1,
                 MyApplication.userItem!!.applicationUserId!!.toInt()
@@ -408,7 +406,7 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
                     MyApplication.allVisits.clear()
                     MyApplication.allVisits.addAll(response.body()!!)
                     val visit = mainArray.find {
-                        it.reasonId == AppConstants.ON_THE_WAY_REASON_ID
+                        it.reasonId == AppHelper.getReasonID(AppConstants.ON_THE_WAY_REASON)
                     }
                     MyApplication.onTheWayVisit = visit
                     if (visit != null) {
@@ -425,6 +423,8 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
                 }
 
                 override fun onFailure(call: Call<VisitList>, throwable: Throwable) {
+                    binding!!.llHomeMain.loading.hide()
+                    filterDate(arrayListOf())
                 }
             })
     }

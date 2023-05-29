@@ -35,7 +35,7 @@ class FragmentCompany : Fragment() {
             startActivity(intent)
         }
 
-        if(MyApplication.selectedVisit!!.reasonId != AppConstants.ARRIVED_REASON_ID)
+        if(MyApplication.selectedVisit!!.reasonId != AppHelper.getReasonID(AppConstants.REASON_ARRIVED))
             binding!!.ivEditCompany.hide()
 
         binding!!.ivEditCompany.setOnClickListener {

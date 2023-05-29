@@ -2,6 +2,7 @@ package com.ids.cloud9.utils
 
 import com.ids.cloud9.model.*
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -115,6 +116,14 @@ interface RetrofitInterface {
 
     @GET("Companies/GetActiveCompanies")
     fun getCompanies():Call<ArrayList<Company>>
+
+    @POST("User/LoginUser")
+    fun loginUser(
+        @Query(ApiParameters.EMAIL) email : String ,
+        @Query(ApiParameters.PASSWORD) password : String
+    ):Call<ResponseLogin>
+
+
 
     @GET("Record/GetFormByVisitProductId")
     fun getFormByVisitProductId(

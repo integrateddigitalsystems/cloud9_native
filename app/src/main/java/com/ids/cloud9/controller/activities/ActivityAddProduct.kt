@@ -167,7 +167,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
 
     fun getUnits(){
         binding!!.llLoading.show()
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.PRODUCTION_LOOKUP_CODE)
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.PRODUCTION_LOOKUP_CODE)
             .enqueue(object : Callback<UnitList> {
                 override fun onResponse(
                     call: Call<UnitList>,
@@ -186,7 +186,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
 
     fun getProductNames() {
         binding!!.llLoading.show()
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getAllProducts()
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getAllProducts()
             .enqueue(object : Callback<ProductAllList> {
                 override fun onResponse(
                     call: Call<ProductAllList>,
@@ -232,7 +232,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             MyApplication.selectedVisit!!.number
         )
 
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .createMobile(
                 createProduct!!
             ).enqueue(object : Callback<ResponseMessage>{
@@ -286,7 +286,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
         )
 
 
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .updateProduct(
                 createProduct!!
             ).enqueue(object : Callback<ResponseMessage>{
@@ -399,7 +399,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
 
     fun deleteProduct(){
         binding!!.llLoading.show()
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).deleteProduct(
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).deleteProduct(
             MyApplication.selectedProduct!!.id!!
         ).enqueue(object : Callback<ResponseMessage> {
             override fun onResponse(

@@ -8,6 +8,8 @@ object ApiParameters {
     const val PRODUCT_CATEGORY_ID = "productCategoryId"
     const val LOGGED_USER = "loggedUser"
     const val ENTITY_ID = "entityId"
+    const val EMAIL = "email"
+    const val PASSWORD = "password"
     const val CODE="code"
     const val ID="id"
     const val ENTITY_TYPE_CODE = "entityTypeCode"
