@@ -460,11 +460,12 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
             binding!!.rvMedia.show()
             binding!!.tvNoMedia.hide()
             arrayMedia.clear()
+            var urlIntro = MyApplication.BASE_USER_URL.split("/mobile-api/").get(0)
             for (item in array)
                 arrayMedia.add(
                     ItemSpinner(
                         item.id,
-                        MyApplication.BASE_URL_IMAGE + item.directory,
+                        urlIntro + item.directory,
                         false,
                         false,
                         false,
