@@ -73,7 +73,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
         }
     }
     fun init() {
-        getProducts()
+      /*  getProducts()*/
         if (MyApplication.selectedVisit!!.reasonId ==  AppHelper.getReasonID(AppConstants.PENDING_REASON) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.ON_THE_WAY_REASON) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_SCHEDULED)) {
             binding!!.llButton.setBackgroundResource(R.color.disabled_primary)
             binding!!.btAddProducts.isEnabled = false
@@ -98,9 +98,13 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
             MyApplication.selectedVisit!!.id!!
         ).enqueue(object : Callback<ProductList> {
             override fun onResponse(call: Call<ProductList>, response: Response<ProductList>) {
-                arrayProd.clear()
-                arrayProd.addAll(response.body()!!)
-                setUpProducts()
+                if (response.isSuccessful){
+                    arrayProd.clear()
+                    arrayProd.addAll(response.body()!!)
+                    setUpProducts()
+                }
+                else binding!!.llLoading.hide()
+
             }
             override fun onFailure(call: Call<ProductList>, throwable: Throwable) {
                 binding!!.llLoading.hide()
@@ -134,24 +138,27 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
         binding!!.srProducts.isRefreshing = false
     }
     fun getReports(position: Int) {
-        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getReports(
-            arrayProd.get(position).product.categoryId
-        ).enqueue(object : Callback<ArrayList<Report>> {
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getFormByVisitProductId(
+            arrayProd.get(position).id!!
+        ).enqueue(object : Callback<Forms>{
             override fun onResponse(
-                call: Call<ArrayList<Report>>,
-                response: Response<ArrayList<Report>>
+                call: Call<Forms>, response: Response<Forms>
             ) {
-                if (response.body()!!.size > 0) {
-                    arrayProd.get(position).reports.clear()
-                    arrayProd.get(position).reports.addAll(response.body()!!)
-                }
+                if (response.isSuccessful){
+                    if (response.body()!!.size > 0) {
+                        arrayProd.get(position).reports.clear()
+                        arrayProd.get(position).reports.addAll(response.body()!!)
+                    }
 
-                ctProd++
-                if (ctProd == arrayProd.size) {
-                    setUpProductsPage()
+                    ctProd++
+                    if (ctProd == arrayProd.size) {
+                        setUpProductsPage()
+                    }
                 }
+                else  binding!!.llLoading.hide()
+
             }
-            override fun onFailure(call: Call<ArrayList<Report>>, throwable: Throwable) {
+            override fun onFailure(call: Call<Forms>, t: Throwable) {
                 binding!!.llLoading.hide()
             }
         })
@@ -214,26 +221,23 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
             adapterDialog!!.notifyItemChanged(position)
             adapterProd!!.notifyItemChanged(position)
         } else if (view.id == R.id.ivReport) {
-            if (MyApplication.selectedVisit!!.reasonId == AppConstants.ARRIVED_REASON_ID) {
+          /*  if (MyApplication.selectedVisit!!.reasonId == AppConstants.ARRIVED_REASON_ID) {*/
                 MyApplication.selectedProduct = arrayProd.get(position)
                 val ct = arrayProd.get(position).reports.count {
                     it.selected
                 }
                 if (ct > 0) {
-                    startActivity(
-                        Intent(
-                            requireContext(),
-                            ActivityReportDetails::class.java
-                        ).putExtra(
-                            "RepId",
+                    startActivity(Intent(requireContext(), ActivityReportDetails::class.java).putExtra("RepId",
                             arrayProd.get(position).reports.find {
                                 it.selected
                             }!!.id
 
-                        )
+                        ).putExtra("url",   arrayProd.get(position).reports.find {
+                        it.selected
+                    }!!.url)
                     )
                 }
-            }
+          /*  }*/
         }
     }
 }

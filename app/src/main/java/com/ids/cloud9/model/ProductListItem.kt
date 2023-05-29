@@ -44,5 +44,5 @@ data class ProductListItem(
     val visitId: Int,
     @SerializedName("visitNumber")
     val visitNumber: String,
-    var reports : ArrayList<Report> = arrayListOf()
+    var reports : ArrayList<FormsItem> = arrayListOf()
 )

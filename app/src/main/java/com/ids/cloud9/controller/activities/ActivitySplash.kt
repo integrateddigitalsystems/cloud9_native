@@ -64,7 +64,7 @@ class ActivitySplash : AppCompactBase() {
     }
     }
     fun getUnits(){
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.PRODUCTION_LOOKUP_CODE)
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.PRODUCTION_LOOKUP_CODE)
             .enqueue(object : Callback<UnitList> {
                 override fun onResponse(
                     call: Call<UnitList>,

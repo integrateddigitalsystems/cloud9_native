@@ -34,16 +34,15 @@ class ActivityReportDetails : AppCompactBase() {
     }
     fun init() {
         setUpData()
-        val id = intent.getIntExtra("visitProductId", 0)
-        getWeb(id)
-
+        url = intent.getStringExtra("url")!!
+        if (url.isNotEmpty()) url += MyApplication.token
+        setUpWeb()
     }
 
     override fun onResume() {
         super.onResume()
         MyApplication.activityResumed()
     }
-
     fun getWeb(id: Int) {
         binding!!.llLoading.show()
         RetrofitClientSpecificAuth.client!!.create(
@@ -71,6 +70,7 @@ class ActivityReportDetails : AppCompactBase() {
 
     @SuppressLint("SetJavaScriptEnabled")
     fun setUpWeb() {
+        binding!!.llLoading.show()
       /*  val web = "https://www.formsite.com/templates/registration-form-templates/club-registration-signup-form/"*/
         binding!!.wvReport.settings.javaScriptEnabled = true
         binding!!.wvReport.settings.loadWithOverviewMode = true

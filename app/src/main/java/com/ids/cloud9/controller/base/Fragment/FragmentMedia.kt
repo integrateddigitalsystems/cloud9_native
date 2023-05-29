@@ -132,7 +132,8 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
     fun setUp(array : Array<String>) {
         mPermissionResult2!!.launch(
             arrayOf(
-                Manifest.permission.CAMERA
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_MEDIA_IMAGES
 
             )
         )
@@ -187,7 +188,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 arrayPermissions = arrayOf(
                     Manifest.permission.CAMERA,
-                    Manifest.permission.READ_MEDIA_VIDEO
+                    Manifest.permission.READ_MEDIA_IMAGES
                 )
             }
             else{
@@ -378,7 +379,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                         val urlImage = file.toString()
                         saveMedia(file)
                         arrayMedia.add(ItemSpinner(0, urlImage, false, false, true, 1))
-                        adapterMedia!!.notifyItemChanged(arrayMedia.size - 1)
+                        adapterMedia!!.notifyDataSetChanged()
                     }
                 } else if (code == CODE_GALLERY) {
                     file = getFile(requireActivity(), it.data!!.data!!)
@@ -398,7 +399,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                             type
                         )
                     )
-                    adapterMedia!!.notifyItemChanged(arrayMedia.size - 1)
+                    adapterMedia!!.notifyDataSetChanged()
                 } else {
                     try {
                         val videoUri = it.data!!.data
@@ -408,7 +409,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                             saveMedia(file)
                         }
                         arrayMedia.add(ItemSpinner(0, urlImage, false, false, true, 0))
-                        adapterMedia!!.notifyItemChanged(arrayMedia.size - 1)
+                        adapterMedia!!.notifyDataSetChanged()
                     }catch(ex:Exception){
                         wtf(ex.toString())
                     }
@@ -502,7 +503,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                         null
                     )
                 )
-            adapterMedia!!.notifyItemChanged(arrayMedia.size - 1)
+            adapterMedia!!.notifyDataSetChanged()
             binding!!.llLoading.hide()
         } else {
             binding!!.rvMedia.hide()
@@ -519,12 +520,13 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
         ).enqueue(object : Callback<SignatureList> {
             override fun onResponse(call: Call<SignatureList>, response: Response<SignatureList>) {
                 sigList.clear()
-                sigList.addAll(response.body()!!.filter {
-                    !it.isSignature
-                })
-                setUpMedia(sigList)
+                if (!response.body()!!.isNullOrEmpty()){
+                    sigList.addAll(response.body()!!.filter {
+                        !it.isSignature
+                    })
+                    setUpMedia(sigList)
+                }
             }
-
             override fun onFailure(call: Call<SignatureList>, t: Throwable) {
                 binding!!.llLoading.hide()
             }
@@ -543,12 +545,10 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                     response: Response<ResponseMessage>
                 ) {
                     try {
-                        createDialog(
-                            response.body()!!.message!!
-                        )
+                        createDialog(response.body()!!.message!!)
                         if (response.body()!!.success.equals("true")) {
                             arrayMedia.removeAt(pos)
-                            adapterMedia!!.notifyItemChanged(arrayMedia.size - 1)
+                            adapterMedia!!.notifyDataSetChanged()
                             getSignatures()
                         } else {
                             binding!!.llLoading.hide()
