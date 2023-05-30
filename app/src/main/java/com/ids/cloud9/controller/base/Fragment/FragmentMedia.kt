@@ -516,13 +516,20 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
             MyApplication.selectedVisit!!.id!!
         ).enqueue(object : Callback<SignatureList> {
             override fun onResponse(call: Call<SignatureList>, response: Response<SignatureList>) {
-                sigList.clear()
-                if (!response.body()!!.isNullOrEmpty()){
-                    sigList.addAll(response.body()!!.filter {
-                        !it.isSignature
-                    })
-                    setUpMedia(sigList)
+                if (response.isSuccessful){
+                    sigList.clear()
+                    if (!response.body()!!.isNullOrEmpty()){
+                        sigList.addAll(response.body()!!.filter {
+                            !it.isSignature
+                        })
+                        setUpMedia(sigList)
+                    }
+                    else {
+                        setUpMedia(sigList)
+                    }
                 }
+                else  binding!!.llLoading.hide()
+
             }
             override fun onFailure(call: Call<SignatureList>, t: Throwable) {
                 binding!!.llLoading.hide()

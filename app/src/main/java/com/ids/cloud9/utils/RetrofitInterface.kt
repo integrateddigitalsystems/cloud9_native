@@ -104,7 +104,8 @@ interface RetrofitInterface {
         @Body tokenReq : TokenResource
     ):Call<ResponseMessage>
 
-    @GET("Record/GetRecordsForProductVisit")
+
+    @GET("Record/GetRecordByVisitProductId")
     fun getProductRecords(
         @Query(ApiParameters.VISIT_PRODUCT_ID) visitProductId : Int
     ):Call<RecordLists>
