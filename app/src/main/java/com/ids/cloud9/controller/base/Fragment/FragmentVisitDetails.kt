@@ -291,11 +291,9 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
 
 
             if (gps_enabled && firstLocation == null)
-                firstLocation =
-                    mLocationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-            else if (network_enabled && firstLocation == null ) {
-                firstLocation =
-                    mLocationManager!!.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                firstLocation = mLocationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            if (network_enabled && firstLocation == null ) {
+                firstLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
             }
 
 
@@ -320,7 +318,6 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                     response: Response<ResponseMessage>
                 ) {
                     try {
-                        createDialog("IT HAS BEEN DONE"+firstLocation.latitude.toString()+firstLocation.longitude.toString())
                         wtf(response.body()!!.message!!)
                     } catch (ex: Exception) {
                         wtf(getString(R.string.error_getting_data))
