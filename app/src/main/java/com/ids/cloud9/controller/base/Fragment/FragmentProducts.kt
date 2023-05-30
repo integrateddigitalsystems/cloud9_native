@@ -112,6 +112,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
         })
     }
     fun setUpProductsPage() {
+        safeCall {
         if (arrayProd.size > 0) {
             binding!!.tvNoData.hide()
             binding!!.rvProducts.show()
@@ -123,6 +124,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
             binding!!.rvProducts.hide()
         }
         binding!!.llLoading.hide()
+        }
     }
     fun setUpProducts() {
         ctProd = 0

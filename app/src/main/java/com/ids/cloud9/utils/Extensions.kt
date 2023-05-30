@@ -16,6 +16,7 @@ import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.ids.cloud9.BuildConfig
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
@@ -189,6 +190,17 @@ fun TextView.underline() {
     }
 
     setText(spannableString)
+}
+
+inline fun <R> safeCall(loading : View ,call: () -> R):Result<R>{
+    try {
+        return Result.success(call())
+    } catch (e: Exception) {
+        loading.hide()
+        FirebaseCrashlytics.getInstance().log("Try/Catch exception")
+        FirebaseCrashlytics.getInstance().recordException(RuntimeException("Try/Catch exception"+"\n"+e.toString()))
+        return Result.failure(e)
+    }
 }
 inline fun <R> safeCall(call: () -> R): Result<R> {
     try {

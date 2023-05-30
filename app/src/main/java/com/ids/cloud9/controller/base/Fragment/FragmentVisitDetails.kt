@@ -291,11 +291,9 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
 
 
             if (gps_enabled && firstLocation == null)
-                firstLocation =
-                    mLocationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-            else if (network_enabled && firstLocation == null ) {
-                firstLocation =
-                    mLocationManager!!.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                firstLocation = mLocationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            if (network_enabled && firstLocation == null ) {
+                firstLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
             }
 
 
@@ -320,7 +318,6 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                     response: Response<ResponseMessage>
                 ) {
                     try {
-                        createDialog("IT HAS BEEN DONE"+firstLocation.latitude.toString()+firstLocation.longitude.toString())
                         wtf(response.body()!!.message!!)
                     } catch (ex: Exception) {
                         wtf(getString(R.string.error_getting_data))
@@ -359,59 +356,62 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                     call: Call<ResponseMessage>,
                     response: Response<ResponseMessage>
                 ) {
-                    binding!!.llLoading.hide()
-                    MyApplication.selectedVisit = edtitVisit
-                    if (response.code() != 500) {
-                        FirebaseCrashlytics.getInstance().log("UPDATED:\n"+str)
-                        FirebaseCrashlytics.getInstance().recordException(RuntimeException("UPDATED:\n"+str))
-                        if (edtitVisit!!.reasonId != AppHelper.getReasonID(AppConstants.ON_THE_WAY_REASON) && edtitVisit!!.reasonId != AppHelper.getReasonID(AppConstants.REASON_ARRIVED) && edtitVisit!!.reasonId != AppHelper.getReasonID(AppConstants.REASON_COMPLETED) || !response.body()!!.message.equals(
-                                "Visit updated successfully"
-                            )
-                        ) {
-                            createDialog(response.body()!!.message!!)
-                        } else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED)) {
+                    safeCall(binding!!.llLoading) {
+                        binding!!.llLoading.hide()
+                        MyApplication.selectedVisit = edtitVisit
+                        if (response.code() != 500) {
+                            FirebaseCrashlytics.getInstance().log("UPDATED:\n"+str)
+                            FirebaseCrashlytics.getInstance().recordException(RuntimeException("UPDATED:\n"+str))
+                            if (edtitVisit!!.reasonId != AppHelper.getReasonID(AppConstants.ON_THE_WAY_REASON) && edtitVisit!!.reasonId != AppHelper.getReasonID(AppConstants.REASON_ARRIVED) && edtitVisit!!.reasonId != AppHelper.getReasonID(AppConstants.REASON_COMPLETED) || !response.body()!!.message.equals(
+                                    "Visit updated successfully"
+                                )
+                            ) {
+                                createDialog(response.body()!!.message!!)
+                            } else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED)) {
+                                requireContext().createRetryDialog(
+                                    response.body()!!.message!!
+                                ) {
+                                    MyApplication.onTheWayVisit = edtitVisit
+                                    MyApplication.gettingTracked = false
+                                    (requireActivity() as ActivtyVisitDetails).changeState(false)
+                                }
+                            }  else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
+                                requireContext().createRetryDialog(
+                                    response.body()!!.message!!
+                                ) {
+                                    changeLocation(edtitVisit!!.id!!);
+                                    MyApplication.gettingTracked = false
+                                    (requireActivity() as ActivtyVisitDetails).changeState(false)
+                                }
+                            }else {
+                                requireContext().createRetryDialog(
+                                    response.body()!!.message!!
+                                ) {
+                                    MyApplication.gettingTracked = true
+                                    MyApplication.onTheWayVisit = edtitVisit
+                                    /*     MyApplication.isFirstLocation =true*/
+                                    (requireActivity() as ActivtyVisitDetails).changeState(true)
+                                }
+                            }
+
+                            if (response.body()!!.message.equals(getString(R.string.visit_succ))) {
+                                initialData()
+                                setUpVisitDetails()
+                            }
+
+                        } else {
+                            FirebaseCrashlytics.getInstance().log("UPDATE ERROR 500+ITEM:\n"+str)
+                            FirebaseCrashlytics.getInstance().recordException(RuntimeException("UPDATE ERROR 500+ITEM:\n"+str))
                             requireContext().createRetryDialog(
-                                response.body()!!.message!!
+                                getString(R.string.visit_succ)
                             ) {
                                 MyApplication.onTheWayVisit = edtitVisit
                                 MyApplication.gettingTracked = false
                                 (requireActivity() as ActivtyVisitDetails).changeState(false)
                             }
-                        }  else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
-                            requireContext().createRetryDialog(
-                                response.body()!!.message!!
-                            ) {
-                                changeLocation(edtitVisit!!.id!!);
-                                MyApplication.gettingTracked = false
-                                (requireActivity() as ActivtyVisitDetails).changeState(false)
-                            }
-                        }else {
-                            requireContext().createRetryDialog(
-                                response.body()!!.message!!
-                            ) {
-                                MyApplication.gettingTracked = true
-                                MyApplication.onTheWayVisit = edtitVisit
-                           /*     MyApplication.isFirstLocation =true*/
-                                (requireActivity() as ActivtyVisitDetails).changeState(true)
-                            }
-                        }
-
-                        if (response.body()!!.message.equals(getString(R.string.visit_succ))) {
-                            initialData()
-                            setUpVisitDetails()
-                        }
-
-                    } else {
-                        FirebaseCrashlytics.getInstance().log("UPDATE ERROR 500+ITEM:\n"+str)
-                        FirebaseCrashlytics.getInstance().recordException(RuntimeException("UPDATE ERROR 500+ITEM:\n"+str))
-                        requireContext().createRetryDialog(
-                            getString(R.string.visit_succ)
-                        ) {
-                            MyApplication.onTheWayVisit = edtitVisit
-                            MyApplication.gettingTracked = false
-                            (requireActivity() as ActivtyVisitDetails).changeState(false)
                         }
                     }
+
                 }
 
                 override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
