@@ -131,11 +131,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
 
     fun setUp(array : Array<String>) {
         mPermissionResult2!!.launch(
-            arrayOf(
-                Manifest.permission.CAMERA,
-                Manifest.permission.READ_MEDIA_IMAGES
-
-            )
+            array
         )
     }
 
