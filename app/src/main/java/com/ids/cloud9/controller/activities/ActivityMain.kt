@@ -294,27 +294,27 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
             if(it.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)){
                 reasonBg = R.drawable.arrived_bg
                 reasonText = R.color.arrived_text
-                reasonStatus = AppConstants.ARRIVED_REASON
+                reasonStatus =AppHelper.getReasonName(AppConstants.REASON_ARRIVED)
             }else if(it.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED)){
                 reasonBg = R.drawable.completed_bg
                 reasonText = R.color.comp_text
-                reasonStatus = AppConstants.COMPLETED_REASON
+                reasonStatus = AppHelper.getReasonName(AppConstants.REASON_COMPLETED)
             }else if(it.reasonId == AppHelper.getReasonID(AppConstants.REASON_SCHEDULED)){
                 reasonBg = R.drawable.scheduled_bg
                 reasonText = R.color.scheduled_text
-                reasonStatus = AppConstants.SCHEDULED_REASON
+                reasonStatus = AppHelper.getReasonName(AppConstants.REASON_SCHEDULED)
             }else if(it.reasonId == AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY)){
                 reasonBg = R.drawable.on_the_way_bg
                 reasonText = R.color.otw_text
-                reasonStatus = AppConstants.ON_THE_WAY_REASON
+                reasonStatus =AppHelper.getReasonName(AppConstants.REASON_ON_THE_WAY)
             }else if(it.reasonId == AppHelper.getReasonID(AppConstants.REASON_PENDING)){
                 reasonBg = R.drawable.pending_bg
                 reasonText = R.color.pending_text
-                reasonStatus = AppConstants.PENDING_REASON
+                reasonStatus = AppHelper.getReasonName(AppConstants.REASON_PENDING)
             }else{
                 reasonBg = R.drawable.on_the_way_bg
                 reasonText = R.color.otw_text
-                reasonStatus = AppConstants.ON_THE_WAY_REASON
+                reasonStatus =AppHelper.getReasonName(AppConstants.REASON_ON_THE_WAY)
             }
             val call = Calendar.getInstance()
             val dateMil = SimpleDateFormat(
@@ -406,7 +406,7 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
                     MyApplication.allVisits.clear()
                     MyApplication.allVisits.addAll(response.body()!!)
                     val visit = mainArray.find {
-                        it.reasonId == AppHelper.getReasonID(AppConstants.ON_THE_WAY_REASON)
+                        it.reasonId == AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY)
                     }
                     MyApplication.onTheWayVisit = visit
                     if (visit != null) {

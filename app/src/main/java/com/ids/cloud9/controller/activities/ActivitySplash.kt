@@ -74,10 +74,15 @@ class ActivitySplash : AppCompactBase() {
                         if(response.body()!!.size >0) {
                             MyApplication.units.clear()
                             MyApplication.units.addAll(response.body()!!)
+                            getReasons()
                         }
                     }
                 }
                 override fun onFailure(call: Call<UnitList>, t: Throwable) {
+                    createRetryDialog(
+                        getString(R.string.error_getting_data)) {
+                        startFirebase()
+                    }
                 }
             })
     }
@@ -88,25 +93,6 @@ class ActivitySplash : AppCompactBase() {
         if(MyApplication.userItem != JWTResponse()) {
             updateToken(MyApplication.userItem!!.applicationUserId!!.toInt())
             getUnits()
-            getReasons()
-            MyApplication.loggedIn = true
-            try {
-                val visitId = intent.extras!!.getInt("visitId",0)
-                if (visitId!=0) {
-                    startActivity(
-                        Intent(this, ActivtyVisitDetails::class.java)
-                            .putExtra("visitId", visitId)
-                            .putExtra("fromNotf",1)
-                    )
-                    finishAffinity()
-                } else {
-                    finishAffinity()
-                    startActivity(Intent(this, ActivityMain::class.java))
-                }
-            }catch (ex:Exception){
-                finishAffinity()
-                startActivity(Intent(this, ActivityMain::class.java))
-            }
         }else{
             MyApplication.loggedIn = false
             startApp()
@@ -252,10 +238,36 @@ class ActivitySplash : AppCompactBase() {
                             MyApplication.lookupsReason.clear()
                             MyApplication.lookupsReason.addAll(response.body()!!)
                         }
+                        setUpRest()
                     }
                 }
                 override fun onFailure(call: Call<UnitList>, t: Throwable) {
+                    createRetryDialog(
+                        getString(R.string.error_getting_data)) {
+                        startFirebase()
+                    }
                 }
             })
+    }
+
+    fun setUpRest(){
+        MyApplication.loggedIn = true
+        try {
+            val visitId = intent.extras!!.getInt("visitId",0)
+            if (visitId!=0) {
+                startActivity(
+                    Intent(this, ActivtyVisitDetails::class.java)
+                        .putExtra("visitId", visitId)
+                        .putExtra("fromNotf",1)
+                )
+                finishAffinity()
+            } else {
+                finishAffinity()
+                startActivity(Intent(this, ActivityMain::class.java))
+            }
+        }catch (ex:Exception){
+            finishAffinity()
+            startActivity(Intent(this, ActivityMain::class.java))
+        }
     }
 }

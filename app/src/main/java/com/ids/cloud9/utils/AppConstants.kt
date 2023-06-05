@@ -25,19 +25,7 @@ object AppConstants {
     const val FIREBASE_CONFIG = "MobileConfiguration"
     const val LOCALISED_MESSAGES = "localised_messages"
 
-    const val SCHEDULED_REASON_ID = 4650
-    const val COMPLETED_REASON_ID = 4651
-    const val ARRIVED_REASON_ID = 4653
-    const val PENDING_REASON_ID = 4654
-    const val ON_THE_WAY_REASON_ID = 4655
-
     const val REQUEST_LOCATION_PERMISSION = 111
-
-    const val COMPLETED_REASON = "completed"
-    const val SCHEDULED_REASON = "scheduled"
-    const val ARRIVED_REASON = "arrived"
-    const val PENDING_REASON = "pending"
-    const val ON_THE_WAY_REASON = "on the way"
 
     const val ENTITY_TYPE_CODE_SIGNATURE = "A_EntityType_V"
     const val SIGNATURE_TYPE_CLIENT = "SIGTYPE_C"

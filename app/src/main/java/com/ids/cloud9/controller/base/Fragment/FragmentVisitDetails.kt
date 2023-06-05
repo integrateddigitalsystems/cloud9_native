@@ -222,7 +222,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                                     }
                              edtitVisit!!.actualDuration=diff.toDouble()
 
-                            }else if (arrSpinner.get(position).id == AppHelper.getReasonID(AppConstants.ON_THE_WAY_REASON)){
+                            }else if (arrSpinner.get(position).id == AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY)){
                                 if (isScheduled){
                                     toSettings =true
                                     toSettingsGps =true
@@ -362,7 +362,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                         if (response.code() != 500) {
                             FirebaseCrashlytics.getInstance().log("UPDATED:\n"+str)
                             FirebaseCrashlytics.getInstance().recordException(RuntimeException("UPDATED:\n"+str))
-                            if (edtitVisit!!.reasonId != AppHelper.getReasonID(AppConstants.ON_THE_WAY_REASON) && edtitVisit!!.reasonId != AppHelper.getReasonID(AppConstants.REASON_ARRIVED) && edtitVisit!!.reasonId != AppHelper.getReasonID(AppConstants.REASON_COMPLETED) || !response.body()!!.message.equals(
+                            if (edtitVisit!!.reasonId != AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY) && edtitVisit!!.reasonId != AppHelper.getReasonID(AppConstants.REASON_ARRIVED) && edtitVisit!!.reasonId != AppHelper.getReasonID(AppConstants.REASON_COMPLETED) || !response.body()!!.message.equals(
                                     "Visit updated successfully"
                                 )
                             ) {
@@ -607,41 +607,17 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
 
     fun initialData() {
         arrSpinner.clear()
-        arrSpinner.add(
-            ItemSpinner(
-                AppHelper.getReasonID(AppConstants.REASON_SCHEDULED),
-                AppConstants.SCHEDULED_REASON,
-                false
-            )
-        )
-        arrSpinner.add(
-            ItemSpinner(
-                AppHelper.getReasonID(AppConstants.REASON_COMPLETED),
-                AppConstants.COMPLETED_REASON,
-                false
-            )
-        )
-        arrSpinner.add(
-            ItemSpinner(
-                AppHelper.getReasonID(AppConstants.REASON_ARRIVED),
-                AppConstants.ARRIVED_REASON,
-                false
-            )
-        )
-        arrSpinner.add(
-            ItemSpinner(
-                 AppHelper.getReasonID(AppConstants.PENDING_REASON),
-                AppConstants.PENDING_REASON,
-                false
-            )
-        )
-        arrSpinner.add(
-            ItemSpinner(
-                AppHelper.getReasonID(AppConstants.ON_THE_WAY_REASON),
-                AppConstants.ON_THE_WAY_REASON,
-                false
-            )
-        )
+        for(item in MyApplication.lookupsReason){
+            if(!item.id.equals(AppHelper.getReasonID(AppConstants.REASON_UNSCHEDULED)) && !item.id.equals(AppHelper.getReasonID(AppConstants.REASON_CANCELLED))) {
+                arrSpinner.add(
+                    ItemSpinner(
+                        item.id,
+                        item.name,
+                        false
+                    )
+                )
+            }
+        }
 
         arrSpinner.find {
             it.id == edtitVisit!!.reasonId
@@ -665,12 +641,12 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             binding!!.tvActualArrivalTime.setTextColor(AppHelper.getColor(requireContext(),R.color.text_color))
             binding!!.tvActualCompletedTime.setBackgroundResource(R.drawable.disabled_rounded)
             binding!!.tvActualCompletedTime.setTextColor(AppHelper.getColor(requireContext(),R.color.text_color))
-        } else if (edtitVisit!!.reasonId ==  AppHelper.getReasonID(AppConstants.PENDING_REASON)) {
+        } else if (edtitVisit!!.reasonId ==  AppHelper.getReasonID(AppConstants.REASON_PENDING)) {
             setUpStatusReasonSpinner()
             for (item in arrSpinner)
-                if (item.id !=  AppHelper.getReasonID(AppConstants.PENDING_REASON) && item.id != AppHelper.getReasonID(AppConstants.ON_THE_WAY_REASON))
+                if (item.id !=  AppHelper.getReasonID(AppConstants.REASON_PENDING) && item.id != AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY))
                     item.selectable = false
-        } else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.ON_THE_WAY_REASON)) {
+        } else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY)) {
             setUpStatusReasonSpinner()
             for (item in arrSpinner)
                 if (item.id == AppHelper.getReasonID(AppConstants.REASON_SCHEDULED) || item.id == AppHelper.getReasonID(AppConstants.REASON_COMPLETED))
@@ -679,7 +655,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             isScheduled=true
             setUpStatusReasonSpinner()
             for (item in arrSpinner)
-                if (item.id ==  AppHelper.getReasonID(AppConstants.PENDING_REASON) || item.id == AppHelper.getReasonID(AppConstants.REASON_COMPLETED))
+                if (item.id ==  AppHelper.getReasonID(AppConstants.REASON_PENDING) || item.id == AppHelper.getReasonID(AppConstants.REASON_COMPLETED))
                     item.selectable = false
         }
     }

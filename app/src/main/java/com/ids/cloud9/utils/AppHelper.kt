@@ -166,6 +166,16 @@ class AppHelper {
                 return -1
             }
         }
+        fun getReasonName(code:String):String{
+            val reason = MyApplication.lookupsReason.find {
+                it.lookupCode.equals(code)
+            }
+            if(reason!=null){
+                return reason.name
+            }else{
+                return ""
+            }
+        }
 
         fun getColor(con:Context , color : Int ):Int{
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
