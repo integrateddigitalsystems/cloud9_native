@@ -10,7 +10,13 @@ import androidx.fragment.app.Fragment
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.databinding.LayoutCompanyBinding
+import com.ids.cloud9.model.CompanyRequest
+import com.ids.cloud9.model.ResponseMessage
+import com.ids.cloud9.model.TokenResource
 import com.ids.cloud9.utils.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class FragmentCompany : Fragment() {
@@ -65,18 +71,47 @@ class FragmentCompany : Fragment() {
         }
         binding!!.btSave.setOnClickListener {
             hideTexts()
-            MyApplication.selectedVisit!!.company!!.email = binding!!.tvEmail.text.toString()
-            MyApplication.selectedVisit!!.company!!.website = binding!!.tvWebite.text.toString()
-            MyApplication.selectedVisit!!.company!!.phoneNumber = binding!!.tvPhone.text.toString()
-            MyApplication.selectedVisit!!.company!!.fax = binding!!.tvFax.text.toString()
-            MyApplication.selectedVisit!!.contact!!.firstName= binding!!.tvContactName.text.toString()
-            MyApplication.selectedVisit!!.contact!!.personalPhoneNumber = binding!!.tvContactNumber.text.toString()
-            MyApplication.selectedVisit!!.company!!.address = binding!!.tvAddress.text.toString()
-            binding!!.llButtons.hide()
-            binding!!.ivEditCompany.show()
+            editCompany()
         }
+    }
 
+    fun editCompany(){
+        val editCompanyReq  = CompanyRequest(
+            binding!!.tvAddress.text.toString().trim(),
+            binding!!.tvAddress.text.toString().trim(),
+            binding!!.tvCompanyName.text.toString().trim(),
+            binding!!.tvCompanyName.text.toString().trim(),
+            binding!!.tvEmail.text.toString().trim(),
+            binding!!.tvFax.text.toString().trim(),
+            MyApplication.selectedVisit!!.company!!.id!!,
+            binding!!.tvPhone.text.toString().trim(),
+            binding!!.tvContactNumber.text.toString().trim(),
+            binding!!.tvWebite.text.toString()
 
+        )
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).editCompany(editCompanyReq)
+            .enqueue(object : Callback<ResponseMessage> {
+                override fun onResponse(
+                    call: Call<ResponseMessage>,
+                    response: Response<ResponseMessage>
+                ) {
+                    if (response.isSuccessful){
+                        MyApplication.selectedVisit!!.company!!.email = binding!!.tvEmail.text.toString()
+                        MyApplication.selectedVisit!!.company!!.website = binding!!.tvWebite.text.toString()
+                        MyApplication.selectedVisit!!.company!!.phoneNumber = binding!!.tvPhone.text.toString()
+                        MyApplication.selectedVisit!!.company!!.fax = binding!!.tvFax.text.toString()
+                       /* MyApplication.selectedVisit!!.contact!!.firstName= binding!!.tvContactName.text.toString()*/
+                        MyApplication.selectedVisit!!.contact!!.personalPhoneNumber = binding!!.tvContactNumber.text.toString()
+                        MyApplication.selectedVisit!!.company!!.address = binding!!.tvAddress.text.toString()
+                        binding!!.llButtons.hide()
+                        binding!!.ivEditCompany.show()
+                        wtf("Success")
+                    }
+                }
+                override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
+                    wtf("Failure")
+                }
+            })
     }
 
     fun hideTexts(){

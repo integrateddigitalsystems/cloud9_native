@@ -492,7 +492,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                 arrayMedia.add(
                     ItemSpinner(
                         item.id,
-                        urlIntro + item.directory,
+                        /*urlIntro + */item.directory,
                         false,
                         false,
                         false,

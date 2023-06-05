@@ -131,4 +131,9 @@ interface RetrofitInterface {
         @Query(ApiParameters.VISIT_PRODUCT_ID) id:Int
     ):Call<Forms>
 
+    @POST("Companies/EditCompany")
+    fun editCompany(
+        @Body reqCompany : CompanyRequest
+    ):Call<ResponseMessage>
+
 }
