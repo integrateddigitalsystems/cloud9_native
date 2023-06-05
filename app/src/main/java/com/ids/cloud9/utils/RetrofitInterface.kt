@@ -104,7 +104,8 @@ interface RetrofitInterface {
         @Body tokenReq : TokenResource
     ):Call<ResponseMessage>
 
-    @GET("Record/GetRecordsForProductVisit")
+
+    @GET("Record/GetRecordByVisitProductId")
     fun getProductRecords(
         @Query(ApiParameters.VISIT_PRODUCT_ID) visitProductId : Int
     ):Call<RecordLists>
@@ -129,5 +130,10 @@ interface RetrofitInterface {
     fun getFormByVisitProductId(
         @Query(ApiParameters.VISIT_PRODUCT_ID) id:Int
     ):Call<Forms>
+
+    @POST("Companies/EditCompany")
+    fun editCompany(
+        @Body reqCompany : CompanyRequest
+    ):Call<ResponseMessage>
 
 }

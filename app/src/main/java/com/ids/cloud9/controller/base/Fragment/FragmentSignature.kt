@@ -278,7 +278,7 @@ class FragmentSignature : Fragment() {
             AppHelper.setImage(
                 requireActivity(),
                 binding!!.ivSelectedDrawEmployee,
-                MyApplication.BASE_URL_IMAGE + emEy!!.directory,
+                /*MyApplication.BASE_URL_IMAGE +*/ emEy!!.directory!!,
                 false
             )
         } else {
@@ -291,7 +291,7 @@ class FragmentSignature : Fragment() {
             AppHelper.setImage(
                 requireActivity(),
                 binding!!.ivSelectedDrawClient,
-                MyApplication.BASE_URL_IMAGE + emCl!!.directory,
+                /*MyApplication.BASE_URL_IMAGE +*/ emCl!!.directory!!,
                 false
             )
         } else {

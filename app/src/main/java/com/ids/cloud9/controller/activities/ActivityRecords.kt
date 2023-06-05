@@ -39,6 +39,10 @@ class ActivityRecords : AppCompactBase(), RVOnItemClickListener {
     }
     fun init(){
         getRecords()
+
+        binding!!.srReccomendations.setOnRefreshListener{
+            getRecords()
+        }
     }
     fun getRecords(){
         binding!!.llLoading.show()
@@ -48,11 +52,13 @@ class ActivityRecords : AppCompactBase(), RVOnItemClickListener {
                 MyApplication.selectedProduct!!.id!!
             ).enqueue(object : Callback<RecordLists>{
                 override fun onResponse(call: Call<RecordLists>, response: Response<RecordLists>) {
-                    records.clear()
-                    records.addAll(response.body()!!)
-                    setUpRecord()
+                    if (response.isSuccessful){
+                        records.clear()
+                        records.addAll(response.body()!!)
+                        setUpRecord()
+                    }
+                    else  binding!!.llLoading.hide()
                 }
-
                 override fun onFailure(call: Call<RecordLists>, t: Throwable) {
                     binding!!.llLoading.hide()
                 }
@@ -71,6 +77,7 @@ class ActivityRecords : AppCompactBase(), RVOnItemClickListener {
             binding!!.rvReccomendations.hide()
             binding!!.tvNotasks.show()
         }
+        binding!!.srReccomendations.isRefreshing = false
     }
     fun listeners(){
         binding!!.layoutTool.show()

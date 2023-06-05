@@ -28,7 +28,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.exoplayer2.Player
-import com.google.gson.Gson
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.activities.ActivityFullScreen
@@ -132,11 +131,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
 
     fun setUp(array : Array<String>) {
         mPermissionResult2!!.launch(
-            arrayOf(
-                Manifest.permission.CAMERA,
-                Manifest.permission.READ_MEDIA_IMAGES
-
-            )
+            array
         )
     }
 
@@ -233,7 +228,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                 setUp(arrayPermissions)
             }
         }
-        if (MyApplication.selectedVisit!!.reasonId ==  AppHelper.getReasonID(AppConstants.REASON_PENDING) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_SCHEDULED)) {
+        if (MyApplication.selectedVisit!!.reasonId ==  AppHelper.getReasonID(AppConstants.PENDING_REASON) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.ON_THE_WAY_REASON) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_SCHEDULED)) {
             binding!!.llMediaButtons.hide()
         }
     }
@@ -497,7 +492,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                 arrayMedia.add(
                     ItemSpinner(
                         item.id,
-                        urlIntro + item.directory,
+                        /*urlIntro + */item.directory,
                         false,
                         false,
                         false,
@@ -521,15 +516,20 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
             MyApplication.selectedVisit!!.id!!
         ).enqueue(object : Callback<SignatureList> {
             override fun onResponse(call: Call<SignatureList>, response: Response<SignatureList>) {
-                sigList.clear()
-                if (!response.body()!!.isNullOrEmpty()){
-                    sigList.addAll(response.body()!!.filter {
-                        !it.isSignature
-                    })
-                    setUpMedia(sigList)
-                }else{
-                   setUpMedia(arrayListOf())
+                if (response.isSuccessful){
+                    sigList.clear()
+                    if (!response.body()!!.isNullOrEmpty()){
+                        sigList.addAll(response.body()!!.filter {
+                            !it.isSignature
+                        })
+                        setUpMedia(sigList)
+                    }
+                    else {
+                        setUpMedia(sigList)
+                    }
                 }
+                else  binding!!.llLoading.hide()
+
             }
             override fun onFailure(call: Call<SignatureList>, t: Throwable) {
                 binding!!.llLoading.hide()
@@ -570,7 +570,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
 
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.btClose) {
-            if (MyApplication.selectedVisit!!.reasonId !=  AppHelper.getReasonID(AppConstants.REASON_PENDING) && MyApplication.selectedVisit!!.reasonId != AppHelper.getReasonID(AppConstants.REASON_COMPLETED) && MyApplication.selectedVisit!!.reasonId != AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY)) {
+            if (MyApplication.selectedVisit!!.reasonId !=  AppHelper.getReasonID(AppConstants.PENDING_REASON) && MyApplication.selectedVisit!!.reasonId != AppHelper.getReasonID(AppConstants.REASON_COMPLETED) && MyApplication.selectedVisit!!.reasonId != AppHelper.getReasonID(AppConstants.ON_THE_WAY_REASON)) {
                 requireContext().createActionDialog(
                     getString(R.string.sure_delete_media),
                     0

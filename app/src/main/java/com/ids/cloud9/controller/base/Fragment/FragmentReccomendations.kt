@@ -95,11 +95,7 @@ class FragmentReccomendations : Fragment(), RVOnItemClickListener {
                     arrayReccomend.addAll(response.body()!!)
                     setDataReccomend()
                 }
-                else {
-                    arrayReccomend.clear()
-                    setDataReccomend()
-                    binding!!.llLoading.hide()
-                }
+                else  binding!!.llLoading.hide()
 
             }
             override fun onFailure(call: Call<FilteredActivityList>, t: Throwable) {
