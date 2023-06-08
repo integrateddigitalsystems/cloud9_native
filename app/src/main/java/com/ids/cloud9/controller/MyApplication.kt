@@ -15,6 +15,7 @@ import dev.b3nedikt.app_locale.AppLocale
 import dev.b3nedikt.restring.Restring
 import dev.b3nedikt.reword.RewordInterceptor
 import dev.b3nedikt.viewpump.ViewPump
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -41,6 +42,7 @@ class MyApplication : Application() {
         var UNIQUE_REQUEST_CODE = 908
         var toSettings : Boolean = true
         var toSettingsGps : Boolean = false
+        var simpleDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.ssss'Z'")
         var isFirstGps : Boolean = true
         var isFirstSettings  : Boolean = true
         var isFirstHome : Boolean = true
@@ -63,6 +65,9 @@ class MyApplication : Application() {
         var firebaseToken : String
             get() = sharedPreferences.getString(AppConstants.FIREBASE_TOKEN, "")!!
             set(value) { sharedPreferencesEditor.putString(AppConstants.FIREBASE_TOKEN, value).apply() }
+        var firstTime : Boolean
+            get() = sharedPreferences.getBoolean(AppConstants.FIRST_TIME, true)
+            set(value) { sharedPreferencesEditor.putBoolean(AppConstants.FIRST_TIME, value).apply() }
         var loggedIn : Boolean
             get() = sharedPreferences.getBoolean(AppConstants.LOGGED_IN, false)
             set(value) { sharedPreferencesEditor.putBoolean(AppConstants.LOGGED_IN, value).apply() }
@@ -72,6 +77,13 @@ class MyApplication : Application() {
         var email : String
             get() = sharedPreferences.getString(AppConstants.EMAIL, "")!!
             set(value) { sharedPreferencesEditor.putString(AppConstants.EMAIL, value).apply() }
+        var deviceToken : String
+            get() = sharedPreferences.getString(AppConstants.DEVICE_TOKEN,"")!!
+            set(value) { sharedPreferencesEditor.putString(AppConstants.DEVICE_TOKEN, value).apply() }
+        var deviceId : Int
+            get() = sharedPreferences.getInt(AppConstants.DEVICE_ID,0)
+            set(value) { sharedPreferencesEditor.putInt(AppConstants.DEVICE_ID, value).apply() }
+
         var password : String
             get() = sharedPreferences.getString(AppConstants.PASSWORD, "")!!
             set(value) { sharedPreferencesEditor.putString(AppConstants.PASSWORD, value).apply() }

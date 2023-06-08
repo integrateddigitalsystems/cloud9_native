@@ -169,6 +169,7 @@ class FragmentSignature : Fragment() {
             !isClient,
             true
         )
+        var str = Gson().toJson(signatureRequest)
         val signs = arrayListOf<SignatureRequest>()
         signs.add(signatureRequest)
         wtf(Gson().toJson(signatureRequest))

@@ -2,11 +2,13 @@ package com.ids.cloud9.controller.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.AdapterView
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.AdapterEdit
@@ -231,7 +233,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             MyApplication.selectedVisit!!.id,
             MyApplication.selectedVisit!!.number
         )
-
+        Log.wtf("TAG_JAD_CREATE",Gson().toJson(createProduct))
         RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .createMobile(
                 createProduct!!

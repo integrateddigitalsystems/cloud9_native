@@ -77,6 +77,7 @@ android {
         dataBinding true
 
     }
+    namespace 'com.ids.cloud9'
 
 
 }

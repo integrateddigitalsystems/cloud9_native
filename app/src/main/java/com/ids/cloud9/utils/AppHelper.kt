@@ -6,6 +6,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Context.CONNECTIVITY_SERVICE
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Bitmap
@@ -155,6 +156,51 @@ class AppHelper {
 
             }
 
+        }
+
+        fun getAndroidVersion(): String {
+
+            val release = Build.VERSION.RELEASE
+            val sdkVersion = Build.VERSION.SDK_INT
+            return "Android:$sdkVersion ($release)"
+        }
+        fun getDeviceName(): String {
+
+            val manufacturer = Build.MANUFACTURER
+            val model = Build.MODEL
+            return if (model.startsWith(manufacturer)) {
+                capitalize(model)
+            } else {
+                capitalize(manufacturer) + " " + model
+            }
+        }
+
+        private fun capitalize(model: String): String {
+            if (model.length == 0) {
+                return ""
+            }
+            val first = model.get(0)
+            return if (Character.isUpperCase(first)) {
+                model
+            } else {
+                Character.toUpperCase(first) + model.substring(1)
+            }
+        }
+
+        fun getVersionNumber(): Int {
+
+            val pInfo: PackageInfo
+            var version = -1
+            try {
+                pInfo = MyApplication.instance.packageManager
+                    .getPackageInfo(MyApplication.instance.packageName, 0)
+                version = pInfo.versionCode
+            } catch (e: PackageManager.NameNotFoundException) {
+                // TODO Auto-generated catch block
+                e.printStackTrace()
+            }
+
+            return version
         }
         fun getReasonID(code:String):Int{
             val reason = MyApplication.lookupsReason.find {

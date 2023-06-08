@@ -629,7 +629,8 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             for (item in arrSpinner)
                 if (item.id != AppHelper.getReasonID(AppConstants.REASON_ARRIVED) && item.id != AppHelper.getReasonID(AppConstants.REASON_COMPLETED))
                     item.selectable = false
-        } else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED)) {
+        }
+        else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED)) {
             binding!!.spStatusReason.hide()
             binding!!.ivArrowSpin.hide()
             binding!!.rlStatusSpinner.setBackgroundResource(R.drawable.disabled_rounded)
@@ -641,17 +642,20 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             binding!!.tvActualArrivalTime.setTextColor(AppHelper.getColor(requireContext(),R.color.text_color))
             binding!!.tvActualCompletedTime.setBackgroundResource(R.drawable.disabled_rounded)
             binding!!.tvActualCompletedTime.setTextColor(AppHelper.getColor(requireContext(),R.color.text_color))
-        } else if (edtitVisit!!.reasonId ==  AppHelper.getReasonID(AppConstants.REASON_PENDING)) {
+        }
+        else if (edtitVisit!!.reasonId ==  AppHelper.getReasonID(AppConstants.REASON_PENDING)) {
             setUpStatusReasonSpinner()
             for (item in arrSpinner)
                 if (item.id !=  AppHelper.getReasonID(AppConstants.REASON_PENDING) && item.id != AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY))
                     item.selectable = false
-        } else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY)) {
+        }
+        else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY)) {
             setUpStatusReasonSpinner()
             for (item in arrSpinner)
                 if (item.id == AppHelper.getReasonID(AppConstants.REASON_SCHEDULED) || item.id == AppHelper.getReasonID(AppConstants.REASON_COMPLETED))
                     item.selectable = false
-        } else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_SCHEDULED)) {
+        }
+        else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_SCHEDULED)) {
             isScheduled=true
             setUpStatusReasonSpinner()
             for (item in arrSpinner)

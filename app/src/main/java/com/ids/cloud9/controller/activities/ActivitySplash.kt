@@ -10,8 +10,12 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
@@ -19,6 +23,7 @@ import com.google.gson.Gson
 import com.ids.cloud9.BuildConfig
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
+import com.ids.cloud9.controller.MyApplication.Companion.BASE_URL
 import com.ids.cloud9.controller.MyApplication.Companion.toSettingsGps
 import com.ids.cloud9.custom.AppCompactBase
 import com.ids.cloud9.databinding.ActivityNewSplashBinding
@@ -27,6 +32,7 @@ import com.ids.cloud9.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Calendar
 
 class ActivitySplash : AppCompactBase() {
 
@@ -91,6 +97,7 @@ class ActivitySplash : AppCompactBase() {
         wtf(token)
         MyApplication.userItem = JWTDecoding.decoded(token)
         if(MyApplication.userItem != JWTResponse()) {
+            updateDevice(MyApplication.userItem!!.applicationUserId!!.toInt())
             updateToken(MyApplication.userItem!!.applicationUserId!!.toInt())
             getUnits()
         }else{
@@ -120,6 +127,56 @@ class ActivitySplash : AppCompactBase() {
             }
 
         })
+    }
+    fun updateDevice(userId : Int){
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(
+            OnCompleteListener { task ->
+
+                val imei = Settings.Secure.getString(
+                    contentResolver,
+                    Settings.Secure.ANDROID_ID
+                )
+                var updateDevice = UpdateDeviceRequest(
+                    AppHelper.getAndroidVersion(),
+                    MyApplication.simpleDate.format(Calendar.getInstance().time),
+                    "",
+                    AppHelper.getDeviceName(),
+                    task.result,
+                    2,
+                    0,
+                    MyApplication.languageCode,
+                    "",
+                    true,
+                    imei
+                )
+                if(userId!=0){
+                    updateDevice.userId = userId
+                }
+                Log.wtf("MY_JAD_TAG",imei)
+                Log.wtf("MY_JAD_TAG",Gson().toJson(updateDevice))
+                Log.wtf("MY_JAD_TAG", MyApplication.token)
+                RetrofitClient.client!!.create(RetrofitInterface::class.java).updateDevice(
+                    updateDevice
+                ).enqueue(object : Callback<Any> {
+                        override fun onResponse(
+                            call: Call<Any>,
+                            response: Response<Any>
+                        ) {
+                            Log.wtf("MY_JAD_TAG", BASE_URL)
+                            wtf("Success")
+                        }
+                        override fun onFailure(call: Call<Any>, t: Throwable) {
+                            wtf("Failure")
+                        }
+                    })
+
+
+            }
+
+
+
+        )
     }
     fun updateToken(id:Int){
         val tokenReq  = TokenResource(
@@ -190,7 +247,7 @@ class ActivitySplash : AppCompactBase() {
             startApp()
         }
     }
-    private fun goNext(){
+    fun finalStep(){
         Handler(Looper.getMainLooper()).postDelayed({
             if(!MyApplication.loggedIn) {
                 finishAffinity()
@@ -199,6 +256,13 @@ class ActivitySplash : AppCompactBase() {
                 login()
             }
         }, 2000)
+    }
+    private fun goNext(){
+        if(MyApplication.firstTime){
+            updateDevice(0)
+        }else{
+            finalStep()
+        }
     }
     private fun goToPlayStore(){
         val appPackageName = packageName

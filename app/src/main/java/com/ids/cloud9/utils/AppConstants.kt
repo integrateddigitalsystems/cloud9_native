@@ -42,10 +42,13 @@ object AppConstants {
     const val PRODUCTION_LOOKUP_CODE = "PROD_UNIT"
     const val REASON_LOOKUP_CODE = "V_STTSR"
     const val LOGGED_IN ="LoggedIn"
+    const val FIRST_TIME = "firstTime"
     const val FIREBASE_TOKEN ="firebaseToken"
     const val PERMISSION ="permission"
     const val TOKEN = "token"
     const val EMAIL ="email"
+    const val DEVICE_ID = "device_id"
+    const val DEVICE_TOKEN ="device_token"
     const val PASSWORD ="password"
     const val IS_SHOW ="is_show"
 
