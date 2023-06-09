@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -172,7 +173,7 @@ class FragmentSignature : Fragment() {
         var str = Gson().toJson(signatureRequest)
         val signs = arrayListOf<SignatureRequest>()
         signs.add(signatureRequest)
-        wtf(Gson().toJson(signatureRequest))
+        Log.wtf("JAD_MEDIA_MEDIA",Gson().toJson(signs))
         RetrofitClientSpecificAuth.client!!.create(
             RetrofitInterface::class.java
         ).saveSignature(

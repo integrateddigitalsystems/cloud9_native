@@ -134,7 +134,7 @@ interface RetrofitInterface {
     @POST("Device/UpdateDevice")
     fun updateDevice(
         @Body updateDevice:UpdateDeviceRequest
-    ):Call<Any>
+    ):Call<UpdateDeviceResponse>
 
     @POST("Companies/EditCompany")
     fun editCompany(

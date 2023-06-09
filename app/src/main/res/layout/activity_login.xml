@@ -17,10 +17,46 @@
         android:layout_height="match_parent">
 
 
+        <LinearLayout
+           android:layout_above="@id/llCard"
+            android:orientation="horizontal"
+            android:id="@+id/llButtons"
+            android:layout_marginBottom="@dimen/normal_margin"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height">
+
+           <com.ids.cloud9.custom.CustomTextViewBold
+               android:layout_width="100dp"
+               android:id="@+id/btTestUser1"
+               android:layout_height="@dimen/edit_text_height"
+               android:background="@drawable/white_light_rounded"
+               android:textColor="@color/darker_primary"
+               android:text="TEST USER 1"
+               android:foreground="?android:attr/selectableItemBackground"
+               android:gravity="center"/>
+
+            <com.ids.cloud9.custom.CustomTextViewBold
+                android:layout_width="100dp"
+                android:id="@+id/btTestUser2"
+                android:layout_marginStart="@dimen/normal_margin"
+                android:layout_height="@dimen/edit_text_height"
+                android:background="@drawable/white_light_rounded"
+                android:textColor="@color/darker_primary"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:text="TEST USER 2"
+                android:gravity="center"/>
+
+
+
+        </LinearLayout>
+
+
     <androidx.cardview.widget.CardView
         android:layout_marginStart="@dimen/height_toggle"
         android:layout_marginEnd="@dimen/height_toggle"
         android:layout_centerInParent="true"
+        android:id="@+id/llCard"
         android:layout_width="match_parent"
         app:cardCornerRadius="@dimen/margin_10"
         android:layout_height="wrap_content">

@@ -19,7 +19,11 @@ class ResponseLogin(
 
     @SerializedName("loginUrl")
     @Expose
-    var loginUrl : String ?=""
+    var loginUrl : String ?="",
+
+    @SerializedName("userId")
+    @Expose
+    var userId : Int ?=0
 
 ) {
 }

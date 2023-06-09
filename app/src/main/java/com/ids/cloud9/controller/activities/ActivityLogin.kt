@@ -3,9 +3,14 @@ package com.ids.cloud9.controller.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.text.Editable
 import android.text.InputType
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.gson.Gson
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.custom.AppCompactBase
@@ -15,6 +20,7 @@ import com.ids.cloud9.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Calendar
 
 class ActivityLogin : AppCompactBase() {
     var binding : ActivityLoginBinding?=null
@@ -35,6 +41,14 @@ class ActivityLogin : AppCompactBase() {
                 binding!!.etEmail.setBackgroundResource(R.drawable.rounded_primary_black)
                 binding!!.etPassword.setBackgroundResource(R.drawable.rounded_primary_border)
             }
+        }
+        binding!!.btTestUser1.setOnClickListener {
+            binding!!.etEmail.text =Editable.Factory.getInstance().newEditable("mobile@crm.ids.com.lb")
+            binding!!.etPassword.text =Editable.Factory.getInstance().newEditable("P@ssw0rd1")
+        }
+        binding!!.btTestUser2.setOnClickListener {
+            binding!!.etEmail.text =Editable.Factory.getInstance().newEditable("mobile@mydomain.com")
+            binding!!.etPassword.text =Editable.Factory.getInstance().newEditable("P@ssw0rd!@#")
         }
         binding!!.etPassword.setOnFocusChangeListener { view, b ->
             if(selectedField !=2){
@@ -86,6 +100,7 @@ class ActivityLogin : AppCompactBase() {
                        MyApplication.password = password
                        MyApplication.userItem = JWTDecoding.decoded(MyApplication.token)
                        updateToken(MyApplication.userItem!!.applicationUserId!!.toInt())
+                       updateDevice(response.body()!!.userId!!)
                        binding!!.loadingLogin.hide()
                        binding!!.btLogin.show()
                        getUnits()
@@ -108,7 +123,7 @@ class ActivityLogin : AppCompactBase() {
             MyApplication.firebaseToken,
             id
         )
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).saveToken(tokenReq)
+        RetrofitClient.client!!.create(RetrofitInterface::class.java).saveToken(tokenReq)
             .enqueue(object : Callback<ResponseMessage> {
                 override fun onResponse(
                     call: Call<ResponseMessage>,
@@ -138,6 +153,57 @@ class ActivityLogin : AppCompactBase() {
                 override fun onFailure(call: Call<UnitList>, t: Throwable) {
                 }
             })
+    }
+
+    fun updateDevice(userId : Int){
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(
+            OnCompleteListener { task ->
+
+                val imei = Settings.Secure.getString(
+                    contentResolver,
+                    Settings.Secure.ANDROID_ID
+                )
+                var updateDevice = UpdateDeviceRequest(
+                    AppHelper.getAndroidVersion(),
+                    MyApplication.simpleDate.format(Calendar.getInstance().time),
+                    "",
+                    AppHelper.getDeviceName(),
+                    task.result,
+                    2,
+                    MyApplication.deviceId,
+                    MyApplication.languageCode,
+                    "",
+                    true,
+                    imei
+                )
+                if(userId!=0){
+                    updateDevice.userId = userId
+                }
+                Log.wtf("MY_JAD_TAG",imei)
+                Log.wtf("MY_JAD_TAG", Gson().toJson(updateDevice))
+                Log.wtf("MY_JAD_TAG", MyApplication.token)
+                RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).updateDevice(
+                    updateDevice
+                ).enqueue(object : Callback<UpdateDeviceResponse> {
+                    override fun onResponse(
+                        call: Call<UpdateDeviceResponse>,
+                        response: Response<UpdateDeviceResponse>
+                    ) {
+                        Log.wtf("MY_JAD_TAG", MyApplication.BASE_URL)
+                        wtf("Success")
+                    }
+                    override fun onFailure(call: Call<UpdateDeviceResponse>, t: Throwable) {
+                        wtf("Failure")
+                    }
+                })
+
+
+            }
+
+
+
+        )
     }
     fun getUnits(){
         RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.PRODUCTION_LOOKUP_CODE)

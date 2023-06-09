@@ -37,13 +37,14 @@ import java.util.Calendar
 class ActivitySplash : AppCompactBase() {
 
     var mFirebaseRemoteConfig: FirebaseRemoteConfig? = null
-    private val permReqLauncher = this.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-        val granted = permissions.entries.all {
-            it.value
-        }
+    private val permReqLauncher =
+        this.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            val granted = permissions.entries.all {
+                it.value
+            }
 
-        startApp()
-    }
+            startApp()
+        }
     private lateinit var binding: ActivityNewSplashBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +52,7 @@ class ActivitySplash : AppCompactBase() {
         setContentView(binding.root)
         startFirebase()
     }
+
     fun startFirebase() {
         mFirebaseRemoteConfig = Firebase.remoteConfig
         val configSettings = remoteConfigSettings {
@@ -63,49 +65,56 @@ class ActivitySplash : AppCompactBase() {
                     setUpFirebase()
                 } else {
                     createRetryDialog(
-                        getString(R.string.error_getting_data)) {
+                        getString(R.string.error_getting_data)
+                    ) {
                         startFirebase()
                     }
                 }
+            }
     }
-    }
-    fun getUnits(){
-        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.PRODUCTION_LOOKUP_CODE)
+
+    fun getUnits() {
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
+            .getUnits(AppConstants.PRODUCTION_LOOKUP_CODE)
             .enqueue(object : Callback<UnitList> {
                 override fun onResponse(
                     call: Call<UnitList>,
                     response: Response<UnitList>
                 ) {
                     safeCall {
-                        if(response.body()!!.size >0) {
+                        if (response.body()!!.size > 0) {
                             MyApplication.units.clear()
                             MyApplication.units.addAll(response.body()!!)
                             getReasons()
                         }
                     }
                 }
+
                 override fun onFailure(call: Call<UnitList>, t: Throwable) {
                     createRetryDialog(
-                        getString(R.string.error_getting_data)) {
+                        getString(R.string.error_getting_data)
+                    ) {
                         startFirebase()
                     }
                 }
             })
     }
-    fun nextStep(token: String){
-        MyApplication.token =token
+
+    fun nextStep(token: String) {
+        MyApplication.token = token
         wtf(token)
         MyApplication.userItem = JWTDecoding.decoded(token)
-        if(MyApplication.userItem != JWTResponse()) {
+        if (MyApplication.userItem != JWTResponse()) {
             updateDevice(MyApplication.userItem!!.applicationUserId!!.toInt())
             updateToken(MyApplication.userItem!!.applicationUserId!!.toInt())
             getUnits()
-        }else{
+        } else {
             MyApplication.loggedIn = false
             startApp()
         }
     }
-    fun login(){
+
+    fun login() {
         val req = RequestLogin(
             MyApplication.email,
             MyApplication.password,
@@ -116,7 +125,7 @@ class ActivitySplash : AppCompactBase() {
         ).loginUser(
             MyApplication.email,
             MyApplication.password
-        ).enqueue(object : Callback<ResponseLogin>{
+        ).enqueue(object : Callback<ResponseLogin> {
             override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
                 MyApplication.BASE_USER_URL = response.body()!!.apiURL!!
 
@@ -128,7 +137,8 @@ class ActivitySplash : AppCompactBase() {
 
         })
     }
-    fun updateDevice(userId : Int){
+
+    fun updateDevice(userId: Int) {
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener(
             OnCompleteListener { task ->
@@ -144,42 +154,59 @@ class ActivitySplash : AppCompactBase() {
                     AppHelper.getDeviceName(),
                     task.result,
                     2,
-                    0,
+                    MyApplication.deviceId,
                     MyApplication.languageCode,
                     "",
                     true,
                     imei
                 )
-                if(userId!=0){
+                if (userId != 0) {
                     updateDevice.userId = userId
                 }
-                Log.wtf("MY_JAD_TAG",imei)
-                Log.wtf("MY_JAD_TAG",Gson().toJson(updateDevice))
+                Log.wtf("MY_JAD_TAG", imei)
+                Log.wtf("MY_JAD_TAG", Gson().toJson(updateDevice))
                 Log.wtf("MY_JAD_TAG", MyApplication.token)
                 RetrofitClient.client!!.create(RetrofitInterface::class.java).updateDevice(
                     updateDevice
-                ).enqueue(object : Callback<Any> {
-                        override fun onResponse(
-                            call: Call<Any>,
-                            response: Response<Any>
+                ).enqueue(object : Callback<UpdateDeviceResponse> {
+                    override fun onResponse(
+                        call: Call<UpdateDeviceResponse>,
+                        response: Response<UpdateDeviceResponse>
+                    ) {
+                        // if(response.isSuccessful) {
+                        Log.wtf("MY_JAD_TAG", BASE_URL)
+                        MyApplication.firstTime = false
+                        MyApplication.deviceId = response.body()!!.id
+                        finalStep()
+                        wtf("Success")
+                        Log.wtf("MY_JAD_TAG", Gson().toJson(response.body()))
+                        /* }else{
+                             createRetryDialog(
+                                 getString(R.string.error_getting_data)
+                             ) {
+                                 startFirebase()
+                             }
+                         }*/
+                    }
+
+                    override fun onFailure(call: Call<UpdateDeviceResponse>, t: Throwable) {
+                        createRetryDialog(
+                            getString(R.string.error_getting_data)
                         ) {
-                            Log.wtf("MY_JAD_TAG", BASE_URL)
-                            wtf("Success")
+                            startFirebase()
                         }
-                        override fun onFailure(call: Call<Any>, t: Throwable) {
-                            wtf("Failure")
-                        }
-                    })
+                    }
+                })
 
 
             }
 
 
-
         )
     }
-    fun updateToken(id:Int){
-        val tokenReq  = TokenResource(
+
+    fun updateToken(id: Int) {
+        val tokenReq = TokenResource(
             MyApplication.firebaseToken,
             id
         )
@@ -191,12 +218,14 @@ class ActivitySplash : AppCompactBase() {
                 ) {
                     wtf("Success")
                 }
+
                 override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
                     wtf("Failure")
                 }
             })
     }
-    fun startApp(){
+
+    fun startApp() {
         if (MyApplication.mobileConfig!!.forceVersion > BuildConfig.VERSION_NAME.toDouble()) {
             if (MyApplication.mobileConfig!!.force)
                 AppHelper.createActionDialog(
@@ -209,10 +238,11 @@ class ActivitySplash : AppCompactBase() {
                 }
             else showForceUpdateDialog(this)
 
-        } else{
+        } else {
             goNext()
         }
     }
+
     fun setUpFirebase() {
         val mobConfig = Gson().fromJson(
             mFirebaseRemoteConfig!!.getString(AppConstants.FIREBASE_CONFIG),
@@ -233,7 +263,7 @@ class ActivitySplash : AppCompactBase() {
                 startFirebase()
             }
         } else {
-            MyApplication.url_contains=MyApplication.mobileConfig!!.url_contains
+            MyApplication.url_contains = MyApplication.mobileConfig!!.url_contains
             MyApplication.BASE_URL = MyApplication.mobileConfig!!.mainUrl
             permissionSendNotifications()
         }
@@ -241,41 +271,58 @@ class ActivitySplash : AppCompactBase() {
 
     private fun permissionSendNotifications() {
         val permissions = arrayOf(Manifest.permission.POST_NOTIFICATIONS)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&!AppHelper.hasPermission(this, permissions)){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !AppHelper.hasPermission(
+                this,
+                permissions
+            )
+        ) {
             permReqLauncher.launch(permissions)
-        }else{
+        } else {
             startApp()
         }
     }
-    fun finalStep(){
+
+    fun finalStep() {
         Handler(Looper.getMainLooper()).postDelayed({
-            if(!MyApplication.loggedIn) {
+            if (!MyApplication.loggedIn) {
                 finishAffinity()
                 startActivity(Intent(this, ActivityLogin::class.java))
-            }else{
+            } else {
                 login()
             }
         }, 2000)
     }
-    private fun goNext(){
-        if(MyApplication.firstTime){
+
+    private fun goNext() {
+        if (MyApplication.firstTime) {
             updateDevice(0)
-        }else{
+        } else {
             finalStep()
         }
     }
-    private fun goToPlayStore(){
+
+    private fun goToPlayStore() {
         val appPackageName = packageName
         try {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=$appPackageName")
+                )
+            )
             finish()
         } catch (anfe: android.content.ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")
+                )
+            )
             finish()
         }
     }
 
-    private fun showForceUpdateDialog(c: Context){
+    private fun showForceUpdateDialog(c: Context) {
         val builder = AlertDialog.Builder(c)
         builder
             .setMessage(getString(R.string.update_message))
@@ -290,46 +337,49 @@ class ActivitySplash : AppCompactBase() {
         alert.show()
     }
 
-    fun getReasons(){
-        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.REASON_LOOKUP_CODE)
+    fun getReasons() {
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
+            .getUnits(AppConstants.REASON_LOOKUP_CODE)
             .enqueue(object : Callback<UnitList> {
                 override fun onResponse(
                     call: Call<UnitList>,
                     response: Response<UnitList>
                 ) {
                     safeCall {
-                        if(response.body()!!.size >0) {
+                        if (response.body()!!.size > 0) {
                             MyApplication.lookupsReason.clear()
                             MyApplication.lookupsReason.addAll(response.body()!!)
                         }
                         setUpRest()
                     }
                 }
+
                 override fun onFailure(call: Call<UnitList>, t: Throwable) {
                     createRetryDialog(
-                        getString(R.string.error_getting_data)) {
+                        getString(R.string.error_getting_data)
+                    ) {
                         startFirebase()
                     }
                 }
             })
     }
 
-    fun setUpRest(){
+    fun setUpRest() {
         MyApplication.loggedIn = true
         try {
-            val visitId = intent.extras!!.getInt("visitId",0)
-            if (visitId!=0) {
+            val visitId = intent.extras!!.getInt("visitId", 0)
+            if (visitId != 0) {
                 startActivity(
                     Intent(this, ActivtyVisitDetails::class.java)
                         .putExtra("visitId", visitId)
-                        .putExtra("fromNotf",1)
+                        .putExtra("fromNotf", 1)
                 )
                 finishAffinity()
             } else {
                 finishAffinity()
                 startActivity(Intent(this, ActivityMain::class.java))
             }
-        }catch (ex:Exception){
+        } catch (ex: Exception) {
             finishAffinity()
             startActivity(Intent(this, ActivityMain::class.java))
         }
