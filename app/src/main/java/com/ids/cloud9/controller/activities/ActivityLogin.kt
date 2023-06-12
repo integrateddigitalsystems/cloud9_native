@@ -100,13 +100,8 @@ class ActivityLogin : AppCompactBase() {
                        MyApplication.password = password
                        MyApplication.userItem = JWTDecoding.decoded(MyApplication.token)
                        updateToken(MyApplication.userItem!!.applicationUserId!!.toInt())
-                       updateDevice(response.body()!!.userId!!)
-                       binding!!.loadingLogin.hide()
-                       binding!!.btLogin.show()
-                       getUnits()
-                       getReasons()
-                       MyApplication.loggedIn = true
-                       startActivity(Intent(this@ActivityLogin,ActivityMain::class.java))
+                       MyApplication.deviceUserId = response.body()!!.userId!!
+                       updateDevice(MyApplication.deviceUserId!!)
                    }catch (ex:Exception){
                        binding!!.btLogin.show()
                        wtf(ex.toString())
@@ -123,7 +118,7 @@ class ActivityLogin : AppCompactBase() {
             MyApplication.firebaseToken,
             id
         )
-        RetrofitClient.client!!.create(RetrofitInterface::class.java).saveToken(tokenReq)
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).saveToken(tokenReq)
             .enqueue(object : Callback<ResponseMessage> {
                 override fun onResponse(
                     call: Call<ResponseMessage>,
@@ -183,18 +178,31 @@ class ActivityLogin : AppCompactBase() {
                 Log.wtf("MY_JAD_TAG",imei)
                 Log.wtf("MY_JAD_TAG", Gson().toJson(updateDevice))
                 Log.wtf("MY_JAD_TAG", MyApplication.token)
-                RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).updateDevice(
+                RetrofitClient.client!!.create(RetrofitInterface::class.java).updateDevice(
                     updateDevice
                 ).enqueue(object : Callback<UpdateDeviceResponse> {
                     override fun onResponse(
                         call: Call<UpdateDeviceResponse>,
                         response: Response<UpdateDeviceResponse>
                     ) {
-                        Log.wtf("MY_JAD_TAG", MyApplication.BASE_URL)
-                        wtf("Success")
+                        if(response.isSuccessful){
+                            wtf("Success")
+                            finalStepLogin()
+                        }else {
+                            createRetryDialog(
+                                getString(R.string.error_getting_data)
+                            ) {
+                                updateDevice(userId)
+                            }
+                        }
+
                     }
                     override fun onFailure(call: Call<UpdateDeviceResponse>, t: Throwable) {
-                        wtf("Failure")
+                        createRetryDialog(
+                            getString(R.string.error_getting_data)
+                        ) {
+                            updateDevice(userId)
+                        }
                     }
                 })
 
@@ -204,6 +212,15 @@ class ActivityLogin : AppCompactBase() {
 
 
         )
+    }
+
+    fun finalStepLogin(){
+        binding!!.loadingLogin.hide()
+        binding!!.btLogin.show()
+        getUnits()
+        getReasons()
+        MyApplication.loggedIn = true
+        startActivity(Intent(this@ActivityLogin,ActivityMain::class.java))
     }
     fun getUnits(){
         RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.PRODUCTION_LOOKUP_CODE)

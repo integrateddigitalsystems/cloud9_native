@@ -48,6 +48,7 @@ object AppConstants {
     const val TOKEN = "token"
     const val EMAIL ="email"
     const val DEVICE_ID = "device_id"
+    const val DEVICE_USER_ID="device_user_id"
     const val DEVICE_TOKEN ="device_token"
     const val PASSWORD ="password"
     const val IS_SHOW ="is_show"

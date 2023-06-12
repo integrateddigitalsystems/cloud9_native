@@ -100,14 +100,14 @@ class ActivitySplash : AppCompactBase() {
             })
     }
 
-    fun nextStep(token: String) {
-        MyApplication.token = token
-        wtf(token)
-        MyApplication.userItem = JWTDecoding.decoded(token)
+    fun nextStep(response: ResponseLogin) {
+        MyApplication.token = response.token!!
+        wtf(response.token!!)
+        MyApplication.deviceUserId = response.userId!!
+        MyApplication.userItem = JWTDecoding.decoded(response.token!!)
         if (MyApplication.userItem != JWTResponse()) {
-            updateDevice(MyApplication.userItem!!.applicationUserId!!.toInt())
+            updateDevice(MyApplication.deviceUserId)
             updateToken(MyApplication.userItem!!.applicationUserId!!.toInt())
-            getUnits()
         } else {
             MyApplication.loggedIn = false
             startApp()
@@ -129,7 +129,7 @@ class ActivitySplash : AppCompactBase() {
             override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
                 MyApplication.BASE_USER_URL = response.body()!!.apiURL!!
 
-                nextStep(response.body()!!.token!!)
+                nextStep(response.body()!!)
             }
 
             override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
@@ -173,20 +173,18 @@ class ActivitySplash : AppCompactBase() {
                         call: Call<UpdateDeviceResponse>,
                         response: Response<UpdateDeviceResponse>
                     ) {
-                        // if(response.isSuccessful) {
-                        Log.wtf("MY_JAD_TAG", BASE_URL)
                         MyApplication.firstTime = false
                         MyApplication.deviceId = response.body()!!.id
-                        finalStep()
+                        // if(response.isSuccessful) {
+                        Log.wtf("MY_JAD_TAG", BASE_URL)
+                        if(userId ==0){
+                            finalStep()
+                        }else {
+                            getUnits()
+                        }
                         wtf("Success")
                         Log.wtf("MY_JAD_TAG", Gson().toJson(response.body()))
-                        /* }else{
-                             createRetryDialog(
-                                 getString(R.string.error_getting_data)
-                             ) {
-                                 startFirebase()
-                             }
-                         }*/
+
                     }
 
                     override fun onFailure(call: Call<UpdateDeviceResponse>, t: Throwable) {
@@ -210,7 +208,7 @@ class ActivitySplash : AppCompactBase() {
             MyApplication.firebaseToken,
             id
         )
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).saveToken(tokenReq)
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).saveToken(tokenReq)
             .enqueue(object : Callback<ResponseMessage> {
                 override fun onResponse(
                     call: Call<ResponseMessage>,

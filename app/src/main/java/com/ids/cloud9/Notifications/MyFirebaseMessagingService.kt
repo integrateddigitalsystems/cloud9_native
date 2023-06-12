@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
@@ -43,18 +44,23 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         super.onMessageReceived(message)
         wtf(Gson().toJson(message))
         wtf("onMessageReceived: " + message.getData().get("message"))
-        val remote = Gson().fromJson(Gson().toJson(message)
-            ,RemoteMessageType::class.java)
+        Log.wtf("MY_JAD_TAG", Gson().toJson(message))
+        var id : Int ?=0
+        try{
+            id = message.data.get("Id")!!.toInt()
+        }catch (ex:Exception){
+            id = 0
+        }
 
-        val intent = Intent("msg") //action: "msg"
-        intent.setPackage(packageName)
-        intent.putExtra("message", "")
-        applicationContext.sendBroadcast(intent)
-
-
-
-        val visitId = remote.bundle.mMap.visitId
-        sendNotification(remote.bundle.mMap.gcmNotificationBody,visitId.toInt(),remote.bundle.mMap.gcmNotificationTitle)
+        var messageSent : String ?=""
+        try{
+            messageSent = message.data.get("message")
+        }catch (ex:Exception){
+            messageSent = ""
+        }
+        if(messageSent.isNullOrEmpty())
+            messageSent = ""
+        sendNotification("",id!!,messageSent)
     }
 
 

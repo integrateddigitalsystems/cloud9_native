@@ -460,7 +460,8 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
         )
         val arr: ArrayList<SignatureRequest> = arrayListOf()
         arr.add(sigReq)
-        Log.wtf("JAD_MEDIA_MEDIA",Gson().toJson(arr))
+        var str  = Gson().toJson(arr)
+        Log.wtf("JAD_MEDIA_MEDIA",str)
         RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .saveAttachment(arr)
             .enqueue(object : Callback<ResponseMessage> {

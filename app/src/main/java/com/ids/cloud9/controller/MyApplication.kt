@@ -84,6 +84,10 @@ class MyApplication : Application() {
             get() = sharedPreferences.getInt(AppConstants.DEVICE_ID,0)
             set(value) { sharedPreferencesEditor.putInt(AppConstants.DEVICE_ID, value).apply() }
 
+        var deviceUserId : Int
+            get() = sharedPreferences.getInt(AppConstants.DEVICE_USER_ID,0)
+            set(value) { sharedPreferencesEditor.putInt(AppConstants.DEVICE_USER_ID, value).apply() }
+
         var password : String
             get() = sharedPreferences.getString(AppConstants.PASSWORD, "")!!
             set(value) { sharedPreferencesEditor.putString(AppConstants.PASSWORD, value).apply() }

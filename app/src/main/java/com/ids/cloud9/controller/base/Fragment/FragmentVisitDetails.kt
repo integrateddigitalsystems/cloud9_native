@@ -8,6 +8,7 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -307,7 +308,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
 
 
             )
-            wtf(Gson().toJson(visitLocationRequest))
+            Log.wtf("JAD_TEST_LOCATION",Gson().toJson(visitLocationRequest))
             RetrofitClientSpecificAuth.client!!.create(
                 RetrofitInterface::class.java
             ).createVisitLocation(
@@ -577,10 +578,10 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
     fun setUpData() {
         binding!!.llLoading.hide()
         setUpEdit()
-        if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED)) {
+       /* if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED)) {
             binding!!.btSave.setBackgroundResource(R.drawable.rounded_trans_primary)
             binding!!.btSave.isEnabled = false
-        }
+        }*/
     }
 
     fun getPermissionStatus(androidPermissionName: String?): Int {
@@ -624,7 +625,8 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         }!!.selected = true
 
 
-        if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
+        setUpStatusReasonSpinner()
+     /*   if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
             setUpStatusReasonSpinner()
             for (item in arrSpinner)
                 if (item.id != AppHelper.getReasonID(AppConstants.REASON_ARRIVED) && item.id != AppHelper.getReasonID(AppConstants.REASON_COMPLETED))
@@ -661,7 +663,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             for (item in arrSpinner)
                 if (item.id ==  AppHelper.getReasonID(AppConstants.REASON_PENDING) || item.id == AppHelper.getReasonID(AppConstants.REASON_COMPLETED))
                     item.selectable = false
-        }
+        }*/
     }
 
     override fun onItemClicked(view: View, position: Int) {

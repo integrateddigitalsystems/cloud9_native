@@ -25,6 +25,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.sign
 
 class FragmentSignature : Fragment() {
     var emEy: SignatureListItem? = null
@@ -170,10 +171,10 @@ class FragmentSignature : Fragment() {
             !isClient,
             true
         )
-        var str = Gson().toJson(signatureRequest)
         val signs = arrayListOf<SignatureRequest>()
         signs.add(signatureRequest)
-        Log.wtf("JAD_MEDIA_MEDIA",Gson().toJson(signs))
+        var str = Gson().toJson(signs)
+        Log.wtf("JAD_MEDIA_MEDIA",str)
         RetrofitClientSpecificAuth.client!!.create(
             RetrofitInterface::class.java
         ).saveSignature(
