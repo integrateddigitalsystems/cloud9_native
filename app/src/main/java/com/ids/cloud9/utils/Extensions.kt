@@ -38,6 +38,17 @@ inline fun debugOnly(block: () -> Unit) {
         block()
     }
 }
+fun Activity.createActionDialog(positiveButton: String, message: String, cancelable:Boolean?=true, doAction: () -> Unit){
+    val builder = AlertDialog.Builder(this)
+    builder
+        .setMessage(message)
+        .setCancelable(cancelable!!)
+        .setPositiveButton(positiveButton) { dialog, _ ->
+            doAction()
+        }
+    val alert = builder.create()
+    alert.show()
+}
 
 fun Location.toText():String{
     return if (this != null) {

@@ -508,7 +508,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         }
     }
 
-    fun getCompany() {
+   /* fun getCompany() {
         RetrofitClientSpecificAuth.client!!.create(
             RetrofitInterface::class.java
         ).getCompanies().enqueue(object : Callback<ArrayList<Company>> {
@@ -521,8 +521,6 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                 }
                 MyApplication.selectedVisit!!.company = company
                 wtf(Gson().toJson(MyApplication.selectedVisit))
-                initialData()
-                setUpData()
             }
 
             override fun onFailure(call: Call<ArrayList<Company>>, t: Throwable) {
@@ -530,7 +528,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             }
 
         })
-    }
+    }*/
 
     fun getData(id: Int) {
         RetrofitClientSpecificAuth.client!!.create(
@@ -541,7 +539,8 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                     edtitVisit = response.body()
                     MyApplication.selectedVisit = response.body()
                     MyApplication.selectedVisit!!.appearDuration = AppHelper.durationToString(MyApplication.selectedVisit!!.duration!!.toFloat())
-                    getCompany()
+                    initialData()
+                    setUpData()
                 }
 
                 override fun onFailure(call: Call<Visit>, t: Throwable) {
@@ -602,7 +601,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
 
 
         setUpStatusReasonSpinner()
-        if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
+   /*     if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
             setUpStatusReasonSpinner()
             for (item in arrSpinner)
                 if (item.id != AppHelper.getReasonID(AppConstants.REASON_ARRIVED) && item.id != AppHelper.getReasonID(AppConstants.REASON_COMPLETED))
@@ -639,7 +638,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             for (item in arrSpinner)
                 if (item.id ==  AppHelper.getReasonID(AppConstants.REASON_PENDING) || item.id == AppHelper.getReasonID(AppConstants.REASON_COMPLETED))
                     item.selectable = false
-        }
+        }*/
     }
 
     override fun onItemClicked(view: View, position: Int) {

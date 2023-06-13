@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
@@ -149,6 +150,7 @@ class ActivitySplash : AppCompactBase() {
                 if (userId != 0) {
                     updateDevice.userId = userId
                 }
+                Log.wtf("JAD_TOKEN",task.result)
                 RetrofitClient.client!!.create(RetrofitInterface::class.java).updateDevice(
                     updateDevice
                 ).enqueue(object : Callback<UpdateDeviceResponse> {
@@ -207,15 +209,10 @@ class ActivitySplash : AppCompactBase() {
     fun startApp() {
         if (MyApplication.mobileConfig!!.forceVersion > BuildConfig.VERSION_NAME.toDouble()) {
             if (MyApplication.mobileConfig!!.force)
-                AppHelper.createActionDialog(
-                    this,
-                    getString(R.string.update),
-                    getString(R.string.update_message),
-                    false
-                ) {
+                createActionDialog(getString(R.string.update), getString(R.string.update_message), false){
                     goToPlayStore()
-                }
-            else showForceUpdateDialog(this)
+                } else
+                    showForceUpdateDialog(this)
 
         } else {
             goNext()

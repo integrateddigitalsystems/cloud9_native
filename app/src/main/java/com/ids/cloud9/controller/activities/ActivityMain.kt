@@ -4,6 +4,7 @@ import android.content.*
 import android.location.Location
 import android.os.*
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.OnBackPressedCallback
@@ -11,6 +12,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
@@ -394,6 +396,62 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
                 }
             })
     }
+    fun logoutStep(){
+        safeCall {
+            MyApplication.saveLocTracking = false
+            MyApplication.gettingTracked = false
+            foregroundOnlyLocationService!!.unsubscribeToLocationUpdates()
+
+            val intent = Intent()
+            intent.setClass(this, LocationForeService::class.java)
+            stopService(intent)
+        }
+        finishAffinity()
+        MyApplication.loggedIn = false
+        startActivity(Intent(this, ActivityLogin::class.java))
+    }
+    fun updateDevice(){
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(
+            { task ->
+
+                val imei = Settings.Secure.getString(
+                    contentResolver,
+                    Settings.Secure.ANDROID_ID
+                )
+                val updateDevice = UpdateDeviceRequest(
+                    AppHelper.getAndroidVersion(),
+                    MyApplication.simpleDate.format(Calendar.getInstance().time),
+                    "",
+                    AppHelper.getDeviceName(),
+                    task.result,
+                    2,
+                    MyApplication.deviceId,
+                    MyApplication.languageCode,
+                    "",
+                    true,
+                    imei
+                )
+                RetrofitClient.client!!.create(RetrofitInterface::class.java).updateDevice(
+                    updateDevice
+                ).enqueue(object : Callback<UpdateDeviceResponse> {
+                    override fun onResponse(
+                        call: Call<UpdateDeviceResponse>,
+                        response: Response<UpdateDeviceResponse>
+                    ) {
+                        logoutStep()
+                    }
+
+                    override fun onFailure(call: Call<UpdateDeviceResponse>, t: Throwable) {
+                        createRetryDialog(
+                            getString(R.string.error_getting_data)
+                        ) {
+                           updateDevice()
+                        }
+                    }
+                })
+            }
+        )
+    }
 
     fun listeners() {
         binding!!.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
@@ -444,17 +502,7 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
                 getString(R.string.sure_logout),
                 0
             ) {
-                safeCall {
-                    MyApplication.saveLocTracking = false
-                    MyApplication.gettingTracked = false
-                    foregroundOnlyLocationService!!.unsubscribeToLocationUpdates()
-                    val intent = Intent()
-                    intent.setClass(this, LocationForeService::class.java)
-                    stopService(intent)
-                }
-                finishAffinity()
-                MyApplication.loggedIn = false
-                startActivity(Intent(this, ActivityLogin::class.java))
+                updateDevice()
             }
         }
         binding!!.drawerMenu.btArabic.hide()

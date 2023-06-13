@@ -44,11 +44,11 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         super.onMessageReceived(message)
         wtf(Gson().toJson(message))
         wtf("onMessageReceived: " + message.getData().get("message"))
-        var id : Int ?=0
+        var visitId : Int ?=0
         try{
-            id = message.data.get("Id")!!.toInt()
+            visitId = message.data.get("recordId")!!.toInt()
         }catch (ex:Exception){
-            id = 0
+            visitId = 0
         }
 
         var messageSent : String ?=""
@@ -59,7 +59,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         }
         if(messageSent.isNullOrEmpty())
             messageSent = ""
-        sendNotification("",0,messageSent)
+        sendNotification("",visitId!!,messageSent)
     }
 
 
