@@ -4,13 +4,9 @@ package com.ids.cloud9.controller.activities
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import android.text.Editable
 import android.text.InputType
 import android.text.method.PasswordTransformationMethod
-import android.util.Log
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.gson.Gson
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.custom.AppCompactBase
@@ -30,8 +26,8 @@ class ActivityLogin : AppCompactBase() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
-        binding!!.etEmail.text =Editable.Factory.getInstance().newEditable("mobile@crm.ids.com.lb")
-        binding!!.etPassword.text =Editable.Factory.getInstance().newEditable("P@ssw0rd1")
+       // binding!!.etEmail.text =Editable.Factory.getInstance().newEditable("mobile@crm.ids.com.lb")
+       // binding!!.etPassword.text =Editable.Factory.getInstance().newEditable("P@ssw0rd1")
         listeners()
     }
     fun listeners(){
@@ -42,14 +38,14 @@ class ActivityLogin : AppCompactBase() {
                 binding!!.etPassword.setBackgroundResource(R.drawable.rounded_primary_border)
             }
         }
-        binding!!.btTestUser1.setOnClickListener {
+      /*  binding!!.btTestUser1.setOnClickListener {
             binding!!.etEmail.text =Editable.Factory.getInstance().newEditable("mobile@crm.ids.com.lb")
             binding!!.etPassword.text =Editable.Factory.getInstance().newEditable("P@ssw0rd1")
         }
         binding!!.btTestUser2.setOnClickListener {
             binding!!.etEmail.text =Editable.Factory.getInstance().newEditable("mobile@mydomain.com")
             binding!!.etPassword.text =Editable.Factory.getInstance().newEditable("P@ssw0rd!@#")
-        }
+        }*/
         binding!!.etPassword.setOnFocusChangeListener { view, b ->
             if(selectedField !=2){
                 selectedField = 2
@@ -85,7 +81,6 @@ class ActivityLogin : AppCompactBase() {
        binding!!.btLogin.hide()
        binding!!.loadingLogin.show()
        wtf(MyApplication.BASE_URL)
-       val newReq = RequestLogin(email , password , true )
        RetrofitClient.client?.create(RetrofitInterface::class.java)
            ?.loginUser(
               email,
@@ -101,7 +96,7 @@ class ActivityLogin : AppCompactBase() {
                        MyApplication.userItem = JWTDecoding.decoded(MyApplication.token)
                        updateToken(MyApplication.userItem!!.applicationUserId!!.toInt())
                        MyApplication.deviceUserId = response.body()!!.userId!!
-                       updateDevice(MyApplication.deviceUserId!!)
+                       updateDevice(MyApplication.deviceUserId)
                    }catch (ex:Exception){
                        binding!!.btLogin.show()
                        wtf(ex.toString())
@@ -153,13 +148,13 @@ class ActivityLogin : AppCompactBase() {
     fun updateDevice(userId : Int){
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener(
-            OnCompleteListener { task ->
+            { task ->
 
                 val imei = Settings.Secure.getString(
                     contentResolver,
                     Settings.Secure.ANDROID_ID
                 )
-                var updateDevice = UpdateDeviceRequest(
+                val updateDevice = UpdateDeviceRequest(
                     AppHelper.getAndroidVersion(),
                     MyApplication.simpleDate.format(Calendar.getInstance().time),
                     "",

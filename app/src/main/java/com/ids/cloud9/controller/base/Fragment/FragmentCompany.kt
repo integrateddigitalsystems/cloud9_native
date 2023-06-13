@@ -3,16 +3,17 @@ package com.ids.cloud9.controller.base.Fragment
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.gson.Gson
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.databinding.LayoutCompanyBinding
 import com.ids.cloud9.model.CompanyRequest
 import com.ids.cloud9.model.ResponseMessage
-import com.ids.cloud9.model.TokenResource
 import com.ids.cloud9.utils.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -87,8 +88,8 @@ class FragmentCompany : Fragment() {
             binding!!.tvPhone.text.toString().trim(),
             binding!!.tvContactNumber.text.toString().trim(),
             binding!!.tvWebite.text.toString()
-
         )
+        Log.wtf("JAD_COMPANY",Gson().toJson(editCompanyReq))
         RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).editCompany(editCompanyReq)
             .enqueue(object : Callback<ResponseMessage> {
                 override fun onResponse(

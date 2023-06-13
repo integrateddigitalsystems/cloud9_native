@@ -92,17 +92,12 @@ class MyApplication : Application() {
             get() = sharedPreferences.getString(AppConstants.PASSWORD, "")!!
             set(value) { sharedPreferencesEditor.putString(AppConstants.PASSWORD, value).apply() }
 
-        fun isActivityVisible(): Boolean {
-            return activityVisible
-        }
 
         fun activityResumed() {
-            activityVisible = true
             showNotfs = false
         }
 
         fun activityPaused() {
-            activityVisible = false
             showNotfs = true
         }
     }

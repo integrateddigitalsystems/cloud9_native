@@ -2,6 +2,9 @@ package com.ids.cloud9.custom
 
 
 import android.Manifest
+import android.app.ActivityManager
+import android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+import android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE
 import android.content.*
 import android.content.pm.PackageManager
 import android.location.Location
@@ -18,6 +21,7 @@ import androidx.appcompat.app.ViewPumpAppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.google.android.exoplayer2.util.NotificationUtil.Importance
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.MyApplication.Companion.isFirstHome
@@ -38,6 +42,9 @@ open class AppCompactBase : AppCompatActivity() {
     val BLOCKED_OR_NEVER_ASKED = 2
     val GRANTED = 0
     val DENIED = 1
+
+
+
     fun setUpPermission() {
         mPermissionResult =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions())

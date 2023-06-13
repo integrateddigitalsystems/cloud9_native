@@ -19,7 +19,6 @@ import com.ids.cloud9.controller.Fragment.FragmentSignature
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.MyApplication.Companion.isFirstSettings
 import com.ids.cloud9.controller.MyApplication.Companion.isFirstVisit
-import com.ids.cloud9.controller.MyApplication.Companion.isFirstGps
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.custom.AppCompactBase
 import com.ids.cloud9.databinding.ActivityVisitDetailsBinding

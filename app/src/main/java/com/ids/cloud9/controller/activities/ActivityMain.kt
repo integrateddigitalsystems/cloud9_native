@@ -1,15 +1,12 @@
 package com.ids.cloud9.controller.activities
 
-import android.Manifest
 import android.content.*
-import android.content.pm.PackageManager
 import android.location.Location
 import android.os.*
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.OnBackPressedCallback
-import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -51,7 +48,7 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
     var tempArray: ArrayList<Visit> = arrayListOf()
     var mainArray: ArrayList<Visit> = arrayListOf()
     private lateinit var foregroundOnlyBroadcastReceiver: ForegroundOnlyBroadcastReceiver
-    private var foregroundOnlyLocationServiceBound = false
+
 
     private inner class ForegroundOnlyBroadcastReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -82,24 +79,12 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
             toSettingsGps =true
             toSettings =true
         }
-        setUpPermission()
-        listeners()
-        foregroundOnlyBroadcastReceiver = ForegroundOnlyBroadcastReceiver()
-    }
+        safeCall {
+            setUpPermission()
+            listeners()
+            foregroundOnlyBroadcastReceiver = ForegroundOnlyBroadcastReceiver()
+        }
 
-    private fun foregroundPermissionApproved(): Boolean {
-        return PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        )
-    }
-
-    private fun openChooser() {
-        mPermissionResult!!.launch(
-            arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-        )
     }
     fun editDate(isNext: Boolean) {
         if (isNext) {
@@ -175,24 +160,6 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
         }
         super.onStop()
     }*/
-
-    private val foregroundOnlyServiceConnection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName, service: IBinder) {
-            val binder = service as LocationForeService.LocalBinder
-            foregroundOnlyLocationService = binder.foreService
-            foregroundOnlyLocationServiceBound = true
-            if (MyApplication.saveLocTracking) {
-                MyApplication.gettingTracked = true
-                changeState(true)
-            }
-        }
-
-        override fun onServiceDisconnected(name: ComponentName) {
-            foregroundOnlyLocationService = null
-            foregroundOnlyLocationServiceBound = false
-        }
-    }
-
     override fun onPause() {
         MyApplication.activityPaused()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(
@@ -271,7 +238,6 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
         currTemp.addAll(tempArray)
         tempArray.clear()
         tempArray.addAll(currTemp)
-        val stickyArray: ArrayList<ShowStickyItem> = arrayListOf()
         for (it in tempArray) {
             it.appearDuration = AppHelper.durationToString(it.duration!!.toFloat())
             var millFrom  = Calendar.getInstance().timeInMillis
@@ -288,9 +254,9 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
                     Locale.ENGLISH
                 ).parse(it.toTime!!)!!.time
             }
-            var reasonStatus = ""
-            var reasonBg = 0
-            var reasonText = 0
+            var reasonStatus: String
+            var reasonBg:Int
+            var reasonText:Int
             if(it.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)){
                 reasonBg = R.drawable.arrived_bg
                 reasonText = R.color.arrived_text
@@ -408,8 +374,8 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
                     val visit = mainArray.find {
                         it.reasonId == AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY)
                     }
-                    MyApplication.onTheWayVisit = visit
                     if (visit != null) {
+                        MyApplication.onTheWayVisit = visit
                         MyApplication.gettingTracked = true
                         changeState(true)
                     }else {
@@ -464,6 +430,7 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
 
             }
         })
+
 
 
         binding!!.drawerMenu.tvWelcome.text = binding!!.drawerMenu.tvWelcome.text.toString() + MyApplication.userItem!!.firstName + " " + MyApplication.userItem!!.lastName

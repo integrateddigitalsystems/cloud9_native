@@ -5,12 +5,10 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.gson.Gson
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.custom.MyDrawView
@@ -25,7 +23,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.sign
 
 class FragmentSignature : Fragment() {
     var emEy: SignatureListItem? = null
@@ -173,7 +170,6 @@ class FragmentSignature : Fragment() {
         )
         val signs = arrayListOf<SignatureRequest>()
         signs.add(signatureRequest)
-        var str = Gson().toJson(signs)
         RetrofitClientSpecificAuth.client!!.create(
             RetrofitInterface::class.java
         ).saveSignature(

@@ -3,6 +3,7 @@ package com.ids.cloud9.utils
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.ActivityManager
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Context.CONNECTIVITY_SERVICE
@@ -201,6 +202,12 @@ class AppHelper {
             }
 
             return version
+        }
+
+        fun isInForeground():Boolean{
+            val actMan = ActivityManager.RunningAppProcessInfo()
+            ActivityManager.getMyMemoryState(actMan)
+            return (actMan.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND || actMan.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE)
         }
         fun getReasonID(code:String):Int{
             val reason = MyApplication.lookupsReason.find {

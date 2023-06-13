@@ -50,7 +50,6 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
     var adapterMedia: AdapterMedia? = null
     val BLOCKED = -1
     var sigList: ArrayList<SignatureListItem> = arrayListOf()
-    var resultLauncher: ActivityResultLauncher<Intent>? = null
     var mPermissionResult2 =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions())
         { result ->
@@ -77,7 +76,6 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                 Log.e(ContentValues.TAG, "onActivityResult: PERMISSION GRANTED")
                 MyApplication.permissionAllow11 = 0
             } else {
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     if (MyApplication.permissionAllow11!! >= 2) {
                         for (item in result) {
                             if (ContextCompat.checkSelfPermission(requireContext(), item.key) == BLOCKED) {
@@ -98,7 +96,6 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                     } else {
                         MyApplication.permissionAllow11 = MyApplication.permissionAllow11!! + 1
                     }
-                }
             }
         }
     var CODE_CAMERA = 1
@@ -131,7 +128,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
     }
 
     fun setUp(array : Array<String>) {
-        mPermissionResult2!!.launch(
+        mPermissionResult2.launch(
             array
         )
     }
@@ -447,7 +444,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
     }
     fun saveMedia(file: File) {
         binding!!.llLoading.show()
-        var videodata = Base64.encodeToString(byteArrayFromFile(file), Base64.DEFAULT);
+        val videodata = Base64.encodeToString(byteArrayFromFile(file), Base64.DEFAULT)
         val sigReq = SignatureRequest(
             MyApplication.selectedVisit!!.id!!,
             file.name,
@@ -460,7 +457,6 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
         )
         val arr: ArrayList<SignatureRequest> = arrayListOf()
         arr.add(sigReq)
-        var str  = Gson().toJson(arr)
         RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .saveAttachment(arr)
             .enqueue(object : Callback<ResponseMessage> {
@@ -491,7 +487,6 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
             binding!!.rvMedia.show()
             binding!!.tvNoMedia.hide()
             arrayMedia.clear()
-            var urlIntro = MyApplication.BASE_USER_URL.split("/mobile-api/").get(0)
             for (item in array)
                 arrayMedia.add(
                     ItemSpinner(

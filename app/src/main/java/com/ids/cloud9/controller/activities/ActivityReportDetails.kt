@@ -8,15 +8,9 @@ import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.custom.AppCompactBase
 import com.ids.cloud9.databinding.ActivityReportDetailsBinding
-import com.ids.cloud9.model.Forms
-import com.ids.cloud9.model.FormsItem
 import com.ids.cloud9.utils.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class ActivityReportDetails : AppCompactBase() {
@@ -42,26 +36,6 @@ class ActivityReportDetails : AppCompactBase() {
     override fun onResume() {
         super.onResume()
         MyApplication.activityResumed()
-    }
-    fun getWeb(id: Int) {
-        binding!!.llLoading.show()
-        RetrofitClientSpecificAuth.client!!.create(
-            RetrofitInterface::class.java
-        ).getFormByVisitProductId(id)
-            .enqueue(object : Callback<Forms> {
-                override fun onResponse(call: Call<Forms>, response: Response<Forms>) {
-                    if (response.isSuccessful){
-                        val element = response.body()!!.find { it.id==reportId }
-                        url = element!!.url + MyApplication.token
-                        setUpWeb()
-                    }
-                    else binding!!.llLoading.hide()
-                }
-                override fun onFailure(call: Call<Forms>, t: Throwable) {
-                    binding!!.llLoading.hide()
-                }
-
-            })
     }
     override fun onPause() {
         super.onPause()

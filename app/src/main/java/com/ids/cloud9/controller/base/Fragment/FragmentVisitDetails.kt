@@ -18,7 +18,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
@@ -32,7 +31,6 @@ import com.ids.cloud9.controller.activities.ActivtyVisitDetails
 import com.ids.cloud9.controller.adapters.AdapterDialog
 import com.ids.cloud9.controller.adapters.AdapterSpinner
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
-import com.ids.cloud9.custom.AppCompactBase
 import com.ids.cloud9.databinding.LayoutVisitBinding
 import com.ids.cloud9.model.*
 import com.ids.cloud9.utils.*
@@ -52,10 +50,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
     val GRANTED = 0
     val DENIED = 1
     var adapterSpin: AdapterSpinner? = null
-    var LOCATION_REFRESH_DISTANCE = 5
-    private val NOTIFICATION_ID = 12345678
     var mPermissionResult: ActivityResultLauncher<Array<String>>? = null
-    var LOCATION_REFRESH_TIME = 5000
     var isScheduled=false
     var simp: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
     var simpTime: SimpleDateFormat = SimpleDateFormat("HH:mm", Locale.ENGLISH)
@@ -91,12 +86,6 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                 simpTime.format(simpOrg.parse(edtitVisit!!.fromTime!!)!!)
             binding!!.tvToTime.text =
                 simpTime.format(simpOrg.parse(edtitVisit!!.toTime!!)!!)
-            val millFrom =
-                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH).parse(edtitVisit!!.fromTime!!)!!.time
-            val millTo =
-                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH).parse(edtitVisit!!.toTime!!)!!.time
-            val diff = millTo - millFrom
-            val mins = diff / 60000
             binding!!.tvDuration.text = edtitVisit!!.appearDuration
 
             if (edtitVisit!!.company != null) {
@@ -223,18 +212,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                                     }
                              edtitVisit!!.actualDuration=diff.toDouble()
 
-                            }else if (arrSpinner.get(position).id == AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY)){
-                                if (isScheduled){
-                                    toSettings =true
-                                    toSettingsGps =true
-                                }
-                                else{
-                                    toSettings =isFirstSettings
-                                    toSettingsGps =isFirstGps
-                                }
-                                (requireActivity() as ActivtyVisitDetails).changeState(true)
-                            }
-                            else {
+                            } else {
                                 isFirstGps=true
                                 isFirstSettings=true
                                 edtitVisit!!.actualArrivalTime = ""
@@ -265,17 +243,15 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         var firstLocation : Location ?=null
         var gps_enabled = false
         var network_enabled = false
-        var mLocationManager =
+        val mLocationManager =
             requireActivity().getSystemService(Service.LOCATION_SERVICE) as LocationManager
-        try {
-            gps_enabled = mLocationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        } catch (ex: Exception) {
+        safeCall {
+            gps_enabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         }
 
-        try {
+        safeCall {
             network_enabled =
-                mLocationManager!!.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-        } catch (ex: Exception) {
+                mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
         }
 
 
@@ -292,13 +268,13 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
 
 
             if (gps_enabled && firstLocation == null)
-                firstLocation = mLocationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                firstLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
             if (network_enabled && firstLocation == null ) {
                 firstLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
             }
 
 
-            var visitLocationRequest = VisitLocationRequest(
+            val visitLocationRequest = VisitLocationRequest(
                 MyApplication.userItem!!.applicationUserId!!.toInt(),
                 0,
                 true,
@@ -308,6 +284,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
 
 
             )
+            Log.wtf("JAD_TEST_LOCATION",Gson().toJson(visitLocationRequest))
             RetrofitClientSpecificAuth.client!!.create(
                 RetrofitInterface::class.java
             ).createVisitLocation(
@@ -337,7 +314,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                 requireActivity().createActionDialog(getString(R.string.gps_settings)
                 ,0){
                     startActivity( Intent(
-                        Settings.ACTION_LOCATION_SOURCE_SETTINGS) );
+                        Settings.ACTION_LOCATION_SOURCE_SETTINGS) )
                 }
             }
 
@@ -379,7 +356,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                                 requireContext().createRetryDialog(
                                     response.body()!!.message!!
                                 ) {
-                                    changeLocation(edtitVisit!!.id!!);
+                                    changeLocation(edtitVisit!!.id!!)
                                     MyApplication.gettingTracked = false
                                     (requireActivity() as ActivtyVisitDetails).changeState(false)
                                 }

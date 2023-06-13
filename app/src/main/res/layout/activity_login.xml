@@ -18,6 +18,7 @@
 
 
         <LinearLayout
+            android:visibility="gone"
            android:layout_above="@id/llCard"
             android:orientation="horizontal"
             android:id="@+id/llButtons"

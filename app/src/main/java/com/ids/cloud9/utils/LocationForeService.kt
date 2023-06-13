@@ -149,7 +149,7 @@ class LocationForeService : Service() {
 
                     currentLocation = locationResult.lastLocation
                     if(currentLocation!=null) {
-                        if(!MyApplication.isActivityVisible())
+                        if(!AppHelper.isInForeground())
                             startForeground(NOTIFICATION_ID, generateNotification())
                         else
                             stopNotification()
@@ -215,7 +215,7 @@ class LocationForeService : Service() {
             wtf("Start foreground service")
             if(currentLocation!=null) {
                 val notification = generateNotification()
-                if(!MyApplication.isActivityVisible())
+                if(!AppHelper.isInForeground())
                     startForeground(NOTIFICATION_ID, generateNotification())
                 else
                     stopNotification()
@@ -362,7 +362,7 @@ class LocationForeService : Service() {
                     wtf(location.latitude.toString()+","+location.longitude.toString())
                     MyApplication.address!!.lat=location.latitude.toString()
                     MyApplication.address!!.long=location.longitude.toString()}catch (e:Exception){}
-                if(!MyApplication.isActivityVisible())
+                if(!AppHelper.isInForeground())
                    generateNotification()
                 else
                     stopNotification()
@@ -387,7 +387,7 @@ class LocationForeService : Service() {
 
                 if(currentLocation!=null) {
 
-                    if(!MyApplication.isActivityVisible())
+                    if(!AppHelper.isInForeground())
                         startForeground(NOTIFICATION_ID, generateNotification())
                     else
                         stopNotification()
@@ -448,7 +448,7 @@ class LocationForeService : Service() {
             }
             if(firstLocation!=null) {
                 currentLocation = firstLocation
-                if(!MyApplication.isActivityVisible())
+                if(!AppHelper.isInForeground())
                     generateNotification()
                 else
                     stopNotification()
@@ -475,7 +475,7 @@ class LocationForeService : Service() {
             }
 
         if(currentLocation!=null) {
-            if(!MyApplication.isActivityVisible())
+            if(!AppHelper.isInForeground())
                 notificationManager.notify(
                     NOTIFICATION_ID,
                     generateNotification()
@@ -497,9 +497,8 @@ class LocationForeService : Service() {
             location.latitude ,
             location.longitude ,
             MyApplication.onTheWayVisit!!.id!!
-
-
         )
+        Log.wtf("JAD_LOCCY",Gson().toJson(visitLocationRequest))
         wtf(Gson().toJson(visitLocationRequest))
         RetrofitClientAuth.client!!.create(
             RetrofitInterface::class.java
@@ -580,16 +579,17 @@ class LocationForeService : Service() {
      */
     private fun generateNotification(): Notification {
 
-        // Main steps for building a BIG_TEXT_STYLE notification:
-        //      0. Get data
-        //      1. Create Notification Channel for O+
-        //      2. Build the BIG_TEXT_STYLE
-        //      3. Set up Intent / Pending Intent for notification
-        //      4. Build and issue the notification
+        if(!AppHelper.isInForeground()) {
+            // Main steps for building a BIG_TEXT_STYLE notification:
+            //      0. Get data
+            //      1. Create Notification Channel for O+
+            //      2. Build the BIG_TEXT_STYLE
+            //      3. Set up Intent / Pending Intent for notification
+            //      4. Build and issue the notification
 
-        // 0. Get data
-        // val mainNotificationText = location?.toText() ?: AppHelper.getRemoteString("collecting_loc",this)
-        val mainNotificationText = getString(R.string.collecting_loc)
+            // 0. Get data
+            // val mainNotificationText = location?.toText() ?: AppHelper.getRemoteString("collecting_loc",this)
+            val mainNotificationText = getString(R.string.collecting_loc)
 
             val titleText =
                 currentLocation!!.latitude.toString() + ":" + currentLocation!!.longitude
@@ -649,6 +649,9 @@ class LocationForeService : Service() {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .build()
             return currNotf!!
+        }else{
+            return  Notification()
+        }
 
     }
 

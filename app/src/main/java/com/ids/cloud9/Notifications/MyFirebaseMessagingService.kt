@@ -59,7 +59,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         }
         if(messageSent.isNullOrEmpty())
             messageSent = ""
-        sendNotification("",id!!,messageSent)
+        sendNotification("",0,messageSent)
     }
 
 

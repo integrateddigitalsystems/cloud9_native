@@ -1,119 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:visibility="visible">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="@dimen/normal_margin"
-        android:id="@+id/rvMedia"
-        android:layout_marginStart="@dimen/small_margin"
-        android:layout_marginEnd="@dimen/small_margin"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMedia"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/small_margin"
+                android:layout_marginTop="@dimen/normal_margin"
+                android:layout_marginEnd="@dimen/small_margin" />
+
+        </LinearLayout>
 
         <com.ids.cloud9.custom.CustomTextViewMedium
-            android:layout_width="match_parent"
             android:id="@+id/tvNoMedia"
-            android:textColor="@color/text_gray"
-            android:layout_marginTop="@dimen/normal_margin"
-            android:visibility="gone"
-            android:gravity="center"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:text="@string/no_attachments_to_show"/>
+            android:layout_marginTop="@dimen/normal_margin"
+            android:gravity="center"
+            android:text="@string/no_attachments_to_show"
+            android:textColor="@color/text_gray"
+            android:visibility="gone" />
 
-
-    <LinearLayout
-        android:id="@+id/llMediaButtons"
-        android:layout_marginStart="@dimen/small_margin"
-        android:layout_marginEnd="@dimen/small_margin"
-        android:layout_marginBottom="@dimen/big_margin_padding"
-        android:layout_marginTop="@dimen/big_margin_padding"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_40">
 
         <LinearLayout
-            android:foreground="?android:attr/selectableItemBackground"
-            android:id="@+id/llCamera"
-            android:gravity="center"
-            android:background="@drawable/white_rounded_border"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:src="@drawable/camera"
-                android:layout_width="@dimen/height_toggle"
-                android:layout_height="@dimen/height_toggle" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:foreground="?android:attr/selectableItemBackground"
-            android:id="@+id/llVideo"
-            android:gravity="center"
+            android:id="@+id/llMediaButtons"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_40"
             android:layout_marginStart="@dimen/small_margin"
-            android:background="@drawable/white_rounded_border"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent">
+            android:layout_marginTop="@dimen/big_margin_padding"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/big_margin_padding"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:src="@drawable/video"
-                android:layout_width="@dimen/height_toggle"
-                android:layout_height="@dimen/height_toggle" />
+            <LinearLayout
+                android:id="@+id/llCamera"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/white_rounded_border"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="@dimen/height_toggle"
+                    android:layout_height="@dimen/height_toggle"
+                    android:src="@drawable/camera" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llVideo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/small_margin"
+                android:layout_weight="1"
+                android:background="@drawable/white_rounded_border"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="@dimen/height_toggle"
+                    android:layout_height="@dimen/height_toggle"
+                    android:src="@drawable/video" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llGallery"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/small_margin"
+                android:layout_weight="1"
+                android:background="@drawable/white_rounded_border"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="@dimen/height_toggle"
+                    android:layout_height="@dimen/height_toggle"
+                    android:src="@drawable/gallery" />
+
+            </LinearLayout>
 
         </LinearLayout>
-
-        <LinearLayout
-            android:foreground="?android:attr/selectableItemBackground"
-            android:id="@+id/llGallery"
-            android:gravity="center"
-            android:layout_marginStart="@dimen/small_margin"
-            android:background="@drawable/white_rounded_border"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:src="@drawable/gallery"
-                android:layout_width="@dimen/height_toggle"
-                android:layout_height="@dimen/height_toggle" />
-
-        </LinearLayout>
-
-    </LinearLayout>
 
     </LinearLayout>
 
     <com.ids.cloud9.custom.CustomTextViewMedium
-        android:layout_marginTop="@dimen/normal_margin"
-        android:textSize="@dimen/normal_font"
-        android:textColor="@color/otw_text"
-        android:visibility="gone"
         android:id="@+id/tvNoAttachments"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/normal_margin"
         android:gravity="center_horizontal"
-        android:text="No attachments to show"/>
+        android:text="No attachments to show"
+        android:textColor="@color/otw_text"
+        android:textSize="@dimen/normal_font"
+        android:visibility="gone" />
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/llLoading"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
-        <include
-            layout="@layout/loading" />
+        <include layout="@layout/loading" />
 
     </LinearLayout>
 

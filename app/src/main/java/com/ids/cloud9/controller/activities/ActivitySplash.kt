@@ -1,7 +1,6 @@
 package com.ids.cloud9.controller.activities
 
 import android.Manifest
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -11,9 +10,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -23,8 +20,6 @@ import com.google.gson.Gson
 import com.ids.cloud9.BuildConfig
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
-import com.ids.cloud9.controller.MyApplication.Companion.BASE_URL
-import com.ids.cloud9.controller.MyApplication.Companion.toSettingsGps
 import com.ids.cloud9.custom.AppCompactBase
 import com.ids.cloud9.databinding.ActivityNewSplashBinding
 import com.ids.cloud9.model.*
@@ -39,10 +34,6 @@ class ActivitySplash : AppCompactBase() {
     var mFirebaseRemoteConfig: FirebaseRemoteConfig? = null
     private val permReqLauncher =
         this.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            val granted = permissions.entries.all {
-                it.value
-            }
-
             startApp()
         }
     private lateinit var binding: ActivityNewSplashBinding
@@ -115,11 +106,6 @@ class ActivitySplash : AppCompactBase() {
     }
 
     fun login() {
-        val req = RequestLogin(
-            MyApplication.email,
-            MyApplication.password,
-            true
-        )
         RetrofitClientAuth.client!!.create(
             RetrofitInterface::class.java
         ).loginUser(
@@ -141,13 +127,13 @@ class ActivitySplash : AppCompactBase() {
     fun updateDevice(userId: Int) {
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener(
-            OnCompleteListener { task ->
+            { task ->
 
                 val imei = Settings.Secure.getString(
                     contentResolver,
                     Settings.Secure.ANDROID_ID
                 )
-                var updateDevice = UpdateDeviceRequest(
+                val updateDevice = UpdateDeviceRequest(
                     AppHelper.getAndroidVersion(),
                     MyApplication.simpleDate.format(Calendar.getInstance().time),
                     "",
