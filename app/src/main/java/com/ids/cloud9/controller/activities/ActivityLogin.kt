@@ -175,9 +175,6 @@ class ActivityLogin : AppCompactBase() {
                 if(userId!=0){
                     updateDevice.userId = userId
                 }
-                Log.wtf("MY_JAD_TAG",imei)
-                Log.wtf("MY_JAD_TAG", Gson().toJson(updateDevice))
-                Log.wtf("MY_JAD_TAG", MyApplication.token)
                 RetrofitClient.client!!.create(RetrofitInterface::class.java).updateDevice(
                     updateDevice
                 ).enqueue(object : Callback<UpdateDeviceResponse> {

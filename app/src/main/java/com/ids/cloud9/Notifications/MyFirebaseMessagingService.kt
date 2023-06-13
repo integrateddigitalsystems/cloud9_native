@@ -44,7 +44,6 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         super.onMessageReceived(message)
         wtf(Gson().toJson(message))
         wtf("onMessageReceived: " + message.getData().get("message"))
-        Log.wtf("MY_JAD_TAG", Gson().toJson(message))
         var id : Int ?=0
         try{
             id = message.data.get("Id")!!.toInt()

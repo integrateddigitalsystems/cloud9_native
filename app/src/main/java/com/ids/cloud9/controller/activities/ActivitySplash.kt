@@ -163,9 +163,6 @@ class ActivitySplash : AppCompactBase() {
                 if (userId != 0) {
                     updateDevice.userId = userId
                 }
-                Log.wtf("MY_JAD_TAG", imei)
-                Log.wtf("MY_JAD_TAG", Gson().toJson(updateDevice))
-                Log.wtf("MY_JAD_TAG", MyApplication.token)
                 RetrofitClient.client!!.create(RetrofitInterface::class.java).updateDevice(
                     updateDevice
                 ).enqueue(object : Callback<UpdateDeviceResponse> {
@@ -176,14 +173,12 @@ class ActivitySplash : AppCompactBase() {
                         MyApplication.firstTime = false
                         MyApplication.deviceId = response.body()!!.id
                         // if(response.isSuccessful) {
-                        Log.wtf("MY_JAD_TAG", BASE_URL)
                         if(userId ==0){
                             finalStep()
                         }else {
                             getUnits()
                         }
                         wtf("Success")
-                        Log.wtf("MY_JAD_TAG", Gson().toJson(response.body()))
 
                     }
 

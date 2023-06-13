@@ -16,7 +16,6 @@ object JWTDecoding {
                 wtf("Header: " + getJson(split[0]))
                 wtf("Body: " + getJson(split[1]))
                 var str = Gson().fromJson(getJson(split[1]), JWTResponse::class.java)
-                Log.wtf("TAG_JAD_USER",Gson().toJson(str))
                 return Gson().fromJson(getJson(split[1]), JWTResponse::class.java)
             }else {
                 return  JWTResponse()

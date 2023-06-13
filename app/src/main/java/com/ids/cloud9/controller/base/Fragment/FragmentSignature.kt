@@ -174,7 +174,6 @@ class FragmentSignature : Fragment() {
         val signs = arrayListOf<SignatureRequest>()
         signs.add(signatureRequest)
         var str = Gson().toJson(signs)
-        Log.wtf("JAD_MEDIA_MEDIA",str)
         RetrofitClientSpecificAuth.client!!.create(
             RetrofitInterface::class.java
         ).saveSignature(

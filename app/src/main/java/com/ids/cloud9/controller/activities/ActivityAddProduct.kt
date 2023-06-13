@@ -233,7 +233,6 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             MyApplication.selectedVisit!!.id,
             MyApplication.selectedVisit!!.number
         )
-        Log.wtf("TAG_JAD_CREATE",Gson().toJson(createProduct))
         RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .createMobile(
                 createProduct!!

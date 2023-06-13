@@ -308,7 +308,6 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
 
 
             )
-            Log.wtf("JAD_TEST_LOCATION",Gson().toJson(visitLocationRequest))
             RetrofitClientSpecificAuth.client!!.create(
                 RetrofitInterface::class.java
             ).createVisitLocation(
@@ -578,10 +577,10 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
     fun setUpData() {
         binding!!.llLoading.hide()
         setUpEdit()
-       /* if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED)) {
+        if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED)) {
             binding!!.btSave.setBackgroundResource(R.drawable.rounded_trans_primary)
             binding!!.btSave.isEnabled = false
-        }*/
+        }
     }
 
     fun getPermissionStatus(androidPermissionName: String?): Int {
@@ -626,7 +625,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
 
 
         setUpStatusReasonSpinner()
-     /*   if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
+        if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
             setUpStatusReasonSpinner()
             for (item in arrSpinner)
                 if (item.id != AppHelper.getReasonID(AppConstants.REASON_ARRIVED) && item.id != AppHelper.getReasonID(AppConstants.REASON_COMPLETED))
@@ -663,7 +662,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             for (item in arrSpinner)
                 if (item.id ==  AppHelper.getReasonID(AppConstants.REASON_PENDING) || item.id == AppHelper.getReasonID(AppConstants.REASON_COMPLETED))
                     item.selectable = false
-        }*/
+        }
     }
 
     override fun onItemClicked(view: View, position: Int) {
