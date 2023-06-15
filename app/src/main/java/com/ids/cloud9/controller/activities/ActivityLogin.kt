@@ -39,14 +39,14 @@ class ActivityLogin : AppCompactBase() {
                 binding!!.etPassword.setBackgroundResource(R.drawable.rounded_primary_border)
             }
         }
-        binding!!.btTestUser1.setOnClickListener {
+        /*binding!!.btTestUser1.setOnClickListener {
             binding!!.etEmail.text = Editable.Factory.getInstance().newEditable("mobile@crm.ids.com.lb")
             binding!!.etPassword.text =Editable.Factory.getInstance().newEditable("P@ssw0rd1")
         }
         binding!!.btTestUser2.setOnClickListener {
             binding!!.etEmail.text =Editable.Factory.getInstance().newEditable("mobile@mydomain.com")
             binding!!.etPassword.text =Editable.Factory.getInstance().newEditable("P@ssw0rd!@#")
-        }
+        }*/
         binding!!.etPassword.setOnFocusChangeListener { view, b ->
             if(selectedField !=2){
                 selectedField = 2
