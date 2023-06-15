@@ -4,6 +4,7 @@ package com.ids.cloud9.controller.activities
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Editable
 import android.text.InputType
 import android.text.method.PasswordTransformationMethod
 import com.google.firebase.messaging.FirebaseMessaging
@@ -38,14 +39,14 @@ class ActivityLogin : AppCompactBase() {
                 binding!!.etPassword.setBackgroundResource(R.drawable.rounded_primary_border)
             }
         }
-      /*  binding!!.btTestUser1.setOnClickListener {
-            binding!!.etEmail.text =Editable.Factory.getInstance().newEditable("mobile@crm.ids.com.lb")
+        binding!!.btTestUser1.setOnClickListener {
+            binding!!.etEmail.text = Editable.Factory.getInstance().newEditable("mobile@crm.ids.com.lb")
             binding!!.etPassword.text =Editable.Factory.getInstance().newEditable("P@ssw0rd1")
         }
         binding!!.btTestUser2.setOnClickListener {
             binding!!.etEmail.text =Editable.Factory.getInstance().newEditable("mobile@mydomain.com")
             binding!!.etPassword.text =Editable.Factory.getInstance().newEditable("P@ssw0rd!@#")
-        }*/
+        }
         binding!!.etPassword.setOnFocusChangeListener { view, b ->
             if(selectedField !=2){
                 selectedField = 2

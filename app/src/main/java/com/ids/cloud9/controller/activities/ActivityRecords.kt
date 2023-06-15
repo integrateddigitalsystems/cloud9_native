@@ -30,6 +30,7 @@ class ActivityRecords : AppCompactBase(), RVOnItemClickListener {
     }
     override fun onResume() {
         super.onResume()
+        getRecords()
         MyApplication.activityResumed()
     }
 
@@ -38,7 +39,6 @@ class ActivityRecords : AppCompactBase(), RVOnItemClickListener {
         MyApplication.activityPaused()
     }
     fun init(){
-        getRecords()
 
         binding!!.srReccomendations.setOnRefreshListener{
             getRecords()
@@ -101,6 +101,8 @@ class ActivityRecords : AppCompactBase(), RVOnItemClickListener {
         binding!!.btAddReccomend.hide()
     }
     override fun onItemClicked(view: View, position: Int) {
-
+            startActivity(Intent(this, ActivityReportDetails::class.java)
+                .putExtra("RepId", records.get(position).formId)
+                .putExtra("url",  records.get(position).url))
     }
 }

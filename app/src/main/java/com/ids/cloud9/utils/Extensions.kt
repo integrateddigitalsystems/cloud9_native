@@ -17,6 +17,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.gson.Gson
 import com.ids.cloud9.BuildConfig
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
@@ -217,6 +218,7 @@ inline fun <R> safeCall(call: () -> R): Result<R> {
     try {
         return Result.success(call())
     } catch (e: Exception) {
+        Log.wtf("TAG_JAD_WEB",e.toString())
         return Result.failure(e)
     }
 }

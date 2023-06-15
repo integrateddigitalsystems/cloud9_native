@@ -3,7 +3,10 @@ package com.ids.cloud9.controller.activities
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Looper
+import android.util.Log
 import android.webkit.*
+import com.google.gson.Gson
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.custom.AppCompactBase
@@ -54,6 +57,7 @@ class ActivityReportDetails : AppCompactBase() {
         binding!!.wvReport.settings.displayZoomControls = false
         binding!!.wvReport.settings.domStorageEnabled = true
         binding!!.wvReport.loadUrl(url)
+        Log.wtf("URL_WEBVIEW",url)
         binding!!.wvReport.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
@@ -61,6 +65,14 @@ class ActivityReportDetails : AppCompactBase() {
             }
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
+            }
+
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?
+            ): Boolean {
+                binding!!.llLoading.show()
+                return super.shouldOverrideUrlLoading(view, request)
             }
 
             override fun doUpdateVisitedHistory(view: WebView, url: String?, isReload: Boolean) {
