@@ -1,6 +1,7 @@
 package com.ids.cloud9.controller.activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Looper
@@ -90,6 +91,15 @@ class ActivityReportDetails : AppCompactBase() {
         binding!!.llTool.ivDrawer.hide()
         binding!!.llTool.btBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
+        }
+        binding!!.llTool.ivCalendar.setOnClickListener {
+            finishAffinity()
+            startActivity(
+                Intent(
+                    this,
+                    ActivityMain::class.java
+                )
+            )
         }
         binding!!.llTool.layoutFragment.show()
         binding!!.llTool.tvTitleTool.text = MyApplication.selectedProduct!!.reports.find {
