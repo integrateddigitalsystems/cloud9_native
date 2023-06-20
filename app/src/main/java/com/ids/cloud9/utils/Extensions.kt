@@ -149,7 +149,7 @@ fun Context.createActionDialogCancel(message: String,position: Int, doAction: (p
         .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
             doActionCancel(position)
         }
-        .setPositiveButton(getString(R.string.yes)) { dialog, _ ->
+        .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
             doAction(position)
         }
     val alert = builder.create()

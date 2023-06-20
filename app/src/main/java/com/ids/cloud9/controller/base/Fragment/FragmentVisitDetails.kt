@@ -280,7 +280,8 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                 true,
                 firstLocation!!.latitude,
                 firstLocation.longitude,
-               id
+               id,
+                MyApplication.selectedVisit!!.companyAddressId!!
 
 
             )
@@ -348,19 +349,11 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                                 requireContext().createRetryDialog(
                                     response.body()!!.message!!
                                 ) {
-                                    MyApplication.onTheWayVisit = edtitVisit
-                                    MyApplication.gettingTracked = false
-                                    (requireActivity() as ActivtyVisitDetails).changeState(false)
-                                }
-                            }  else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
-                                requireContext().createRetryDialog(
-                                    response.body()!!.message!!
-                                ) {
                                     changeLocation(edtitVisit!!.id!!)
                                     MyApplication.gettingTracked = false
                                     (requireActivity() as ActivtyVisitDetails).changeState(false)
                                 }
-                            }else {
+                            }  else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED) || edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY)) {
                                 requireContext().createRetryDialog(
                                     response.body()!!.message!!
                                 ) {
@@ -600,8 +593,8 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         }!!.selected = true
 
 
-        setUpStatusReasonSpinner()
-   /*     if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
+       // setUpStatusReasonSpinner()
+        if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
             setUpStatusReasonSpinner()
             for (item in arrSpinner)
                 if (item.id != AppHelper.getReasonID(AppConstants.REASON_ARRIVED) && item.id != AppHelper.getReasonID(AppConstants.REASON_COMPLETED))
@@ -638,7 +631,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             for (item in arrSpinner)
                 if (item.id ==  AppHelper.getReasonID(AppConstants.REASON_PENDING) || item.id == AppHelper.getReasonID(AppConstants.REASON_COMPLETED))
                     item.selectable = false
-        }*/
+        }
     }
 
     override fun onItemClicked(view: View, position: Int) {

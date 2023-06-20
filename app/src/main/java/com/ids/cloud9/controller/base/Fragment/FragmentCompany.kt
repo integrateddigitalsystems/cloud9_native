@@ -46,18 +46,29 @@ class FragmentCompany : Fragment() {
             binding!!.ivEditCompany.hide()
 
         binding!!.ivEditCompany.setOnClickListener {
+            binding!!.tvEmailValue.hide()
+            binding!!.tvEmail.show()
             binding!!.tvEmail.setBackgroundResource(R.drawable.light_rounded_border)
+            binding!!.tvWebsiteValue.hide()
+            binding!!.tvWebite.show()
             binding!!.tvWebite.setBackgroundResource(R.drawable.light_rounded_border)
+            binding!!.tvPhoneValue.hide()
+            binding!!.tvPhone.show()
             binding!!.tvPhone.setBackgroundResource(R.drawable.light_rounded_border)
+            binding!!.tvFaxValue.hide()
             binding!!.tvFax.setBackgroundResource(R.drawable.light_rounded_border)
-            binding!!.tvContactName.setBackgroundResource(R.drawable.light_rounded_border)
+            binding!!.tvFax.show()
+          //  binding!!.tvContactName.setBackgroundResource(R.drawable.light_rounded_border)
+            binding!!.tvContactNumber.show()
+            binding!!.tvContactNumberValue.hide()
             binding!!.tvContactNumber.setBackgroundResource(R.drawable.light_rounded_border)
+            binding!!.tvAddress.show()
             binding!!.tvAddress.setBackgroundResource(R.drawable.light_rounded_border)
             binding!!.tvEmail.isEnabled = true
             binding!!.tvWebite.isEnabled = true
             binding!!.tvPhone.isEnabled = true
             binding!!.tvFax.isEnabled = true
-            binding!!.tvContactName.isEnabled = true
+        //    binding!!.tvContactName.isEnabled = true
             binding!!.tvContactNumber.isEnabled = true
             binding!!.tvAddress.isEnabled = true
             binding!!.llButtons.show()
@@ -97,13 +108,13 @@ class FragmentCompany : Fragment() {
                     response: Response<ResponseMessage>
                 ) {
                     if (response.isSuccessful){
-                        MyApplication.selectedVisit!!.company!!.email = binding!!.tvEmail.text.toString()
-                        MyApplication.selectedVisit!!.company!!.website = binding!!.tvWebite.text.toString()
-                        MyApplication.selectedVisit!!.company!!.phoneNumber = binding!!.tvPhone.text.toString()
-                        MyApplication.selectedVisit!!.company!!.fax = binding!!.tvFax.text.toString()
-                       /* MyApplication.selectedVisit!!.contact!!.firstName= binding!!.tvContactName.text.toString()*/
-                        MyApplication.selectedVisit!!.contact!!.personalPhoneNumber = binding!!.tvContactNumber.text.toString()
-                        MyApplication.selectedVisit!!.company!!.address = binding!!.tvAddress.text.toString()
+                        MyApplication.selectedVisit!!.company!!.email = binding!!.tvEmail!!.text.toString()
+                        MyApplication.selectedVisit!!.company!!.fax = binding!!.tvFax!!.text.toString()
+                        MyApplication.selectedVisit!!.company!!.website = binding!!.tvWebite!!.text.toString()
+                        MyApplication.selectedVisit!!.company!!.phoneNumber = binding!!.tvPhone!!.text.toString()
+                        MyApplication.selectedVisit!!.contact!!.personalPhoneNumber = binding!!.tvContactNumber!!.text.toString()
+                        MyApplication.selectedVisit!!.company!!.address = binding!!.tvAddress!!.text.toString()
+                        setUpCompanyData()
                         binding!!.llButtons.hide()
                         binding!!.ivEditCompany.show()
                         wtf("Success")
@@ -116,11 +127,21 @@ class FragmentCompany : Fragment() {
     }
 
     fun hideTexts(){
+        binding!!.tvEmailValue.show()
+        binding!!.tvEmail.hide()
         binding!!.tvEmail.setBackgroundResource(R.color.transparent)
+        binding!!.tvWebsiteValue.show()
+        binding!!.tvWebite.hide()
         binding!!.tvWebite.setBackgroundResource(R.color.transparent)
+        binding!!.tvPhoneValue.show()
+        binding!!.tvPhone.hide()
         binding!!.tvPhone.setBackgroundResource(R.color.transparent)
+        binding!!.tvFaxValue.show()
+        binding!!.tvFax.hide()
         binding!!.tvFax.setBackgroundResource(R.color.transparent)
         binding!!.tvContactName.setBackgroundResource(R.color.transparent)
+        binding!!.tvContactNumberValue.show()
+        binding!!.tvContactNumber.hide()
         binding!!.tvContactNumber.setBackgroundResource(R.color.transparent)
         binding!!.tvAddress.setBackgroundResource(R.color.transparent)
         binding!!.tvEmail.isEnabled = false
@@ -138,34 +159,41 @@ class FragmentCompany : Fragment() {
                 MyApplication.selectedVisit!!.company!!.companyNameAr!!
             )
             binding!!.tvEmail.setCheckText(MyApplication.selectedVisit!!.company!!.email!!)
+            binding!!.tvEmailValue.text = MyApplication.selectedVisit!!.company!!.email
             binding!!.tvWebite.setCheckText(MyApplication.selectedVisit!!.company!!.website!!)
-            if(MyApplication.selectedVisit!!.company!!.phoneNumber!=null && MyApplication.selectedVisit!!.company!!.phoneNumber!!.isNotEmpty())
+            binding!!.tvWebsiteValue.text = MyApplication.selectedVisit!!.company!!.website!!
+            if(MyApplication.selectedVisit!!.company!!.phoneNumber!=null && MyApplication.selectedVisit!!.company!!.phoneNumber!!.isNotEmpty()) {
                 binding!!.tvPhone.setCheckText(MyApplication.selectedVisit!!.company!!.phoneNumber!!)
-            else
+                binding!!.tvPhoneValue.text = MyApplication.selectedVisit!!.company!!.phoneNumber
+            }else {
                 binding!!.tvPhone.setText("")
+                binding!!.tvPhoneValue.text = ""
+            }
         }
         if(AppHelper.isValidPhoneNumber(binding!!.tvPhone.text.toString()))
         {
-            AppHelper.setTextColor(requireContext(),binding!!.tvPhone, R.color.colorPrimaryDark)
-            binding!!.tvPhone.underline()
-            binding!!.tvPhone.setOnClickListener {
+            AppHelper.setTextColor(requireContext(),binding!!.tvPhoneValue, R.color.colorPrimaryDark)
+            binding!!.tvPhoneValue.underline()
+            binding!!.tvPhoneValue.setOnClickListener {
                 val intent = Intent(Intent.ACTION_DIAL)
-                intent.data = Uri.parse("tel:"+binding!!.tvPhone.text)
+                intent.data = Uri.parse("tel:"+binding!!.tvPhoneValue.text)
                 startActivity(intent)
             }
         }
+        binding!!.tvFaxValue.text = MyApplication.selectedVisit!!.company!!.fax
         binding!!.tvFax.setCheckText(MyApplication.selectedVisit!!.company!!.fax!!)
         if(MyApplication.selectedVisit!!.contact!=null) {
             binding!!.tvContactName.setTextLang(
                 MyApplication.selectedVisit!!.contact!!.firstName + " " + MyApplication.selectedVisit!!.contact!!.lastName,
                 MyApplication.selectedVisit!!.contact!!.firstNameAr + " " + MyApplication.selectedVisit!!.contact!!.lastNameAr
             )
+            binding!!.tvContactNumberValue.text = MyApplication.selectedVisit!!.contact!!.personalPhoneNumber!!
             binding!!.tvContactNumber.setCheckText(MyApplication.selectedVisit!!.contact!!.personalPhoneNumber!!)
         }else{
             binding!!.tvContactName.setText("")
             binding!!.tvContactNumber.setText("")
         }
-        if(AppHelper.isValidPhoneNumber(binding!!.tvContactNumber.text.toString()))
+        if(AppHelper.isValidPhoneNumber(binding!!.tvContactNumberValue.text.toString()))
         {
             AppHelper.setTextColor(requireContext(),binding!!.tvContactNumber, R.color.colorPrimaryDark)
             binding!!.tvContactNumber.underline()

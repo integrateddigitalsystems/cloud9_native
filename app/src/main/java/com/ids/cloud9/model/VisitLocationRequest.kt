@@ -15,5 +15,7 @@ data class VisitLocationRequest(
     @SerializedName("long")
     val long: Double,
     @SerializedName("visitId")
-    val visitId: Int
+    val visitId: Int,
+    @SerializedName("accountId")
+    var accountId :Int
 )

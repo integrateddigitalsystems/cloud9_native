@@ -496,11 +496,12 @@ class LocationForeService : Service() {
             true,
             location.latitude ,
             location.longitude ,
-            MyApplication.onTheWayVisit!!.id!!
+            MyApplication.onTheWayVisit!!.id!!,
+            MyApplication.onTheWayVisit!!.companyAddressId!!
         )
         Log.wtf("JAD_LOCCY",Gson().toJson(visitLocationRequest))
         wtf(Gson().toJson(visitLocationRequest))
-        RetrofitClientAuth.client!!.create(
+        RetrofitClientSpecificAuth.client!!.create(
             RetrofitInterface::class.java
         ).createVisitLocation(
             visitLocationRequest

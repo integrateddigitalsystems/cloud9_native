@@ -1,100 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_margin="@dimen/margin_start_end"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/white"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_margin="@dimen/margin_start_end"
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <ImageView
-                android:layout_marginEnd="@dimen/normal_margin_padding"
-                android:layout_marginTop="@dimen/normal_margin_padding"
-                android:layout_gravity="end"
-                android:padding="@dimen/medium_margin_padding"
                 android:id="@+id/ivEditCompany"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:tint="@color/colorPrimary"
                 android:layout_width="@dimen/icon_medium"
                 android:layout_height="@dimen/icon_medium"
-                android:src="@drawable/pen"/>
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/normal_margin_padding"
+                android:layout_marginEnd="@dimen/normal_margin_padding"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:padding="@dimen/medium_margin_padding"
+                android:src="@drawable/pen"
+                android:tint="@color/colorPrimary" />
 
             <LinearLayout
-                android:layout_marginTop="@dimen/bigger_margin_padding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginTop="@dimen/bigger_margin_padding"
                 android:layout_marginEnd="@dimen/margin_start_end"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
                 android:minHeight="@dimen/icon_medium"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal">
 
                 <com.ids.cloud9.custom.CustomTextViewBold
-                    android:layout_weight="1"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/normal_font"
                     android:layout_width="match_parent"
-                    android:layout_marginEnd="@dimen/small_margin_padding"
                     android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/small_margin_padding"
+                    android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="@string/company_name"/>
+                    android:text="@string/company_name"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font" />
 
                 <com.ids.cloud9.custom.CustomTextViewMedium
-                    android:layout_weight="1"
                     android:id="@+id/tvCompanyName"
-                    android:padding="@dimen/small_margin_padding"
-                    android:layout_marginStart="@dimen/small_margin_padding"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/normal_font"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/small_margin_padding"
+                    android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="@string/status_reason"/>
-
+                    android:padding="@dimen/small_margin_padding"
+                    android:text="@string/status_reason"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font" />
 
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="@dimen/bigger_margin_padding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginTop="@dimen/bigger_margin_padding"
                 android:layout_marginEnd="@dimen/margin_start_end"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
                 android:minHeight="@dimen/icon_medium"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal">
 
                 <com.ids.cloud9.custom.CustomTextViewBold
-                    android:layout_weight="1"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/normal_font"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="@dimen/small_margin_padding"
+                    android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="@string/email"/>
+                    android:text="@string/email"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font" />
 
-                <EditText
-                    android:id="@+id/tvEmail"
-                    android:layout_marginStart="@dimen/small_margin_padding"
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:id="@+id/tvEmailValue"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/small_margin_padding"
                     android:layout_weight="1"
-                    android:padding="@dimen/small_margin_padding"
                     android:autoLink="email"
+                    android:background="@color/transparent"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/small_margin_padding"
+                    android:text="@string/status_reason"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"/>
+
+                <EditText
+                    android:visibility="gone"
+                    android:id="@+id/tvEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/small_margin_padding"
+                    android:layout_weight="1"
                     android:background="@color/transparent"
                     android:enabled="false"
                     android:gravity="center_vertical"
+                    android:padding="@dimen/small_margin_padding"
                     android:text="@string/status_reason"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/normal_font" />
@@ -102,110 +115,156 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="@dimen/bigger_margin_padding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginTop="@dimen/bigger_margin_padding"
                 android:layout_marginEnd="@dimen/margin_start_end"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
                 android:minHeight="@dimen/icon_medium"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal">
 
                 <com.ids.cloud9.custom.CustomTextViewBold
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/small_margin_padding"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/normal_font"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="@string/website"/>
-
-               <EditText
-                   android:layout_marginStart="@dimen/small_margin_padding"
-                    android:background="@color/transparent"
-                    android:enabled="false"
+                    android:layout_marginEnd="@dimen/small_margin_padding"
                     android:layout_weight="1"
-                    android:id="@+id/tvWebite"
+                    android:gravity="center_vertical"
+                    android:text="@string/website"
                     android:textColor="@color/text_color"
-                   android:padding="@dimen/small_margin_padding"
-                    android:textSize="@dimen/normal_font"
+                    android:textSize="@dimen/normal_font" />
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:id="@+id/tvWebsiteValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/small_margin_padding"
+                    android:layout_weight="1"
                     android:autoLink="web"
+                    android:background="@color/transparent"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/small_margin_padding"
+                    android:text="@string/status_reason"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/normal_font"/>
+
+                <EditText
+                    android:id="@+id/tvWebite"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="@string/status_reason"/>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginTop="@dimen/bigger_margin_padding"
-                android:layout_marginStart="@dimen/margin_start_end"
-                android:layout_marginEnd="@dimen/margin_start_end"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:minHeight="@dimen/icon_medium"
-                android:layout_height="wrap_content">
-
-                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_marginStart="@dimen/small_margin_padding"
                     android:layout_weight="1"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/normal_font"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/small_margin_padding"
-                    android:text="@string/phone"/>
-
-               <EditText
-                   android:layout_marginStart="@dimen/small_margin_padding"
                     android:background="@color/transparent"
                     android:enabled="false"
-                    android:layout_weight="1"
-                    android:id="@+id/tvPhone"
-                   android:padding="@dimen/small_margin_padding"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/normal_font"
-                    android:autoLink="all"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="@string/status_reason"/>
+                    android:padding="@dimen/small_margin_padding"
+                    android:text="@string/status_reason"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font" />
+
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="@dimen/bigger_margin_padding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginTop="@dimen/bigger_margin_padding"
                 android:layout_marginEnd="@dimen/margin_start_end"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
                 android:minHeight="@dimen/icon_medium"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal">
 
                 <com.ids.cloud9.custom.CustomTextViewBold
-                    android:layout_weight="1"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/normal_font"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="@dimen/small_margin_padding"
+                    android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="@string/fax"/>
+                    android:text="@string/phone"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font" />
 
-               <EditText
-                   android:layout_marginStart="@dimen/small_margin_padding"
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:id="@+id/tvPhoneValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/small_margin_padding"
+                    android:layout_weight="1"
+                    android:autoLink="phone"
+                    android:enabled="true"
+                    android:background="@color/transparent"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/small_margin_padding"
+                    android:text="@string/status_reason"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/normal_font"/>
+
+
+                <EditText
+                    android:visibility="gone"
+                    android:id="@+id/tvPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/small_margin_padding"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:enabled="false"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/small_margin_padding"
+                    android:text="@string/status_reason"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginTop="@dimen/bigger_margin_padding"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:gravity="center"
+                android:minHeight="@dimen/icon_medium"
+                android:orientation="horizontal">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/small_margin_padding"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/fax"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font" />
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:id="@+id/tvFaxValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/small_margin_padding"
+                    android:layout_weight="1"
+                    android:autoLink="email"
+                    android:background="@color/transparent"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/small_margin_padding"
+                    android:text="@string/status_reason"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"/>
+
+                <EditText
+                    android:visibility="gone"
                     android:id="@+id/tvFax"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                   android:padding="@dimen/small_margin_padding"
+                    android:layout_marginStart="@dimen/small_margin_padding"
                     android:layout_weight="1"
                     android:background="@color/transparent"
                     android:enabled="false"
                     android:gravity="center_vertical"
+                    android:padding="@dimen/small_margin_padding"
                     android:text="@string/status_reason"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/normal_font" />
@@ -214,195 +273,206 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="@dimen/bigger_margin_padding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginTop="@dimen/bigger_margin_padding"
                 android:layout_marginEnd="@dimen/margin_start_end"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
                 android:minHeight="@dimen/icon_medium"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal">
 
                 <com.ids.cloud9.custom.CustomTextViewBold
-                    android:layout_weight="1"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/normal_font"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="@dimen/small_margin_padding"
-                    android:gravity="center_vertical"
-                    android:text="@string/contact_name"/>
-
-               <EditText
-                   android:layout_marginStart="@dimen/small_margin_padding"
-                    android:background="@color/transparent"
-                    android:enabled="false"
                     android:layout_weight="1"
-                   android:padding="@dimen/small_margin_padding"
+                    android:gravity="center_vertical"
+                    android:text="@string/contact_name"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font" />
+
+                <EditText
                     android:id="@+id/tvContactName"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/normal_font"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="@string/status_reason"/>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginTop="@dimen/bigger_margin_padding"
-                android:layout_marginStart="@dimen/margin_start_end"
-                android:layout_marginEnd="@dimen/margin_start_end"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:minHeight="@dimen/icon_medium"
-                android:layout_height="wrap_content">
-
-                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_marginStart="@dimen/small_margin_padding"
                     android:layout_weight="1"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/normal_font"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/small_margin_padding"
-                    android:gravity="center_vertical"
-                    android:text="@string/contact_number"/>
-
-               <EditText
                     android:background="@color/transparent"
                     android:enabled="false"
-                    android:layout_weight="1"
-                   android:layout_marginStart="@dimen/small_margin_padding"
-                    android:id="@+id/tvContactNumber"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/normal_font"
-                   android:padding="@dimen/small_margin_padding"
-                    android:autoLink="all"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="@string/status_reason"/>
+                    android:padding="@dimen/small_margin_padding"
+                    android:text="@string/status_reason"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font" />
 
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="@dimen/bigger_margin_padding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginTop="@dimen/bigger_margin_padding"
                 android:layout_marginEnd="@dimen/margin_start_end"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
                 android:minHeight="@dimen/icon_medium"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal">
 
                 <com.ids.cloud9.custom.CustomTextViewBold
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/small_margin_padding"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
+                    android:text="@string/contact_number"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font" />
+
+                <com.ids.cloud9.custom.CustomTextViewMedium
+                    android:id="@+id/tvContactNumberValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/small_margin_padding"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:autoLink="phone"
+                    android:enabled="true"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/small_margin_padding"
+                    android:text="@string/status_reason"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font"/>
+
+
+                <EditText
+                    android:visibility="gone"
+                    android:id="@+id/tvContactNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/small_margin_padding"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:enabled="false"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/small_margin_padding"
+                    android:text="@string/status_reason"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginTop="@dimen/bigger_margin_padding"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:gravity="center"
+                android:minHeight="@dimen/icon_medium"
+                android:orientation="horizontal">
+
+                <com.ids.cloud9.custom.CustomTextViewBold
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginEnd="@dimen/small_margin_padding"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:text="@string/address"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/normal_font" />
 
                 <EditText
-                    android:background="@color/transparent"
-                    android:enabled="false"
-                    android:layout_weight="1"
-                    android:layout_marginStart="@dimen/small_margin_padding"
                     android:id="@+id/tvAddress"
-                    android:padding="@dimen/small_margin_padding"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/normal_font"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/small_margin_padding"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:enabled="false"
                     android:gravity="center_vertical"
-                    android:text="@string/status_reason"/>
+                    android:padding="@dimen/small_margin_padding"
+                    android:text="@string/status_reason"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/llButtons"
-                android:layout_marginTop="@dimen/bigger_margin_padding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginTop="@dimen/bigger_margin_padding"
                 android:layout_marginEnd="@dimen/margin_start_end"
                 android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:visibility="gone">
 
                 <com.ids.cloud9.custom.CustomTextViewBold
+                    android:id="@+id/btSave"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edit_text_height"
                     android:layout_marginEnd="@dimen/small_margin_padding"
                     android:layout_weight="1"
-                    android:id="@+id/btSave"
-                    android:foreground="?android:attr/selectableItemBackground"
                     android:background="@drawable/rounded_primary_layout"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:gravity="center"
                     android:text="@string/save"
                     android:textColor="@color/white" />
 
                 <com.ids.cloud9.custom.CustomTextViewBold
-                    android:layout_width="match_parent"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:layout_marginEnd="@dimen/small_margin_padding"
-                    android:layout_height="@dimen/edit_text_height"
-                    android:layout_weight="1"
                     android:id="@+id/btCancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edit_text_height"
+                    android:layout_marginEnd="@dimen/small_margin_padding"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_red"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:gravity="center"
-                    android:textColor="@color/white"
                     android:text="@string/cancel"
-                    android:background="@drawable/rounded_red" />
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 
 
             <LinearLayout
-                android:foreground="?android:attr/selectableItemBackground"
                 android:id="@+id/llGetDirection"
-                android:gravity="center"
-                android:layout_marginBottom="@dimen/bigger_margin_padding"
-                android:layout_marginStart="@dimen/margin_start_end"
-                android:layout_marginEnd="@dimen/margin_start_end"
-                android:layout_marginTop="@dimen/bigger_margin_padding"
-                android:background="@drawable/rounded_primary_layout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/height_50">
+                android:layout_height="@dimen/height_50"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginTop="@dimen/bigger_margin_padding"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:layout_marginBottom="@dimen/bigger_margin_padding"
+                android:background="@drawable/rounded_primary_layout"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center">
 
 
                 <ImageView
-                    android:layout_toEndOf="@+id/btBack"
                     android:id="@+id/ivCalendar"
-                    android:tint="@color/white"
-                    android:layout_centerVertical="true"
                     android:layout_width="@dimen/size_18"
                     android:layout_height="@dimen/size_18"
-                    android:src="@drawable/map_pin"/>
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/btBack"
+                    android:src="@drawable/map_pin"
+                    android:tint="@color/white" />
 
                 <com.ids.cloud9.custom.CustomTextViewMedium
                     android:layout_width="wrap_content"
-                    android:gravity="center"
-                    android:layout_marginStart="@dimen/normal_margin_padding"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/normal_font"
+                    android:layout_marginStart="@dimen/normal_margin_padding"
+                    android:gravity="center"
+                    android:text="GET DIRECTIONS"
                     android:textColor="@color/white"
-                    android:text="GET DIRECTIONS"/>
+                    android:textSize="@dimen/normal_font" />
 
             </LinearLayout>
-
-
-
 
 
         </LinearLayout>
 
     </ScrollView>
-
-
 
 
 </LinearLayout>
