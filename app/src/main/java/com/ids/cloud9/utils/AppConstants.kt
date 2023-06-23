@@ -53,6 +53,9 @@ object AppConstants {
     const val PASSWORD ="password"
     const val IS_SHOW ="is_show"
 
+    const val OTHER_PRODUCT_ID = 4308
+    const val OTHER_PRODUCT_NAME = "Other"
+
     const val REASON_UNSCHEDULED = "V_STTSR_U"
     const val REASON_SCHEDULED = "V_STTSR_S"
     const val REASON_COMPLETED = "V_STTSR_COM"

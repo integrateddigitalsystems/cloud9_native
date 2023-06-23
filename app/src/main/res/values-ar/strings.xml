@@ -100,4 +100,7 @@
     <string name="gps_settings">خدمات الموقع غير مفعلة هل تريد التفعيل عبر التجهيزات؟</string>
     <string name="update_message">نسخة جديدة متاحة ، يرجى التحديث</string>
     <string name="update_cancel">الغاء</string>
+    <string name="quantity_more_0">Quantity should not be 0</string>
+    <string name="custom_product_name">Custom Product Name</string>
+    <string name="custom_product_description">Custom Product Description</string>
 </resources>

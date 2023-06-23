@@ -30,7 +30,7 @@ object RetrofitClientSpecificAuth {
             val gson = GsonBuilder()
                 .setLenient()
                 .create()
-
+            Log.wtf("tokenJADtoken", token)
             /*if (retrofit == null) {*/
             wtf(BASE_USER_URL)
             retrofit = Retrofit.Builder()

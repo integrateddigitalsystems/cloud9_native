@@ -90,10 +90,6 @@ class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
         binding!!.srReccomendations.isRefreshing = false
     }
     override fun onItemClicked(view: View, position: Int) {
-        val ct = MyApplication.allVisits.count {
-            it.title.equals(arrayReccomend[position].entity) && it.reasonId==AppHelper.getReasonID(AppConstants.REASON_ARRIVED)
-        }
-        if(ct>0) {
             MyApplication.selectedReccomend = arrayReccomend[position]
             startActivity(
                 Intent(
@@ -101,8 +97,5 @@ class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
                     ActivityAddReccomendations::class.java
                 )
             )
-        }else{
-            createDialog( getString(R.string.visit_arrived_completed))
-        }
     }
 }

@@ -280,8 +280,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                 true,
                 firstLocation!!.latitude,
                 firstLocation.longitude,
-               id,
-                MyApplication.selectedVisit!!.companyAddressId!!
+               id
 
 
             )

@@ -31,7 +31,7 @@ data class ProductX(
     @SerializedName("defaultPriceListId")
     val defaultPriceListId: Int,
     @SerializedName("description")
-    val description: Any,
+    val description: String,
     @SerializedName("id")
     val id: Int,
     @SerializedName("isComponent")

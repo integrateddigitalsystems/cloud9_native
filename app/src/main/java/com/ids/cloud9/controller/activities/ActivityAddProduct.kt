@@ -29,6 +29,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
     var prodId : Int ?=0
     var unitId : Int ?=0
     var mainPos  = -1
+    var selectedPos = 0
     var adapterSpin : AdapterSpinner ?=null
     var arraySpin : ArrayList<ItemSpinner> = arrayListOf()
     var adapterSer : AdapterEdit ?=null
@@ -80,6 +81,11 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
                 unitId = MyApplication.selectedProduct!!.product.unit.visitProducts.get(0).unitId
             prodId = MyApplication.selectedProduct!!.productId
             binding!!.btAddProduct.text = getString(R.string.update)
+            if(MyApplication.selectedProduct!!.product.name.contains(AppConstants.OTHER_PRODUCT_NAME)){
+                binding!!.etCustomProductName.text = MyApplication.selectedProduct!!.customProductName.toEditable()
+                binding!!.etCustomProductDesc.text = MyApplication.selectedProduct!!.customProductDescription.toEditable()
+                binding!!.llCustom.show()
+            }
         }else{
             binding!!.llProductDelete.hide()
             arraySer.add(SerialItem(""))
@@ -212,8 +218,8 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             arr.add(item.serial!!)
         createProduct = CreateProduct(
             simp.format(cal.time),
-            if(!array.get(mainPos).description.isNullOrEmpty()) array.get(mainPos).description  else "" ,
-            array.get(mainPos).name,
+           "" ,
+            "",
             0,
             0,
             false,
@@ -230,6 +236,11 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             MyApplication.selectedVisit!!.id,
             MyApplication.selectedVisit!!.number
         )
+
+        if(this.arr.get(selectedPos).name!!.contains(AppConstants.OTHER_PRODUCT_NAME)){
+            createProduct!!.customProductName = binding!!.etCustomProductName.text.toString()
+            createProduct!!.customProductDescription = binding!!.etCustomProductDesc.text.toString()
+        }
         RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .createMobile(
                 createProduct!!
@@ -343,7 +354,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
         binding!!.etFilterName.doOnTextChanged { text, start, before, count ->
 
             val items = array.filter {
-                it.name.contains(text!!)
+                it.name.contains(text!!,true)
             }
             val arrayList : ArrayList<ProductAllListItem> = arrayListOf()
             arrayList.addAll(items)
@@ -357,13 +368,17 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
                 if(item.serial.isNullOrEmpty())
                     serialised_filled = false
 
-            if(prodId!=0 && unitId!=0 && !binding!!.etQuantity.text.toString().isEmpty() && serialised_filled && binding!!.tvProduct.text.toString().trim() != getString(R.string.product)) {
+            if(prodId!=0 && unitId!=0 && !binding!!.etQuantity.text.toString().isEmpty() && binding!!.etQuantity.text!!.toString().toInt() >0 && serialised_filled && binding!!.tvProduct.text.toString().trim() != getString(R.string.product) && !(arr.get(selectedPos).name!!.contains(AppConstants.OTHER_PRODUCT_NAME) && (binding!!.etCustomProductDesc.text.isNullOrEmpty() || binding!!.etCustomProductName.text.isNullOrEmpty()))) {
                 if(MyApplication.selectedProduct==null)
                     addProduct()
                 else
                     editProduct()
             }else{
-                createDialog(getString(R.string.fill_details))
+                if(binding!!.etQuantity.text!!.toString().toInt()>0)
+                    createDialog(getString(R.string.fill_details))
+                else{
+                    createDialog(getString(R.string.quantity_more_0))
+                }
             }
         }
 
@@ -448,6 +463,14 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             binding!!.tvProduct.text = arr.get(position).name
             else  binding!!.tvProduct.text = getString(R.string.product)
             binding!!.llNameSelect.hide()
+
+            if(arr.get(position).name!!.contains(AppConstants.OTHER_PRODUCT_NAME)){
+                binding!!.llCustom.show()
+                selectedPos = position
+            }else{
+                binding!!.llCustom.hide()
+                selectedPos = position
+            }
 
             adapter!!.notifyDataSetChanged()
         }

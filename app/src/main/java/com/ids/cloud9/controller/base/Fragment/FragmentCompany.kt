@@ -195,11 +195,11 @@ class FragmentCompany : Fragment() {
         }
         if(AppHelper.isValidPhoneNumber(binding!!.tvContactNumberValue.text.toString()))
         {
-            AppHelper.setTextColor(requireContext(),binding!!.tvContactNumber, R.color.colorPrimaryDark)
-            binding!!.tvContactNumber.underline()
-            binding!!.tvContactNumber.setOnClickListener {
+            AppHelper.setTextColor(requireContext(),binding!!.tvContactNumberValue, R.color.colorPrimaryDark)
+            binding!!.tvContactNumberValue.underline()
+            binding!!.tvContactNumberValue.setOnClickListener {
                 val intent = Intent(Intent.ACTION_DIAL)
-                intent.data = Uri.parse("tel:"+binding!!.tvContactNumber.text)
+                intent.data = Uri.parse("tel:"+binding!!.tvContactNumberValue.text)
                 startActivity(intent)
             }
         }

@@ -101,4 +101,7 @@
     <string name="update_message">New version is available, please update</string>
 
     <string name="update_cancel">Cancel</string>
+    <string name="quantity_more_0">Quantity should not be 0</string>
+    <string name="custom_product_name">Custom Product Name</string>
+    <string name="custom_product_description">Custom Product Description</string>
 </resources>
