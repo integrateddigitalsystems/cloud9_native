@@ -167,6 +167,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
     }
     override fun onResume() {
         super.onResume()
+        MyApplication.selectedProduct = null
         getProducts()
     }
     fun deleteProduct(pos: Int) {

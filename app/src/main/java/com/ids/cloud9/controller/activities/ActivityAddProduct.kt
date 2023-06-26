@@ -155,7 +155,13 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
         binding!!.rvNames.layoutManager = LinearLayoutManager(this)
         adapter = AdapterText(arr,this,this )
         binding!!.rvNames.adapter = adapter
-
+        if(MyApplication.selectedProduct!=null) {
+            for (item in arr.indices) {
+                if (arr.get(item).id == MyApplication.selectedProduct!!.product.id) {
+                    selectedPos = item
+                }
+            }
+        }
         binding!!.llLoading.hide()
     }
 
@@ -213,9 +219,9 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
     fun addProduct(){
         binding!!.llLoading.show()
         val cal = Calendar.getInstance()
-        val arr:ArrayList<String> = arrayListOf()
+        val array:ArrayList<String> = arrayListOf()
         for(item in arraySer)
-            arr.add(item.serial!!)
+            array.add(item.serial!!)
         createProduct = CreateProduct(
             simp.format(cal.time),
            "" ,
@@ -227,11 +233,11 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             "",
             prodId ,
             binding!!.etQuantity.text.toString().toInt(),
-            if(arr.size >0)
+            if(array.size >0)
                 0
             else
-              arr.get(0).toInt()  ,
-            arr,
+                array.get(0).toInt()  ,
+            array,
             unitId,
             MyApplication.selectedVisit!!.id,
             MyApplication.selectedVisit!!.number
@@ -270,13 +276,13 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
     fun editProduct(){
         binding!!.llLoading.show()
         val cal = Calendar.getInstance()
-        val arr:ArrayList<String> = arrayListOf()
+        val array:ArrayList<String> = arrayListOf()
         for(item in arraySer)
-            arr.add(item.serial!!)
+            array.add(item.serial!!)
         createProduct = CreateProduct(
             simp.format(cal.time),
-            MyApplication.selectedProduct!!.customProductDescription ,
-            array.find { it.id == prodId }!!.name,
+           "" ,
+           "",
             0,
             MyApplication.selectedProduct!!.id,
             false,
@@ -284,15 +290,20 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             "",
             prodId ,
             binding!!.etQuantity.text.toString().toInt(),
-            if(arr.size >0)
+            if(array.size >0)
                 0
             else
-                arr.get(0).toInt()  ,
-            arr,
+                array.get(0).toInt()  ,
+            array,
             unitId,
             MyApplication.selectedVisit!!.id,
             MyApplication.selectedVisit!!.number
         )
+
+        if(this.arr.get(selectedPos).name!!.contains(AppConstants.OTHER_PRODUCT_NAME)){
+            createProduct!!.customProductName = binding!!.etCustomProductName.text.toString()
+            createProduct!!.customProductDescription = binding!!.etCustomProductDesc.text.toString()
+        }
 
 
         RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)

@@ -374,7 +374,7 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
                     MyApplication.allVisits.clear()
                     MyApplication.allVisits.addAll(response.body()!!)
                     val visit = mainArray.find {
-                        it.reasonId == AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY)
+                        it.reasonId == AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY) ||   it.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)
                     }
                     if (visit != null) {
                         MyApplication.onTheWayVisit = visit
