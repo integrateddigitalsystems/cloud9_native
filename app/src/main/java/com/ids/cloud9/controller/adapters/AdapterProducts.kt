@@ -11,6 +11,7 @@ import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickLis
 import com.ids.cloud9.databinding.ItemProductsBinding
 import com.ids.cloud9.model.ItemSpinner
 import com.ids.cloud9.model.ProductListItem
+import com.ids.cloud9.utils.AppConstants
 import com.ids.cloud9.utils.AppHelper
 import com.ids.cloud9.utils.setCheckText
 import com.ids.cloud9.utils.setTintImage
@@ -72,8 +73,13 @@ class AdapterProducts(
         binding.root
     ), View.OnClickListener {
         fun bind(item: ProductListItem) {
-            binding.tvProductName.setCheckText(item.customProductName)
-            binding.tvDesc.setCheckText(item.customProductDescription)
+            if(item.product.name.contains(AppConstants.OTHER_PRODUCT_NAME)) {
+                binding.tvProductName.setCheckText(item.customProductName)
+                binding.tvDesc.setCheckText(item.customProductDescription)
+            }else{
+                binding.tvProductName.setCheckText(item.product.name)
+                binding.tvDesc.setCheckText(item.product.description)
+            }
             try {
                 if (item.unitId != null && MyApplication.units.size > 0) {
                     val unit = MyApplication.units.find {

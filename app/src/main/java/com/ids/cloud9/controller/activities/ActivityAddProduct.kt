@@ -86,7 +86,10 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
                 binding!!.etCustomProductDesc.text = MyApplication.selectedProduct!!.customProductDescription.toEditable()
                 binding!!.llCustom.show()
             }
+            binding!!.rlProductName.setBackgroundResource(R.drawable.disabled_rounded)
+            binding!!.rlProductName.isEnabled = false
         }else{
+            binding!!.rlProductName.isEnabled = true
             binding!!.llProductDelete.hide()
             arraySer.add(SerialItem(""))
         }
@@ -246,6 +249,8 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
         if(this.arr.get(selectedPos).name!!.contains(AppConstants.OTHER_PRODUCT_NAME)){
             createProduct!!.customProductName = binding!!.etCustomProductName.text.toString()
             createProduct!!.customProductDescription = binding!!.etCustomProductDesc.text.toString()
+        }else{
+            createProduct!!.customProductName = this.arr.get(selectedPos).name
         }
         RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .createMobile(
