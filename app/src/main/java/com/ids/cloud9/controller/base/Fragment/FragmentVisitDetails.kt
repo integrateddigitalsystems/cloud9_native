@@ -545,10 +545,10 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
     fun setUpData() {
         binding!!.llLoading.hide()
         setUpEdit()
-        if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED)) {
+        /*if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED)) {
             binding!!.btSave.setBackgroundResource(R.drawable.rounded_trans_primary)
             binding!!.btSave.isEnabled = false
-        }
+        }*/
     }
 
     fun getPermissionStatus(androidPermissionName: String?): Int {
@@ -592,7 +592,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         }!!.selected = true
 
 
-       // setUpStatusReasonSpinner()
+        //setUpStatusReasonSpinner()
         if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
             setUpStatusReasonSpinner()
             for (item in arrSpinner)

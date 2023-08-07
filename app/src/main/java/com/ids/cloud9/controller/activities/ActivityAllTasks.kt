@@ -67,9 +67,14 @@ class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
                 call: Call<FilteredActivityList>,
                 response: Response<FilteredActivityList>
             ) {
-                arrayReccomend.clear()
-                arrayReccomend.addAll(response.body()!!)
-                setDataReccomend()
+                if(response.isSuccessful) {
+                    arrayReccomend.clear()
+                    arrayReccomend.addAll(response.body()!!)
+                    setDataReccomend()
+                }else{
+                    arrayReccomend.clear()
+                    setDataReccomend()
+                }
             }
             override fun onFailure(call: Call<FilteredActivityList>, t: Throwable) {
                 binding!!.llLoading.hide()
