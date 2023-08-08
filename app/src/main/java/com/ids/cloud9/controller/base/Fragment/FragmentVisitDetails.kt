@@ -51,7 +51,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
     val DENIED = 1
     var adapterSpin: AdapterSpinner? = null
     var mPermissionResult: ActivityResultLauncher<Array<String>>? = null
-    var isScheduled=false
+    var isScheduled = false
     var simp: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
     var simpTime: SimpleDateFormat = SimpleDateFormat("HH:mm", Locale.ENGLISH)
     var simpTimeAA: SimpleDateFormat = SimpleDateFormat("hh:mm aa", Locale.ENGLISH)
@@ -68,13 +68,14 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         return binding!!.root
     }
 
-    fun openChooser(){
+    fun openChooser() {
         mPermissionResult!!.launch(
             arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION
             )
         )
     }
+
     fun setUpVisitDetails() {
         var date = ""
         safeCall {
@@ -112,11 +113,11 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                 binding!!.tvActualCompletedTime.text = ""
 
             if (edtitVisit!!.actualDuration != null) {
-                val mins =  edtitVisit!!.actualDuration!!.toInt()  / 60000
+                val mins = edtitVisit!!.actualDuration!!.toInt() / 60000
                 val hours = mins / 60
                 val min = mins % 60
 
-                val requiredFormat =   if (hours > 0) {
+                val requiredFormat = if (hours > 0) {
                     hours.toString() + "hrs" + min + "mins"
                 } else {
                     "$min mins"
@@ -129,7 +130,8 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             else
                 binding!!.etRemark.text = "".toEditable()
 
-            (requireActivity() as ActivtyVisitDetails).binding!!.llTool.tvTitleTool.text = edtitVisit!!.title!!
+            (requireActivity() as ActivtyVisitDetails).binding!!.llTool.tvTitleTool.text =
+                edtitVisit!!.title!!
 
 
         } catch (ex: Exception) {
@@ -161,70 +163,73 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                     position: Int,
                     id: Long
                 ) {
-                        val pos = arrSpinner.indexOf(
-                            arrSpinner.find {
-                                it.selected!!
-                            }
-                        )
-                        if (arrSpinner.get(position).selectable!!) {
-                            binding!!.tvStatreason.text = arrSpinner.get(position).name
-                            for (itm in arrSpinner)
-                                itm.selected = false
-                            arrSpinner.get(position).selected = true
-                            edtitVisit!!.reasonId = arrSpinner.get(position).id
-                            if (arrSpinner.get(position).id == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
-                                if (isScheduled){
-                                    toSettings =true
-                                    toSettingsGps =true
-                                }
-                               else{
-                                   toSettings =isFirstSettings
-                                   toSettingsGps =isFirstGps
-                                }
-                                (requireActivity() as ActivtyVisitDetails).changeState(false)
-                                if(edtitVisit!!.actualArrivalTime.isNullOrEmpty() || changed) {
-                                    val cal = Calendar.getInstance()
-                                    binding!!.tvActualArrivalTime.text = simpTimeAA.format(cal.time)
-                                    edtitVisit!!.actualArrivalTime = simpOrgss.format(cal.time)
-                                    binding!!.tvActualCompletedTime.text = ""
-                                    binding!!.tvActualDurtionTime.text = ""
-                                }
-                            } else if (arrSpinner.get(position).id == AppHelper.getReasonID(AppConstants.REASON_COMPLETED)) {
-                                changed = true
-                                val cal = Calendar.getInstance()
-                                isFirstGps=true
-                                isFirstSettings=true
-                                binding!!.tvActualCompletedTime.text = simpTimeAA.format(cal.time)
-                                edtitVisit!!.actualCompletedTime = simpOrgss.format(cal.time)
-                                val millFrom =
-                                    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH).parse(edtitVisit!!.actualArrivalTime!!)!!.time
-                                val millTo =
-                                    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH).parse(edtitVisit!!.actualCompletedTime!!)!!.time
-                                val diff = millTo - millFrom
-                                val mins = diff / 60000
-                                val hours = mins / 60
-                                val min = mins % 60
-                                binding!!.tvActualDurtionTime.text =
-                                    if (hours > 0) {
-                                        hours.toString() + "hrs" + min + "mins"
-                                    } else {
-                                        min.toString() + " mins"
-                                    }
-                             edtitVisit!!.actualDuration=diff.toDouble()
-
-                            } else {
-                                isFirstGps=true
-                                isFirstSettings=true
-                                edtitVisit!!.actualArrivalTime = ""
-                                edtitVisit!!.actualCompletedTime = ""
-                                edtitVisit!!.actualDuration = 0.0
-                                binding!!.tvActualArrivalTime.text = ""
-                                binding!!.tvActualCompletedTime.text = ""
-                            }
-                            adapterSpin!!.notifyDataSetChanged()
-                        } else {
-                            binding!!.spStatusReason.setSelection(pos)
+                    val pos = arrSpinner.indexOf(
+                        arrSpinner.find {
+                            it.selected!!
                         }
+                    )
+                    if (arrSpinner.get(position).selectable!!) {
+                        binding!!.tvStatreason.text = arrSpinner.get(position).name
+                        for (itm in arrSpinner)
+                            itm.selected = false
+                        arrSpinner.get(position).selected = true
+                        edtitVisit!!.reasonId = arrSpinner.get(position).id
+                        if (arrSpinner.get(position).id == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
+                            if (isScheduled) {
+                                toSettings = true
+                                toSettingsGps = true
+                            } else {
+                                toSettings = isFirstSettings
+                                toSettingsGps = isFirstGps
+                            }
+                            (requireActivity() as ActivtyVisitDetails).changeState(false)
+                            if (edtitVisit!!.actualArrivalTime.isNullOrEmpty() || changed) {
+                                val cal = Calendar.getInstance()
+                                binding!!.tvActualArrivalTime.text = simpTimeAA.format(cal.time)
+                                edtitVisit!!.actualArrivalTime = simpOrgss.format(cal.time)
+                                binding!!.tvActualCompletedTime.text = ""
+                                binding!!.tvActualDurtionTime.text = ""
+                            }
+                        } else if (arrSpinner.get(position).id == AppHelper.getReasonID(AppConstants.REASON_COMPLETED)) {
+                            changed = true
+                            val cal = Calendar.getInstance()
+                            isFirstGps = true
+                            isFirstSettings = true
+                            binding!!.tvActualCompletedTime.text = simpTimeAA.format(cal.time)
+                            edtitVisit!!.actualCompletedTime = simpOrgss.format(cal.time)
+                            val millFrom =
+                                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH).parse(
+                                    edtitVisit!!.actualArrivalTime!!
+                                )!!.time
+                            val millTo =
+                                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH).parse(
+                                    edtitVisit!!.actualCompletedTime!!
+                                )!!.time
+                            val diff = millTo - millFrom
+                            val mins = diff / 60000
+                            val hours = mins / 60
+                            val min = mins % 60
+                            binding!!.tvActualDurtionTime.text =
+                                if (hours > 0) {
+                                    hours.toString() + "hrs" + min + "mins"
+                                } else {
+                                    min.toString() + " mins"
+                                }
+                            edtitVisit!!.actualDuration = diff.toDouble()
+
+                        } else {
+                            isFirstGps = true
+                            isFirstSettings = true
+                            edtitVisit!!.actualArrivalTime = ""
+                            edtitVisit!!.actualCompletedTime = ""
+                            edtitVisit!!.actualDuration = 0.0
+                            binding!!.tvActualArrivalTime.text = ""
+                            binding!!.tvActualCompletedTime.text = ""
+                        }
+                        adapterSpin!!.notifyDataSetChanged()
+                    } else {
+                        binding!!.spStatusReason.setSelection(pos)
+                    }
 
                 }
 
@@ -239,8 +244,8 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         binding!!.spStatusReason.setSelection(pos)
     }
 
-    fun changeLocation(id:Int){
-        var firstLocation : Location ?=null
+    fun changeLocation(id: Int) {
+        var firstLocation: Location? = null
         var gps_enabled = false
         var network_enabled = false
         val mLocationManager =
@@ -263,63 +268,71 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                 requireContext(),
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
-                    )&& (gps_enabled || network_enabled)) {
-
+                    ) && (gps_enabled || network_enabled)
+        ) {
 
 
             if (gps_enabled && firstLocation == null)
                 firstLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-            if (network_enabled && firstLocation == null ) {
-                firstLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+            if (network_enabled && firstLocation == null) {
+                firstLocation =
+                    mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+            }
+            if (firstLocation != null) {
+                val visitLocationRequest = VisitLocationRequest(
+                    MyApplication.userItem!!.applicationUserId!!.toInt(),
+                    0,
+                    true,
+                    firstLocation!!.latitude,
+                    firstLocation.longitude,
+                    id
+                )
+                Log.wtf("JAD_TEST_LOCATION", Gson().toJson(visitLocationRequest))
+                RetrofitClientSpecificAuth.client!!.create(
+                    RetrofitInterface::class.java
+                ).createVisitLocation(
+                    visitLocationRequest
+                ).enqueue(object : Callback<ResponseMessage> {
+                    override fun onResponse(
+                        call: Call<ResponseMessage>,
+                        response: Response<ResponseMessage>
+                    ) {
+                        try {
+                            wtf(response.body()!!.message!!)
+                        } catch (ex: Exception) {
+                            wtf(getString(R.string.error_getting_data))
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
+                        wtf(getString(R.string.failure))
+                    }
+
+                })
+            }else{
+                changeLocation(id)
             }
 
 
-            val visitLocationRequest = VisitLocationRequest(
-                MyApplication.userItem!!.applicationUserId!!.toInt(),
-                0,
-                true,
-                firstLocation!!.latitude,
-                firstLocation.longitude,
-               id
 
-
-            )
-            Log.wtf("JAD_TEST_LOCATION",Gson().toJson(visitLocationRequest))
-            RetrofitClientSpecificAuth.client!!.create(
-                RetrofitInterface::class.java
-            ).createVisitLocation(
-                visitLocationRequest
-            ).enqueue(object : Callback<ResponseMessage> {
-                override fun onResponse(
-                    call: Call<ResponseMessage>,
-                    response: Response<ResponseMessage>
-                ) {
-                    try {
-                        wtf(response.body()!!.message!!)
-                    } catch (ex: Exception) {
-                        wtf(getString(R.string.error_getting_data))
-                    }
-                }
-
-                override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
-                    wtf(getString(R.string.failure))
-                }
-
-            })
-
-        }else{
-            if(gps_enabled && network_enabled)
+        } else {
+            if (gps_enabled && network_enabled)
                 openChooser()
-            else{
-                requireActivity().createActionDialog(getString(R.string.gps_settings)
-                ,0){
-                    startActivity( Intent(
-                        Settings.ACTION_LOCATION_SOURCE_SETTINGS) )
+            else {
+                requireActivity().createActionDialog(
+                    getString(R.string.gps_settings), 0
+                ) {
+                    startActivity(
+                        Intent(
+                            Settings.ACTION_LOCATION_SOURCE_SETTINGS
+                        )
+                    )
                 }
             }
 
         }
     }
+
     fun updateVisit() {
         binding!!.llLoading.show()
         for (item in edtitVisit!!.visitResources)
@@ -337,9 +350,12 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                         binding!!.llLoading.hide()
                         MyApplication.selectedVisit = edtitVisit
                         if (response.code() != 500) {
-                            FirebaseCrashlytics.getInstance().log("UPDATED:\n"+str)
-                            FirebaseCrashlytics.getInstance().recordException(RuntimeException("UPDATED:\n"+str))
-                            if (edtitVisit!!.reasonId != AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY) && edtitVisit!!.reasonId != AppHelper.getReasonID(AppConstants.REASON_ARRIVED) && edtitVisit!!.reasonId != AppHelper.getReasonID(AppConstants.REASON_COMPLETED) || !response.body()!!.message.equals(
+                            FirebaseCrashlytics.getInstance().log("UPDATED:\n" + str)
+                            FirebaseCrashlytics.getInstance()
+                                .recordException(RuntimeException("UPDATED:\n" + str))
+                            if (edtitVisit!!.reasonId != AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY) && edtitVisit!!.reasonId != AppHelper.getReasonID(
+                                    AppConstants.REASON_ARRIVED
+                                ) && edtitVisit!!.reasonId != AppHelper.getReasonID(AppConstants.REASON_COMPLETED) || !response.body()!!.message.equals(
                                     "Visit updated successfully"
                                 )
                             ) {
@@ -352,7 +368,10 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                                     MyApplication.gettingTracked = false
                                     (requireActivity() as ActivtyVisitDetails).changeState(false)
                                 }
-                            }  else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED) || edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY)) {
+                            } else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED) || edtitVisit!!.reasonId == AppHelper.getReasonID(
+                                    AppConstants.REASON_ON_THE_WAY
+                                )
+                            ) {
                                 requireContext().createRetryDialog(
                                     response.body()!!.message!!
                                 ) {
@@ -369,8 +388,9 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                             }
 
                         } else {
-                            FirebaseCrashlytics.getInstance().log("UPDATE ERROR 500+ITEM:\n"+str)
-                            FirebaseCrashlytics.getInstance().recordException(RuntimeException("UPDATE ERROR 500+ITEM:\n"+str))
+                            FirebaseCrashlytics.getInstance().log("UPDATE ERROR 500+ITEM:\n" + str)
+                            FirebaseCrashlytics.getInstance()
+                                .recordException(RuntimeException("UPDATE ERROR 500+ITEM:\n" + str))
                             requireContext().createRetryDialog(
                                 getString(R.string.visit_succ)
                             ) {
@@ -481,11 +501,12 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                             }
                         }
                     }
-                }else{
+                } else {
                     changeLocation(edtitVisit!!.id!!)
                 }
             }
     }
+
     fun init() {
         listeners()
         val fromNotf = (requireActivity() as ActivtyVisitDetails).fromNotf
@@ -500,27 +521,27 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         }
     }
 
-   /* fun getCompany() {
-        RetrofitClientSpecificAuth.client!!.create(
-            RetrofitInterface::class.java
-        ).getCompanies().enqueue(object : Callback<ArrayList<Company>> {
-            override fun onResponse(
-                call: Call<ArrayList<Company>>,
-                response: Response<ArrayList<Company>>
-            ) {
-                val company = response.body()!!.find {
-                    it.id == MyApplication.selectedVisit!!.companyId
-                }
-                MyApplication.selectedVisit!!.company = company
-                wtf(Gson().toJson(MyApplication.selectedVisit))
-            }
+    /* fun getCompany() {
+         RetrofitClientSpecificAuth.client!!.create(
+             RetrofitInterface::class.java
+         ).getCompanies().enqueue(object : Callback<ArrayList<Company>> {
+             override fun onResponse(
+                 call: Call<ArrayList<Company>>,
+                 response: Response<ArrayList<Company>>
+             ) {
+                 val company = response.body()!!.find {
+                     it.id == MyApplication.selectedVisit!!.companyId
+                 }
+                 MyApplication.selectedVisit!!.company = company
+                 wtf(Gson().toJson(MyApplication.selectedVisit))
+             }
 
-            override fun onFailure(call: Call<ArrayList<Company>>, t: Throwable) {
-                binding!!.llLoading.hide()
-            }
+             override fun onFailure(call: Call<ArrayList<Company>>, t: Throwable) {
+                 binding!!.llLoading.hide()
+             }
 
-        })
-    }*/
+         })
+     }*/
 
     fun getData(id: Int) {
         RetrofitClientSpecificAuth.client!!.create(
@@ -530,7 +551,8 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                 override fun onResponse(call: Call<Visit>, response: Response<Visit>) {
                     edtitVisit = response.body()
                     MyApplication.selectedVisit = response.body()
-                    MyApplication.selectedVisit!!.appearDuration = AppHelper.durationToString(MyApplication.selectedVisit!!.duration!!.toFloat())
+                    MyApplication.selectedVisit!!.appearDuration =
+                        AppHelper.durationToString(MyApplication.selectedVisit!!.duration!!.toFloat())
                     initialData()
                     setUpData()
                 }
@@ -566,6 +588,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             } else DENIED
         } else GRANTED
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpPermission()
@@ -575,8 +598,11 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
 
     fun initialData() {
         arrSpinner.clear()
-        for(item in MyApplication.lookupsReason){
-            if(!item.id.equals(AppHelper.getReasonID(AppConstants.REASON_UNSCHEDULED)) && !item.id.equals(AppHelper.getReasonID(AppConstants.REASON_CANCELLED))) {
+        for (item in MyApplication.lookupsReason) {
+            if (!item.id.equals(AppHelper.getReasonID(AppConstants.REASON_UNSCHEDULED)) && !item.id.equals(
+                    AppHelper.getReasonID(AppConstants.REASON_CANCELLED)
+                )
+            ) {
                 arrSpinner.add(
                     ItemSpinner(
                         item.id,
@@ -592,45 +618,68 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         }!!.selected = true
 
 
-        //setUpStatusReasonSpinner()
-        if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
+        setUpStatusReasonSpinner()
+       /* if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
             setUpStatusReasonSpinner()
             for (item in arrSpinner)
-                if (item.id != AppHelper.getReasonID(AppConstants.REASON_ARRIVED) && item.id != AppHelper.getReasonID(AppConstants.REASON_COMPLETED))
+                if (item.id != AppHelper.getReasonID(AppConstants.REASON_ARRIVED) && item.id != AppHelper.getReasonID(
+                        AppConstants.REASON_COMPLETED
+                    )
+                )
                     item.selectable = false
-        }
-        else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED)) {
+        } else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED)) {
             binding!!.spStatusReason.hide()
             binding!!.ivArrowSpin.hide()
             binding!!.rlStatusSpinner.setBackgroundResource(R.drawable.disabled_rounded)
             binding!!.tvStatreason.text = getString(R.string.completed)
             binding!!.etRemark.isEnabled = false
-            binding!!.etRemark.setTextColor(AppHelper.getColor(requireContext(),R.color.text_color))
+            binding!!.etRemark.setTextColor(
+                AppHelper.getColor(
+                    requireContext(),
+                    R.color.text_color
+                )
+            )
             binding!!.etRemark.setBackgroundResource(R.drawable.disabled_rounded)
             binding!!.tvActualArrivalTime.setBackgroundResource(R.drawable.disabled_rounded)
-            binding!!.tvActualArrivalTime.setTextColor(AppHelper.getColor(requireContext(),R.color.text_color))
+            binding!!.tvActualArrivalTime.setTextColor(
+                AppHelper.getColor(
+                    requireContext(),
+                    R.color.text_color
+                )
+            )
             binding!!.tvActualCompletedTime.setBackgroundResource(R.drawable.disabled_rounded)
-            binding!!.tvActualCompletedTime.setTextColor(AppHelper.getColor(requireContext(),R.color.text_color))
-        }
-        else if (edtitVisit!!.reasonId ==  AppHelper.getReasonID(AppConstants.REASON_PENDING)) {
+            binding!!.tvActualCompletedTime.setTextColor(
+                AppHelper.getColor(
+                    requireContext(),
+                    R.color.text_color
+                )
+            )
+        } else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_PENDING)) {
             setUpStatusReasonSpinner()
             for (item in arrSpinner)
-                if (item.id !=  AppHelper.getReasonID(AppConstants.REASON_PENDING) && item.id != AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY))
+                if (item.id != AppHelper.getReasonID(AppConstants.REASON_PENDING) && item.id != AppHelper.getReasonID(
+                        AppConstants.REASON_ON_THE_WAY
+                    )
+                )
                     item.selectable = false
-        }
-        else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY)) {
+        } else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY)) {
             setUpStatusReasonSpinner()
             for (item in arrSpinner)
-                if (item.id == AppHelper.getReasonID(AppConstants.REASON_SCHEDULED) || item.id == AppHelper.getReasonID(AppConstants.REASON_COMPLETED))
+                if (item.id == AppHelper.getReasonID(AppConstants.REASON_SCHEDULED) || item.id == AppHelper.getReasonID(
+                        AppConstants.REASON_COMPLETED
+                    )
+                )
                     item.selectable = false
-        }
-        else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_SCHEDULED)) {
-            isScheduled=true
+        } else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_SCHEDULED)) {
+            isScheduled = true
             setUpStatusReasonSpinner()
             for (item in arrSpinner)
-                if (item.id ==  AppHelper.getReasonID(AppConstants.REASON_PENDING) || item.id == AppHelper.getReasonID(AppConstants.REASON_COMPLETED))
+                if (item.id == AppHelper.getReasonID(AppConstants.REASON_PENDING) || item.id == AppHelper.getReasonID(
+                        AppConstants.REASON_COMPLETED
+                    )
+                )
                     item.selectable = false
-        }
+        }*/
     }
 
     override fun onItemClicked(view: View, position: Int) {
@@ -654,10 +703,10 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
             edtitVisit!!.reasonId = arrSpinner.get(position).id
         }
     }
-   /* override fun onResume() {
-        super.onResume()
-        MyApplication.activityResumed()
-        if (accessLocation)
-            (requireActivity() as ActivtyVisitDetails).changeState(true)
-    }*/
+    /* override fun onResume() {
+         super.onResume()
+         MyApplication.activityResumed()
+         if (accessLocation)
+             (requireActivity() as ActivtyVisitDetails).changeState(true)
+     }*/
 }

@@ -12,6 +12,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.ids.cloud9.R
@@ -84,7 +85,6 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
         safeCall {
             setUpPermission()
             listeners()
-            foregroundOnlyBroadcastReceiver = ForegroundOnlyBroadcastReceiver()
         }
 
     }
@@ -173,6 +173,8 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
     override fun onResume() {
         super.onResume()
         MyApplication.activityResumed()
+        if(!this::foregroundOnlyBroadcastReceiver.isInitialized)
+            foregroundOnlyBroadcastReceiver = ForegroundOnlyBroadcastReceiver()
         LocalBroadcastManager.getInstance(this).registerReceiver(
             foregroundOnlyBroadcastReceiver,
             IntentFilter(
@@ -576,11 +578,12 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
             editDate(true)
         }
         binding!!.llHomeMain.tvToday.setOnClickListener {
-            binding!!.llHomeMain.nvTop.smoothScrollTo(0,0)
+           /* binding!!.llHomeMain.nvTop.smoothScrollTo(0,0)
             binding!!.llHomeMain.tvToday.setBackgroundResource(R.drawable.rounded_selected)
             binding!!.llHomeMain.btDateNext.setBackgroundResource(R.drawable.rounded_dark_right)
             binding!!.llHomeMain.btDatePrevious.setBackgroundResource(R.drawable.rounded_dark_left)
-            setUpDate()
+            setUpDate()*/
+            throw RuntimeException("This is a crash");
         }
         binding!!.llHomeMain.srVisits.setOnRefreshListener {
             getVisits()

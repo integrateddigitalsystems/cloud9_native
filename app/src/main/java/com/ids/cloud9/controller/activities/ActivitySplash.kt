@@ -150,7 +150,7 @@ class ActivitySplash : AppCompactBase() {
                 if (userId != 0) {
                     updateDevice.userId = userId
                 }
-                Log.wtf("JAD_TOKEN",task.result)
+                Log.wtf("TAG-DEVICE_TOKEN",task.result)
                 RetrofitClient.client!!.create(RetrofitInterface::class.java).updateDevice(
                     updateDevice
                 ).enqueue(object : Callback<UpdateDeviceResponse> {

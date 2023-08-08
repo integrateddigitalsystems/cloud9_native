@@ -7,6 +7,7 @@ import android.provider.Settings
 import android.text.Editable
 import android.text.InputType
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import com.google.firebase.messaging.FirebaseMessaging
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
@@ -168,6 +169,7 @@ class ActivityLogin : AppCompactBase() {
                     true,
                     imei
                 )
+                Log.wtf("TAG-DEVICE_TOKEN",task.result)
                 if(userId!=0){
                     updateDevice.userId = userId
                 }
