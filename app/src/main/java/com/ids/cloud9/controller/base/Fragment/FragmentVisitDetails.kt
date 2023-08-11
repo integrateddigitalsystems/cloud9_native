@@ -618,8 +618,8 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         }!!.selected = true
 
 
-        setUpStatusReasonSpinner()
-       /* if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
+        //setUpStatusReasonSpinner()
+        if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
             setUpStatusReasonSpinner()
             for (item in arrSpinner)
                 if (item.id != AppHelper.getReasonID(AppConstants.REASON_ARRIVED) && item.id != AppHelper.getReasonID(
@@ -679,7 +679,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                     )
                 )
                     item.selectable = false
-        }*/
+        }
     }
 
     override fun onItemClicked(view: View, position: Int) {

@@ -9,6 +9,7 @@ import android.text.InputType
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.gson.Gson
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.custom.AppCompactBase
@@ -96,6 +97,7 @@ class ActivityLogin : AppCompactBase() {
                        MyApplication.email = email
                        MyApplication.password = password
                        MyApplication.userItem = JWTDecoding.decoded(MyApplication.token)
+                       Log.wtf("JAD JWT",Gson().toJson(MyApplication.userItem))
                        updateToken(MyApplication.userItem!!.applicationUserId!!.toInt())
                        MyApplication.deviceUserId = response.body()!!.userId!!
                        updateDevice(MyApplication.deviceUserId)

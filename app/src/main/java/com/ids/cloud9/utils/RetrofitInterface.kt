@@ -31,7 +31,7 @@ interface RetrofitInterface {
     fun getReports(
         @Query(ApiParameters.PRODUCT_CATEGORY_ID) prodCat : Int
     ):Call<ArrayList<Report>>
-    @GET("Activity/GetActivitiesToUserMobile")
+    @GET("Activity/GetActivitiesArrivedForMobileUsers")
     fun getReccomendations(
         @Query(ApiParameters.LOGGED_USER) userId: Int
     ):Call<FilteredActivityList>

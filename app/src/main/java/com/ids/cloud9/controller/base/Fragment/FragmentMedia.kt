@@ -150,6 +150,11 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                     Manifest.permission.CAMERA,
                     Manifest.permission.READ_MEDIA_IMAGES
                 )
+            }else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+                arrayPermissions =  arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA
+                )
             }
             else{
                 arrayPermissions =  arrayOf(
@@ -185,6 +190,12 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                     Manifest.permission.READ_MEDIA_IMAGES
                 )
             }
+            else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+                arrayPermissions =  arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA
+                )
+            }
             else{
                 arrayPermissions =  arrayOf(
                     Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -207,6 +218,12 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
                 arrayPermissions = arrayOf(
                     Manifest.permission.CAMERA,
                     Manifest.permission.READ_MEDIA_IMAGES
+                )
+            }
+            else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+                arrayPermissions =  arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA
                 )
             }
             else{
