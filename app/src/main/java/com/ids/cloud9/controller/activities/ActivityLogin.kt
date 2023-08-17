@@ -4,7 +4,6 @@ package com.ids.cloud9.controller.activities
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import android.text.Editable
 import android.text.InputType
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
@@ -91,16 +90,21 @@ class ActivityLogin : AppCompactBase() {
            )?.enqueue(object : Callback<ResponseLogin> {
                override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
                    try {
-                       MyApplication.token = response.body()!!.token!!
-                       MyApplication.BASE_USER_URL = response.body()!!.apiURL!!
-                       wtf(MyApplication.token)
-                       MyApplication.email = email
-                       MyApplication.password = password
-                       MyApplication.userItem = JWTDecoding.decoded(MyApplication.token)
-                       Log.wtf("JAD JWT",Gson().toJson(MyApplication.userItem))
-                       updateToken(MyApplication.userItem!!.applicationUserId!!.toInt())
-                       MyApplication.deviceUserId = response.body()!!.userId!!
-                       updateDevice(MyApplication.deviceUserId)
+                       if(response.body()!!.success!!) {
+                           MyApplication.token = response.body()!!.token!!
+                           MyApplication.BASE_USER_URL = response.body()!!.apiURL!!
+                           wtf(MyApplication.token)
+                           MyApplication.email = email
+                           MyApplication.password = password
+                           MyApplication.userItem = JWTDecoding.decoded(MyApplication.token)
+                           Log.wtf("JAD JWT", Gson().toJson(MyApplication.userItem))
+                           updateToken(MyApplication.userItem!!.applicationUserId!!.toInt())
+                           MyApplication.deviceUserId = response.body()!!.userId!!
+                           updateDevice(MyApplication.deviceUserId)
+                       }else{
+                           createDialog(response.body()!!.message!!)
+                           binding!!.btLogin.show()
+                       }
                    }catch (ex:Exception){
                        binding!!.btLogin.show()
                        wtf(ex.toString())

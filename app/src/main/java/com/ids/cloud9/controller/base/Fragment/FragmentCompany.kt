@@ -108,12 +108,12 @@ class FragmentCompany : Fragment() {
                     response: Response<ResponseMessage>
                 ) {
                     if (response.isSuccessful){
-                        MyApplication.selectedVisit!!.company!!.email = binding!!.tvEmail!!.text.toString()
-                        MyApplication.selectedVisit!!.company!!.fax = binding!!.tvFax!!.text.toString()
-                        MyApplication.selectedVisit!!.company!!.website = binding!!.tvWebite!!.text.toString()
-                        MyApplication.selectedVisit!!.company!!.phoneNumber = binding!!.tvPhone!!.text.toString()
-                        MyApplication.selectedVisit!!.contact!!.personalPhoneNumber = binding!!.tvContactNumber!!.text.toString()
-                        MyApplication.selectedVisit!!.company!!.address = binding!!.tvAddress!!.text.toString()
+                        MyApplication.selectedVisit!!.company!!.email = binding!!.tvEmail.text.toString()
+                        MyApplication.selectedVisit!!.company!!.fax = binding!!.tvFax.text.toString()
+                        MyApplication.selectedVisit!!.company!!.website = binding!!.tvWebite.text.toString()
+                        MyApplication.selectedVisit!!.company!!.phoneNumber = binding!!.tvPhone.text.toString()
+                        MyApplication.selectedVisit!!.contact!!.personalPhoneNumber = binding!!.tvContactNumber.text.toString()
+                        MyApplication.selectedVisit!!.company!!.address = binding!!.tvAddress.text.toString()
                         setUpCompanyData()
                         binding!!.llButtons.hide()
                         binding!!.ivEditCompany.show()

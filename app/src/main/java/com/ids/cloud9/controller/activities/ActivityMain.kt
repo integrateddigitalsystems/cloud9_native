@@ -12,7 +12,6 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.ids.cloud9.R
@@ -583,7 +582,7 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
             binding!!.llHomeMain.btDateNext.setBackgroundResource(R.drawable.rounded_dark_right)
             binding!!.llHomeMain.btDatePrevious.setBackgroundResource(R.drawable.rounded_dark_left)
             setUpDate()*/
-            throw RuntimeException("This is a crash");
+            throw RuntimeException("This is a crash")
         }
         binding!!.llHomeMain.srVisits.setOnRefreshListener {
             getVisits()

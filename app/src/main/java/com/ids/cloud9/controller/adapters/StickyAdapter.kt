@@ -13,8 +13,6 @@ import com.ids.cloud9.databinding.ItemVisitBinding
 import com.ids.cloud9.databinding.ItemVisitDateBinding
 import com.ids.cloud9.model.Visit
 import com.ids.cloud9.utils.*
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -123,10 +121,10 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<Visit>, var 
 
     }
     override fun isHeader(itemPosition: Int): Boolean {
-        return mList!![itemPosition].isHeader!!
+        return mList[itemPosition].isHeader!!
     }
     override fun getItemViewType(position: Int): Int {
-        return if (mList!![position].isHeader!!)
+        return if (mList[position].isHeader!!)
             VIEW_HEADER else
                 VIEW_DETAIL
     }

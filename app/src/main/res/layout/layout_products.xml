@@ -8,6 +8,7 @@
    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
        android:layout_width="match_parent"
        android:id="@+id/srProducts"
+
        android:layout_height="match_parent">
 
       <LinearLayout
@@ -24,11 +25,13 @@
        android:layout_height="match_parent"/>
 
 
-      <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/rvProducts"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:layout_marginTop="@dimen/normal_margin"/>
+         <androidx.recyclerview.widget.RecyclerView
+             android:id="@+id/rvProducts"
+             android:paddingBottom="@dimen/with_200"
+             android:clipToPadding="false"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_marginTop="@dimen/normal_margin" />
 
       </LinearLayout>
 

@@ -23,7 +23,11 @@ class ResponseLogin(
 
     @SerializedName("userId")
     @Expose
-    var userId : Int ?=0
+    var userId : Int ?=0,
+
+    @SerializedName("message")
+    @Expose
+    var message : String ?=""
 
 ) {
 }

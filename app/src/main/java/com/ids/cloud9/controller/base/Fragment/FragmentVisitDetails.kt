@@ -146,7 +146,10 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
     fun listeners() {
         binding!!.btSave.setOnClickListener {
             edtitVisit!!.remark = binding!!.etRemark.text.toString()
-            updateVisit()
+            if(edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED) || edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY))
+                canUpdateVisit()
+            else
+                updateVisit()
         }
     }
 
@@ -283,7 +286,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                     MyApplication.userItem!!.applicationUserId!!.toInt(),
                     0,
                     true,
-                    firstLocation!!.latitude,
+                    firstLocation.latitude,
                     firstLocation.longitude,
                     id
                 )
@@ -333,6 +336,33 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         }
     }
 
+
+    fun canUpdateVisit(){
+            binding!!.llLoading.show()
+            RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
+                .canUpdateVisit(MyApplication.userItem!!.applicationUserId!!.toInt(),edtitVisit!!.id!!)
+                .enqueue(object : Callback<ResponseMessage> {
+                    override fun onResponse(
+                        call: Call<ResponseMessage>,
+                        response: Response<ResponseMessage>
+                    ) {
+                        if(response.body()!!.success!!.equals("true")){
+                            updateVisit()
+                        }else{
+                            createDialog(response.body()!!.message!!)
+                            binding!!.llLoading.hide()
+                        }
+
+                    }
+
+                    override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
+                        binding!!.llLoading.hide()
+                        wtf(getString(R.string.error_getting_data))
+                    }
+
+                })
+    }
+
     fun updateVisit() {
         binding!!.llLoading.show()
         for (item in edtitVisit!!.visitResources)
@@ -340,7 +370,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         val str = Gson().toJson(edtitVisit)
         wtf(str)
         RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
-            .updateVisit(edtitVisit!!)
+            .updateVisit(MyApplication.userItem!!.applicationUserId!!.toInt(),edtitVisit!!)
             .enqueue(object : Callback<ResponseMessage> {
                 override fun onResponse(
                     call: Call<ResponseMessage>,
@@ -618,7 +648,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         }!!.selected = true
 
 
-        //setUpStatusReasonSpinner()
+      //  setUpStatusReasonSpinner()
         if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
             setUpStatusReasonSpinner()
             for (item in arrSpinner)

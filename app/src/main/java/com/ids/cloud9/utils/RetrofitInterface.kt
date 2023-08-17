@@ -72,6 +72,7 @@ interface RetrofitInterface {
     ):Call<ResponseMessage>
     @POST("Visit/UpdateVisit")
     fun updateVisit(
+        @Query(ApiParameters.LOGGED_USER) loggedUser : Int ,
         @Body param: Visit
     ): Call<ResponseMessage>
     @POST("Activity/UpdateActivityMobile")
@@ -139,6 +140,12 @@ interface RetrofitInterface {
     @POST("Companies/EditCompany")
     fun editCompany(
         @Body reqCompany : CompanyRequest
+    ):Call<ResponseMessage>
+
+    @GET("visit/CanUpdateVisit")
+    fun canUpdateVisit(
+        @Query(ApiParameters.LOGGED_USER) loggedUser: Int ,
+        @Query(ApiParameters.VISIT_ID) visitId: Int
     ):Call<ResponseMessage>
 
 }

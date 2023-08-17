@@ -36,7 +36,7 @@ class AdapterRecords(
     ), View.OnClickListener {
         fun bind(item: RecordListsItem) {
             binding.tvSubject.text = item.formName
-            binding.tvDate.text = simpTo.format(simpOrg.parse(item.creationDate)!!)
+            binding.tvDate.text = simpTo.format(simpOrg.parse(item.creationDate!!)!!)
         }
         init {
             binding.root.setOnClickListener(this)
