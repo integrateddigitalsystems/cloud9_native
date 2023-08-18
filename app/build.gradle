@@ -118,6 +118,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx:22.1.1'
     implementation 'com.google.firebase:firebase-firestore-ktx:24.7.0'
 
+    implementation 'androidx.media3:media3-exoplayer:1.1.1'
+    implementation 'androidx.media3:media3-exoplayer-dash:1.1.1'
+    implementation 'androidx.media3:media3-ui:1.1.1'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.19.0'
     implementation 'com.google.android.exoplayer:exoplayer-dash:2.19.0'
     implementation 'com.google.android.exoplayer:exoplayer-hls:2.19.0'

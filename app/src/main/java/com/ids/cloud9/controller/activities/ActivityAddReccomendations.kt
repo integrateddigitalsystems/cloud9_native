@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
@@ -28,6 +29,7 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
 
     var binding: ActivityAddReccomendBinding? = null
     var adapter: AdapterText? = null
+    var canEdit : Boolean = true
     private var simp = SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH)
     private var simpOrg = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
     private var adapterUser: AdapterUser? = null
@@ -96,59 +98,71 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
         binding!!.llTool.btBack.setOnClickListener {
            onBackPressedDispatcher.onBackPressed()
         }
-        binding!!.llAssignTo.setOnClickListener {
-            if (binding!!.llNameSelect.visibility == View.GONE)
-                  binding!!.llNameSelect.show()
-            else  binding!!.llNameSelect.hide()
-        }
-        binding!!.ivSelectUser.setOnClickListener {
-            if (binding!!.llNameSelect.visibility == View.GONE)
-                 binding!!.llNameSelect.show()
-            else binding!!.llNameSelect.hide()
-        }
-        binding!!.tvDueDate.setOnClickListener {
-            popupDate()
-        }
-        binding!!.lLDelete.setOnClickListener {
-            createActionDialog(
-                getString(R.string.you_wanna_delete),
-                0
-            ){
-                deleteReccomend()
+        if(canEdit) {
+            binding!!.llAssignTo.setOnClickListener {
+                if (binding!!.llNameSelect.visibility == View.GONE)
+                    binding!!.llNameSelect.show()
+                else binding!!.llNameSelect.hide()
             }
+            binding!!.ivSelectUser.setOnClickListener {
+                if (binding!!.llNameSelect.visibility == View.GONE)
+                    binding!!.llNameSelect.show()
+                else binding!!.llNameSelect.hide()
+            }
+            binding!!.tvDueDate.setOnClickListener {
+                popupDate()
+            }
+            binding!!.lLDelete.setOnClickListener {
+                createActionDialog(
+                    getString(R.string.you_wanna_delete),
+                    0
+                ) {
+                    deleteReccomend()
+                }
+            }
+
+            binding!!.btSave.setOnClickListener {
+                if (!binding!!.etSubject.text.toString()
+                        .isEmpty() && !binding!!.tvDueDate.text.toString()
+                        .isEmpty() && !binding!!.etDesc.text.toString()
+                        .isEmpty() && arrayUserSelected.size > 0
+                ) {
+                    if(binding!!.etSubject.text!!.length >=5)
+                        createReccomend()
+                    else{
+                        createDialog( getString(R.string.less_than_5))
+                    }
+
+                } else if (binding!!.etSubject.text.toString()
+                        .isNotEmpty() && binding!!.tvDueDate.text.toString()
+                        .isNotEmpty() && binding!!.etDesc.text.toString()
+                        .isNotEmpty() && MyApplication.selectedReccomend != null
+                ) {
+
+                    if(binding!!.etSubject.text!!.length >=5)
+                        updateReccomend()
+                    else{
+                        createDialog( getString(R.string.less_than_5))
+                    }
+                } else {
+                    createDialog( getString(R.string.fill_details))
+                }
+            }
+        }else{
+            binding!!.etSubject.background = AppCompatResources.getDrawable(this ,R.drawable.rounded_gray)
+            binding!!.etDesc.background = AppCompatResources.getDrawable(this ,R.drawable.rounded_gray)
+            binding!!.rlDueDate.background = AppCompatResources.getDrawable(this ,R.drawable.rounded_gray)
+            binding!!.etSubject.isEnabled = false
+            binding!!.etDesc.isEnabled = false
+            binding!!.btSave.hide()
+            binding!!.lLDelete.hide()
         }
         binding!!.llTool.llToolbarLayout.setOnClickListener {
             if(binding!!.llNameSelect.visibility == View.VISIBLE){
                 binding!!.llNameSelect.hide()
             }
         }
-        binding!!.btSave.setOnClickListener {
-            if (!binding!!.etSubject.text.toString()
-                    .isEmpty() && !binding!!.tvDueDate.text.toString()
-                    .isEmpty() && !binding!!.etDesc.text.toString()
-                    .isEmpty() && arrayUserSelected.size > 0
-            ) {
-                if(binding!!.etSubject.text!!.length >=5)
-                    createReccomend()
-                else{
-                    createDialog( getString(R.string.less_than_5))
-                }
 
-            } else if (binding!!.etSubject.text.toString()
-                    .isNotEmpty() && binding!!.tvDueDate.text.toString()
-                    .isNotEmpty() && binding!!.etDesc.text.toString()
-                    .isNotEmpty() && MyApplication.selectedReccomend != null
-            ) {
-
-                if(binding!!.etSubject.text!!.length >=5)
-                    updateReccomend()
-                else{
-                    createDialog( getString(R.string.less_than_5))
-                }
-            } else {
-                createDialog( getString(R.string.fill_details))
-            }
-        }
         if (MyApplication.selectedReccomend == null) {
             binding!!.llAssignTo.show()
             binding!!.llEditAssign.hide()
@@ -265,6 +279,9 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
         binding!!.rvSelectedUser.adapter = adapterUser
     }
     fun init() {
+        safeCall {
+            canEdit = intent.extras!!.getBoolean("canEdit", true)
+        }
         getUsers()
         listeners()
         setUpData()

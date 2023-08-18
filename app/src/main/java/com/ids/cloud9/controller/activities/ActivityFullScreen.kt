@@ -3,9 +3,9 @@ package com.ids.cloud9.controller.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.media3.common.Player
+import androidx.media3.ui.PlayerView;
 import androidx.viewpager.widget.ViewPager
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.AdapterPagerFiles
@@ -103,9 +103,9 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
         for (i in arrayVideos.indices) {
             if (arrayVideos.get(i).type==2) {
                 (binding!!.vpMediaFull.getChildAt(i)
-                    .findViewById(R.id.epView) as StyledPlayerView).player!!.playWhenReady =
+                    .findViewById(R.id.epView) as PlayerView).player!!.playWhenReady =
                     false
-                (binding!!.vpMediaFull.getChildAt(i).findViewById(R.id.epView) as StyledPlayerView).player!!
+                (binding!!.vpMediaFull.getChildAt(i).findViewById(R.id.epView) as PlayerView).player!!
                     .playbackState
             }
         }

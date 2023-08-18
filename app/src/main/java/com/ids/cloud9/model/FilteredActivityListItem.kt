@@ -47,5 +47,11 @@ data class FilteredActivityListItem(
     @SerializedName("type")
     var type: String ,
     @SerializedName("reason")
-    var reason : String = ""
+    var reason : String = "",
+    @SerializedName("userId")
+    var userId : String ?="" ,
+    @SerializedName("visitReasonId")
+    var visitReasonId : Int ?=0
+
+
 )

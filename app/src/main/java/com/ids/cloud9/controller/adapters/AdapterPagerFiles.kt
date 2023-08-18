@@ -8,10 +8,10 @@ import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.StyledPlayerView
+import androidx.media3.common.Player
+import androidx.media3.ui.PlayerView
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.common.MediaItem
 import com.ids.cloud9.R
 import com.ids.cloud9.custom.TouchImageView
 import com.ids.cloud9.model.Videos
@@ -47,19 +47,19 @@ class AdapterPagerFiles(
        (itemView.findViewById<View>(R.id.btFullScreen) as ImageView).visibility =
             View.INVISIBLE
         if (files[position].type == 0) {
-            (itemView.findViewById<View>(R.id.epView) as StyledPlayerView).visibility =
+            (itemView.findViewById<View>(R.id.epView) as PlayerView).visibility =
                 View.VISIBLE
             touch.visibility = View.GONE
             loadVideo(
                 itemView.context,
-                itemView.findViewById<View>(R.id.epView) as StyledPlayerView,
+                itemView.findViewById<View>(R.id.epView) as PlayerView,
                 files[position].url,
                 position
             )
 
         } else {
             wtf("file : " + files[position].url)
-            (itemView.findViewById<View>(R.id.epView) as StyledPlayerView).visibility = View.GONE
+            (itemView.findViewById<View>(R.id.epView) as PlayerView).visibility = View.GONE
             touch.visibility = View.VISIBLE
             loadImage(
                 itemView.context,
@@ -82,10 +82,10 @@ class AdapterPagerFiles(
         try {
             currentPosition = 0L
             (container.getChildAt(position)
-                .findViewById<View>(R.id.epView) as StyledPlayerView).player!!.playWhenReady =
+                .findViewById<View>(R.id.epView) as PlayerView).player!!.playWhenReady =
                 false
             (container.getChildAt(position)
-                .findViewById<View>(R.id.epView) as StyledPlayerView).player!!
+                .findViewById<View>(R.id.epView) as PlayerView).player!!
                 .playbackState
         } catch (e: Exception) {
             wtf(e.toString())
@@ -110,7 +110,7 @@ class AdapterPagerFiles(
     }
     private fun loadVideo(
         context: Context,
-        exoPlayerView: StyledPlayerView,
+        exoPlayerView: PlayerView,
         url: String?,
         position: Int
     ) {
