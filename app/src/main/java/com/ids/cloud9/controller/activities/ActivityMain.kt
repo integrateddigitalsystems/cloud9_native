@@ -577,12 +577,11 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
             editDate(true)
         }
         binding!!.llHomeMain.tvToday.setOnClickListener {
-           /* binding!!.llHomeMain.nvTop.smoothScrollTo(0,0)
+            binding!!.llHomeMain.nvTop.smoothScrollTo(0,0)
             binding!!.llHomeMain.tvToday.setBackgroundResource(R.drawable.rounded_selected)
             binding!!.llHomeMain.btDateNext.setBackgroundResource(R.drawable.rounded_dark_right)
             binding!!.llHomeMain.btDatePrevious.setBackgroundResource(R.drawable.rounded_dark_left)
-            setUpDate()*/
-            throw RuntimeException("This is a crash")
+            setUpDate()
         }
         binding!!.llHomeMain.srVisits.setOnRefreshListener {
             getVisits()
