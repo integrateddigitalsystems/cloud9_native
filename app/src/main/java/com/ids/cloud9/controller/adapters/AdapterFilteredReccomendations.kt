@@ -35,9 +35,9 @@ class AdapterFilteredReccomendations(
         binding.root
     ), View.OnClickListener {
         fun bind(item: FilteredActivityListItem) {
-            binding.tvAssignedTo.setCheckText(item.assignedTo)
-            binding.tvDesc.setCheckText(item.description)
-            binding.tvSubject.setCheckText(item.subject)
+            binding.tvAssignedTo.setCheckText(item.assignedTo!!)
+            binding.tvDesc.setCheckText(item.description!!)
+            binding.tvSubject.setCheckText(item.subject!!)
             binding.tvDueDate.setCheckText(simpTo.format(simpOrg.parse(item.dueDate)!!))
             if(!item.statusReason.isNullOrEmpty())
                 binding.tvReason.setCheckText(item.statusReason!!)

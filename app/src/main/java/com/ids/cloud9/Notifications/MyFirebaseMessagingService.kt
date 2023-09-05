@@ -12,6 +12,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
+import com.ids.cloud9.BuildConfig
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.activities.ActivitySplash
@@ -20,7 +21,7 @@ import com.ids.cloud9.utils.wtf
 
 class MyFirebaseMessagingService: FirebaseMessagingService() {
 
-    private val NOTIFICATION_CHANNEL_ID = "while_in_use_channel_02"
+    private val TAG = "MyFirebaseMessagingService"
 
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
@@ -67,7 +68,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         val intent = Intent(this,ActivitySplash::class.java)
             .putExtra("visitId",visitId)
         val pendingIntent = PendingIntent.getActivity(this, MyApplication.UNIQUE_REQUEST_CODE++, intent, PendingIntent.FLAG_IMMUTABLE)
-        val builder = NotificationCompat.Builder(this,NOTIFICATION_CHANNEL_ID)
+        val builder = NotificationCompat.Builder(this, BuildConfig.APPLICATION_ID)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle(title)
             .setContentText(message).setAutoCancel(true).setContentIntent(pendingIntent)
@@ -75,7 +76,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
         val manager :  NotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val  channel = NotificationChannel(NOTIFICATION_CHANNEL_ID, "Default channel", NotificationManager.IMPORTANCE_DEFAULT)
+            val  channel = NotificationChannel(BuildConfig.APPLICATION_ID, "Default channel", NotificationManager.IMPORTANCE_DEFAULT)
             manager.createNotificationChannel(channel)
         }
         manager.notify(0, builder.build())

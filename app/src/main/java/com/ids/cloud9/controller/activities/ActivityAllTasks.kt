@@ -94,8 +94,7 @@ class ActivityAllTasks : AppCompactBase(), RVOnItemClickListener {
             binding!!.tvNotasks.hide()
             binding!!.rvReccomendations.show()
             binding!!.rvReccomendations.layoutManager = LinearLayoutManager(this)
-            binding!!.rvReccomendations.adapter =
-                AdapterFilteredReccomendations(arrayReccomend, this, this)
+            binding!!.rvReccomendations.adapter = AdapterFilteredReccomendations(arrayReccomend, this, this)
         } else {
             binding!!.tvNotasks.show()
             binding!!.rvReccomendations.hide()

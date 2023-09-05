@@ -163,7 +163,7 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
     fun listeners() {
         onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if(fromNotf>0){
+                if (fromNotf > 0) {
                     startActivity(
                         Intent(
                             this@ActivtyVisitDetails,
@@ -171,11 +171,12 @@ class ActivtyVisitDetails :AppCompactBase(), RVOnItemClickListener {
                         )
                     )
                     finishAffinity()
-                }else{
+                } else{
                     finish()
                 }
             }
-        })
+        }
+        )
         binding!!.llCompany.setOnClickListener {
             if(currLayPost != 4) {
                 if (currLayPost != 1) {

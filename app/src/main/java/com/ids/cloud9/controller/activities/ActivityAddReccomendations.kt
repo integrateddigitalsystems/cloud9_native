@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.GridLayoutManager
@@ -170,8 +171,8 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
             binding!!.llAssignTo.hide()
             binding!!.llEditAssign.show()
             binding!!.tvName.text = MyApplication.selectedReccomend!!.assignedTo
-            binding!!.etSubject.text = MyApplication.selectedReccomend!!.subject.toEditable()
-            binding!!.etDesc.text = MyApplication.selectedReccomend!!.description.toEditable()
+            binding!!.etSubject.text = MyApplication.selectedReccomend!!.subject!!.toEditable()
+            binding!!.etDesc.text = MyApplication.selectedReccomend!!.description!!.toEditable()
             binding!!.tvDueDate.text =
                 simp.format(simpOrg.parse(MyApplication.selectedReccomend!!.dueDate)!!)
         }
@@ -181,10 +182,34 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
         MyApplication.selectedReccomend!!.dueDate = simpOrg.format(simp.parse(binding!!.tvDueDate.text.toString())!!)
         MyApplication.selectedReccomend!!.subject = binding!!.etSubject.text.toString()
         MyApplication.selectedReccomend!!.description = binding!!.etDesc.text.toString()
-        wtf(Gson().toJson(MyApplication.selectedReccomend))
+        Log.wtf("TAG_update_RECC",Gson().toJson(MyApplication.selectedReccomend))
+        val request  = FilteredActivityListItem(
+            MyApplication.selectedReccomend!!.assignedTo,
+            MyApplication.selectedReccomend!!.assignedToId,
+            MyApplication.selectedReccomend!!.creationDate,
+            MyApplication.selectedReccomend!!.description,
+            MyApplication.selectedReccomend!!.dueDate,
+            MyApplication.selectedReccomend!!.endDate,
+            MyApplication.selectedReccomend!!.entity,
+            MyApplication.selectedReccomend!!.entityId,
+            MyApplication.selectedReccomend!!.entityType,
+            MyApplication.selectedReccomend!!.entityTypeId,
+            if(MyApplication.selectedReccomend!!.id!=0 )MyApplication.selectedReccomend!!.id else  MyApplication.selectedReccomend!!.activityId,
+            MyApplication.selectedReccomend!!.owner,
+            MyApplication.selectedReccomend!!.ownerId,
+            MyApplication.selectedReccomend!!.reasonId,
+            MyApplication.selectedReccomend!!.startDate,
+            MyApplication.selectedReccomend!!.status,
+            MyApplication.selectedReccomend!!.statusId,
+            MyApplication.selectedReccomend!!.statusReason,
+            MyApplication.selectedReccomend!!.statusReasonCode,
+            MyApplication.selectedReccomend!!.subject,
+            MyApplication.selectedReccomend!!.type
+        )
+        Log.wtf("TAG_update_RECC",Gson().toJson(request))
         RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .updateActivity(
-                MyApplication.selectedReccomend!!
+               request
             ).enqueue(object : Callback<ResponseMessage> {
                 override fun onResponse(
                     call: Call<ResponseMessage>,
@@ -210,7 +235,7 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
     private fun deleteReccomend(){
         binding!!.llLoading.show()
         RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).deleteActivity(
-            MyApplication.selectedReccomend!!.id
+            if(MyApplication.selectedReccomend!!.id!=0)MyApplication.selectedReccomend!!.id!!else MyApplication.selectedReccomend!!.activityId!!
         ).enqueue(object : Callback<ResponseMessage> {
             override fun onResponse(
                 call: Call<ResponseMessage>,
