@@ -55,7 +55,10 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
         init()
     }
     private fun popupDate() {
-        val myCalendar: Calendar = Calendar.getInstance()
+        var myCalendar : Calendar =Calendar.getInstance()
+        if(MyApplication.selectedReccomend !=null){
+           myCalendar.time =  simpOrg.parse(MyApplication.selectedReccomend!!.dueDate)!!
+        }
         val DatePicker =
             DatePickerDialog(
                 this,
@@ -173,8 +176,7 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
             binding!!.tvName.text = MyApplication.selectedReccomend!!.assignedTo
             binding!!.etSubject.text = MyApplication.selectedReccomend!!.subject!!.toEditable()
             binding!!.etDesc.text = MyApplication.selectedReccomend!!.description!!.toEditable()
-            binding!!.tvDueDate.text =
-                simp.format(simpOrg.parse(MyApplication.selectedReccomend!!.dueDate)!!)
+            binding!!.tvDueDate.text = simp.format(simpOrg.parse(MyApplication.selectedReccomend!!.dueDate)!!)
         }
     }
     private fun updateReccomend() {
@@ -182,34 +184,20 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
         MyApplication.selectedReccomend!!.dueDate = simpOrg.format(simp.parse(binding!!.tvDueDate.text.toString())!!)
         MyApplication.selectedReccomend!!.subject = binding!!.etSubject.text.toString()
         MyApplication.selectedReccomend!!.description = binding!!.etDesc.text.toString()
+        try {
+            if(MyApplication.selectedReccomend!!.id==0 && MyApplication.selectedReccomend!!.activityId!=0){
+                MyApplication.selectedReccomend!!.id = MyApplication.selectedReccomend!!.activityId
+            }
+        }catch (ex:Exception){
+            if(MyApplication.selectedReccomend!!.id==null){
+                if(MyApplication.selectedReccomend!!.activityId!=null)
+                    MyApplication.selectedReccomend!!.id = MyApplication.selectedReccomend!!.activityId
+            }
+        }
         Log.wtf("TAG_update_RECC",Gson().toJson(MyApplication.selectedReccomend))
-        val request  = FilteredActivityListItem(
-            MyApplication.selectedReccomend!!.assignedTo,
-            MyApplication.selectedReccomend!!.assignedToId,
-            MyApplication.selectedReccomend!!.creationDate,
-            MyApplication.selectedReccomend!!.description,
-            MyApplication.selectedReccomend!!.dueDate,
-            MyApplication.selectedReccomend!!.endDate,
-            MyApplication.selectedReccomend!!.entity,
-            MyApplication.selectedReccomend!!.entityId,
-            MyApplication.selectedReccomend!!.entityType,
-            MyApplication.selectedReccomend!!.entityTypeId,
-            if(MyApplication.selectedReccomend!!.id!=0 )MyApplication.selectedReccomend!!.id else  MyApplication.selectedReccomend!!.activityId,
-            MyApplication.selectedReccomend!!.owner,
-            MyApplication.selectedReccomend!!.ownerId,
-            MyApplication.selectedReccomend!!.reasonId,
-            MyApplication.selectedReccomend!!.startDate,
-            MyApplication.selectedReccomend!!.status,
-            MyApplication.selectedReccomend!!.statusId,
-            MyApplication.selectedReccomend!!.statusReason,
-            MyApplication.selectedReccomend!!.statusReasonCode,
-            MyApplication.selectedReccomend!!.subject,
-            MyApplication.selectedReccomend!!.type
-        )
-        Log.wtf("TAG_update_RECC",Gson().toJson(request))
         RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .updateActivity(
-               request
+               MyApplication.selectedReccomend!!
             ).enqueue(object : Callback<ResponseMessage> {
                 override fun onResponse(
                     call: Call<ResponseMessage>,
@@ -298,7 +286,8 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
             })
     }
     private fun setUpData() {
-        binding!!.tvDueDate.text = simp.format(Calendar.getInstance().time)
+        if(MyApplication.selectedReccomend==null)
+            binding!!.tvDueDate.text = simp.format(Calendar.getInstance().time)
         binding!!.rvSelectedUser.layoutManager = GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false)
         adapterUser = AdapterUser(arrayUserSelected, this, this)
         binding!!.rvSelectedUser.adapter = adapterUser
