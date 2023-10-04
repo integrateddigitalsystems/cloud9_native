@@ -223,6 +223,12 @@ inline fun <R> safeCall(call: () -> R): Result<R> {
     }
 }
 
+inline fun releaseOnly(block: () -> Unit) {
+    if (!BuildConfig.DEBUG) {
+        block()
+    }
+}
+
 fun String.toEditable(): Editable {
     return Editable.Factory.getInstance().newEditable(this)
 }

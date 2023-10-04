@@ -74,6 +74,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
     }
     fun init() {
       /*  getProducts()*/
+
         if (MyApplication.selectedVisit!!.reasonId ==  AppHelper.getReasonID(AppConstants.REASON_PENDING) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_SCHEDULED)) {
             binding!!.llButton.setBackgroundResource(R.color.disabled_primary)
             binding!!.btAddProducts.isEnabled = false
@@ -224,7 +225,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
             adapterDialog!!.notifyItemChanged(position)
             adapterProd!!.notifyItemChanged(position)
         } else if (view.id == R.id.ivReport) {
-          /*  if (MyApplication.selectedVisit!!.reasonId == AppConstants.ARRIVED_REASON_ID) {*/
+            if (MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
                 MyApplication.selectedProduct = arrayProd.get(position)
                 val ct = arrayProd.get(position).reports.count {
                     it.selected
@@ -240,7 +241,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
                     }!!.url)
                     )
                 }
-          /*  }*/
+            }
         }
     }
 }

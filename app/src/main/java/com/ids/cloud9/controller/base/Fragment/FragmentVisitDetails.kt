@@ -435,7 +435,6 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
 
                 override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
                     binding!!.llLoading.hide()
-                    wtf(getString(R.string.error_getting_data))
                 }
 
             })

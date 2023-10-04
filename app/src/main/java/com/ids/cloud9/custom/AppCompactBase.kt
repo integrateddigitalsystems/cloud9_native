@@ -228,6 +228,7 @@ open class AppCompactBase : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppHelper.setLocal()
+        AppHelper.handleCrashes(this)
         if (MyApplication.languageCode == AppConstants.LANG_ENGLISH) {
             AppHelper.setLocalStrings(this, "en", Locale("en"))
         } else if (MyApplication.languageCode == AppConstants.LANG_ARABIC) {

@@ -114,13 +114,14 @@ class AdapterProducts(
             }
             binding.tvSN.text = SN
             binding.tvQuantity.text = item.quantity.toString()
-            if (items.get(layoutPosition).reports.size > 0) {
+            if (items.get(layoutPosition).reports.size > 0 && MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
                 setUpStatusReasonSpinner(layoutPosition, binding)
                 binding.ivReport.setTintImage(
                     R.color.black
                 )
             }else {
-                binding.tvReport.text = con.getString(R.string.no_data)
+                if(items.get(layoutPosition).reports.size == 0)
+                    binding.tvReport.text = con.getString(R.string.no_data)
                 AppHelper.setTextColor(con, binding.tvReport, R.color.gray_border_item)
             }
         }

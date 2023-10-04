@@ -60,6 +60,14 @@ class AppHelper {
 
         }
 
+        fun handleCrashes(context: Activity) {
+            releaseOnly {
+                Thread.getDefaultUncaughtExceptionHandler()
+                Thread.setDefaultUncaughtExceptionHandler(MyExceptionHandler(context))
+            }
+        }
+
+
         fun hasPermission(context: Context, permissions: Array<String>): Boolean = permissions.all {
             ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
         }
