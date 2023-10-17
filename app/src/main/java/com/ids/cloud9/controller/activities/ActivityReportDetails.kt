@@ -58,8 +58,11 @@ class ActivityReportDetails : AppCompactBase() {
         binding!!.wvReport.loadUrl(url)
         Log.wtf("URL_WEBVIEW",url)
         binding!!.wvReport.webViewClient = object : WebViewClient() {
+
+
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
+                Log.wtf("JAD-URL",url)
                 binding!!.llLoading.hide()
             }
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
@@ -81,6 +84,17 @@ class ActivityReportDetails : AppCompactBase() {
                 super.doUpdateVisitedHistory(view, url, isReload)
             }
 
+        }
+        binding!!.wvReport.webChromeClient = object : WebChromeClient(){
+
+            override fun onJsAlert(
+                view: WebView?,
+                url: String?,
+                message: String?,
+                result: JsResult?
+            ): Boolean {
+                return super.onJsAlert(view, url, message, result)
+            }
         }
     }
 
