@@ -5,39 +5,39 @@ import com.google.gson.annotations.SerializedName
 
 data class ProductAllListItem(
     @SerializedName("amc")
-    val amc: Any,
+    val amc: Any?=null ,
     @SerializedName("category")
-    val category: String,
+    val category: String?="",
     @SerializedName("categoryId")
-    val categoryId: Int,
+    val categoryId: Int?=0,
     @SerializedName("creationDate")
-    val creationDate: String,
+    val creationDate: String?="",
     @SerializedName("currency")
-    val currency: String,
+    val currency: String?="",
     @SerializedName("currentPrice")
-    val currentPrice: Any,
+    val currentPrice: Any?=null ,
     @SerializedName("description")
     val description: String?="" ,
     @SerializedName("id")
-    val id: Int,
+    val id: Int?=0,
     @SerializedName("isComponent")
-    val isComponent: Boolean,
+    val isComponent: Boolean?=false,
     @SerializedName("name")
-    val name: String,
+    val name: String?="",
     @SerializedName("opportunityName")
-    val opportunityName: Any,
+    val opportunityName: Any?=null ,
     @SerializedName("owner")
-    val owner: String,
+    val owner: String?="",
     @SerializedName("serialNumber")
-    val serialNumber: String,
+    val serialNumber: String?="",
     @SerializedName("sparePart")
-    val sparePart: Boolean,
+    val sparePart: Boolean?=false,
     @SerializedName("status")
-    val status: String,
+    val status: String?="",
     @SerializedName("typeOthers")
-    val typeOthers: Boolean,
+    val typeOthers: Boolean?=false,
     @SerializedName("unitId")
-    val unitId: Int ,
+    val unitId: Int?=0 ,
 
     var selected : Boolean ?=false
 )

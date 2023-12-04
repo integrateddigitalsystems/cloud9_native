@@ -5,41 +5,41 @@ import com.google.gson.annotations.SerializedName
 
 data class ApplicationUserListItem(
     @SerializedName("creationDate")
-    val creationDate: String,
+    val creationDate: String?="",
     @SerializedName("departmentId")
-    val departmentId: Int,
+    val departmentId: Int?=0,
     @SerializedName("email")
-    val email: String,
+    val email: String?="",
     @SerializedName("firstName")
-    val firstName: String,
+    val firstName: String?="",
     @SerializedName("id")
-    val id: Int,
+    val id: Int?=0,
     @SerializedName("identity")
-    val identity: String,
+    val identity: String?="",
     @SerializedName("isActive")
-    val isActive: Boolean,
+    val isActive: Boolean?=false,
     @SerializedName("isDeleted")
-    val isDeleted: Boolean,
+    val isDeleted: Boolean?=false,
     @SerializedName("isLocked")
-    val isLocked: Boolean,
+    val isLocked: Boolean?=false,
     @SerializedName("jobRole")
-    val jobRole: Int,
+    val jobRole: Int?=0,
     @SerializedName("lastName")
-    val lastName: String,
+    val lastName: String?="",
     @SerializedName("leadAssignedTos")
-    val leadAssignedTos: List<Any>,
+    val leadAssignedTos: ArrayList <Any> = arrayListOf(),
     @SerializedName("leadOwners")
-    val leadOwners: List<Any>,
+    val leadOwners: ArrayList <Any> = arrayListOf(),
     @SerializedName("location")
-    val location: Any,
+    val location: Any?=null ,
     @SerializedName("phoneNumber")
-    val phoneNumber: String,
+    val phoneNumber: String?="",
     @SerializedName("roles")
-    val roles: List<String>,
+    val roles:  ArrayList <String> = arrayListOf(),
     @SerializedName("userId")
-    val userId: String,
+    val userId: String?="",
     @SerializedName("userName")
-    val userName: String,
+    val userName: String?="",
     @SerializedName("userProducts")
-    val userProducts: List<Any>
+    val userProducts: ArrayList <Any> = arrayListOf()
 )

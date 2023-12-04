@@ -44,6 +44,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
         wtf(Gson().toJson(message))
+        Log.wtf("JAD_MESSAGE_NOTIFICATION",Gson().toJson(message))
         wtf("onMessageReceived: " + message.getData().get("message"))
         var visitId : Int ?=0
         try{
@@ -58,20 +59,30 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         }catch (ex:Exception){
             messageSent = ""
         }
+
+        var title : String ?=""
+        try{
+            title = message.data.get("title")
+        }catch (ex:Exception){
+            title = ""
+        }
         if(messageSent.isNullOrEmpty())
             messageSent = ""
-        sendNotification("",visitId!!,messageSent)
+        sendNotification(messageSent,visitId!!,title!!)
     }
 
 
     fun sendNotification(message :String , visitId : Int,title : String  ){
         val intent = Intent(this,ActivitySplash::class.java)
             .putExtra("visitId",visitId)
-        val pendingIntent = PendingIntent.getActivity(this, MyApplication.UNIQUE_REQUEST_CODE++, intent, PendingIntent.FLAG_IMMUTABLE)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
+        val pendingIntent = PendingIntent.getActivity(this, MyApplication.UNIQUE_REQUEST_CODE++, intent, flag)
         val builder = NotificationCompat.Builder(this, BuildConfig.APPLICATION_ID)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle(title)
-            .setContentText(message).setAutoCancel(true).setContentIntent(pendingIntent)
+            .setContentText(message)
+            .setAutoCancel(true).setContentIntent(pendingIntent)
 
 
         val manager :  NotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager

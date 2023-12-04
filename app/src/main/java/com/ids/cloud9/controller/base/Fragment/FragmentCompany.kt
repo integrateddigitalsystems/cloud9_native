@@ -158,8 +158,26 @@ class FragmentCompany : Fragment() {
                 MyApplication.selectedVisit!!.company!!.companyName!!,
                 MyApplication.selectedVisit!!.company!!.companyNameAr!!
             )
-            binding!!.tvEmail.setCheckText(MyApplication.selectedVisit!!.company!!.email!!)
-            binding!!.tvEmailValue.text = MyApplication.selectedVisit!!.company!!.email
+            if(!MyApplication.selectedVisit!!.company!!.website!!.isNullOrEmpty()){
+                binding!!.tvWebsiteValue.text = MyApplication.selectedVisit!!.company!!.website!!
+            }else{
+                binding!!.tvWebsiteValue.text = ""
+            }
+            if(!MyApplication.selectedVisit!!.company!!.website!!.isNullOrEmpty()){
+                binding!!.tvWebite.text = MyApplication.selectedVisit!!.company!!.website!!.toEditable()
+            }else{
+                binding!!.tvWebite.text = "".toEditable()
+            }
+            if(!MyApplication.selectedVisit!!.company!!.email.isNullOrEmpty()){
+                binding!!.tvEmailValue.text = MyApplication.selectedVisit!!.company!!.email!!.toEditable()
+            }else{
+                binding!!.tvEmailValue.text = ""
+            }
+            if(!MyApplication.selectedVisit!!.company!!.email!!.isNullOrEmpty()){
+                binding!!.tvEmail.text = MyApplication.selectedVisit!!.company!!.email!!.toEditable()
+            }else{
+                binding!!.tvEmail.text = "".toEditable()
+            }
             binding!!.tvWebite.setCheckText(MyApplication.selectedVisit!!.company!!.website!!)
             binding!!.tvWebsiteValue.text = MyApplication.selectedVisit!!.company!!.website!!
             if(MyApplication.selectedVisit!!.company!!.phoneNumber!=null && MyApplication.selectedVisit!!.company!!.phoneNumber!!.isNotEmpty()) {

@@ -4,23 +4,23 @@ import com.google.gson.annotations.SerializedName
 
 data class CompanyRequest(
     @SerializedName("address")
-    val address: String,
+    val address: String?="",
     @SerializedName("address2")
-    val address2: String,
+    val address2: String?="",
     @SerializedName("companyName")
-    val companyName: String,
+    val companyName: String?="",
     @SerializedName("companyNameAr")
-    val companyNameAr: String,
+    val companyNameAr: String?="",
     @SerializedName("email")
-    val email: String,
+    val email: String?="",
     @SerializedName("fax")
-    val fax: String,
+    val fax: String?="",
     @SerializedName("id")
-    val id: Int,
+    val id: Int?=0,
     @SerializedName("phoneNumber")
-    val phoneNumber: String,
+    val phoneNumber: String?="",
     @SerializedName("phoneNumberSecondary")
-    val phoneNumberSecondary: String,
+    val phoneNumberSecondary: String?="",
     @SerializedName("website")
-    val website: String
+    val website: String?=""
 )

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class FilteredActivityListItem(
     @SerializedName("assignedTo")
-    var assignedTo: String?=null,
+    var assignedTo: String?="",
     @SerializedName("assignedToId")
     var assignedToId: Int?=0,
     @SerializedName("creationDate")

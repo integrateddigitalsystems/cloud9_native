@@ -79,8 +79,8 @@ class AppHelper {
                 val myStringsMap: HashMap<String, String> = HashMap()
                 MyApplication.locMessages.forEachIndexed { index, _ ->
                     run {
-                        myStringsMap[MyApplication.locMessages[index].key] =
-                            if(language == "en") MyApplication.locMessages[index].valueEn else MyApplication.locMessages[index].valueAr
+                        myStringsMap[MyApplication.locMessages[index].key!!] =
+                            if(language == "en") MyApplication.locMessages[index].valueEn!! else MyApplication.locMessages[index].valueAr!!
                     }
                 }
                 Restring.putStrings(locale, myStringsMap)

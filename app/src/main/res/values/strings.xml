@@ -55,7 +55,7 @@
     <string name="sure_delete_media">Are you sure you want to delete media item ?</string>
     <string name="home">Home</string>
     <string name="all_tasks">All tasks</string>
-    <string name="permission_background_android">This app collects location data to enable client app tracking visit feature ,even when the app is closed or not in use.\n\n  if you want to enable these features please press OK.\n\n By pressing CANCEL the client will not be able to track your location.</string>
+    <string name="permission_background_android">This app collects location data to enable admin app tracking visit feature ,even when the app is closed or not in use.\n\n  If you want to enable these features please press \'Ok\'.\n\n By pressing \'Cancel\' the admin will not be able to track your location.</string>
     <string name="log_out">Log out</string>
     <string name="sure_logout">Are you sure you wanna logout ?</string>
     <string name="location_updates_disabled">Orders flagged on track will not send updates to client because you disabled location updates</string>

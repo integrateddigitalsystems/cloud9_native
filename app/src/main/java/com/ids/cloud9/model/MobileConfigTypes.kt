@@ -5,5 +5,5 @@ import com.google.gson.annotations.SerializedName
 
 data class MobileConfigTypes(
     @SerializedName("android")
-    val android: ArrayList<MobileConfig>
+    val android: ArrayList<MobileConfig> ?= arrayListOf()
 )

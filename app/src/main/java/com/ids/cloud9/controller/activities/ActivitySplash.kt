@@ -207,8 +207,8 @@ class ActivitySplash : AppCompactBase() {
     }
 
     fun startApp() {
-        if (MyApplication.mobileConfig!!.forceVersion > BuildConfig.VERSION_NAME.toDouble()) {
-            if (MyApplication.mobileConfig!!.force)
+        if (MyApplication.mobileConfig!!.forceVersion!! > BuildConfig.VERSION_NAME.toDouble()) {
+            if (MyApplication.mobileConfig!!.force!!)
                 createActionDialog(getString(R.string.update), getString(R.string.update_message), false){
                     goToPlayStore()
                 } else
@@ -229,7 +229,7 @@ class ActivitySplash : AppCompactBase() {
             LocMessages::class.java
         )
         MyApplication.locMessages.addAll(locMessages.values)
-        MyApplication.mobileConfig = mobConfig.android.find {
+        MyApplication.mobileConfig = mobConfig.android!!.find {
             it.version == BuildConfig.VERSION_NAME.toDouble()
         }
         if (MyApplication.mobileConfig == null) {
@@ -239,8 +239,8 @@ class ActivitySplash : AppCompactBase() {
                 startFirebase()
             }
         } else {
-            MyApplication.url_contains = MyApplication.mobileConfig!!.url_contains
-            MyApplication.BASE_URL = MyApplication.mobileConfig!!.mainUrl
+            MyApplication.url_contains = MyApplication.mobileConfig!!.url_contains!!
+            MyApplication.BASE_URL = MyApplication.mobileConfig!!.mainUrl!!
             permissionSendNotifications()
         }
     }

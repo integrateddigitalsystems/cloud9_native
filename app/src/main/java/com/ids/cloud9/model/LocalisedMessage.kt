@@ -7,11 +7,11 @@ import com.ids.cloud9.utils.AppConstants
 
 data class LocalisedMessage(
     @SerializedName("key")
-    val key: String,
+    val key: String?="",
     @SerializedName("valueAr")
-    val valueAr: String,
+    val valueAr: String?="",
     @SerializedName("valueEn")
-    val valueEn: String
+    val valueEn: String?=""
 ){
     fun getMessage():String? {
         return if (MyApplication.languageCode == AppConstants.LANG_ENGLISH)

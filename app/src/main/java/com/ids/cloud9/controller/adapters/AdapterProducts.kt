@@ -13,8 +13,8 @@ import com.ids.cloud9.model.ItemSpinner
 import com.ids.cloud9.model.ProductListItem
 import com.ids.cloud9.utils.AppConstants
 import com.ids.cloud9.utils.AppHelper
-import com.ids.cloud9.utils.setCheckText
 import com.ids.cloud9.utils.setTintImage
+import com.ids.cloud9.utils.toHTML
 import kotlin.collections.ArrayList
 
 class AdapterProducts(
@@ -73,12 +73,28 @@ class AdapterProducts(
         binding.root
     ), View.OnClickListener {
         fun bind(item: ProductListItem) {
-            if(item.product.name.contains(AppConstants.OTHER_PRODUCT_NAME)) {
-                binding.tvProductName.setCheckText(item.customProductName)
-                binding.tvDesc.setCheckText(item.customProductDescription)
+            if(item.product.name!!.contains(AppConstants.OTHER_PRODUCT_NAME)) {
+                if(!item.customProductName.isNullOrEmpty()){
+                    binding.tvProductName.text = item.customProductName
+                }else{
+                    binding.tvProductName.text = ""
+                }
+                if(!item.customProductDescription.isNullOrEmpty()){
+                    binding.tvDesc.toHTML(item.customProductDescription!!)
+                }else{
+                    binding.tvDesc.text = ""
+                }
             }else{
-                binding.tvProductName.setCheckText(item.product.name)
-                binding.tvDesc.setCheckText(item.product.description)
+                if(!item.product.name.isNullOrEmpty()){
+                    binding.tvProductName.text = item.product.name
+                }else{
+                    binding.tvProductName.text = ""
+                }
+                if(!item.product.description.isNullOrEmpty()){
+                    binding.tvDesc.toHTML(item.product.description!!)
+                }else{
+                    binding.tvDesc.text = ""
+                }
             }
             try {
                 if (item.unitId != null && MyApplication.units.size > 0) {
@@ -93,15 +109,15 @@ class AdapterProducts(
                         binding.tvUnit.text = unit.name
                     else {
                         binding.tvUnit.text =
-                            if (!item.product.unit.name.isNullOrEmpty()) item.product.unit.name else ""
+                            if (!item.product.unit!!.name.isNullOrEmpty()) item.product.unit.name else ""
                     }
                 } else binding.tvUnit.text =
-                    if (!item.product.unit.name.isNullOrEmpty()) item.product.unit.name else ""
+                    if (!item.product.unit!!.name.isNullOrEmpty()) item.product.unit.name else ""
             } catch (ex: Exception) {
                 binding.tvUnit.text = ""
             }
             var SN = ""
-            if (item.serialNumbers.size > 0) {
+            if (item.serialNumbers!!.size > 0) {
                for(it in item.serialNumbers.indices){
                    if(it == item.serialNumbers.size-1){
                        SN = SN+item.serialNumbers.get(it)

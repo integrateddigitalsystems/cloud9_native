@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Data(
     @SerializedName("notification_foreground")
-    val notificationForeground: String,
+    val notificationForeground: String?="",
     @SerializedName("visitId")
-    val visitId: String
+    val visitId: String?=""
 )

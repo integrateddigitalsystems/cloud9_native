@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.databinding.ItemReccomendationsBinding
 import com.ids.cloud9.model.FilteredActivityListItem
-import com.ids.cloud9.utils.setCheckText
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -35,12 +34,31 @@ class AdapterFilteredReccomendations(
         binding.root
     ), View.OnClickListener {
         fun bind(item: FilteredActivityListItem) {
-            binding.tvAssignedTo.setCheckText(item.assignedTo!!)
-            binding.tvDesc.setCheckText(item.description!!)
-            binding.tvSubject.setCheckText(item.subject!!)
-            binding.tvDueDate.setCheckText(simpTo.format(simpOrg.parse(item.dueDate)!!))
-            if(!item.statusReason.isNullOrEmpty())
-                binding.tvReason.setCheckText(item.statusReason!!)
+            if(!item.assignedTo.isNullOrEmpty()){
+                binding.tvAssignedTo.text = item.assignedTo
+            }else{
+                binding.tvAssignedTo.text = ""
+            }
+            if(!item.dueDate.isNullOrEmpty()){
+                binding.tvDueDate.text = item.dueDate
+            }else{
+                binding.tvDueDate.text = ""
+            }
+            if(!item.subject.isNullOrEmpty()){
+                binding.tvSubject.text = item.subject
+            }else{
+                binding.tvSubject.text = ""
+            }
+            if(!item.description.isNullOrEmpty()){
+                binding.tvDesc.text = item.description!!
+            }else{
+                binding.tvDesc.text = ""
+            }
+            if(!item.statusReason.isNullOrEmpty()){
+                binding.tvReason.text = item.statusReason!!
+            }else{
+                binding.tvReason.text = ""
+            }
   }
         init {
             binding.root.setOnClickListener(this)

@@ -8,6 +8,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.location.Location
 import android.text.Editable
+import android.text.Html
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.util.Log
@@ -73,6 +74,14 @@ fun TextView.setCheckText(message: String){
    }catch (ex:Exception){
        this.text = ""
    }
+}
+
+fun TextView.toHTML(string: String){
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+        this.setText(Html.fromHtml(string,Html.FROM_HTML_MODE_LEGACY));
+    } else {
+        this.setText(Html.fromHtml(string));
+    }
 }
 fun Activity.createDialog( message: String) {
 

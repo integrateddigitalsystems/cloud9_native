@@ -247,7 +247,7 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
         binding!!.llLoading.show()
         val arrId: ArrayList<Int> = arrayListOf()
             for (item in arrayUserSelected)
-                arrId.add(item.id)
+                arrId.add(item.id!!)
         val createActivity = CreateActivity(
             null,
             binding!!.etDesc.text.toString(),

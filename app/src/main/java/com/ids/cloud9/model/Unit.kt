@@ -5,169 +5,169 @@ import com.google.gson.annotations.SerializedName
 
 data class Unit(
     @SerializedName("accountDefaultBranches")
-    val accountDefaultBranches: List<Any>,
+    val accountDefaultBranches: ArrayList <Any> = arrayListOf(),
     @SerializedName("accountDefaultCurrencies")
-    val accountDefaultCurrencies: List<Any>,
+    val accountDefaultCurrencies: ArrayList <Any> = arrayListOf(),
     @SerializedName("accountId")
-    val accountId: Int,
+    val accountId: Int?=0,
     @SerializedName("activityEntityTypes")
-    val activityEntityTypes: List<Any>,
+    val activityEntityTypes:  ArrayList <Any> = arrayListOf(),
     @SerializedName("activityKeys")
-    val activityKeys: List<Any>,
+    val activityKeys:  ArrayList <Any> = arrayListOf(),
     @SerializedName("activityPriorities")
-    val activityPriorities: List<Any>,
+    val activityPriorities:  ArrayList <Any> = arrayListOf(),
     @SerializedName("activityReasons")
-    val activityReasons: List<Any>,
+    val activityReasons:  ArrayList <Any> = arrayListOf(),
     @SerializedName("activityStatuses")
-    val activityStatuses: List<Any>,
+    val activityStatuses:  ArrayList <Any> = arrayListOf(),
     @SerializedName("activityTypes")
-    val activityTypes: List<Any>,
+    val activityTypes:  ArrayList <Any> = arrayListOf(),
     @SerializedName("attachmentEntityTypes")
-    val attachmentEntityTypes: List<Any>,
+    val attachmentEntityTypes:  ArrayList <Any> = arrayListOf(),
     @SerializedName("attachmentSignatureTypeNavigations")
-    val attachmentSignatureTypeNavigations: List<Any>,
+    val attachmentSignatureTypeNavigations:  ArrayList <Any> = arrayListOf(),
     @SerializedName("certificateBranchNavigations")
-    val certificateBranchNavigations: List<Any>,
+    val certificateBranchNavigations:  ArrayList <Any> = arrayListOf(),
     @SerializedName("certificateProjects")
-    val certificateProjects: List<Any>,
+    val certificateProjects:  ArrayList <Any> = arrayListOf(),
     @SerializedName("certificateReasons")
-    val certificateReasons: List<Any>,
+    val certificateReasons:  ArrayList <Any> = arrayListOf(),
     @SerializedName("certificateStatuses")
-    val certificateStatuses: List<Any>,
+    val certificateStatuses:  ArrayList <Any> = arrayListOf(),
     @SerializedName("companies")
-    val companies: List<Any>,
+    val companies:  ArrayList <Any> = arrayListOf(),
     @SerializedName("contractCurrencies")
-    val contractCurrencies: List<Any>,
+    val contractCurrencies:  ArrayList <Any> = arrayListOf(),
     @SerializedName("contractProducts")
-    val contractProducts: List<Any>,
+    val contractProducts:  ArrayList <Any> = arrayListOf(),
     @SerializedName("contractReasons")
-    val contractReasons: List<Any>,
+    val contractReasons:  ArrayList <Any> = arrayListOf(),
     @SerializedName("contractStatuses")
-    val contractStatuses: List<Any>,
+    val contractStatuses:  ArrayList <Any> = arrayListOf(),
     @SerializedName("contractTerms")
-    val contractTerms: List<Any>,
+    val contractTerms:  ArrayList <Any> = arrayListOf(),
     @SerializedName("creationDate")
-    val creationDate: String,
+    val creationDate: String?="",
     @SerializedName("description")
-    val description: Any,
+    val description: Any?=null,
     @SerializedName("id")
-    val id: Int,
+    val id: Int?=0,
     @SerializedName("isDefault")
-    val isDefault: Any,
+    val isDefault: Any?=null,
     @SerializedName("isPublic")
-    val isPublic: Boolean,
+    val isPublic: Boolean?=false,
     @SerializedName("leadIndustries")
-    val leadIndustries: List<Any>,
+    val leadIndustries:  ArrayList <Any> = arrayListOf(),
     @SerializedName("leadReasons")
-    val leadReasons: List<Any>,
+    val leadReasons:  ArrayList <Any> = arrayListOf(),
     @SerializedName("leadStatuses")
-    val leadStatuses: List<Any>,
+    val leadStatuses:  ArrayList <Any> = arrayListOf(),
     @SerializedName("lookupCode")
-    val lookupCode: String,
+    val lookupCode: String?="",
     @SerializedName("modiciationDate")
-    val modiciationDate: Any,
+    val modiciationDate: Any?=null ,
     @SerializedName("name")
-    val name: String,
+    val name: String?="",
     @SerializedName("opportunityBranchNavigations")
-    val opportunityBranchNavigations: List<Any>,
+    val opportunityBranchNavigations:  ArrayList <Any> = arrayListOf(),
     @SerializedName("opportunityCurrencies")
-    val opportunityCurrencies: List<Any>,
+    val opportunityCurrencies:  ArrayList <Any> = arrayListOf(),
     @SerializedName("opportunityPotentials")
-    val opportunityPotentials: List<Any>,
+    val opportunityPotentials:  ArrayList <Any> = arrayListOf(),
     @SerializedName("opportunityProjectCategories")
-    val opportunityProjectCategories: List<Any>,
+    val opportunityProjectCategories:  ArrayList <Any> = arrayListOf(),
     @SerializedName("opportunityReasons")
-    val opportunityReasons: List<Any>,
+    val opportunityReasons:  ArrayList <Any> = arrayListOf(),
     @SerializedName("opportunityStatuses")
-    val opportunityStatuses: List<Any>,
+    val opportunityStatuses:  ArrayList <Any> = arrayListOf(),
     @SerializedName("opportunityTypes")
-    val opportunityTypes: List<Any>,
+    val opportunityTypes:  ArrayList <Any> = arrayListOf(),
     @SerializedName("order")
-    val order: Int,
+    val order: Int?=0,
     @SerializedName("orderBranchNavigations")
-    val orderBranchNavigations: List<Any>,
+    val orderBranchNavigations:  ArrayList <Any> = arrayListOf(),
     @SerializedName("orderCurrencies")
-    val orderCurrencies: List<Any>,
+    val orderCurrencies:  ArrayList <Any> = arrayListOf(),
     @SerializedName("orderProducts")
-    val orderProducts: List<Any>,
+    val orderProducts:  ArrayList <Any> = arrayListOf(),
     @SerializedName("orderProjects")
-    val orderProjects: List<Any>,
+    val orderProjects:  ArrayList <Any> = arrayListOf(),
     @SerializedName("orderReasons")
-    val orderReasons: List<Any>,
+    val orderReasons:  ArrayList <Any> = arrayListOf(),
     @SerializedName("orderStatuses")
-    val orderStatuses: List<Any>,
+    val orderStatuses:  ArrayList <Any> = arrayListOf(),
     @SerializedName("parentId")
-    val parentId: Int,
+    val parentId: Int?=0,
     @SerializedName("pid")
-    val pid: String,
+    val pid: String?="",
     @SerializedName("priceListCurrencies")
-    val priceListCurrencies: List<Any>,
+    val priceListCurrencies:  ArrayList <Any> = arrayListOf(),
     @SerializedName("priceListDetailCurrencies")
-    val priceListDetailCurrencies: List<Any>,
+    val priceListDetailCurrencies:  ArrayList <Any> = arrayListOf(),
     @SerializedName("priceListDetailUnits")
-    val priceListDetailUnits: List<Any>,
+    val priceListDetailUnits:  ArrayList <Any> = arrayListOf(),
     @SerializedName("priceListDetailVariants")
-    val priceListDetailVariants: List<Any>,
+    val priceListDetailVariants:  ArrayList <Any> = arrayListOf(),
     @SerializedName("priceListStatuses")
-    val priceListStatuses: List<Any>,
+    val priceListStatuses:  ArrayList <Any> = arrayListOf(),
     @SerializedName("productCurrencies")
-    val productCurrencies: List<Any>,
+    val productCurrencies:  ArrayList <Any> = arrayListOf(),
     @SerializedName("productManufacturers")
-    val productManufacturers: List<Any>,
+    val productManufacturers:  ArrayList <Any> = arrayListOf(),
     @SerializedName("productStatuses")
-    val productStatuses: List<Any>,
+    val productStatuses:  ArrayList <Any> = arrayListOf(),
     @SerializedName("productUnits")
-    val productUnits: List<Any>,
+    val productUnits:  ArrayList <Any> = arrayListOf(),
     @SerializedName("productWarrentyDurations")
-    val productWarrentyDurations: List<Any>,
+    val productWarrentyDurations:  ArrayList <Any> = arrayListOf(),
     @SerializedName("quoteBranchNavigations")
-    val quoteBranchNavigations: List<Any>,
+    val quoteBranchNavigations:  ArrayList <Any> = arrayListOf(),
     @SerializedName("quoteProducts")
-    val quoteProducts: List<Any>,
+    val quoteProducts:  ArrayList <Any> = arrayListOf(),
     @SerializedName("quoteProjects")
-    val quoteProjects: List<Any>,
+    val quoteProjects:  ArrayList <Any> = arrayListOf(),
     @SerializedName("quoteReasons")
-    val quoteReasons: List<Any>,
+    val quoteReasons:  ArrayList <Any> = arrayListOf(),
     @SerializedName("quoteStatuses")
-    val quoteStatuses: List<Any>,
+    val quoteStatuses:  ArrayList <Any> = arrayListOf(),
     @SerializedName("rateFromCurrencyNavigations")
-    val rateFromCurrencyNavigations: List<Any>,
+    val rateFromCurrencyNavigations:  ArrayList <Any> = arrayListOf(),
     @SerializedName("rateToCurrencyNavigations")
-    val rateToCurrencyNavigations: List<Any>,
+    val rateToCurrencyNavigations:  ArrayList <Any> = arrayListOf(),
     @SerializedName("reminderKeyTypes")
-    val reminderKeyTypes: List<Any>,
+    val reminderKeyTypes:  ArrayList <Any> = arrayListOf(),
     @SerializedName("reminderKeys")
-    val reminderKeys: List<Any>,
+    val reminderKeys:  ArrayList <Any> = arrayListOf(),
     @SerializedName("reports")
-    val reports: List<Any>,
+    val reports:  ArrayList <Any> = arrayListOf(),
     @SerializedName("resourceJobs")
-    val resourceJobs: List<Any>,
+    val resourceJobs:  ArrayList <Any> = arrayListOf(),
     @SerializedName("resourceStatuses")
-    val resourceStatuses: List<Any>,
+    val resourceStatuses:  ArrayList <Any> = arrayListOf(),
     @SerializedName("resourceTypes")
-    val resourceTypes: List<Any>,
+    val resourceTypes:  ArrayList <Any> = arrayListOf(),
     @SerializedName("serviceReasons")
-    val serviceReasons: List<Any>,
+    val serviceReasons:  ArrayList <Any> = arrayListOf(),
     @SerializedName("serviceStatuses")
-    val serviceStatuses: List<Any>,
+    val serviceStatuses:  ArrayList <Any> = arrayListOf(),
     @SerializedName("serviceTypes")
-    val serviceTypes: List<Any>,
+    val serviceTypes:  ArrayList <Any> = arrayListOf(),
     @SerializedName("timeStamp")
-    val timeStamp: String,
+    val timeStamp: String?="",
     @SerializedName("userTaskReasons")
-    val userTaskReasons: List<Any>,
+    val userTaskReasons:  ArrayList <Any> = arrayListOf(),
     @SerializedName("userTaskRelatedTos")
-    val userTaskRelatedTos: List<Any>,
+    val userTaskRelatedTos:  ArrayList <Any> = arrayListOf(),
     @SerializedName("userTaskStatuses")
-    val userTaskStatuses: List<Any>,
+    val userTaskStatuses:  ArrayList <Any> = arrayListOf(),
     @SerializedName("visitPriorities")
-    val visitPriorities: List<Any>,
+    val visitPriorities:  ArrayList <Any> = arrayListOf(),
     @SerializedName("visitProducts")
-    val visitProducts: ArrayList<Any>,
+    val visitProducts: ArrayList <VisitProduct> = arrayListOf(),
     @SerializedName("visitReasons")
-    val visitReasons: List<Any>,
+    val visitReasons:  ArrayList <Any> = arrayListOf(),
     @SerializedName("visitStatuses")
-    val visitStatuses: List<Any>,
+    val visitStatuses:  ArrayList <Any> = arrayListOf(),
     @SerializedName("visitTypes")
-    val visitTypes: List<Any>
+    val visitTypes:  ArrayList <Any> = arrayListOf()
 )

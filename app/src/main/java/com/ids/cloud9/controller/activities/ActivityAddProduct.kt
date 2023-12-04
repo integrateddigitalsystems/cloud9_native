@@ -72,18 +72,18 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             }!!.name
             binding!!.tvProduct.text = MyApplication.selectedProduct!!.product.name
             binding!!.etQuantity.text = MyApplication.selectedProduct!!.quantity.toString().toEditable()
-            for(i in 1..MyApplication.selectedProduct!!.quantity){
+            for(i in 1..MyApplication.selectedProduct!!.quantity!!){
                 arraySer.add(SerialItem(""))
             }
-            for(item in MyApplication.selectedProduct!!.serialNumbers.indices)
-                arraySer.get(item).serial = MyApplication.selectedProduct!!.serialNumbers.get(item)
-            if(MyApplication.selectedProduct!!.product.unit.visitProducts.size>0)
-                unitId = MyApplication.selectedProduct!!.product.unit.visitProducts.get(0).unitId
+            for(item in MyApplication.selectedProduct!!.serialNumbers!!.indices)
+                arraySer.get(item).serial = MyApplication.selectedProduct!!.serialNumbers!!.get(item)
+            if(MyApplication.selectedProduct!!.product.unit!!.visitProducts.size>0)
+                unitId = MyApplication.selectedProduct!!.product.unit!!.visitProducts.get(0).unitId
             prodId = MyApplication.selectedProduct!!.productId
             binding!!.btAddProduct.text = getString(R.string.update)
-            if(MyApplication.selectedProduct!!.product.name.contains(AppConstants.OTHER_PRODUCT_NAME)){
-                binding!!.etCustomProductName.text = MyApplication.selectedProduct!!.customProductName.toEditable()
-                binding!!.etCustomProductDesc.text = MyApplication.selectedProduct!!.customProductDescription.toEditable()
+            if(MyApplication.selectedProduct!!.product.name!!.contains(AppConstants.OTHER_PRODUCT_NAME)){
+                binding!!.etCustomProductName.text = MyApplication.selectedProduct!!.customProductName!!.toEditable()
+                binding!!.etCustomProductDesc.text = MyApplication.selectedProduct!!.customProductDescription!!.toEditable()
                 binding!!.llCustom.show()
             }
             binding!!.rlProductName.setBackgroundResource(R.drawable.disabled_rounded)
@@ -370,7 +370,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
         binding!!.etFilterName.doOnTextChanged { text, start, before, count ->
 
             val items = array.filter {
-                it.name.contains(text!!,true)
+                it.name!!.contains(text!!,true)
             }
             val arrayList : ArrayList<ProductAllListItem> = arrayListOf()
             arrayList.addAll(items)
