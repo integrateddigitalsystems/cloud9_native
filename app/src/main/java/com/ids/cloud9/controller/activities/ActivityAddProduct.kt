@@ -2,10 +2,13 @@ package com.ids.cloud9.controller.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.firestore.model.Values.isNumber
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.AdapterEdit
@@ -21,7 +24,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
 
@@ -367,15 +370,33 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             }
         }
 
-        binding!!.etFilterName.doOnTextChanged { text, start, before, count ->
 
-            val items = array.filter {
-                it.name!!.contains(text!!,true)
+        binding!!.etFilterName.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
             }
-            val arrayList : ArrayList<ProductAllListItem> = arrayListOf()
-            arrayList.addAll(items)
-            setUpProduct(arrayList)
-        }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                val items = array.filter {
+                    try {
+                        it.name!!.contains(p0!!.toString(),true)
+                    }catch (ex:Exception){
+                        false
+                    }
+
+                }
+                val arrayList : ArrayList<ProductAllListItem> = arrayListOf()
+                arrayList.addAll(items)
+                setUpProduct(arrayList)
+            }
+
+        })
+
+
 
 
         binding!!.btAddProduct.setOnClickListener {

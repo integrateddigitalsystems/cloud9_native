@@ -59,6 +59,7 @@
             <com.ids.cloud9.custom.CustomTextViewBold
                 android:layout_marginStart="@dimen/normal_margin_padding"
                 android:layout_marginEnd="@dimen/normal_margin_padding"
+
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
@@ -67,7 +68,7 @@
                 android:textSize="@dimen/normal_font" />
 
         <LinearLayout
-            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginTop="@dimen/normal_margin_padding"
             android:layout_marginStart="@dimen/normal_margin_padding"
             android:layout_marginEnd="@dimen/normal_margin_padding"
             android:gravity="center"

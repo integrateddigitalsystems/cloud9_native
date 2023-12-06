@@ -13,6 +13,7 @@ import com.ids.cloud9.model.ItemSpinner
 import com.ids.cloud9.model.ProductListItem
 import com.ids.cloud9.utils.AppConstants
 import com.ids.cloud9.utils.AppHelper
+import com.ids.cloud9.utils.hide
 import com.ids.cloud9.utils.setTintImage
 import com.ids.cloud9.utils.toHTML
 import kotlin.collections.ArrayList
@@ -88,11 +89,13 @@ class AdapterProducts(
                 if(!item.product.name.isNullOrEmpty()){
                     binding.tvProductName.text = item.product.name
                 }else{
+                    binding.tvProductName.hide()
                     binding.tvProductName.text = ""
                 }
                 if(!item.product.description.isNullOrEmpty()){
                     binding.tvDesc.toHTML(item.product.description!!)
                 }else{
+                    binding.tvDesc.hide()
                     binding.tvDesc.text = ""
                 }
             }
