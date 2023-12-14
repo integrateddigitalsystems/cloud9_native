@@ -1,22 +1,40 @@
 package com.ids.cloud9.controller.Fragment
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Service
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.gson.Gson
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
+import com.ids.cloud9.controller.activities.ActivityMain
+import com.ids.cloud9.controller.activities.ActivtyVisitDetails
 import com.ids.cloud9.custom.MyDrawView
 import com.ids.cloud9.databinding.LayoutSignatureBinding
 import com.ids.cloud9.model.ResponseMessage
 import com.ids.cloud9.model.SignatureList
 import com.ids.cloud9.model.SignatureListItem
 import com.ids.cloud9.model.SignatureRequest
+import com.ids.cloud9.model.VisitLocationRequest
 import com.ids.cloud9.utils.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -35,6 +53,11 @@ class FragmentSignature : Fragment() {
     var simpDateSec = SimpleDateFormat("ss", Locale.ENGLISH)
     var binding: LayoutSignatureBinding? = null
     var arraySign: SignatureList? = null
+    var mPermissionResult: ActivityResultLauncher<Array<String>>? = null
+    val BLOCKED = -1
+    val BLOCKED_OR_NEVER_ASKED = 2
+    val GRANTED = 0
+    val DENIED = 1
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,6 +73,7 @@ class FragmentSignature : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUpPermission()
         init()
         listeners()
     }
@@ -65,6 +89,38 @@ class FragmentSignature : Fragment() {
         }else{
             doAction()
         }
+    }
+    fun setUpPermission() {
+        mPermissionResult =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions())
+            { result ->
+                var permission = true
+                for (item in result) {
+                    permission = item.value && permission
+                }
+                if (!permission) {
+                    requireActivity().toast(getString(R.string.location_updates_disabled_arr))
+                    for (item in result) {
+                        if (ContextCompat.checkSelfPermission(
+                                requireContext(),
+                                item.key
+                            ) == BLOCKED
+                        ) {
+
+                            if (getPermissionStatus(Manifest.permission.ACCESS_FINE_LOCATION) == BLOCKED_OR_NEVER_ASKED) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    getString(R.string.please_grant_permission),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                break
+                            }
+                        }
+                    }
+                } else {
+                    changeLocation(MyApplication.onTheWayVisit!!.id!!)
+                }
+            }
     }
 
     private fun getBitmapFromView(view: View): Bitmap {
@@ -181,11 +237,20 @@ class FragmentSignature : Fragment() {
                     response: Response<ResponseMessage>
                 ) {
                     if (response.body()!!.success.equals("true")) {
-                        if(isClient)
+                        if(isClient) {
                             clientSaved = true
-                        else
+                          requireActivity().createActionDialog(
+                                getString(R.string.signature_completed),
+                                0
+                            ){
+                              updateVisit()
+                          }
+
+                        }
+                        else {
                             employeeSaved = true
-                        createDialog(response.body()!!.message!!)
+                            createDialog(response.body()!!.message!!)
+                        }
                     } else {
                         createDialog(response.body()!!.message!!)
                     }
@@ -341,5 +406,172 @@ class FragmentSignature : Fragment() {
                 binding!!.llLoading.hide()
             }
         })
+    }
+
+    fun updateVisit() {
+        binding!!.llLoading.show()
+        for (item in MyApplication.onTheWayVisit!!.visitResources)
+            item.id = 0
+        val str = Gson().toJson(MyApplication.onTheWayVisit!!)
+        MyApplication.onTheWayVisit!!.reasonId =AppHelper.getReasonID(AppConstants.REASON_COMPLETED)
+        wtf(str)
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
+            .updateVisit(MyApplication.userItem!!.applicationUserId!!.toInt(),MyApplication.onTheWayVisit!!)
+            .enqueue(object : Callback<ResponseMessage> {
+                override fun onResponse(
+                    call: Call<ResponseMessage>,
+                    response: Response<ResponseMessage>
+                ) {
+                    safeCall(binding!!.llLoading) {
+                        binding!!.llLoading.hide()
+                        MyApplication.selectedVisit = MyApplication.onTheWayVisit!!
+                        if (response.code() != 500) {
+                            FirebaseCrashlytics.getInstance().log("UPDATED:\n" + str)
+                            FirebaseCrashlytics.getInstance()
+                                .recordException(RuntimeException("UPDATED:\n" + str))
+
+                                requireContext().createRetryDialog(
+                                    response.body()!!.message!!
+                                ) {
+                                    changeLocation(MyApplication.onTheWayVisit!!.id!!)
+                                    MyApplication.gettingTracked = false
+                                    (requireActivity() as ActivtyVisitDetails).changeState(false)
+                                    requireActivity().onBackPressedDispatcher.onBackPressed()
+
+                                }
+
+
+                        } else {
+                            FirebaseCrashlytics.getInstance().log("UPDATE ERROR 500+ITEM:\n" + str)
+                            FirebaseCrashlytics.getInstance()
+                                .recordException(RuntimeException("UPDATE ERROR 500+ITEM:\n" + str))
+                            requireContext().createRetryDialog(
+                                getString(R.string.visit_succ)
+                            ) {
+                                MyApplication.gettingTracked = false
+                                (requireActivity() as ActivtyVisitDetails).changeState(false)
+                            }
+                        }
+                    }
+
+                }
+
+                override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
+                    binding!!.llLoading.hide()
+                }
+
+            })
+    }
+
+    fun changeLocation(id: Int) {
+        var firstLocation: Location? = null
+        var gps_enabled = false
+        var network_enabled = false
+        val mLocationManager =
+            requireActivity().getSystemService(Service.LOCATION_SERVICE) as LocationManager
+        safeCall {
+            gps_enabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        }
+
+        safeCall {
+            network_enabled =
+                mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+        }
+
+
+
+        if ((ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+                    ) && (gps_enabled || network_enabled)
+        ) {
+
+
+            if (gps_enabled && firstLocation == null)
+                firstLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            if (network_enabled && firstLocation == null) {
+                firstLocation =
+                    mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+            }
+            if (firstLocation != null) {
+                val visitLocationRequest = VisitLocationRequest(
+                    MyApplication.userItem!!.applicationUserId!!.toInt(),
+                    0,
+                    true,
+                    firstLocation.latitude,
+                    firstLocation.longitude,
+                    id
+                )
+                Log.wtf("JAD_TEST_LOCATION", Gson().toJson(visitLocationRequest))
+                RetrofitClientSpecificAuth.client!!.create(
+                    RetrofitInterface::class.java
+                ).createVisitLocation(
+                    visitLocationRequest
+                ).enqueue(object : Callback<ResponseMessage> {
+                    override fun onResponse(
+                        call: Call<ResponseMessage>,
+                        response: Response<ResponseMessage>
+                    ) {
+                        try {
+                            wtf(response.body()!!.message!!)
+                        } catch (ex: Exception) {
+                            wtf(getString(R.string.error_getting_data))
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
+                        wtf(getString(R.string.failure))
+                    }
+
+                })
+            }else{
+                changeLocation(id)
+            }
+
+
+
+        } else {
+            if (gps_enabled && network_enabled)
+                openChooser()
+            else {
+                requireActivity().createActionDialog(
+                    getString(R.string.gps_settings), 0
+                ) {
+                    startActivity(
+                        Intent(
+                            Settings.ACTION_LOCATION_SOURCE_SETTINGS
+                        )
+                    )
+                }
+            }
+
+        }
+    }
+    fun openChooser() {
+        mPermissionResult!!.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        )
+    }
+
+    fun getPermissionStatus(androidPermissionName: String?): Int {
+        return if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                androidPermissionName!!
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(
+                    requireActivity(),
+                    androidPermissionName
+                )
+            ) {
+                BLOCKED_OR_NEVER_ASKED
+            } else DENIED
+        } else GRANTED
     }
 }
