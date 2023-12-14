@@ -312,8 +312,8 @@ class FragmentSignature : Fragment() {
         if (MyApplication.selectedVisit!!.reasonId ==  AppHelper.getReasonID(AppConstants.REASON_PENDING)) {
             binding!!.drawEmployee.hide()
             binding!!.drawClient.hide()
-            AppHelper.setImage(requireContext(), binding!!.ivSelectedDrawClient, "", true)
-            AppHelper.setImage(requireContext(), binding!!.ivSelectedDrawEmployee, "", true)
+            AppHelper.setImage(requireContext(), binding!!.ivSelectedDrawClient, "", true,450,200)
+            AppHelper.setImage(requireContext(), binding!!.ivSelectedDrawEmployee, "", true,450,200)
             binding!!.btClearEmployee.isEnabled = false
             binding!!.btClearClient.isEnabled = false
             binding!!.btClearEmployee.setBackgroundResource(R.drawable.rounded_gray_background)
@@ -343,6 +343,7 @@ class FragmentSignature : Fragment() {
                 binding!!.ivSelectedDrawEmployee,
                 /*MyApplication.BASE_URL_IMAGE +*/ emEy!!.directory!!,
                 false
+                ,450,200
             )
         } else {
             binding!!.ivSelectedDrawEmployee.hide()
@@ -355,7 +356,7 @@ class FragmentSignature : Fragment() {
                 requireActivity(),
                 binding!!.ivSelectedDrawClient,
                 /*MyApplication.BASE_URL_IMAGE +*/ emCl!!.directory!!,
-                false
+                false,450,200
             )
         } else {
             binding!!.ivSelectedDrawClient.hide()
@@ -365,9 +366,9 @@ class FragmentSignature : Fragment() {
             binding!!.drawEmployee.hide()
             binding!!.drawClient.hide()
             if (emCl == null)
-                AppHelper.setImage(requireContext(), binding!!.ivSelectedDrawClient, "", true)
+                AppHelper.setImage(requireContext(), binding!!.ivSelectedDrawClient, "", true,450,200)
             if (emEy == null)
-                AppHelper.setImage(requireContext(), binding!!.ivSelectedDrawEmployee, "", true)
+                AppHelper.setImage(requireContext(), binding!!.ivSelectedDrawEmployee, "", true,450,200)
             binding!!.ivSelectedDrawClient.show()
             binding!!.ivSelectedDrawEmployee.show()
             binding!!.btClearEmployee.isEnabled = false

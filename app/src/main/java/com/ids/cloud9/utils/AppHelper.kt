@@ -120,7 +120,7 @@ class AppHelper {
         }
 
 
-        fun setImage(context: Context, img: ImageView, ImgUrl: String, isLocal: Boolean) {
+        fun setImage(context: Context, img: ImageView, ImgUrl: String, isLocal: Boolean,width : Int,height:Int) {
             safeCall {
                 if (isLocal) {
                     Glide.with(context)
@@ -128,6 +128,7 @@ class AppHelper {
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .dontAnimate()
                         .fitCenter()
+                        .override(width,height)
                         .dontTransform()
                         .into(img)
                 } else {
@@ -136,6 +137,7 @@ class AppHelper {
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .dontAnimate()
                         .fitCenter()
+                        .override(width,height)
                         .dontTransform()
                         .into(img)
                 }
