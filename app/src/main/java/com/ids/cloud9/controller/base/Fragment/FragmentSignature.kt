@@ -202,7 +202,13 @@ class FragmentSignature : Fragment() {
         }
         binding!!.btSaveClient.setOnClickListener {
             val bit = AppHelper.encodeImage(getBitmapFromView(binding!!.drawClient))
-            saveSignature(bit!!, true)
+            requireActivity().createActionDialog(
+                getString(R.string.signature_completed),
+                0
+            ){
+                saveSignature(bit!!, true)
+            }
+
         }
         binding!!.btSaveEMployee.setOnClickListener {
             val bit = AppHelper.encodeImage(getBitmapFromView(binding!!.drawEmployee))
@@ -239,22 +245,17 @@ class FragmentSignature : Fragment() {
                     if (response.body()!!.success.equals("true")) {
                         if(isClient) {
                             clientSaved = true
-                          requireActivity().createActionDialog(
-                                getString(R.string.signature_completed),
-                                0
-                            ){
-                              updateVisit()
-                          }
-
+                            updateVisit()
                         }
                         else {
+                            binding!!.llLoading.hide()
                             employeeSaved = true
                             createDialog(response.body()!!.message!!)
                         }
                     } else {
+                        binding!!.llLoading.hide()
                         createDialog(response.body()!!.message!!)
                     }
-                    binding!!.llLoading.hide()
                 }
 
                 override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
@@ -410,7 +411,6 @@ class FragmentSignature : Fragment() {
     }
 
     fun updateVisit() {
-        binding!!.llLoading.show()
         for (item in MyApplication.onTheWayVisit!!.visitResources)
             item.id = 0
         val str = Gson().toJson(MyApplication.onTheWayVisit!!)
@@ -432,8 +432,7 @@ class FragmentSignature : Fragment() {
                                 .recordException(RuntimeException("UPDATED:\n" + str))
 
                                 requireContext().createRetryDialog(
-                                    response.body()!!.message!!
-                                ) {
+                                    response.body()!!.message!!) {
                                     changeLocation(MyApplication.onTheWayVisit!!.id!!)
                                     MyApplication.gettingTracked = false
                                     (requireActivity() as ActivtyVisitDetails).changeState(false)

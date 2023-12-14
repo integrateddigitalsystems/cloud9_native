@@ -97,7 +97,7 @@ fun Context.createRetryDialog(message: String,doAction: () -> Unit){
     val builder = AlertDialog.Builder(this)
     builder
         .setMessage(message)
-        .setCancelable(true)
+        .setCancelable(false)
         .setNegativeButton(this.getString(R.string.ok)) { dialog, _ ->
            doAction()
         }

@@ -56,11 +56,11 @@ class ActivityLogin : AppCompactBase() {
             }
         }
         binding!!.btLogin.setOnClickListener {
-            if(!binding!!.etEmail.text.toString().isEmpty() && !binding!!.etPassword.text.toString().isEmpty()) {
+            if(!binding!!.etEmail.text.toString().trim().isEmpty() && !binding!!.etPassword.text.toString().trim().isEmpty()) {
                 if(!binding!!.etEmail.text.toString().isEmailValid()){
                     createDialog(getString(R.string.email_invalid))
                 }else {
-                    login(binding!!.etEmail.text.toString(), binding!!.etPassword.text.toString())
+                    login(binding!!.etEmail.text.toString().trim(), binding!!.etPassword.text.toString().trim())
                 }
             }else{
                 createDialog(getString(R.string.fill_details))
