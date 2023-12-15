@@ -448,8 +448,10 @@ class FragmentSignature : Fragment() {
                             requireContext().createRetryDialog(
                                 getString(R.string.visit_succ)
                             ) {
+                                changeLocation(MyApplication.onTheWayVisit!!.id!!)
                                 MyApplication.gettingTracked = false
                                 (requireActivity() as ActivtyVisitDetails).changeState(false)
+                                requireActivity().onBackPressedDispatcher.onBackPressed()
                             }
                         }
                     }
@@ -458,6 +460,7 @@ class FragmentSignature : Fragment() {
 
                 override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
                     binding!!.llLoading.hide()
+                    requireActivity().createDialog( getString(R.string.failure))
                 }
 
             })
