@@ -11,9 +11,11 @@ import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickLis
 import com.ids.cloud9.databinding.ItemProductsBinding
 import com.ids.cloud9.model.ItemSpinner
 import com.ids.cloud9.model.ProductListItem
+import com.ids.cloud9.utils.AppConstants
 import com.ids.cloud9.utils.AppHelper
-import com.ids.cloud9.utils.setCheckText
+import com.ids.cloud9.utils.hide
 import com.ids.cloud9.utils.setTintImage
+import com.ids.cloud9.utils.toHTML
 import kotlin.collections.ArrayList
 
 class AdapterProducts(
@@ -54,6 +56,11 @@ class AdapterProducts(
                     for (itm in arrSpin)
                         itm.selected = false
                     arrSpin.get(position).selected = true
+
+                    if (items.get(pos).reports.isNotEmpty()){
+                        for (i in items.get(pos).reports)
+                            i.selected =false
+                    }
                     items.get(pos).reports.get(position).selected = true
                     adapterSpin.notifyDataSetChanged()
                 }
@@ -67,7 +74,31 @@ class AdapterProducts(
         binding.root
     ), View.OnClickListener {
         fun bind(item: ProductListItem) {
-            binding.tvProductName.setCheckText(item.product.name)
+            if(item.product.name!!.contains(AppConstants.OTHER_PRODUCT_NAME)) {
+                if(!item.customProductName.isNullOrEmpty()){
+                    binding.tvProductName.text = item.customProductName
+                }else{
+                    binding.tvProductName.text = ""
+                }
+                if(!item.customProductDescription.isNullOrEmpty()){
+                    binding.tvDesc.toHTML(item.customProductDescription!!)
+                }else{
+                    binding.tvDesc.text = ""
+                }
+            }else{
+                if(!item.product.name.isNullOrEmpty()){
+                    binding.tvProductName.text = item.product.name
+                }else{
+                    binding.tvProductName.hide()
+                    binding.tvProductName.text = ""
+                }
+                if(!item.product.description.isNullOrEmpty()){
+                    binding.tvDesc.toHTML(item.product.description!!)
+                }else{
+                    binding.tvDesc.hide()
+                    binding.tvDesc.text = ""
+                }
+            }
             try {
                 if (item.unitId != null && MyApplication.units.size > 0) {
                     val unit = MyApplication.units.find {
@@ -81,26 +112,35 @@ class AdapterProducts(
                         binding.tvUnit.text = unit.name
                     else {
                         binding.tvUnit.text =
-                            if (!item.product.unit.name.isNullOrEmpty()) item.product.unit.name else ""
+                            if (!item.product.unit!!.name.isNullOrEmpty()) item.product.unit.name else ""
                     }
                 } else binding.tvUnit.text =
-                    if (!item.product.unit.name.isNullOrEmpty()) item.product.unit.name else ""
+                    if (!item.product.unit!!.name.isNullOrEmpty()) item.product.unit.name else ""
             } catch (ex: Exception) {
                 binding.tvUnit.text = ""
             }
-            binding.tvSN.text = if (item.serialNumbers.size > 0) {
-                item.serialNumbers.get(0)
+            var SN = ""
+            if (item.serialNumbers!!.size > 0) {
+               for(it in item.serialNumbers.indices){
+                   if(it == item.serialNumbers.size-1){
+                       SN = SN+item.serialNumbers.get(it)
+                   }else{
+                       SN = SN+item.serialNumbers.get(it)+"-"
+                   }
+               }
             } else {
-                "N/A"
+                SN = "N/A"
             }
+            binding.tvSN.text = SN
             binding.tvQuantity.text = item.quantity.toString()
-            if (items.get(layoutPosition).reports.size > 0) {
+            if (items.get(layoutPosition).reports.size > 0 && MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
                 setUpStatusReasonSpinner(layoutPosition, binding)
                 binding.ivReport.setTintImage(
                     R.color.black
                 )
             }else {
-                binding.tvReport.text = con.getString(R.string.no_data)
+                if(items.get(layoutPosition).reports.size == 0)
+                    binding.tvReport.text = con.getString(R.string.no_data)
                 AppHelper.setTextColor(con, binding.tvReport, R.color.gray_border_item)
             }
         }

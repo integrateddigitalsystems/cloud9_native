@@ -8,6 +8,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.location.Location
 import android.text.Editable
+import android.text.Html
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.util.Log
@@ -16,6 +17,8 @@ import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.gson.Gson
 import com.ids.cloud9.BuildConfig
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
@@ -24,11 +27,29 @@ import java.util.regex.Pattern
 
 
 fun Any.wtf(message: String) {
-    if (BuildConfig.DEBUG)
+    debugOnly {
         Log.wtf(this::class.java.simpleName, message)
+    }
+
 }
 fun Activity.toast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+}
+inline fun debugOnly(block: () -> Unit) {
+    if (BuildConfig.DEBUG) {
+        block()
+    }
+}
+fun Activity.createActionDialog(positiveButton: String, message: String, cancelable:Boolean?=true, doAction: () -> Unit){
+    val builder = AlertDialog.Builder(this)
+    builder
+        .setMessage(message)
+        .setCancelable(cancelable!!)
+        .setPositiveButton(positiveButton) { dialog, _ ->
+            doAction()
+        }
+    val alert = builder.create()
+    alert.show()
 }
 
 fun Location.toText():String{
@@ -54,6 +75,14 @@ fun TextView.setCheckText(message: String){
        this.text = ""
    }
 }
+
+fun TextView.toHTML(string: String){
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+        this.setText(Html.fromHtml(string,Html.FROM_HTML_MODE_LEGACY));
+    } else {
+        this.setText(Html.fromHtml(string));
+    }
+}
 fun Activity.createDialog( message: String) {
 
     val builder = AlertDialog.Builder(this)
@@ -68,9 +97,39 @@ fun Context.createRetryDialog(message: String,doAction: () -> Unit){
     val builder = AlertDialog.Builder(this)
     builder
         .setMessage(message)
-        .setCancelable(true)
+        .setCancelable(false)
         .setNegativeButton(this.getString(R.string.ok)) { dialog, _ ->
            doAction()
+        }
+    val alert = builder.create()
+    alert.show()
+}
+fun Context.createReverseDialog(message: String,posButton : String ,position: Int, doAction: (position: Int) -> Unit) {
+
+    val builder = AlertDialog.Builder(this)
+    builder
+        .setMessage(message)
+        .setCancelable(true)
+        .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+            doAction(position)
+        }
+        .setPositiveButton(posButton) { dialog, _ ->
+            dialog.cancel()
+        }
+    val alert = builder.create()
+    alert.show()
+}
+fun Context.createActionDialog(message: String,posButton : String ,position: Int, doAction: (position: Int) -> Unit) {
+
+    val builder = AlertDialog.Builder(this)
+    builder
+        .setMessage(message)
+        .setCancelable(true)
+        .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+            dialog.cancel()
+        }
+        .setPositiveButton(posButton) { dialog, _ ->
+            doAction(position)
         }
     val alert = builder.create()
     alert.show()
@@ -85,6 +144,21 @@ fun Context.createActionDialog(message: String,position: Int, doAction: (positio
             dialog.cancel()
         }
         .setPositiveButton(getString(R.string.yes)) { dialog, _ ->
+            doAction(position)
+        }
+    val alert = builder.create()
+    alert.show()
+}
+fun Context.createActionDialogCancel(message: String,position: Int, doAction: (position: Int) -> Unit, doActionCancel: (position: Int) -> Unit) {
+
+    val builder = AlertDialog.Builder(this)
+    builder
+        .setMessage(message)
+        .setCancelable(true)
+        .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+            doActionCancel(position)
+        }
+        .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
             doAction(position)
         }
     val alert = builder.create()
@@ -116,6 +190,10 @@ fun View.show() {
     try{ visibility = View.VISIBLE}catch (e:Exception){}
 }
 
+fun View.invisible() {
+    try{ visibility = View.INVISIBLE}catch (e:Exception){}
+}
+
 fun View.hide() {
     try{visibility = View.GONE}catch (e:Exception){}
 }
@@ -134,11 +212,29 @@ fun TextView.underline() {
 
     setText(spannableString)
 }
+
+inline fun <R> safeCall(loading : View ,call: () -> R):Result<R>{
+    try {
+        return Result.success(call())
+    } catch (e: Exception) {
+        loading.hide()
+        FirebaseCrashlytics.getInstance().log("Try/Catch exception")
+        FirebaseCrashlytics.getInstance().recordException(RuntimeException("Try/Catch exception"+"\n"+e.toString()))
+        return Result.failure(e)
+    }
+}
 inline fun <R> safeCall(call: () -> R): Result<R> {
     try {
         return Result.success(call())
     } catch (e: Exception) {
+        Log.wtf("TAG_JAD_WEB",e.toString())
         return Result.failure(e)
+    }
+}
+
+inline fun releaseOnly(block: () -> Unit) {
+    if (!BuildConfig.DEBUG) {
+        block()
     }
 }
 

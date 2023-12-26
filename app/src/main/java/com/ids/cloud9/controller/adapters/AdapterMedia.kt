@@ -43,7 +43,7 @@ class AdapterMedia(
                 binding.ivMedia.show()
                 binding.vvMedia.hide()
                 binding.llMainMediaLayout.setBackgroundResource(R.color.transparent)
-                AppHelper.setImage(con,binding.ivMedia,item.name!!,item.isLocal!!)
+                AppHelper.setImage(con,binding.ivMedia,item.name!!,item.isLocal!!,150,300)
             }else{
                 binding.ivMedia.hide()
                 binding.ivVideoDefault.show()

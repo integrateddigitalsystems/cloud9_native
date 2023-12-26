@@ -8,14 +8,13 @@ import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.StyledPlayerView
+import androidx.media3.common.Player
+import androidx.media3.ui.PlayerView
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.common.MediaItem
 import com.ids.cloud9.R
 import com.ids.cloud9.custom.TouchImageView
 import com.ids.cloud9.model.Videos
-import com.ids.cloud9.utils.AppHelper
 import com.ids.cloud9.utils.IFragmentImages
 import com.ids.cloud9.utils.safeCall
 import com.ids.cloud9.utils.wtf
@@ -38,32 +37,37 @@ class AdapterPagerFiles(
         return view === `object`
     }
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val itemView = LayoutInflater.from(container.context)
+        var itemView = LayoutInflater.from(container.context)
             .inflate(R.layout.item_pager_files, container, false)
+
+
+        val touch = itemView.findViewById<View>(R.id.ivImages) as TouchImageView
         itemView.findViewById<View>(R.id.ivImages).setOnClickListener(this)
         container.addView(itemView)
        (itemView.findViewById<View>(R.id.btFullScreen) as ImageView).visibility =
             View.INVISIBLE
         if (files[position].type == 0) {
-            (itemView.findViewById<View>(R.id.epView) as StyledPlayerView).visibility =
+            (itemView.findViewById<View>(R.id.epView) as PlayerView).visibility =
                 View.VISIBLE
-            (itemView.findViewById<View>(R.id.ivImages) as ImageView).visibility = View.GONE
+            touch.visibility = View.GONE
             loadVideo(
                 itemView.context,
-                itemView.findViewById<View>(R.id.epView) as StyledPlayerView,
+                itemView.findViewById<View>(R.id.epView) as PlayerView,
                 files[position].url,
                 position
             )
+
         } else {
             wtf("file : " + files[position].url)
-            (itemView.findViewById<View>(R.id.epView) as StyledPlayerView).visibility = View.GONE
-            (itemView.findViewById<View>(R.id.ivImages) as ImageView).visibility = View.VISIBLE
-            /*loadImage(
+            (itemView.findViewById<View>(R.id.epView) as PlayerView).visibility = View.GONE
+            touch.visibility = View.VISIBLE
+            loadImage(
                 itemView.context,
-                itemView.findViewById<View>(R.id.ivImages) as ImageView,
-                files[position].url
-            )*/
-            AppHelper.setImage(itemView.context,itemView.findViewById<View>(R.id.ivImages) as ImageView,files[position].url!!,false)
+                touch,
+                files[position].url,
+                position
+            )
+
         }
         return itemView
     }
@@ -78,10 +82,10 @@ class AdapterPagerFiles(
         try {
             currentPosition = 0L
             (container.getChildAt(position)
-                .findViewById<View>(R.id.epView) as StyledPlayerView).player!!.playWhenReady =
+                .findViewById<View>(R.id.epView) as PlayerView).player!!.playWhenReady =
                 false
             (container.getChildAt(position)
-                .findViewById<View>(R.id.epView) as StyledPlayerView).player!!
+                .findViewById<View>(R.id.epView) as PlayerView).player!!
                 .playbackState
         } catch (e: Exception) {
             wtf(e.toString())
@@ -94,7 +98,7 @@ class AdapterPagerFiles(
     private fun loadImage(
         context: Context,
         imageView: TouchImageView,
-        url: String?
+        url: String?,position:Int
     ) {
         val options: RequestOptions = RequestOptions()
             .fitCenter()
@@ -102,10 +106,11 @@ class AdapterPagerFiles(
             .error(R.color.gray_border_tab)
         Glide.with(context).load(url).apply(options)
             .into(imageView)
+        files.get(position).zoomer = imageView
     }
     private fun loadVideo(
         context: Context,
-        exoPlayerView: StyledPlayerView,
+        exoPlayerView: PlayerView,
         url: String?,
         position: Int
     ) {

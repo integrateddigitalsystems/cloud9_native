@@ -3,9 +3,12 @@ package com.ids.cloud9.controller.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
+import android.provider.Settings
 import android.text.InputType
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.gson.Gson
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.custom.AppCompactBase
@@ -15,6 +18,7 @@ import com.ids.cloud9.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Calendar
 
 class ActivityLogin : AppCompactBase() {
     var binding : ActivityLoginBinding?=null
@@ -24,8 +28,8 @@ class ActivityLogin : AppCompactBase() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
-        binding!!.etEmail.text =Editable.Factory.getInstance().newEditable("info@mte.com.ae")
-        binding!!.etPassword.text =Editable.Factory.getInstance().newEditable("P@ssw0rd!@#")
+       // binding!!.etEmail.text =Editable.Factory.getInstance().newEditable("mobile@crm.ids.com.lb")
+       // binding!!.etPassword.text =Editable.Factory.getInstance().newEditable("P@ssw0rd1")
         listeners()
     }
     fun listeners(){
@@ -36,6 +40,14 @@ class ActivityLogin : AppCompactBase() {
                 binding!!.etPassword.setBackgroundResource(R.drawable.rounded_primary_border)
             }
         }
+        /*binding!!.btTestUser1.setOnClickListener {
+            binding!!.etEmail.text = Editable.Factory.getInstance().newEditable("mobile@crm.ids.com.lb")
+            binding!!.etPassword.text =Editable.Factory.getInstance().newEditable("P@ssw0rd1")
+        }
+        binding!!.btTestUser2.setOnClickListener {
+            binding!!.etEmail.text =Editable.Factory.getInstance().newEditable("mobile@mydomain.com")
+            binding!!.etPassword.text =Editable.Factory.getInstance().newEditable("P@ssw0rd!@#")
+        }*/
         binding!!.etPassword.setOnFocusChangeListener { view, b ->
             if(selectedField !=2){
                 selectedField = 2
@@ -44,11 +56,11 @@ class ActivityLogin : AppCompactBase() {
             }
         }
         binding!!.btLogin.setOnClickListener {
-            if(!binding!!.etEmail.text.toString().isEmpty() && !binding!!.etPassword.text.toString().isEmpty()) {
+            if(!binding!!.etEmail.text.toString().trim().isEmpty() && !binding!!.etPassword.text.toString().trim().isEmpty()) {
                 if(!binding!!.etEmail.text.toString().isEmailValid()){
                     createDialog(getString(R.string.email_invalid))
                 }else {
-                    login(binding!!.etEmail.text.toString(), binding!!.etPassword.text.toString())
+                    login(binding!!.etEmail.text.toString().trim(), binding!!.etPassword.text.toString().trim())
                 }
             }else{
                 createDialog(getString(R.string.fill_details))
@@ -71,24 +83,28 @@ class ActivityLogin : AppCompactBase() {
        binding!!.btLogin.hide()
        binding!!.loadingLogin.show()
        wtf(MyApplication.BASE_URL)
-       val newReq = RequestLogin(email , password , true )
        RetrofitClient.client?.create(RetrofitInterface::class.java)
-           ?.logIn(
-               newReq
+           ?.loginUser(
+              email,
+               password
            )?.enqueue(object : Callback<ResponseLogin> {
                override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
                    try {
-                       MyApplication.token = response.body()!!.token!!
-                       wtf(MyApplication.token)
-                       MyApplication.email = email
-                       MyApplication.password = password
-                       MyApplication.userItem = JWTDecoding.decoded(MyApplication.token)
-                       updateToken(MyApplication.userItem!!.applicationUserId!!.toInt())
-                       binding!!.loadingLogin.hide()
-                       binding!!.btLogin.show()
-                       getUnits()
-                       MyApplication.loggedIn = true
-                       startActivity(Intent(this@ActivityLogin,ActivityMain::class.java))
+                       if(response.body()!!.success!!) {
+                           MyApplication.token = response.body()!!.token!!
+                           MyApplication.BASE_USER_URL = response.body()!!.apiURL!!
+                           wtf(MyApplication.token)
+                           MyApplication.email = email
+                           MyApplication.password = password
+                           MyApplication.userItem = JWTDecoding.decoded(MyApplication.token)
+                           Log.wtf("JAD JWT", Gson().toJson(MyApplication.userItem))
+                           updateToken(MyApplication.userItem!!.applicationUserId!!.toInt())
+                           MyApplication.deviceUserId = response.body()!!.userId!!
+                           updateDevice(MyApplication.deviceUserId)
+                       }else{
+                           createDialog(response.body()!!.message!!)
+                           binding!!.btLogin.show()
+                       }
                    }catch (ex:Exception){
                        binding!!.btLogin.show()
                        wtf(ex.toString())
@@ -105,7 +121,7 @@ class ActivityLogin : AppCompactBase() {
             MyApplication.firebaseToken,
             id
         )
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).saveToken(tokenReq)
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).saveToken(tokenReq)
             .enqueue(object : Callback<ResponseMessage> {
                 override fun onResponse(
                     call: Call<ResponseMessage>,
@@ -118,8 +134,97 @@ class ActivityLogin : AppCompactBase() {
                 }
             })
     }
+    fun getReasons(){
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.REASON_LOOKUP_CODE)
+            .enqueue(object : Callback<UnitList> {
+                override fun onResponse(
+                    call: Call<UnitList>,
+                    response: Response<UnitList>
+                ) {
+                    safeCall {
+                        if(response.body()!!.size >0) {
+                            MyApplication.lookupsReason.clear()
+                            MyApplication.lookupsReason.addAll(response.body()!!)
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<UnitList>, t: Throwable) {
+                }
+            })
+    }
+
+    fun updateDevice(userId : Int){
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(
+            { task ->
+
+                val imei = Settings.Secure.getString(
+                    contentResolver,
+                    Settings.Secure.ANDROID_ID
+                )
+                val updateDevice = UpdateDeviceRequest(
+                    AppHelper.getAndroidVersion(),
+                    MyApplication.simpleDate.format(Calendar.getInstance().time),
+                    "",
+                    AppHelper.getDeviceName(),
+                    task.result,
+                    2,
+                    MyApplication.deviceId,
+                    MyApplication.languageCode,
+                    "",
+                    true,
+                    imei
+                )
+                Log.wtf("TAG-DEVICE_TOKEN",task.result)
+                if(userId!=0){
+                    updateDevice.userId = userId
+                }
+                RetrofitClient.client!!.create(RetrofitInterface::class.java).updateDevice(
+                    updateDevice
+                ).enqueue(object : Callback<UpdateDeviceResponse> {
+                    override fun onResponse(
+                        call: Call<UpdateDeviceResponse>,
+                        response: Response<UpdateDeviceResponse>
+                    ) {
+                        if(response.isSuccessful){
+                            wtf("Success")
+                            finalStepLogin()
+                        }else {
+                            createRetryDialog(
+                                getString(R.string.error_getting_data)
+                            ) {
+                                updateDevice(userId)
+                            }
+                        }
+
+                    }
+                    override fun onFailure(call: Call<UpdateDeviceResponse>, t: Throwable) {
+                        createRetryDialog(
+                            getString(R.string.error_getting_data)
+                        ) {
+                            updateDevice(userId)
+                        }
+                    }
+                })
+
+
+            }
+
+
+
+        )
+    }
+
+    fun finalStepLogin(){
+        binding!!.loadingLogin.hide()
+        binding!!.btLogin.show()
+        getUnits()
+        getReasons()
+        MyApplication.loggedIn = true
+        startActivity(Intent(this@ActivityLogin,ActivityMain::class.java))
+    }
     fun getUnits(){
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.PRODUCTION_LOOKUP_CODE)
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getUnits(AppConstants.PRODUCTION_LOOKUP_CODE)
             .enqueue(object : Callback<UnitList> {
                 override fun onResponse(
                     call: Call<UnitList>,

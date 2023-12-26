@@ -55,10 +55,11 @@
     <string name="sure_delete_media">Are you sure you want to delete media item ?</string>
     <string name="home">Home</string>
     <string name="all_tasks">All tasks</string>
-    <string name="permission_background_android">This app collects location data to enable client app tracking visit feature ,even when the app is closed or not in use.\n\n  if you want to enable these features please press OK.\n\n By pressing CANCEL the client will not be able to track your location.</string>
+    <string name="permission_background_android">This app collects location data to enable admin app tracking visit feature ,even when the app is closed or not in use.\n\n  If you want to enable these features please press \'Ok\'.\n\n By pressing \'Cancel\' the admin will not be able to track your location.</string>
     <string name="log_out">Log out</string>
+    <string name="sure_logout">Are you sure you wanna logout ?</string>
     <string name="location_updates_disabled">Orders flagged on track will not send updates to client because you disabled location updates</string>
-    <string name="sure_logout">Are you sure you want to logout?</string>
+    <string name="location_updates_disabled_arr">Orders flagged on track will not send updates to client because you disabled location updates</string>
     <string name="are_you_sure_exit">Are you sure you want to leave the Cloud9?</string>
     <string name="cancel">Cancel</string>
     <string name="test_text">Text Test</string>
@@ -71,6 +72,7 @@
     <string name="contract_number_p">Contract Number:</string>
     <string name="fax_p">Fax:</string>
     <string name="site_location_p">Site Location:</string>
+    <string name="grant_settings_permission">You have to grant permission manually in settings</string>
     <string name="date_p">Date:</string>
     <string name="opportunity_p">Opportunity:</string>
     <string name="matco_eng_p">Matco Eng:</string>
@@ -91,5 +93,16 @@
     <string name="loc_callback_removed">Location Callback removed.</string>
     <string name="failed_rremove_loc">Failed to remove Location Callback.</string>
     <string name="visit_succ">Visit updated successfully</string>
+    <string name="go_back">Go Back</string>
     <string name="visit_arrived_completed">Visit has not arrived , or is already completed.</string>
+    <string name="not_saved_signature">You haven\'t saved your signature! \nClick \"Go Back\" to go back and save it , or click cancel to discard it</string>
+    <string name="task_deleted_successfully">Task deleted successfully!</string>
+    <string name="gps_settings">GPS disabled , do you want to turn it on through settings ?</string>
+    <string name="update_message">New version is available, please update</string>
+
+    <string name="update_cancel">Cancel</string>
+    <string name="quantity_more_0">Quantity should not be 0</string>
+    <string name="custom_product_name">Custom Product Name</string>
+    <string name="custom_product_description">Custom Product Description</string>
+    <string name="signature_completed">After saving the signature, the visit will be marked as complete, and you will not be able to edit it. Are you sure you want to continue?</string>
 </resources>

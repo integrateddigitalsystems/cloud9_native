@@ -29,6 +29,7 @@
     <dimen name="huge_margin">20dp</dimen>
     <dimen name="barcode_width_height">70dp</dimen>
     <dimen name="normal_margin_padding">8dp</dimen>
+    <dimen name="medium_margin_padding">6dp</dimen>
     <dimen name="small_margin_padding">4dp</dimen>
     <dimen name="edit_text_height">40dp</dimen>
     <dimen name="button_2_height">50dp</dimen>
@@ -50,7 +51,7 @@
     <dimen name="margin_start_end">18dp</dimen>
     <dimen name="size_18">18sp</dimen>
     <dimen name="margin_big">520dp</dimen>
-    <dimen name="min_height">85dp</dimen>
+    <dimen name="min_height">50dp</dimen>
     <dimen name="size_14">14sp</dimen>
     <dimen name="image_button">48dp</dimen>
     <dimen name="padding_10">10dp</dimen>
@@ -70,6 +71,7 @@
     <dimen name="size_35">35dp</dimen>
     <dimen name="medium_tab_height">72dp</dimen>
     <dimen name="smallest_margin">3dp</dimen>
+    <dimen name="toolbar_start_title">160dp</dimen>
 
   <!-- Text Sizes-->
 

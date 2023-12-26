@@ -3,9 +3,9 @@ package com.ids.cloud9.controller.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.media3.common.Player
+import androidx.media3.ui.PlayerView;
 import androidx.viewpager.widget.ViewPager
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.adapters.AdapterPagerFiles
@@ -49,6 +49,8 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
         pos = intent.getIntExtra("ID_MEDIA",0)
         setMediaPager()
     }
+
+
     private fun setMediaPager(){
         arrayVideos.clear()
         var ct = 1
@@ -57,6 +59,7 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
             arrayVideos.get(ct-1).isLocal = item.isLocal
             ct++
         }
+
         val adapterVideos = AdapterPagerFiles(arrayVideos, this,this,this)
         binding!!.vpMediaFull.adapter = adapterVideos
         binding!!.tbMedia.setupWithViewPager(binding!!.vpMediaFull)
@@ -77,10 +80,22 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
             if(arrayVideos.get(i).player!=null) {
                 if (i != position)
                     arrayVideos.get(i).player!!.pause()
+                else{
+                    arrayVideos.get(i).player!!.play()
+                }
 
+            }else{
+               /* if(arrayVideos.get(i).zoomer!=null)
+                    arrayVideos.get(i).zoomer!!.currentZoom*/
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        MyApplication.activityResumed()
+    }
+
     override fun onPageSelected(position: Int) {
        safeCall {  pauseAll()}
     }
@@ -88,9 +103,9 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
         for (i in arrayVideos.indices) {
             if (arrayVideos.get(i).type==2) {
                 (binding!!.vpMediaFull.getChildAt(i)
-                    .findViewById(R.id.epView) as StyledPlayerView).player!!.playWhenReady =
+                    .findViewById(R.id.epView) as PlayerView).player!!.playWhenReady =
                     false
-                (binding!!.vpMediaFull.getChildAt(i).findViewById(R.id.epView) as StyledPlayerView).player!!
+                (binding!!.vpMediaFull.getChildAt(i).findViewById(R.id.epView) as PlayerView).player!!
                     .playbackState
             }
         }
@@ -99,6 +114,7 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
         safeCall {
             pauseAll()
         }
+        MyApplication.activityPaused()
         super.onPause()
     }
     override fun onStop() {

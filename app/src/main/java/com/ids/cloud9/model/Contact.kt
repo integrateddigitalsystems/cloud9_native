@@ -5,81 +5,81 @@ import com.google.gson.annotations.SerializedName
 
 data class Contact(
     @SerializedName("account")
-    val account: Any,
+    val account: Any?=null,
     @SerializedName("accountId")
-    val accountId: Int,
+    val accountId: Int?=0,
     @SerializedName("active")
-    val active: Boolean,
+    val active: Boolean?=false,
     @SerializedName("address")
     val address: String?="",
     @SerializedName("address2")
-    val address2: String,
+    val address2: String?="",
     @SerializedName("certificates")
-    val certificates: List<Any>,
+    val certificates:  ArrayList <Any> = arrayListOf(),
     @SerializedName("city")
-    val city: Any,
+    val city: Any?=null ,
     @SerializedName("cityId")
-    val cityId: Double,
+    val cityId: Double?=0.0,
     @SerializedName("companies")
-    val companies: List<Any>,
+    val companies:  ArrayList <Any> = arrayListOf(),
     @SerializedName("company")
-    val company: Any,
+    val company: Any?=null ,
     @SerializedName("companyId")
-    val companyId: Int,
+    val companyId: Int?=0,
     @SerializedName("companyName")
-    val companyName: String,
+    val companyName: String?="",
     @SerializedName("companyNameAr")
-    val companyNameAr: Any,
+    val companyNameAr: Any?=null ,
     @SerializedName("contactFiles")
-    val contactFiles: List<Any>,
+    val contactFiles:  ArrayList <Any> = arrayListOf(),
     @SerializedName("contracts")
-    val contracts: List<Any>,
+    val contracts:  ArrayList <Any> = arrayListOf(),
     @SerializedName("countryId")
-    val countryId: Int,
+    val countryId: Int?=0,
     @SerializedName("creationDate")
-    val creationDate: String,
+    val creationDate: String?="",
     @SerializedName("email")
-    val email: String,
+    val email: String?="",
     @SerializedName("fax")
     val fax: String?="",
     @SerializedName("firstName")
-    val firstName: String,
+    var firstName: String?="",
     @SerializedName("firstNameAr")
-    val firstNameAr: String,
+    val firstNameAr: String?="",
     @SerializedName("id")
-    val id: Int,
+    val id: Int?=0,
     @SerializedName("isDeleted")
-    val isDeleted: Boolean,
+    val isDeleted: Boolean?=false,
     @SerializedName("jobRole")
-    val jobRole: String,
+    val jobRole: String?="",
     @SerializedName("lastName")
-    val lastName: String,
+    var lastName: String?="",
     @SerializedName("lastNameAr")
-    val lastNameAr: String,
+    val lastNameAr: String?="",
     @SerializedName("lead")
-    val lead: Any,
+    val lead: Any?=null ,
     @SerializedName("leadId")
-    val leadId: Any,
+    val leadId: Any?=null ,
     @SerializedName("modificationDate")
-    val modificationDate: String,
+    val modificationDate: String?="",
     @SerializedName("opportunities")
-    val opportunities: List<Any>,
+    val opportunities:  ArrayList <Any> = arrayListOf(),
     @SerializedName("orders")
-    val orders: List<Any>,
+    val orders:  ArrayList <Any> = arrayListOf(),
     @SerializedName("owner")
-    val owner: Any,
+    val owner: Any?=null ,
     @SerializedName("ownerId")
-    val ownerId: Int,
+    val ownerId: Int?=0,
     @SerializedName("personalPhoneNumber")
-    val personalPhoneNumber: String?="",
+    var personalPhoneNumber: String?="",
     @SerializedName("phoneNumberSecondary")
-    val phoneNumberSecondary: String,
+    val phoneNumberSecondary: String?="",
     @SerializedName("pid")
-    val pid: String,
+    val pid: String?="",
     @SerializedName("quotes")
-    val quotes: List<Any>,
+    val quotes:  ArrayList <Any> = arrayListOf(),
     @SerializedName("timeStamp")
-    val timeStamp: String,
+    val timeStamp: String?="",
     @SerializedName("visits")
-    val visits: List<Any>
+    val visits:  ArrayList <Any> = arrayListOf()
 )

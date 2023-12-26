@@ -11,6 +11,23 @@ class ResponseLogin(
 
     @SerializedName("token")
     @Expose
-    var token : String ?=""
+    var token : String ?="" ,
+
+    @SerializedName("apiUrl")
+    @Expose
+    var apiURL : String ?="" ,
+
+    @SerializedName("loginUrl")
+    @Expose
+    var loginUrl : String ?="",
+
+    @SerializedName("userId")
+    @Expose
+    var userId : Int ?=0,
+
+    @SerializedName("message")
+    @Expose
+    var message : String ?=""
+
 ) {
 }

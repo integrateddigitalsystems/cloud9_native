@@ -5,44 +5,44 @@ import com.google.gson.annotations.SerializedName
 
 data class ProductListItem(
     @SerializedName("creationDate")
-    val creationDate: String,
+    val creationDate: String ?= "" ,
     @SerializedName("customProductDescription")
-    val customProductDescription: String,
+    val customProductDescription: String ?= "" ,
     @SerializedName("customProductName")
-    val customProductName: String,
+    val customProductName: String ?= "" ,
     @SerializedName("formId")
-    val formId: Int,
+    val formId: Int ?=0,
     @SerializedName("id")
-    val id: Int?=0,
+    val id: Int ?=0,
     @SerializedName("isDeleted")
     val isDeleted: Boolean,
     @SerializedName("modificationDate")
-    val modificationDate: String,
+    val modificationDate: String ?= "" ,
     @SerializedName("notes")
-    val notes: String,
+    val notes: String ?= "" ,
     @SerializedName("priceIncluded")
-    val priceIncluded: Any,
+    val priceIncluded: Any ?=null,
     @SerializedName("priceListIdDetails")
-    val priceListIdDetails: Any,
+    val priceListIdDetails: Any ?=null,
     @SerializedName("product")
     val product: ProductX,
     @SerializedName("productId")
-    val productId: Int,
+    val productId: Int ?=0,
     @SerializedName("quantity")
-    val quantity: Int,
+    val quantity: Int ?=0,
     @SerializedName("serialNumber")
-    val serialNumber: String,
+    val serialNumber: String ?= "" ,
     @SerializedName("serialNumbers")
-    val serialNumbers: ArrayList<String> = arrayListOf(),
+    val serialNumbers:ArrayList<String> ?= arrayListOf(),
     @SerializedName("unit")
-    val unit: Any,
+    val unit: Any ?=null,
     @SerializedName("unitId")
-    val unitId: Int?=0,
+    val unitId: Int =0,
     @SerializedName("visit")
-    val visit: Any,
+    val visit: Any ?=null,
     @SerializedName("visitId")
-    val visitId: Int,
+    val visitId: Int ?=0,
     @SerializedName("visitNumber")
-    val visitNumber: String,
-    var reports : ArrayList<Report> = arrayListOf()
+    val visitNumber: String ?= "" ,
+    var reports : ArrayList<FormsItem> = arrayListOf()
 )

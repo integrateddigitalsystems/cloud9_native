@@ -15,13 +15,13 @@ data class Visit(
     var accountId: Int?=0,
     @JsonInclude
     @SerializedName("actualArrivalTime")
-    var actualArrivalTime: String="",
+    var actualArrivalTime: String?="",
     @JsonInclude
     @SerializedName("actualCompletedTime")
-    var actualCompletedTime: String="",
+    var actualCompletedTime: String?="",
     @JsonInclude
     @SerializedName("actualDuration")
-    var actualDuration: Double =0.0,
+    var actualDuration: Double ?=0.0,
     @JsonInclude
     @SerializedName("assignedTo")
     var assignedTo: Any?=null,
@@ -168,5 +168,11 @@ data class Visit(
 
     var dateMill : Long =0,
 
-    var headerOrder : Int = -1
+    var headerOrder : Int = -1,
+
+    var appearDuration: String  = "" ,
+
+    var showData : ShowStickyItem ?=null
+
+
 )

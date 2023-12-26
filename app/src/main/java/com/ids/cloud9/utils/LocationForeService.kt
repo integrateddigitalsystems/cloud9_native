@@ -149,7 +149,10 @@ class LocationForeService : Service() {
 
                     currentLocation = locationResult.lastLocation
                     if(currentLocation!=null) {
-                        startForeground(NOTIFICATION_ID, generateNotification())
+                        if(!AppHelper.isInForeground())
+                            startForeground(NOTIFICATION_ID, generateNotification())
+                        else
+                            stopNotification()
                     }
 
                     changeLocation(currentLocation!!)
@@ -212,7 +215,10 @@ class LocationForeService : Service() {
             wtf("Start foreground service")
             if(currentLocation!=null) {
                 val notification = generateNotification()
-                startForeground(NOTIFICATION_ID, notification)
+                if(!AppHelper.isInForeground())
+                    startForeground(NOTIFICATION_ID, generateNotification())
+                else
+                    stopNotification()
             }
             serviceRunningInForeground = true
         }
@@ -356,7 +362,10 @@ class LocationForeService : Service() {
                     wtf(location.latitude.toString()+","+location.longitude.toString())
                     MyApplication.address!!.lat=location.latitude.toString()
                     MyApplication.address!!.long=location.longitude.toString()}catch (e:Exception){}
-                generateNotification()
+                if(!AppHelper.isInForeground())
+                   generateNotification()
+                else
+                    stopNotification()
 
                 var update = com.google.android.gms.maps.model.LatLng(location.latitude,location.longitude)
                 if(location!=null)
@@ -378,7 +387,10 @@ class LocationForeService : Service() {
 
                 if(currentLocation!=null) {
 
-                    startForeground(NOTIFICATION_ID, generateNotification())
+                    if(!AppHelper.isInForeground())
+                        startForeground(NOTIFICATION_ID, generateNotification())
+                    else
+                        stopNotification()
                 }
                 if (serviceRunningInForeground) {
 
@@ -436,7 +448,10 @@ class LocationForeService : Service() {
             }
             if(firstLocation!=null) {
                 currentLocation = firstLocation
-                generateNotification()
+                if(!AppHelper.isInForeground())
+                    generateNotification()
+                else
+                    stopNotification()
                 changeLocation(currentLocation!!)
             }
 
@@ -460,10 +475,14 @@ class LocationForeService : Service() {
             }
 
         if(currentLocation!=null) {
-            notificationManager.notify(
-                NOTIFICATION_ID,
-                generateNotification()
-            )
+            if(!AppHelper.isInForeground())
+                notificationManager.notify(
+                    NOTIFICATION_ID,
+                    generateNotification()
+                )
+            else
+                stopNotification()
+
         }
         startService(Intent(applicationContext, LocationForeService::class.java))
 
@@ -478,11 +497,10 @@ class LocationForeService : Service() {
             location.latitude ,
             location.longitude ,
             MyApplication.onTheWayVisit!!.id!!
-
-
         )
+        Log.wtf("JAD_LOCCY",Gson().toJson(visitLocationRequest))
         wtf(Gson().toJson(visitLocationRequest))
-        RetrofitClientAuth.client!!.create(
+        RetrofitClientSpecificAuth.client!!.create(
             RetrofitInterface::class.java
         ).createVisitLocation(
             visitLocationRequest
@@ -561,16 +579,17 @@ class LocationForeService : Service() {
      */
     private fun generateNotification(): Notification {
 
-        // Main steps for building a BIG_TEXT_STYLE notification:
-        //      0. Get data
-        //      1. Create Notification Channel for O+
-        //      2. Build the BIG_TEXT_STYLE
-        //      3. Set up Intent / Pending Intent for notification
-        //      4. Build and issue the notification
+        if(!AppHelper.isInForeground()) {
+            // Main steps for building a BIG_TEXT_STYLE notification:
+            //      0. Get data
+            //      1. Create Notification Channel for O+
+            //      2. Build the BIG_TEXT_STYLE
+            //      3. Set up Intent / Pending Intent for notification
+            //      4. Build and issue the notification
 
-        // 0. Get data
-        // val mainNotificationText = location?.toText() ?: AppHelper.getRemoteString("collecting_loc",this)
-        val mainNotificationText = getString(R.string.collecting_loc)
+            // 0. Get data
+            // val mainNotificationText = location?.toText() ?: AppHelper.getRemoteString("collecting_loc",this)
+            val mainNotificationText = getString(R.string.collecting_loc)
 
             val titleText =
                 currentLocation!!.latitude.toString() + ":" + currentLocation!!.longitude
@@ -591,7 +610,6 @@ class LocationForeService : Service() {
             // 2. Build the BIG_TEXT_STYLE.
             val bigTextStyle = NotificationCompat.BigTextStyle()
                 .bigText(mainNotificationText)
-                .setBigContentTitle(titleText)
 
             // 3. Set up main Intent/Pending Intents for notification.
             var launchActivityIntent: Intent? = null
@@ -631,6 +649,18 @@ class LocationForeService : Service() {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .build()
             return currNotf!!
+        }else{
+            return  Notification()
+        }
+
+    }
+
+
+
+    private fun stopNotification(){
+        safeCall {
+            notificationManager.cancel(NOTIFICATION_ID)
+        }
 
     }
 

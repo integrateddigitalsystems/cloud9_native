@@ -32,12 +32,13 @@
 
                 <com.ids.cloud9.custom.CustomTextViewBold
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/size_30"
+                    android:minHeight="@dimen/size_30"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:textSize="@dimen/medium_font"
                     android:id="@+id/tvSubject"
                     android:textColor="@color/lighter_blue"
-                    android:text="subjjt"/>
+                    android:text=""/>
 
                 <com.ids.cloud9.custom.CustomTextViewMedium
                     android:layout_width="match_parent"

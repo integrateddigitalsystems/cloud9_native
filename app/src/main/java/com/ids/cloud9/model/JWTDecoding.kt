@@ -15,7 +15,7 @@ object JWTDecoding {
             if(split.size > 0 ) {
                 wtf("Header: " + getJson(split[0]))
                 wtf("Body: " + getJson(split[1]))
-
+                var str = Gson().fromJson(getJson(split[1]), JWTResponse::class.java)
                 return Gson().fromJson(getJson(split[1]), JWTResponse::class.java)
             }else {
                 return  JWTResponse()

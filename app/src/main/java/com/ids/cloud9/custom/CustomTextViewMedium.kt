@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import com.ids.cloud9.utils.AppHelper
+import me.grantland.widget.AutofitHelper
 
 
 class CustomTextViewMedium : AppCompatTextView {
@@ -22,6 +23,7 @@ class CustomTextViewMedium : AppCompatTextView {
         this.includeFontPadding = false
         if (!isInEditMode)
             typeface = AppHelper.getTypeFace(context)
+        AutofitHelper.create(this)
 
     }
 }

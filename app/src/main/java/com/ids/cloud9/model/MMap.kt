@@ -5,35 +5,35 @@ import com.google.gson.annotations.SerializedName
 
 data class MMap(
     @SerializedName("collapse_key")
-    val collapseKey: String,
+    val collapseKey: String?="",
     @SerializedName("com.google.firebase.iid.WakeLockHolder.wakefulintent")
     val comGoogleFirebaseIidWakeLockHolderWakefulintent: Boolean,
     @SerializedName("from")
-    val from: String,
+    val from: String?="",
     @SerializedName("gcm.n.dnp")
-    val gcmNDnp: String,
+    val gcmNDnp: String?="",
     @SerializedName("gcm.notification.body")
-    val gcmNotificationBody: String,
+    val gcmNotificationBody: String?="",
     @SerializedName("gcm.notification.e")
-    val gcmNotificationE: String,
+    val gcmNotificationE: String?="",
     @SerializedName("gcm.notification.title")
-    val gcmNotificationTitle: String,
+    val gcmNotificationTitle: String?="",
     @SerializedName("google.c.a.e")
-    val googleCAE: String,
+    val googleCAE: String?="",
     @SerializedName("google.c.sender.id")
-    val googleCSenderId: String,
+    val googleCSenderId: String?="",
     @SerializedName("google.delivered_priority")
-    val googleDeliveredPriority: String,
+    val googleDeliveredPriority: String?="",
     @SerializedName("google.message_id")
-    val googleMessageId: String,
+    val googleMessageId: String?="",
     @SerializedName("google.original_priority")
-    val googleOriginalPriority: String,
+    val googleOriginalPriority: String?="",
     @SerializedName("google.sent_time")
-    val googleSentTime: Long,
+    val googleSentTime: Long?=0L,
     @SerializedName("google.ttl")
-    val googleTtl: Int,
+    val googleTtl: Int?=0,
     @SerializedName("notification_foreground")
-    val notificationForeground: String,
+    val notificationForeground: String?="",
     @SerializedName("visitId")
-    val visitId: String
+    val visitId: String?=""
 )

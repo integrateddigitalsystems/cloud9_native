@@ -5,95 +5,95 @@ import com.google.gson.annotations.SerializedName
 
 data class Opportunity(
     @SerializedName("account")
-    val account: Any,
+    val account: Any ?=null,
     @SerializedName("accountId")
-    val accountId: Int,
+    val accountId: Int ?=0,
     @SerializedName("actualClosureDate")
-    val actualClosureDate: String,
+    val actualClosureDate: String?="",
     @SerializedName("actualValue")
-    val actualValue: Int,
+    val actualValue: Double,
     @SerializedName("assignedTo")
-    val assignedTo: Any,
+    val assignedTo: Any ?=null,
     @SerializedName("assignedToId")
-    val assignedToId: Any,
+    val assignedToId: Any ?=null,
     @SerializedName("beneficiary")
-    val beneficiary: Any,
+    val beneficiary: Any ?=null,
     @SerializedName("beneficiaryId")
-    val beneficiaryId: Int,
+    val beneficiaryId: Int ?=0,
     @SerializedName("certificates")
-    val certificates: List<Any>,
+    val certificates: ArrayList<Any>?=arrayListOf(),
     @SerializedName("company")
-    val company: Any,
+    val company: Any ?=null,
     @SerializedName("companyId")
-    val companyId: Int,
+    val companyId: Int ?=0,
     @SerializedName("contact")
-    val contact: Any,
+    val contact: Any ?=null,
     @SerializedName("contactId")
-    val contactId: Int,
+    val contactId: Int ?=0,
     @SerializedName("contracts")
-    val contracts: List<Any>,
+    val contracts: ArrayList<Any>?=arrayListOf(),
     @SerializedName("creationDate")
-    val creationDate: String,
+    val creationDate: String?="",
     @SerializedName("currency")
-    val currency: Any,
+    val currency: Any ?=null,
     @SerializedName("currencyId")
-    val currencyId: Int,
+    val currencyId: Int ?=0,
     @SerializedName("estimatedRevenue")
-    val estimatedRevenue: Any,
+    val estimatedRevenue: Any ?=null,
     @SerializedName("estimatedValue")
-    val estimatedValue: Int,
+    val estimatedValue: Int ?=0,
     @SerializedName("expectedClosureDate")
-    val expectedClosureDate: Any,
+    val expectedClosureDate: Any ?=null,
     @SerializedName("id")
-    val id: Int,
+    val id: Int ?=0,
     @SerializedName("isDeleted")
     val isDeleted: Boolean,
     @SerializedName("lead")
-    val lead: Any,
+    val lead: Any ?=null,
     @SerializedName("leadId")
-    val leadId: Any,
+    val leadId: Any ?=null,
     @SerializedName("modificationDate")
-    val modificationDate: String,
+    val modificationDate: String?="",
     @SerializedName("name")
-    val name: String,
+    val name: String?="",
     @SerializedName("nextContactDate")
-    val nextContactDate: Any,
+    val nextContactDate: Any ?=null,
     @SerializedName("opportunityFiles")
-    val opportunityFiles: List<Any>,
+    val opportunityFiles: ArrayList<Any>?=arrayListOf(),
     @SerializedName("opporunityPrices")
-    val opporunityPrices: List<Any>,
+    val opporunityPrices: ArrayList<Any>?=arrayListOf(),
     @SerializedName("orders")
-    val orders: List<Any>,
+    val orders: ArrayList<Any>?=arrayListOf(),
     @SerializedName("owner")
-    val owner: Any,
+    val owner: Any ?=null,
     @SerializedName("ownerId")
-    val ownerId: Int,
+    val ownerId: Int ?=0,
     @SerializedName("potential")
-    val potential: Any,
+    val potential: Any ?=null,
     @SerializedName("potentialId")
-    val potentialId: Int,
+    val potentialId: Int ?=0,
     @SerializedName("priceList")
-    val priceList: Any,
+    val priceList: Any ?=null,
     @SerializedName("priceListId")
-    val priceListId: Int,
+    val priceListId: Int ?=0,
     @SerializedName("quotes")
-    val quotes: List<Any>,
+    val quotes: ArrayList<Any>?=arrayListOf(),
     @SerializedName("reason")
-    val reason: Any,
+    val reason: Any ?=null,
     @SerializedName("reasonId")
-    val reasonId: Int,
+    val reasonId: Int ?=0,
     @SerializedName("relatedTender")
-    val relatedTender: String,
+    val relatedTender: String?="",
     @SerializedName("services")
-    val services: List<Any>,
+    val services: ArrayList<Any>?=arrayListOf(),
     @SerializedName("status")
-    val status: Any,
+    val status: Any ?=null,
     @SerializedName("statusId")
-    val statusId: Int,
+    val statusId: Int ?=0,
     @SerializedName("type")
-    val type: Any,
+    val type: Any ?=null,
     @SerializedName("typeId")
-    val typeId: Int,
+    val typeId: Int ?=0,
     @SerializedName("visits")
-    val visits: List<Any>
+    val visits: ArrayList<Any> ?= arrayListOf(),
 )

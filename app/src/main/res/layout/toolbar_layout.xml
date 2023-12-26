@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/llToolbarLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -8,7 +9,7 @@
         android:elevation="@dimen/small_margin"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="67dp"
+        android:layout_height="75dp"
         android:background="@drawable/gradient_bg">
 
         <ImageView
@@ -28,7 +29,7 @@
             android:id="@+id/layoutFragment"
             android:gravity="center_vertical"
             android:layout_centerVertical="true"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageView
                 android:padding="@dimen/padding_10"
@@ -54,14 +55,15 @@
         </LinearLayout>
 
         <com.ids.cloud9.custom.CustomTextViewMedium
-            android:layout_width="match_parent"
-            android:text="@string/visits"
+            android:layout_width="250dp"
+            android:paddingStart="@dimen/normal_margin"
+            android:paddingEnd="@dimen/normal_margin"
             android:id="@+id/tvTitleTool"
-            android:layout_marginStart="@dimen/normal_margin"
-            android:layout_marginEnd="@dimen/normal_margin"
             android:textSize="@dimen/normal_font"
-            android:textColor="@color/white"
+            android:layout_centerInParent="true"
+            android:maxLines="4"
             android:gravity="center"
+            android:textColor="@color/white"
             android:layout_height="match_parent" />
 
     </RelativeLayout>

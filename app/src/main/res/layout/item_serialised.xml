@@ -28,7 +28,6 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/small_margin_padding"
             android:layout_weight="1"
-            android:inputType="number"
             android:background="@drawable/rounded_gray_border"
             android:gravity="center_vertical"
             android:minHeight="@dimen/height_40"

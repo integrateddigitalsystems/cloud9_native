@@ -1,9 +1,12 @@
 package com.ids.cloud9.controller.activities
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
@@ -21,12 +24,13 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
 
     var binding: ActivityAddReccomendBinding? = null
     var adapter: AdapterText? = null
+    var canEdit : Boolean = true
     private var simp = SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH)
     private var simpOrg = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
     private var adapterUser: AdapterUser? = null
@@ -34,6 +38,16 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
     var arrayUsers: ArrayList<ApplicationUserListItem> = arrayListOf()
     private var arrayUserSelected: ArrayList<ApplicationUserListItem> = arrayListOf()
 
+
+    override fun onResume() {
+        super.onResume()
+        MyApplication.activityResumed()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MyApplication.activityPaused()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddReccomendBinding.inflate(layoutInflater)
@@ -41,7 +55,10 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
         init()
     }
     private fun popupDate() {
-        val myCalendar: Calendar = Calendar.getInstance()
+        var myCalendar : Calendar =Calendar.getInstance()
+        if(MyApplication.selectedReccomend !=null){
+           myCalendar.time =  simpOrg.parse(MyApplication.selectedReccomend!!.dueDate)!!
+        }
         val DatePicker =
             DatePickerDialog(
                 this,
@@ -63,8 +80,16 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
         binding!!.llTool.layoutFragment.show()
         if(MyApplication.selectedReccomend!=null)
             binding!!.llTool.tvTitleTool.text = MyApplication.selectedReccomend!!.subject
-        else
+        else {
             binding!!.llTool.tvTitleTool.text = getString(R.string.task)
+            binding!!.lLDelete.hide()
+        }
+
+        binding!!.llMainLayout.setOnClickListener {
+            if(binding!!.llNameSelect.visibility == View.VISIBLE){
+                binding!!.llNameSelect.hide()
+            }
+        }
         binding!!.llTool.ivCalendar.setOnClickListener {
             finishAffinity()
             startActivity(
@@ -77,50 +102,71 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
         binding!!.llTool.btBack.setOnClickListener {
            onBackPressedDispatcher.onBackPressed()
         }
-        binding!!.llAssignTo.setOnClickListener {
-            binding!!.llNameSelect.show()
+        if(canEdit) {
+            binding!!.llAssignTo.setOnClickListener {
+                if (binding!!.llNameSelect.visibility == View.GONE)
+                    binding!!.llNameSelect.show()
+                else binding!!.llNameSelect.hide()
+            }
+            binding!!.ivSelectUser.setOnClickListener {
+                if (binding!!.llNameSelect.visibility == View.GONE)
+                    binding!!.llNameSelect.show()
+                else binding!!.llNameSelect.hide()
+            }
+            binding!!.tvDueDate.setOnClickListener {
+                popupDate()
+            }
+            binding!!.lLDelete.setOnClickListener {
+                createActionDialog(
+                    getString(R.string.you_wanna_delete),
+                    0
+                ) {
+                    deleteReccomend()
+                }
+            }
+
+            binding!!.btSave.setOnClickListener {
+                if (!binding!!.etSubject.text.toString()
+                        .isEmpty() && !binding!!.tvDueDate.text.toString()
+                        .isEmpty() && !binding!!.etDesc.text.toString()
+                        .isEmpty() && arrayUserSelected.size > 0
+                ) {
+                    if(binding!!.etSubject.text!!.length >=5)
+                        createReccomend()
+                    else{
+                        createDialog( getString(R.string.less_than_5))
+                    }
+
+                } else if (binding!!.etSubject.text.toString()
+                        .isNotEmpty() && binding!!.tvDueDate.text.toString()
+                        .isNotEmpty() && binding!!.etDesc.text.toString()
+                        .isNotEmpty() && MyApplication.selectedReccomend != null
+                ) {
+
+                    if(binding!!.etSubject.text!!.length >=5)
+                        updateReccomend()
+                    else{
+                        createDialog( getString(R.string.less_than_5))
+                    }
+                } else {
+                    createDialog( getString(R.string.fill_details))
+                }
+            }
+        }else{
+            binding!!.etSubject.background = AppCompatResources.getDrawable(this ,R.drawable.rounded_gray)
+            binding!!.etDesc.background = AppCompatResources.getDrawable(this ,R.drawable.rounded_gray)
+            binding!!.rlDueDate.background = AppCompatResources.getDrawable(this ,R.drawable.rounded_gray)
+            binding!!.etSubject.isEnabled = false
+            binding!!.etDesc.isEnabled = false
+            binding!!.btSave.hide()
+            binding!!.lLDelete.hide()
         }
-        binding!!.ivSelectUser.setOnClickListener {
-            binding!!.llNameSelect.show()
-        }
-        binding!!.tvDueDate.setOnClickListener {
-            popupDate()
-        }
-        binding!!.lLDelete.setOnClickListener {
-            createActionDialog(
-                getString(R.string.you_wanna_delete),
-                0
-            ){
-                deleteReccomend()
+        binding!!.llTool.llToolbarLayout.setOnClickListener {
+            if(binding!!.llNameSelect.visibility == View.VISIBLE){
+                binding!!.llNameSelect.hide()
             }
         }
-        binding!!.btSave.setOnClickListener {
-            if (!binding!!.etSubject.text.toString()
-                    .isEmpty() && !binding!!.tvDueDate.text.toString()
-                    .isEmpty() && !binding!!.etDesc.text.toString()
-                    .isEmpty() && arrayUserSelected.size > 0
-            ) {
-                if(binding!!.etSubject.text!!.length >=5)
-                    createReccomend()
-                else{
-                    createDialog( getString(R.string.less_than_5))
-                }
 
-            } else if (binding!!.etSubject.text.toString()
-                    .isNotEmpty() && binding!!.tvDueDate.text.toString()
-                    .isNotEmpty() && binding!!.etDesc.text.toString()
-                    .isNotEmpty() && MyApplication.selectedReccomend != null
-            ) {
-
-                if(binding!!.etSubject.text!!.length >=5)
-                    updateReccomend()
-                else{
-                    createDialog( getString(R.string.less_than_5))
-                }
-            } else {
-                createDialog( getString(R.string.fill_details))
-            }
-        }
         if (MyApplication.selectedReccomend == null) {
             binding!!.llAssignTo.show()
             binding!!.llEditAssign.hide()
@@ -128,10 +174,9 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
             binding!!.llAssignTo.hide()
             binding!!.llEditAssign.show()
             binding!!.tvName.text = MyApplication.selectedReccomend!!.assignedTo
-            binding!!.etSubject.text = MyApplication.selectedReccomend!!.subject.toEditable()
-            binding!!.etDesc.text = MyApplication.selectedReccomend!!.description.toEditable()
-            binding!!.tvDueDate.text =
-                simp.format(simpOrg.parse(MyApplication.selectedReccomend!!.dueDate)!!)
+            binding!!.etSubject.text = MyApplication.selectedReccomend!!.subject!!.toEditable()
+            binding!!.etDesc.text = MyApplication.selectedReccomend!!.description!!.toEditable()
+            binding!!.tvDueDate.text = simp.format(simpOrg.parse(MyApplication.selectedReccomend!!.dueDate)!!)
         }
     }
     private fun updateReccomend() {
@@ -139,10 +184,20 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
         MyApplication.selectedReccomend!!.dueDate = simpOrg.format(simp.parse(binding!!.tvDueDate.text.toString())!!)
         MyApplication.selectedReccomend!!.subject = binding!!.etSubject.text.toString()
         MyApplication.selectedReccomend!!.description = binding!!.etDesc.text.toString()
-        wtf(Gson().toJson(MyApplication.selectedReccomend))
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
+        try {
+            if(MyApplication.selectedReccomend!!.id==0 && MyApplication.selectedReccomend!!.activityId!=0){
+                MyApplication.selectedReccomend!!.id = MyApplication.selectedReccomend!!.activityId
+            }
+        }catch (ex:Exception){
+            if(MyApplication.selectedReccomend!!.id==null){
+                if(MyApplication.selectedReccomend!!.activityId!=null)
+                    MyApplication.selectedReccomend!!.id = MyApplication.selectedReccomend!!.activityId
+            }
+        }
+        Log.wtf("TAG_update_RECC",Gson().toJson(MyApplication.selectedReccomend))
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .updateActivity(
-                MyApplication.selectedReccomend!!
+               MyApplication.selectedReccomend!!
             ).enqueue(object : Callback<ResponseMessage> {
                 override fun onResponse(
                     call: Call<ResponseMessage>,
@@ -167,8 +222,8 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
     }
     private fun deleteReccomend(){
         binding!!.llLoading.show()
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).deleteActivity(
-            MyApplication.selectedReccomend!!.id
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).deleteActivity(
+            if(MyApplication.selectedReccomend!!.id!=0)MyApplication.selectedReccomend!!.id!!else MyApplication.selectedReccomend!!.activityId!!
         ).enqueue(object : Callback<ResponseMessage> {
             override fun onResponse(
                 call: Call<ResponseMessage>,
@@ -177,7 +232,8 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
                 if(response.body()!!.success.equals("true")){
                     binding!!.llLoading.hide()
                     finish()
-                    toast(response.body()!!.message!!)
+                    toast(getString(R.string.task_deleted_successfully))
+                 /*   toast(response.body()!!.message!!)*/
                 }else{
                     binding!!.llLoading.hide()
                 }
@@ -188,17 +244,12 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
         })
     }
     private fun createReccomend() {
-        var id = 0
         binding!!.llLoading.show()
         val arrId: ArrayList<Int> = arrayListOf()
-        if (arrayUserSelected.size == 1)
-            id = arrayUserSelected[0].id
-        else {
             for (item in arrayUserSelected)
-                arrId.add(item.id)
-        }
+                arrId.add(item.id!!)
         val createActivity = CreateActivity(
-            if (arrId.size > 0) null else id,
+            null,
             binding!!.etDesc.text.toString(),
             MyApplication.selectedVisit!!.id,
             arrId,
@@ -207,7 +258,7 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
             binding!!.tvDueDate.text.toString()
         )
         wtf(Gson().toJson(createActivity))
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .createActivity(
                 createActivity
             ).enqueue(object : Callback<ResponseMessage> {
@@ -235,12 +286,16 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
             })
     }
     private fun setUpData() {
-        binding!!.rvSelectedUser.layoutManager =
-            GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false)
+        if(MyApplication.selectedReccomend==null)
+            binding!!.tvDueDate.text = simp.format(Calendar.getInstance().time)
+        binding!!.rvSelectedUser.layoutManager = GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false)
         adapterUser = AdapterUser(arrayUserSelected, this, this)
         binding!!.rvSelectedUser.adapter = adapterUser
     }
     fun init() {
+        safeCall {
+            canEdit = intent.extras!!.getBoolean("canEdit", true)
+        }
         getUsers()
         listeners()
         setUpData()
@@ -262,7 +317,7 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
     }
     private fun getUsers() {
         binding!!.llLoading.show()
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java)
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .getAllAppUsers(1)
             .enqueue(object : Callback<ApplicationUserList> {
                 override fun onResponse(
@@ -278,24 +333,34 @@ class ActivityAddReccomendations : AppCompactBase(), RVOnItemClickListener {
                 }
             })
     }
+    @SuppressLint("NotifyDataSetChanged")
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.btRemoveMore) {
             arraySpinner.find {
-                it.id == arrayUsers[position].id
+                it.id == arrayUserSelected[position].id
             }!!.selected = false
-            arrayUserSelected.removeAt(position)
+            arrayUserSelected.remove(arrayUserSelected[position])
             if (arrayUsers.size == 0)
                 binding!!.rvSelectedUser.hide()
-            else
-                adapterUser!!.notifyItemChanged(position)
+            else{
+                adapterUser!!.notifyDataSetChanged()
+                adapter!!.notifyDataSetChanged()
+            }
         } else {
             if (!arraySpinner[position].selected!!) {
                 binding!!.rvSelectedUser.show()
                 binding!!.llNameSelect.hide()
                 arrayUserSelected.add(arrayUsers[position])
                 arraySpinner[position].selected = true
-                adapter!!.notifyItemChanged(position)
-                adapterUser!!.notifyItemChanged(position)
+                adapter!!.notifyDataSetChanged()
+                adapterUser!!.notifyDataSetChanged()
+            }else{
+                binding!!.rvSelectedUser.show()
+                binding!!.llNameSelect.hide()
+                arrayUserSelected.remove(arrayUsers[position])
+                arraySpinner[position].selected = false
+                adapter!!.notifyDataSetChanged()
+                adapterUser!!.notifyDataSetChanged()
             }
         }
     }

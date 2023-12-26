@@ -13,6 +13,7 @@
     <string name="log_out">تسجيل خروج</string>
     <string name="sure_logout">هل انت متأكد من تسجيل خروج؟</string>
     <string name="location_updates_disabled">لن يتم ارسال تغير موقعك الى العميل لأنك منعت تحديثات الموقع</string>
+    <string name="location_updates_disabled_arr">Orders flagged on track will not send updates to client because you disabled location updates</string>
     <string name="permission_background_android">يجمع هذا التطبيق بيانات الموقع لتمكين ميزة تتبع تطبيق العميل ، حتى عندما يكون التطبيق مغلقًا أو غير مستخدم. \n \n إذا كنت ترغب في تمكين هذه الميزات ، يرجى الضغط على موافق. \n \n بالضغط على إلغاء ، لن يفعل العميل تكون قادرة على تتبع موقعك.</string>
     <string name="are_you_sure_exit">هل انت متأكد من الخروج من التطبيق؟</string>
     <string name="cancel">الغاء</string>
@@ -71,12 +72,13 @@
     <string name="contract_number_p">Contract Number:</string>
     <string name="fax_p">Fax:</string>
     <string name="site_location_p">Site Location:</string>
+    <string name="grant_settings_permission">You have to grant permission manually in settings</string>
     <string name="date_p">Date:</string>
     <string name="opportunity_p">Opportunity:</string>
     <string name="matco_eng_p">Matco Eng:</string>
     <string name="n_a">N/A</string>
     <string name="contact_number_p">Contact Number:</string>
-    <string name="update">Update</string>
+    <string name="update">تحديث</string>
     <string name="task">Task</string>
     <string name="email_invalid">Invalid Email</string>
     <string name="no_records">No records added yet</string>
@@ -91,5 +93,15 @@
     <string name="loc_callback_removed">Location Callback removed.</string>
     <string name="failed_rremove_loc">Failed to remove Location Callback.</string>
     <string name="visit_succ">Visit updated successfully</string>
+    <string name="go_back">Go Back</string>
+    <string name="not_saved_signature">You haven\'t saved your signature! \n Click \"Go Back\" to go back and save it , or click cancel to disacard it</string>
     <string name="visit_arrived_completed">Visit has not arrived , or is already completed.</string>
+    <string name="task_deleted_successfully">تم حذف المهمة بنجاح!</string>
+    <string name="gps_settings">خدمات الموقع غير مفعلة هل تريد التفعيل عبر التجهيزات؟</string>
+    <string name="update_message">نسخة جديدة متاحة ، يرجى التحديث</string>
+    <string name="update_cancel">الغاء</string>
+    <string name="quantity_more_0">Quantity should not be 0</string>
+    <string name="custom_product_name">Custom Product Name</string>
+    <string name="custom_product_description">Custom Product Description</string>
+    <string name="signature_completed">After saving the signature, the visit will be marked as complete, and you will not be able to edit it. Are you sure you want to continue?</string>
 </resources>

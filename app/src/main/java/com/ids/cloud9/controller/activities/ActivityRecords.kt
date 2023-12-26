@@ -30,23 +30,35 @@ class ActivityRecords : AppCompactBase(), RVOnItemClickListener {
     }
     override fun onResume() {
         super.onResume()
+        getRecords()
+        MyApplication.activityResumed()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MyApplication.activityPaused()
     }
     fun init(){
-        getRecords()
+
+        binding!!.srReccomendations.setOnRefreshListener{
+            getRecords()
+        }
     }
     fun getRecords(){
         binding!!.llLoading.show()
-        RetrofitClientAuth.client!!
+        RetrofitClientSpecificAuth.client!!
             .create(RetrofitInterface::class.java)
             .getProductRecords(
                 MyApplication.selectedProduct!!.id!!
             ).enqueue(object : Callback<RecordLists>{
                 override fun onResponse(call: Call<RecordLists>, response: Response<RecordLists>) {
-                    records.clear()
-                    records.addAll(response.body()!!)
-                    setUpRecord()
+                    if (response.isSuccessful){
+                        records.clear()
+                        records.addAll(response.body()!!)
+                        setUpRecord()
+                    }
+                    else  binding!!.llLoading.hide()
                 }
-
                 override fun onFailure(call: Call<RecordLists>, t: Throwable) {
                     binding!!.llLoading.hide()
                 }
@@ -65,6 +77,7 @@ class ActivityRecords : AppCompactBase(), RVOnItemClickListener {
             binding!!.rvReccomendations.hide()
             binding!!.tvNotasks.show()
         }
+        binding!!.srReccomendations.isRefreshing = false
     }
     fun listeners(){
         binding!!.layoutTool.show()
@@ -88,6 +101,8 @@ class ActivityRecords : AppCompactBase(), RVOnItemClickListener {
         binding!!.btAddReccomend.hide()
     }
     override fun onItemClicked(view: View, position: Int) {
-
+            startActivity(Intent(this, ActivityReportDetails::class.java)
+                .putExtra("RepId", records.get(position).formId)
+                .putExtra("url",  records.get(position).url))
     }
 }

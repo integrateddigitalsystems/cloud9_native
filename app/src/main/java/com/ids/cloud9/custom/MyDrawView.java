@@ -26,6 +26,12 @@ public class MyDrawView extends View {
     private ArrayList<Path> undonePaths = new ArrayList<Path>();
     Bitmap bmp;
 
+    public int  numberOfPaths(){
+        return paths.size() ;
+    }
+    public Boolean isEmpty(){
+        return !(paths.size() > 0) ;
+    }
     public MyDrawView(Context c) {
         super(c);
 

@@ -2,7 +2,6 @@ package com.ids.molilo.custom
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.EditText
 import androidx.appcompat.widget.AppCompatEditText
 import com.ids.cloud9.utils.AppHelper
 

@@ -5,31 +5,31 @@ import com.google.gson.annotations.SerializedName
 
 data class CompanyAddress(
     @SerializedName("address")
-    val address: String,
+    val address: String?="",
     @SerializedName("city")
-    val city: Any,
+    val city: Any?=null,
     @SerializedName("cityId")
-    val cityId: Double,
+    val cityId: Double?=0.0,
     @SerializedName("company")
-    val company: Any,
+    val company: Any?=null,
     @SerializedName("companyId")
-    val companyId: Int,
+    val companyId: Int?=0,
     @SerializedName("country")
-    val country: Any,
+    val country: Any?=null ,
     @SerializedName("countryId")
-    val countryId: Int,
+    val countryId: Int?=0,
     @SerializedName("fax")
-    val fax: String,
+    val fax: String?="",
     @SerializedName("id")
-    val id: Int,
+    val id: Int?=0,
     @SerializedName("lat")
-    val lat: String,
+    val lat: String?="",
     @SerializedName("long")
-    val long: String,
+    val long: String?="",
     @SerializedName("name")
-    val name: String,
+    val name: String?="",
     @SerializedName("phone")
-    val phone: String,
+    val phone: String?="",
     @SerializedName("visits")
-    val visits: List<Any>
+    val visits:  ArrayList <Any> = arrayListOf()
 )

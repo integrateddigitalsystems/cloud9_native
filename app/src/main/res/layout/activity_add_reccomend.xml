@@ -17,11 +17,13 @@
             layout="@layout/toolbar_layout" />
 
         <ScrollView
+            android:fillViewport="true"
         android:layout_marginTop="@dimen/normal_margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/llMainLayout"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -150,21 +152,21 @@
 
                 <LinearLayout
                     android:id="@+id/llEditAssign"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/rounded_gray"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_40" >
+                    android:layout_height="@dimen/height_40"
+                    android:background="@drawable/rounded_gray"
+                    android:gravity="center_vertical">
 
 
                     <com.ids.cloud9.custom.CustomTextViewMedium
-                        android:layout_width="wrap_content"
                         android:id="@+id/tvName"
-                        android:padding="@dimen/mini_radius"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/mini_radius"
                         android:background="@drawable/rounded_bottom_white_gray_border"
+                        android:padding="@dimen/mini_radius"
                         android:text=""
-                        android:textColor="@color/colorAccent"/>
+                        android:textColor="@color/colorAccent" />
 
 
                 </LinearLayout>
@@ -198,6 +200,7 @@
                     android:text="@string/due_date"/>
 
                 <RelativeLayout
+                    android:id="@+id/rlDueDate"
                     android:layout_marginTop="@dimen/small_margin_padding"
                     android:background="@drawable/rounded_white_gray_border"
                     android:layout_width="match_parent"
@@ -236,10 +239,11 @@
                     android:id="@+id/llNameSelect"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/with_200"
+                    android:layout_marginTop="2dp"
+                    android:padding="1.5dp"
                     android:layout_marginStart="@dimen/margin_start_end"
-                    android:layout_marginTop="-1dp"
                     android:layout_marginEnd="@dimen/margin_start_end"
-                    android:background="@drawable/rounded_bottom_white_gray_border"
+                    android:background="@drawable/rounded_white_gray_border"
                     android:orientation="vertical"
                     android:visibility="gone">
 

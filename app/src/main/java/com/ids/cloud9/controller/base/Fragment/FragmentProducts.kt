@@ -8,17 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.adapters.AdapterProducts
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.activities.ActivityAddProduct
 import com.ids.cloud9.controller.activities.ActivityRecords
 import com.ids.cloud9.controller.activities.ActivityReportDetails
-import com.ids.cloud9.controller.activities.ActivtyVisitDetails
 import com.ids.cloud9.controller.adapters.AdapterDialog
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
 import com.ids.cloud9.databinding.LayoutProductsBinding
@@ -41,7 +38,6 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
     var alertDialog: AlertDialog? = null
     var adapterDialog: AdapterDialog? = null
     var arrayProd: ArrayList<ProductListItem> = arrayListOf()
-    var arrayReccomend: ArrayList<ActivitiesListItem> = arrayListOf()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,8 +58,8 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
         for (item in arrayProd.get(position).reports) {
             arrSpin.add(ItemSpinner(item.id, item.name, item.selected, true, false, position, null))
         }
-        val builder = androidx.appcompat.app.AlertDialog.Builder(requireActivity())
-        var popupItemMultipleBinding = ReasonDialogBinding.inflate(layoutInflater)
+        val builder = AlertDialog.Builder(requireActivity())
+        val popupItemMultipleBinding = ReasonDialogBinding.inflate(layoutInflater)
         popupItemMultipleBinding.rvReasonStatus.layoutManager =
             LinearLayoutManager(requireActivity())
         adapterDialog = AdapterDialog(arrSpin, requireActivity(), this, true)
@@ -77,8 +73,9 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
         }
     }
     fun init() {
-        getProducts()
-        if (MyApplication.selectedVisit!!.reasonId == AppConstants.PENDING_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.COMPLETED_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.ON_THE_WAY_REASON_ID || MyApplication.selectedVisit!!.reasonId == AppConstants.SCHEDULED_REASON_ID) {
+      /*  getProducts()*/
+
+        if (MyApplication.selectedVisit!!.reasonId ==  AppHelper.getReasonID(AppConstants.REASON_PENDING) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ON_THE_WAY) || MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_SCHEDULED)) {
             binding!!.llButton.setBackgroundResource(R.color.disabled_primary)
             binding!!.btAddProducts.isEnabled = false
         }
@@ -92,20 +89,23 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
                 )
             )
         }
-        binding!!.srProducts.setOnRefreshListener(
-            SwipeRefreshLayout.OnRefreshListener {
-                getProducts()
-            })
+        binding!!.srProducts.setOnRefreshListener{
+            getProducts()
+        }
     }
     fun getProducts() {
         binding!!.llLoading.show()
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getProducts(
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getProducts(
             MyApplication.selectedVisit!!.id!!
-        )?.enqueue(object : Callback<ProductList> {
+        ).enqueue(object : Callback<ProductList> {
             override fun onResponse(call: Call<ProductList>, response: Response<ProductList>) {
-                arrayProd.clear()
-                arrayProd.addAll(response.body()!!)
-                setUpProducts()
+                if (response.isSuccessful){
+                    arrayProd.clear()
+                    arrayProd.addAll(response.body()!!)
+                    setUpProducts()
+                }
+                else binding!!.llLoading.hide()
+
             }
             override fun onFailure(call: Call<ProductList>, throwable: Throwable) {
                 binding!!.llLoading.hide()
@@ -113,6 +113,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
         })
     }
     fun setUpProductsPage() {
+        safeCall {
         if (arrayProd.size > 0) {
             binding!!.tvNoData.hide()
             binding!!.rvProducts.show()
@@ -124,6 +125,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
             binding!!.rvProducts.hide()
         }
         binding!!.llLoading.hide()
+        }
     }
     fun setUpProducts() {
         ctProd = 0
@@ -133,41 +135,46 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
                 getReports(i)
             }
         } else {
+            setUpProductsPage()
             binding!!.llLoading.hide()
         }
         binding!!.srProducts.isRefreshing = false
     }
     fun getReports(position: Int) {
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getReports(
-            arrayProd.get(position).product.categoryId
-        )?.enqueue(object : Callback<ArrayList<Report>> {
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getFormByVisitProductId(
+            arrayProd.get(position).id!!
+        ).enqueue(object : Callback<Forms>{
             override fun onResponse(
-                call: Call<ArrayList<Report>>,
-                response: Response<ArrayList<Report>>
+                call: Call<Forms>, response: Response<Forms>
             ) {
-                if (response.body()!!.size > 0) {
-                    arrayProd.get(position).reports.clear()
-                    arrayProd.get(position).reports.addAll(response.body()!!)
-                }
+                if (response.isSuccessful){
+                    if (response.body()!!.size > 0) {
+                        arrayProd.get(position).reports.clear()
+                        arrayProd.get(position).reports.addAll(response.body()!!)
+                    }
 
-                ctProd++
-                if (ctProd == arrayProd.size) {
-                    setUpProductsPage()
+                    ctProd++
+                    if (ctProd == arrayProd.size) {
+                        setUpProductsPage()
+                    }
                 }
+                else  binding!!.llLoading.hide()
+
             }
-            override fun onFailure(call: Call<ArrayList<Report>>, throwable: Throwable) {
+            override fun onFailure(call: Call<Forms>, t: Throwable) {
                 binding!!.llLoading.hide()
             }
         })
     }
     override fun onResume() {
         super.onResume()
+        MyApplication.selectedProduct = null
         getProducts()
     }
     fun deleteProduct(pos: Int) {
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).deleteProduct(
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).deleteProduct(
             arrayProd.get(pos).id!!
-        )?.enqueue(object : Callback<ResponseMessage> {
+        ).enqueue(object : Callback<ResponseMessage> {
             override fun onResponse(
                 call: Call<ResponseMessage>,
                 response: Response<ResponseMessage>
@@ -185,7 +192,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
     }
     override fun onItemClicked(view: View, position: Int) {
         if (view.id == R.id.btEditProduct) {
-            if (MyApplication.selectedVisit!!.reasonId == AppConstants.ARRIVED_REASON_ID) {
+            if (MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
                 MyApplication.selectedProduct = arrayProd.get(position)
                 startActivity(
                     Intent(
@@ -195,7 +202,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
                 )
             }
         } else if (view.id == R.id.btClose) {
-            if (MyApplication.selectedVisit!!.reasonId == AppConstants.ARRIVED_REASON_ID) {
+            if (MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
                 requireContext().createActionDialog(
                     getString(R.string.you_wanna_delete),
                     0
@@ -215,26 +222,23 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
             for (item in arrayProd.get(arrSpin.get(position).type!!).reports)
                 item.selected = false
             arrayProd.get(arrSpin.get(position).type!!).reports.get(position).selected = true
-            adapterDialog!!.notifyDataSetChanged()
-            adapterProd!!.notifyDataSetChanged()
+            adapterDialog!!.notifyItemChanged(position)
+            adapterProd!!.notifyItemChanged(position)
         } else if (view.id == R.id.ivReport) {
-            if (MyApplication.selectedVisit!!.reasonId == AppConstants.ARRIVED_REASON_ID) {
+            if (MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
                 MyApplication.selectedProduct = arrayProd.get(position)
-                var ct = arrayProd.get(position).reports.count {
+                val ct = arrayProd.get(position).reports.count {
                     it.selected
                 }
                 if (ct > 0) {
-                    startActivity(
-                        Intent(
-                            requireContext(),
-                            ActivityReportDetails::class.java
-                        ).putExtra(
-                            "RepId",
+                    startActivity(Intent(requireContext(), ActivityReportDetails::class.java).putExtra("RepId",
                             arrayProd.get(position).reports.find {
                                 it.selected
                             }!!.id
 
-                        )
+                        ).putExtra("url",   arrayProd.get(position).reports.find {
+                        it.selected
+                    }!!.url)
                     )
                 }
             }

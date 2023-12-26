@@ -5,19 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ids.cloud9.R
 import com.ids.cloud9.controller.MyApplication
 import com.ids.cloud9.controller.activities.ActivityAddReccomendations
 import com.ids.cloud9.controller.adapters.AdapterFilteredReccomendations
 import com.ids.cloud9.controller.adapters.RVOnItemClickListener.RVOnItemClickListener
-import com.ids.cloud9.databinding.LayoutProductsBinding
 import com.ids.cloud9.databinding.LayoutReccomendationsBinding
-import com.ids.cloud9.model.ActivitiesList
-import com.ids.cloud9.model.ActivitiesListItem
 import com.ids.cloud9.model.FilteredActivityList
 import com.ids.cloud9.model.FilteredActivityListItem
 import com.ids.cloud9.utils.*
@@ -45,7 +40,7 @@ class FragmentReccomendations : Fragment(), RVOnItemClickListener {
         init()
     }
     fun listeners() {
-        if (MyApplication.selectedVisit!!.reasonId!= AppConstants.ARRIVED_REASON_ID) {
+        if (MyApplication.selectedVisit!!.reasonId!= AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
            binding!!.btAddReccomend.isEnabled = false
             binding!!.llButton.setBackgroundResource(R.color.disabled_primary)
         }
@@ -58,9 +53,9 @@ class FragmentReccomendations : Fragment(), RVOnItemClickListener {
                 )
             )
         }
-        binding!!.srReccomendations.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+        binding!!.srReccomendations.setOnRefreshListener{
             getReccomendations()
-        })
+        }
     }
     fun init() {
         listeners()
@@ -87,7 +82,7 @@ class FragmentReccomendations : Fragment(), RVOnItemClickListener {
     }
     fun getReccomendations() {
         binding!!.llLoading.show()
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getReccomendationsFilter(
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).getReccomendationsFilter(
             MyApplication.selectedVisit!!.id!!,
             -1
         ).enqueue(object : Callback<FilteredActivityList> {
@@ -95,9 +90,13 @@ class FragmentReccomendations : Fragment(), RVOnItemClickListener {
                 call: Call<FilteredActivityList>,
                 response: Response<FilteredActivityList>
             ) {
-                arrayReccomend.clear()
-                arrayReccomend.addAll(response.body()!!)
-                setDataReccomend()
+                if (response.isSuccessful){
+                    arrayReccomend.clear()
+                    arrayReccomend.addAll(response.body()!!)
+                    setDataReccomend()
+                }
+                else  binding!!.llLoading.hide()
+
             }
             override fun onFailure(call: Call<FilteredActivityList>, t: Throwable) {
                 binding!!.llLoading.hide()
@@ -106,7 +105,7 @@ class FragmentReccomendations : Fragment(), RVOnItemClickListener {
         })
     }
     override fun onItemClicked(view: View, position: Int) {
-        if (MyApplication.selectedVisit!!.reasonId == AppConstants.ARRIVED_REASON_ID) {
+        if (MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
             MyApplication.selectedReccomend = arrayReccomend.get(position)
             startActivity(
                 Intent(

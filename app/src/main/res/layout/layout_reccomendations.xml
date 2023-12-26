@@ -28,6 +28,7 @@
             android:layout_height="match_parent">
 
             <LinearLayout
+
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -36,8 +37,8 @@
             android:id="@+id/tvNotasks"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/normal_margin"
-            android:gravity="center_horizontal"
+            android:gravity="center"
+            android:visibility="gone"
             android:text="@string/no_tasks_added_yet"
             android:textColor="@color/text_gray" />
 
@@ -47,6 +48,8 @@
                 android:id="@+id/rvReccomendations"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/with_200"
                 android:layout_marginTop="@dimen/normal_margin" />
 
             </LinearLayout>

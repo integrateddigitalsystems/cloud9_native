@@ -25,19 +25,7 @@ object AppConstants {
     const val FIREBASE_CONFIG = "MobileConfiguration"
     const val LOCALISED_MESSAGES = "localised_messages"
 
-    const val SCHEDULED_REASON_ID = 4650
-    const val COMPLETED_REASON_ID = 4651
-    const val ARRIVED_REASON_ID = 4653
-    const val PENDING_REASON_ID = 4654
-    const val ON_THE_WAY_REASON_ID = 4655
-
     const val REQUEST_LOCATION_PERMISSION = 111
-
-    const val COMPLETED_REASON = "completed"
-    const val SCHEDULED_REASON = "scheduled"
-    const val ARRIVED_REASON = "arrived"
-    const val PENDING_REASON = "pending"
-    const val ON_THE_WAY_REASON = "on the way"
 
     const val ENTITY_TYPE_CODE_SIGNATURE = "A_EntityType_V"
     const val SIGNATURE_TYPE_CLIENT = "SIGTYPE_C"
@@ -52,11 +40,29 @@ object AppConstants {
     const val FORM_ITEM_DATE = "date"
     const val FORM_ITEM_TIME = "time"
     const val PRODUCTION_LOOKUP_CODE = "PROD_UNIT"
+    const val REASON_LOOKUP_CODE = "V_STTSR"
     const val LOGGED_IN ="LoggedIn"
+    const val FIRST_TIME = "firstTime"
     const val FIREBASE_TOKEN ="firebaseToken"
+    const val PERMISSION ="permission"
     const val TOKEN = "token"
     const val EMAIL ="email"
+    const val DEVICE_ID = "device_id"
+    const val DEVICE_USER_ID="device_user_id"
+    const val DEVICE_TOKEN ="device_token"
     const val PASSWORD ="password"
+    const val IS_SHOW ="is_show"
+
+    const val OTHER_PRODUCT_ID = 4308
+    const val OTHER_PRODUCT_NAME = "Other"
+
+    const val REASON_UNSCHEDULED = "V_STTSR_U"
+    const val REASON_SCHEDULED = "V_STTSR_S"
+    const val REASON_COMPLETED = "V_STTSR_COM"
+    const val REASON_CANCELLED = "V_STTSR_CAN"
+    const val REASON_ARRIVED = "V_STTSR_A"
+    const val REASON_PENDING = "V_STTSR_P"
+    const val REASON_ON_THE_WAY = "V_STTSR_OTW"
 
 
 

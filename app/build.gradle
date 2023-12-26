@@ -10,8 +10,8 @@ android {
         applicationId "com.cloud9.mobile"
         minSdk 21
         targetSdk 33
-        versionCode 1
-        versionName "1.1"
+        versionCode 14
+        versionName "2.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -31,6 +31,13 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
     }
 
     /* signingConfigs {
@@ -77,48 +84,53 @@ android {
         dataBinding true
 
     }
+    namespace 'com.ids.cloud9'
 
 
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20"
-    implementation "androidx.room:room-runtime:2.5.0"
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.3.5'
-    implementation 'com.google.firebase:firebase-analytics-ktx:21.2.0'
+ //   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0"
+    implementation "androidx.room:room-runtime:2.5.1"
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.3.7'
+    implementation 'com.google.firebase:firebase-analytics-ktx:21.3.0'
     implementation 'junit:junit:4.13.2'
-    implementation 'androidx.databinding:databinding-runtime:7.4.2'
-    kapt "androidx.room:room-compiler:2.5.0"
-    implementation "androidx.room:room-ktx:2.5.0"
+    implementation 'androidx.databinding:databinding-runtime:8.1.0'
+    kapt "androidx.room:room-compiler:2.5.2"
+    implementation "androidx.room:room-ktx:2.5.2"
     implementation 'com.github.dhaval2404:imagepicker:2.1'
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 
-    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.preference:preference-ktx:1.2.0'
 
 
-    implementation 'com.google.firebase:firebase-analytics:21.2.0'
-    implementation 'com.google.firebase:firebase-config-ktx:21.2.1'
+    implementation 'com.google.firebase:firebase-analytics:21.3.0'
+    implementation 'com.google.firebase:firebase-config-ktx:21.4.1'
     implementation 'com.google.firebase:firebase-core:21.1.1'
-    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.4'
-    implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.4'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.2.1'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.7.0'
+    implementation 'com.google.firebase:firebase-auth-ktx:22.1.1'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.7.0'
 
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.18.4'
-    implementation 'com.google.android.exoplayer:exoplayer-dash:2.18.4'
-    implementation 'com.google.android.exoplayer:exoplayer-hls:2.18.4'
-    implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.18.4'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.18.4'
+    implementation 'androidx.media3:media3-exoplayer:1.1.1'
+    implementation 'androidx.media3:media3-exoplayer-dash:1.1.1'
+    implementation 'androidx.media3:media3-ui:1.1.1'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.19.0'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.19.0'
+    implementation 'com.google.android.exoplayer:exoplayer-hls:2.19.0'
+    implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.19.0'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.19.0'
 
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
     implementation 'com.github.bumptech.glide:glide:4.13.2'
 
+    implementation 'com.github.didikk:sticky-nestedscrollview:1.0.1'
 
 
     //noinspection GradleCompatible
@@ -148,21 +160,22 @@ dependencies {
 // Allows to update the text of views at runtime without recreating the activity
     implementation 'dev.b3nedikt.reword:reword:4.0.2'
 
-    implementation 'com.google.firebase:firebase-perf:20.3.1'
+    implementation 'com.google.firebase:firebase-perf:20.4.0'
     implementation 'com.google.gms:google-services:4.3.15'
 
     implementation 'com.google.code.gson:gson:2.9.0'
-    implementation 'com.google.android.gms:play-services-auth:20.4.1'
+    implementation 'com.google.android.gms:play-services-auth:20.6.0'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.13.0'
 
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation 'me.grantland:autofittextview:0.2.1'
 
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
-    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.5.3'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
+    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.6.0'
 
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'

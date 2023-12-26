@@ -8,6 +8,7 @@
    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
        android:layout_width="match_parent"
        android:id="@+id/srProducts"
+
        android:layout_height="match_parent">
 
       <LinearLayout
@@ -16,20 +17,21 @@
           android:layout_height="match_parent">
    <com.ids.cloud9.custom.CustomTextViewMedium
        android:layout_width="match_parent"
-       android:gravity="center_horizontal"
+       android:gravity="center"
        android:id="@+id/tvNoData"
-       android:visibility="visible"
+       android:visibility="gone"
        android:textColor="@color/text_gray"
        android:text="@string/no_products_added_yet"
-       android:layout_marginTop="@dimen/normal_margin"
        android:layout_height="match_parent"/>
 
 
-      <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/rvProducts"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:layout_marginTop="@dimen/normal_margin"/>
+         <androidx.recyclerview.widget.RecyclerView
+             android:id="@+id/rvProducts"
+             android:paddingBottom="@dimen/with_200"
+             android:clipToPadding="false"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_marginTop="@dimen/normal_margin" />
 
       </LinearLayout>
 

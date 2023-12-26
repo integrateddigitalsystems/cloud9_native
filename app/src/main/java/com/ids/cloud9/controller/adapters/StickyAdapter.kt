@@ -13,8 +13,6 @@ import com.ids.cloud9.databinding.ItemVisitBinding
 import com.ids.cloud9.databinding.ItemVisitDateBinding
 import com.ids.cloud9.model.Visit
 import com.ids.cloud9.utils.*
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -48,19 +46,9 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<Visit>, var 
         binding.root
     ), View.OnClickListener {
         fun bind(item: Visit) {
-            val call = Calendar.getInstance()
-            val dateMil = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.ENGLISH).parse(item.visitDate!!)!!.time
-            call.time.time = dateMil
-            binding.tvDay.text = SimpleDateFormat("EEEE", Locale.ENGLISH).format(Date(dateMil))
-            binding.tvDate.text = SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH).format(Date(dateMil))
-
-            val original = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.ENGLISH)
-            val toForm = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
-            val cal = Calendar.getInstance()
-            val visitDate = item.visitDate
-            val visitMil = toForm.parse(toForm.format(original.parse(visitDate!!)!!))
-            val today = toForm.parse(toForm.format(cal.time))
-            if(visitMil!!.time == today!!.time){
+            binding.tvDay.text = item.showData!!.dayname
+            binding.tvDate.text = item.showData!!.date
+            if(item.showData!!.today!!){
                 binding.llHeaderDate.setBackgroundResource(R.color.colorPrimaryDark)
                 AppHelper.setTextColor(mContext,binding.tvDate,R.color.white)
                 AppHelper.setTextColor(mContext,binding.tvDay,R.color.white)
@@ -81,46 +69,14 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<Visit>, var 
         fun bind(child: Visit) {
             binding.tvVisitName.text = child.title
             binding.tvCompany.text = child.company!!.companyName
-            when (child.reasonId){
-                AppConstants.COMPLETED_REASON_ID -> {
-                    binding.tvStatus.setBackgroundResource(R.drawable.completed_bg)
-                    AppHelper.setTextColor(mContext,binding.tvStatus,R.color.comp_text)
-                    binding.tvStatus.text = AppConstants.COMPLETED_REASON
-                }
-                AppConstants.SCHEDULED_REASON_ID -> {
-                    binding.tvStatus.setBackgroundResource(R.drawable.scheduled_bg)
-                    AppHelper.setTextColor(mContext,binding.tvStatus,R.color.scheduled_text)
-                    binding.tvStatus.text = AppConstants.SCHEDULED_REASON
-                }
-                AppConstants.ON_THE_WAY_REASON_ID -> {
-                    binding.tvStatus.setBackgroundResource(R.drawable.on_the_way_bg)
-                    AppHelper.setTextColor(mContext,binding.tvStatus,R.color.otw_text)
-                    binding.tvStatus.text = AppConstants.ON_THE_WAY_REASON
-                }
-                AppConstants.ARRIVED_REASON_ID -> {
-                    binding.tvStatus.setBackgroundResource(R.drawable.arrived_bg)
-                    AppHelper.setTextColor(mContext,binding.tvStatus,R.color.arrived_text)
-                    binding.tvStatus.text = AppConstants.ARRIVED_REASON
-                }
-                AppConstants.PENDING_REASON_ID -> {
-                    binding.tvStatus.setBackgroundResource(R.drawable.pending_bg)
-                    AppHelper.setTextColor(mContext,binding.tvStatus,R.color.pending_text)
-                    binding.tvStatus.text = AppConstants.PENDING_REASON
-                }
+            binding.tvStatus.setBackgroundResource(child.showData!!.backg!!)
+            AppHelper.setTextColor(mContext,binding.tvStatus,child.showData!!.textColor!!)
+            binding.tvStatus.text = child.showData!!.statusReason
+            binding.tvDuration.text = child.showData!!.durationFromTo
+            safeCall {
+                if(mList.get(layoutPosition+1).isHeader!!) binding.llUnderLine.hide() else binding.llUnderLine.show()
             }
-            val millFrom = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH).parse(child.fromTime!!)!!.time
-            val millTo = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH).parse(child.toTime!!)!!.time
-            val diff = millTo - millFrom
-            val mins = diff / 60000
-            val hours = mins/60
-            val min = mins%60
-            binding.tvDuration.text = SimpleDateFormat("hh:mm aa", Locale.ENGLISH).format(Date(millFrom)) +"-\n"+SimpleDateFormat("hh:mm aa", Locale.ENGLISH).format(Date(millTo))+"\n("+if(hours>0) {hours.toString()+"hrs"+min+"mins"+")"}else {min.toString()+" mins"+")"}
-            if(layoutPosition+1 < mList.size) {
-                if (mList.get(layoutPosition + 1).isHeader!!)
-                    binding.llUnderLine.hide()
-            }else{
-                binding.llUnderLine.hide()
-            }
+
         }
         init {
             binding.root.setOnClickListener(this)
@@ -155,19 +111,9 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<Visit>, var 
         val day: TextView = header!!.findViewById(R.id.tvDay)
         val date : TextView = header.findViewById(R.id.tvDate)
         val headerLL : LinearLayout = header.findViewById(R.id.llHeaderDate)
-        var sep = header.findViewById<LinearLayout>(R.id.sepDate)
-        val call = Calendar.getInstance()
-        val dateMil = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.ENGLISH).parse(child.visitDate!!)!!.time
-        call.time.time = dateMil
-        day.text = SimpleDateFormat("EEEE", Locale.ENGLISH).format(Date(dateMil))
-        date.text = SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH).format(Date(dateMil))
-        val original = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.ENGLISH)
-        val toForm = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
-        val cal = Calendar.getInstance()
-        val visitDate = child.visitDate
-        val visitMil = toForm.parse(toForm.format(original.parse(visitDate!!)!!))
-        val today = toForm.parse(toForm.format(cal.time))
-        if(visitMil!!.time == today!!.time){
+        day.text = child.showData!!.dayname
+        date.text = child.showData!!.date
+        if(mList.get(headerPosition).showData!!.today!!){
             headerLL.setBackgroundResource(R.color.colorPrimaryDark)
             AppHelper.setTextColor(mContext,date,R.color.white)
             AppHelper.setTextColor(mContext,day,R.color.white)
@@ -175,10 +121,10 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<Visit>, var 
 
     }
     override fun isHeader(itemPosition: Int): Boolean {
-        return mList!![itemPosition].isHeader!!
+        return mList[itemPosition].isHeader!!
     }
     override fun getItemViewType(position: Int): Int {
-        return if (mList!![position].isHeader!!)
+        return if (mList[position].isHeader!!)
             VIEW_HEADER else
                 VIEW_DETAIL
     }

@@ -17,21 +17,29 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
+class ActivityAllTasks : AppCompactBase(), RVOnItemClickListener {
 
-    var binding : LayoutReccomendationsBinding?=null
-    var arrayReccomend : ArrayList<FilteredActivityListItem> = arrayListOf()
+    var binding: LayoutReccomendationsBinding? = null
+    var arrayReccomend: ArrayList<FilteredActivityListItem> = arrayListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = LayoutReccomendationsBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
         listeners()
     }
+
     override fun onResume() {
         super.onResume()
+        MyApplication.activityResumed()
         getReccomendations()
     }
-    fun listeners(){
+
+    override fun onPause() {
+        super.onPause()
+        MyApplication.activityPaused()
+    }
+
+    fun listeners() {
         binding!!.layoutTool.show()
         binding!!.llTool.ivDrawer.hide()
         binding!!.llTool.layoutFragment.show()
@@ -40,63 +48,78 @@ class ActivityAllTasks : AppCompactBase(),RVOnItemClickListener {
         binding!!.llTool.btBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
-        binding!!.srReccomendations.setOnRefreshListener{
+        binding!!.srReccomendations.setOnRefreshListener {
             getReccomendations()
         }
         binding!!.llTool.ivCalendar.setOnClickListener {
             finishAffinity()
-            startActivity(Intent(
-                this,
-                ActivityMain::class.java
-            ))
+            startActivity(
+                Intent(
+                    this,
+                    ActivityMain::class.java
+                )
+            )
         }
         binding!!.btAddReccomend.hide()
     }
+
     private fun getReccomendations() {
         binding!!.llLoading.show()
-        RetrofitClientAuth.client!!.create(RetrofitInterface::class.java).getReccomendations(
-            MyApplication.userItem!!.applicationUserId!!.toInt()
-        ).enqueue(object : Callback<FilteredActivityList> {
-            override fun onResponse(
-                call: Call<FilteredActivityList>,
-                response: Response<FilteredActivityList>
-            ) {
-                arrayReccomend.clear()
-                arrayReccomend.addAll(response.body()!!)
-                setDataReccomend()
-            }
-            override fun onFailure(call: Call<FilteredActivityList>, t: Throwable) {
-                binding!!.llLoading.hide()
-            }
-        })
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
+            .getReccomendations(
+                MyApplication.userItem!!.applicationUserId!!.toInt()
+            ).enqueue(object : Callback<FilteredActivityList> {
+                override fun onResponse(
+                    call: Call<FilteredActivityList>,
+                    response: Response<FilteredActivityList>
+                ) {
+                    if (response.isSuccessful) {
+                        arrayReccomend.clear()
+                        arrayReccomend.addAll(response.body()!!)
+                        setDataReccomend()
+                    } else {
+                        arrayReccomend.clear()
+                        setDataReccomend()
+                    }
+                }
+
+                override fun onFailure(call: Call<FilteredActivityList>, t: Throwable) {
+                    binding!!.llLoading.hide()
+                }
+            })
     }
-    fun setDataReccomend(){
-        if(arrayReccomend.size > 0) {
+
+    fun setDataReccomend() {
+        if (arrayReccomend.size > 0) {
             binding!!.tvNotasks.hide()
             binding!!.rvReccomendations.show()
             binding!!.rvReccomendations.layoutManager = LinearLayoutManager(this)
             binding!!.rvReccomendations.adapter = AdapterFilteredReccomendations(arrayReccomend, this, this)
-        }else{
+        } else {
             binding!!.tvNotasks.show()
             binding!!.rvReccomendations.hide()
         }
         binding!!.llLoading.hide()
         binding!!.srReccomendations.isRefreshing = false
     }
+
     override fun onItemClicked(view: View, position: Int) {
-        val ct = MyApplication.allVisits.count {
-            it.title.equals(arrayReccomend[position].entity) && it.reasonId==AppConstants.ARRIVED_REASON_ID
+        MyApplication.selectedReccomend = arrayReccomend[position]
+        var canEdit = false
+        if (MyApplication.selectedReccomend!!.visitReasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED) && MyApplication.selectedReccomend!!.userId.equals(
+                MyApplication.userItem!!.userId
+            )
+        ) {
+            canEdit = true
+        }else{
+            canEdit = false
         }
-        if(ct>0) {
-            MyApplication.selectedReccomend = arrayReccomend[position]
             startActivity(
                 Intent(
                     this,
                     ActivityAddReccomendations::class.java
-                )
+                ).putExtra("canEdit", canEdit)
             )
-        }else{
-            createDialog( getString(R.string.visit_arrived_completed))
-        }
+
     }
 }

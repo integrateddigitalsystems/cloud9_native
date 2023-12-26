@@ -38,6 +38,7 @@
 
         <LinearLayout
             android:padding="@dimen/small_margin"
+            android:visibility="gone"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -262,7 +263,6 @@
 
 
     <WebView
-        android:layout_marginTop="@dimen/normal_margin"
         android:id="@+id/wvReport"
         android:layout_marginStart="@dimen/margin_start_end"
         android:layout_marginEnd="@dimen/margin_start_end"
