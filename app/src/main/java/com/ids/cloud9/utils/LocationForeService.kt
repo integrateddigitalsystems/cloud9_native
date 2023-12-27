@@ -371,15 +371,7 @@ class LocationForeService : Service() {
                 if(location!=null)
                     firstLocation = location
                 var ct = 0
-
-
                 changeLocation(currentLocation!!)
-
-
-
-
-
-
                 val intent = Intent(ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST)
                 intent.putExtra(EXTRA_LOCATION, currentLocation)
                 LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(intent)

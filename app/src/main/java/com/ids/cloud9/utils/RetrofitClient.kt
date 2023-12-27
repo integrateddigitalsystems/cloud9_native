@@ -8,12 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitClient{
-    // var BASE_URL ="http://demo.ids.com.lb/inPoint/api/"
-    var BASE_URL ="https://dev.qasemti.com/wp-json/api/v1/"
-
-
-
-
+    var BASE_URL ="https://central-api-crm.ids.com.lb/api/"
     private var retrofit: Retrofit? = null
     val client: Retrofit?
         get() {
@@ -32,8 +27,7 @@ object RetrofitClient{
             return retrofit
         }
 
-    private/*   HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);*//* .addInterceptor(interceptor)*/ val requestHeader: OkHttpClient
+    private val requestHeader: OkHttpClient
         get() = OkHttpClient.Builder()
             // .addNetworkInterceptor()
             .connectTimeout(5, TimeUnit.MINUTES) // connect timeout
