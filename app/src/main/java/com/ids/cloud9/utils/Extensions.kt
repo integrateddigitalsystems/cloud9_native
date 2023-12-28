@@ -77,11 +77,7 @@ fun TextView.setCheckText(message: String){
 }
 
 fun TextView.toHTML(string: String){
-    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-        this.setText(Html.fromHtml(string,Html.FROM_HTML_MODE_LEGACY));
-    } else {
-        this.setText(Html.fromHtml(string));
-    }
+    this.text = Html.fromHtml(string,Html.FROM_HTML_MODE_LEGACY)
 }
 fun Activity.createDialog( message: String) {
 

@@ -144,7 +144,14 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
         binding!!.llCamera.setOnClickListener {
             code = CODE_CAMERA
             val arrayPermissions: Array<String>
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                arrayPermissions = arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED,
+                    Manifest.permission.READ_MEDIA_IMAGES
+                )
+            }
+            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 arrayPermissions = arrayOf(
                     Manifest.permission.CAMERA,
                     Manifest.permission.READ_MEDIA_IMAGES
@@ -183,7 +190,14 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
         binding!!.llVideo.setOnClickListener {
             code = CODE_VIDEO
             val arrayPermissions: Array<String>
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                arrayPermissions = arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.READ_MEDIA_IMAGES,
+                    Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
+                )
+            }
+            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 arrayPermissions = arrayOf(
                     Manifest.permission.CAMERA,
                     Manifest.permission.READ_MEDIA_IMAGES
@@ -213,7 +227,15 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
         binding!!.llGallery.setOnClickListener {
             val arrayPermissions: Array<String>
             code = CODE_GALLERY
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                arrayPermissions = arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.READ_MEDIA_IMAGES,
+                    Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
+                )
+            }
+            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 arrayPermissions = arrayOf(
                     Manifest.permission.CAMERA,
                     Manifest.permission.READ_MEDIA_IMAGES

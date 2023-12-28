@@ -145,12 +145,22 @@ open class AppCompactBase : AppCompatActivity() {
         super.onResume()
         MyApplication.activityResumed()
         changeState(MyApplication.gettingTracked)
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-            foregroundOnlyBroadcastReceiver,
-            IntentFilter(
-                LocationForeService.ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+           registerReceiver(
+                foregroundOnlyBroadcastReceiver,
+                IntentFilter(
+                    LocationForeService.ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST
+                ),
+               RECEIVER_NOT_EXPORTED
             )
-        )
+        }else{
+            LocalBroadcastManager.getInstance(this).registerReceiver(
+                foregroundOnlyBroadcastReceiver,
+                IntentFilter(
+                    LocationForeService.ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST
+                )
+            )
+        }
     }
 
     private fun foregroundPermissionApproved(): Boolean {

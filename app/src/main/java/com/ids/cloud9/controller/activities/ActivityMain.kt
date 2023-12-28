@@ -174,19 +174,32 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
         MyApplication.activityResumed()
         if(!this::foregroundOnlyBroadcastReceiver.isInitialized)
             foregroundOnlyBroadcastReceiver = ForegroundOnlyBroadcastReceiver()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            registerReceiver(
+                foregroundOnlyBroadcastReceiver,
+                IntentFilter(
+                    LocationForeService.ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST
+                ), RECEIVER_NOT_EXPORTED)
+        }else{
         LocalBroadcastManager.getInstance(this).registerReceiver(
             foregroundOnlyBroadcastReceiver,
             IntentFilter(
                 LocationForeService.ACTION_FOREGROUND_ONLY_LOCATION_BROADCAST
-            )
-        )
+            ))
+        }
+
         val mBroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent) {
                 getVisits()
             }
         }
         val filter = IntentFilter("msg")
-        registerReceiver(mBroadcastReceiver, filter)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            registerReceiver(mBroadcastReceiver, filter, RECEIVER_NOT_EXPORTED)
+        else
+            registerReceiver(mBroadcastReceiver, filter)
+
         if (doneOnce == 0) {
             doneOnce = 1
             setUpDate()
