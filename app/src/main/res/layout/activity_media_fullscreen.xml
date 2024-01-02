@@ -12,7 +12,7 @@
         android:id="@+id/llTool"
         layout="@layout/toolbar_layout" />
 
-    <com.ids.cloud9.custom.MyViewPager
+    <com.ids.cloud9native.custom.MyViewPager
         android:id="@+id/vpMediaFull"
         android:layout_alignBottom="@id/SliderDots"
         android:layout_width="match_parent"

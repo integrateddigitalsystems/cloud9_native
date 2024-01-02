@@ -12,7 +12,7 @@
     android:layout_height="@dimen/height_40"
     android:orientation="horizontal">
 
-    <com.ids.cloud9.custom.CustomTextViewMedium
+    <com.ids.cloud9native.custom.CustomTextViewMedium
         android:layout_width="match_parent"
         android:layout_marginEnd="@dimen/big_margin"
         android:gravity="center_vertical"

@@ -7,10 +7,10 @@ android {
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.cloud9.mobile"
+        applicationId "com.ids.cloud9native"
         minSdk 26
         targetSdk 34
-        versionCode 14
+        versionCode 18
         versionName "2.4"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -49,7 +49,7 @@ android {
         }
     }
 
-    namespace 'com.ids.cloud9'
+    namespace 'com.ids.cloud9native'
 }
 
 dependencies {

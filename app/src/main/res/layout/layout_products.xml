@@ -15,7 +15,7 @@
           android:orientation="horizontal"
           android:layout_width="match_parent"
           android:layout_height="match_parent">
-   <com.ids.cloud9.custom.CustomTextViewMedium
+   <com.ids.cloud9native.custom.CustomTextViewMedium
        android:layout_width="match_parent"
        android:gravity="center"
        android:id="@+id/tvNoData"

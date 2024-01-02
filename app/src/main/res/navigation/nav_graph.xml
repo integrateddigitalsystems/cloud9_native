@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/fragmentVisitDetails"
-        android:name="com.ids.cloud9.controller.base.Fragment.FragmentVisitDetails"
+        android:name="com.ids.cloud9native.controller.base.Fragment.FragmentVisitDetails"
         android:label="FragmentVisitDetails" >
         <action
             android:id="@+id/action_fragmentVisitDetails_to_fragmentProducts"
@@ -26,23 +26,23 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentCompany"
-        android:name="com.ids.cloud9.controller.base.Fragment.FragmentCompany"
+        android:name="com.ids.cloud9native.controller.base.Fragment.FragmentCompany"
         android:label="FragmentCompany" />
     <fragment
         android:id="@+id/fragmentMedia"
-        android:name="com.ids.cloud9.controller.Fragment.FragmentMedia"
+        android:name="com.ids.cloud9native.controller.Fragment.FragmentMedia"
         android:label="FragmentMedia" />
     <fragment
         android:id="@+id/fragmentProducts"
-        android:name="com.ids.cloud9.controller.Fragment.FragmentProducts"
+        android:name="com.ids.cloud9native.controller.Fragment.FragmentProducts"
         android:label="FragmentProducts" />
     <fragment
         android:id="@+id/fragmentReccomendations"
-        android:name="com.ids.cloud9.controller.Fragment.FragmentReccomendations"
+        android:name="com.ids.cloud9native.controller.Fragment.FragmentReccomendations"
         android:label="FragmentReccomendations" />
     <fragment
         android:id="@+id/fragmentSignature"
-        android:name="com.ids.cloud9.controller.Fragment.FragmentSignature"
+        android:name="com.ids.cloud9native.controller.Fragment.FragmentSignature"
         android:label="FragmentSignature" >
         <action
             android:id="@+id/action_fragmentSignature_to_fragmentVisitDetails"

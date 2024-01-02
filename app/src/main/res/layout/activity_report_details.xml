@@ -44,7 +44,7 @@
             android:layout_height="wrap_content">
 
 
-            <com.ids.cloud9.custom.CustomTextViewBold
+            <com.ids.cloud9native.custom.CustomTextViewBold
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimary"
@@ -57,14 +57,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.ids.cloud9.custom.CustomTextViewBold
+                <com.ids.cloud9native.custom.CustomTextViewBold
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/normal_font"
                     android:text="@string/product_name_p"/>
 
-                <com.ids.cloud9.custom.CustomTextViewMedium
+                <com.ids.cloud9native.custom.CustomTextViewMedium
                     android:layout_marginStart="@dimen/mini_radius"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -78,14 +78,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.ids.cloud9.custom.CustomTextViewBold
+                <com.ids.cloud9native.custom.CustomTextViewBold
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
                     android:textColor="@color/text_color" android:textSize="@dimen/normal_font"
                     android:text="@string/client_name_p"/>
 
-                <com.ids.cloud9.custom.CustomTextViewMedium
+                <com.ids.cloud9native.custom.CustomTextViewMedium
                     android:layout_marginStart="@dimen/mini_radius"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -100,14 +100,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.ids.cloud9.custom.CustomTextViewBold
+                <com.ids.cloud9native.custom.CustomTextViewBold
                     android:textColor="@color/text_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/normal_font"
                     android:text="@string/contact_name_p"/>
 
-                <com.ids.cloud9.custom.CustomTextViewMedium
+                <com.ids.cloud9native.custom.CustomTextViewMedium
                     android:layout_marginStart="@dimen/mini_radius"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -120,14 +120,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.ids.cloud9.custom.CustomTextViewBold
+                <com.ids.cloud9native.custom.CustomTextViewBold
                     android:textColor="@color/text_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/normal_font"
                     android:text="@string/contact_number_p"/>
 
-                <com.ids.cloud9.custom.CustomTextViewMedium
+                <com.ids.cloud9native.custom.CustomTextViewMedium
                     android:layout_marginStart="@dimen/mini_radius"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -140,14 +140,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.ids.cloud9.custom.CustomTextViewBold
+                <com.ids.cloud9native.custom.CustomTextViewBold
                     android:layout_width="wrap_content"
                     android:textColor="@color/text_color"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/normal_font"
                     android:text="@string/contract_number_p"/>
 
-                <com.ids.cloud9.custom.CustomTextViewMedium
+                <com.ids.cloud9native.custom.CustomTextViewMedium
                     android:layout_marginStart="@dimen/mini_radius"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -160,14 +160,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.ids.cloud9.custom.CustomTextViewBold
+                <com.ids.cloud9native.custom.CustomTextViewBold
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/normal_font"
                     android:text="@string/fax_p"/>
 
-                <com.ids.cloud9.custom.CustomTextViewMedium
+                <com.ids.cloud9native.custom.CustomTextViewMedium
                     android:layout_marginStart="@dimen/mini_radius"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -180,14 +180,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.ids.cloud9.custom.CustomTextViewBold
+                <com.ids.cloud9native.custom.CustomTextViewBold
                     android:layout_width="wrap_content"
                     android:textColor="@color/text_color"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/normal_font"
                     android:text="@string/site_location_p"/>
 
-                <com.ids.cloud9.custom.CustomTextViewMedium
+                <com.ids.cloud9native.custom.CustomTextViewMedium
                     android:layout_marginStart="@dimen/mini_radius"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -200,14 +200,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.ids.cloud9.custom.CustomTextViewBold
+                <com.ids.cloud9native.custom.CustomTextViewBold
                     android:layout_width="wrap_content"
                     android:textColor="@color/text_color"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/normal_font"
                     android:text="@string/date_p"/>
 
-                <com.ids.cloud9.custom.CustomTextViewMedium
+                <com.ids.cloud9native.custom.CustomTextViewMedium
                     android:layout_marginStart="@dimen/mini_radius"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -220,14 +220,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.ids.cloud9.custom.CustomTextViewBold
+                <com.ids.cloud9native.custom.CustomTextViewBold
                     android:layout_width="wrap_content"
                     android:textColor="@color/text_color"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/normal_font"
                     android:text="@string/opportunity_p"/>
 
-                <com.ids.cloud9.custom.CustomTextViewMedium
+                <com.ids.cloud9native.custom.CustomTextViewMedium
                     android:layout_marginStart="@dimen/mini_radius"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -240,14 +240,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.ids.cloud9.custom.CustomTextViewBold
+                <com.ids.cloud9native.custom.CustomTextViewBold
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/normal_font"
                     android:text="@string/matco_eng_p"/>
 
-                <com.ids.cloud9.custom.CustomTextViewMedium
+                <com.ids.cloud9native.custom.CustomTextViewMedium
                     android:layout_marginStart="@dimen/mini_radius"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

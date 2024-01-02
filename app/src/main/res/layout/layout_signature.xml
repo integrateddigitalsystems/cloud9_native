@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-    <com.ids.cloud9.custom.CustomTextViewMedium
+    <com.ids.cloud9native.custom.CustomTextViewMedium
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/text_color"
@@ -92,7 +92,7 @@
         android:layout_height="wrap_content">
 
 
-        <com.ids.cloud9.custom.CustomButton
+        <com.ids.cloud9native.custom.CustomButton
             android:layout_width="0dp"
             android:foreground="?android:attr/selectableItemBackground"
             android:layout_weight="1"
@@ -104,7 +104,7 @@
             android:textColor="@color/white"
             />
 
-        <com.ids.cloud9.custom.CustomButton
+        <com.ids.cloud9native.custom.CustomButton
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_marginStart="@dimen/small_margin_padding"
@@ -129,7 +129,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-    <com.ids.cloud9.custom.CustomTextViewMedium
+    <com.ids.cloud9native.custom.CustomTextViewMedium
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/text_color"
@@ -193,7 +193,7 @@
         android:layout_height="wrap_content">
 
 
-        <com.ids.cloud9.custom.CustomButton
+        <com.ids.cloud9native.custom.CustomButton
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_marginEnd="@dimen/small_margin_padding"
@@ -205,7 +205,7 @@
             android:textColor="@color/white"
             />
 
-        <com.ids.cloud9.custom.CustomButton
+        <com.ids.cloud9native.custom.CustomButton
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/small_margin_padding"
             android:foreground="?android:attr/selectableItemBackground"

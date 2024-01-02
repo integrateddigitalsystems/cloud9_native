@@ -9,7 +9,7 @@
         android:layout_gravity="center"
         />
 
-    <com.ids.cloud9.custom.TouchImageView
+    <com.ids.cloud9native.custom.TouchImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/ivImages"

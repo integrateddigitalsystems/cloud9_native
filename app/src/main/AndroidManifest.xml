@@ -19,7 +19,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
 
     <application
-        android:name="com.ids.cloud9.controller.MyApplication"
+        android:name="com.ids.cloud9native.controller.MyApplication"
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -42,6 +42,7 @@
         </activity>
 
 
+
         <service
             android:exported="true"
             android:name=".Notifications.MyFirebaseMessagingService" >
@@ -59,12 +60,14 @@
         <activity android:name=".controller.activities.ActivtyVisitDetails"/>
         <activity android:name=".controller.activities.ActivityReportDetails"/>
         <activity android:name=".controller.activities.ActivityRecords"/>
+
         <service
             android:name=".utils.LocationForeService"
-            android:stopWithTask="false"
             android:enabled="true"
             android:exported="false"
-            android:foregroundServiceType="location"/>
+            android:foregroundServiceType="location"
+            android:stopWithTask="false"
+            tools:ignore="ForegroundServicePermission" />
     </application>
     <uses-feature
         android:name="android.hardware.camera"

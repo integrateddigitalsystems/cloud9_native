@@ -12,7 +12,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <com.ids.cloud9.custom.CustomTextViewBold
+        <com.ids.cloud9native.custom.CustomTextViewBold
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"

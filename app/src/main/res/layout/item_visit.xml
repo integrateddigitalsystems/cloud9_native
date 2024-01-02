@@ -14,7 +14,7 @@
 
 
 
-    <com.ids.cloud9.custom.CustomTextViewBold
+    <com.ids.cloud9native.custom.CustomTextViewBold
         android:layout_marginStart="@dimen/margin_start_end"
         android:layout_marginTop="@dimen/margin_start_end"
         android:layout_marginEnd="@dimen/normal_margin"
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content">
 
 
-        <com.ids.cloud9.custom.CustomTextViewMedium
+        <com.ids.cloud9native.custom.CustomTextViewMedium
             android:layout_width="0dp"
             android:layout_weight="1"
             android:id="@+id/tvCompany"
@@ -42,7 +42,7 @@
             android:layout_marginStart="@dimen/margin_start_end"
             android:layout_height="wrap_content" />
 
-        <com.ids.cloud9.custom.CustomTextViewMedium
+        <com.ids.cloud9native.custom.CustomTextViewMedium
             android:layout_width="0dp"
             android:layout_weight="1"
             android:textSize="@dimen/normal_font"
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
-        <com.ids.cloud9.custom.CustomTextViewMedium
+        <com.ids.cloud9native.custom.CustomTextViewMedium
             android:layout_width="wrap_content"
             android:text="pending"
             android:textSize="@dimen/smaller_font"

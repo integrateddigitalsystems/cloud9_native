@@ -27,7 +27,7 @@
         android:minHeight="@dimen/button_height"
         android:layout_height="wrap_content">
 
-        <com.ids.cloud9.custom.CustomTextViewBold
+        <com.ids.cloud9native.custom.CustomTextViewBold
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:textColor="@color/text_color"
@@ -44,7 +44,7 @@
             android:layout_height="@dimen/height_40"
             android:layout_weight="1">
 
-            <com.ids.cloud9.custom.CustomTextViewMedium
+            <com.ids.cloud9native.custom.CustomTextViewMedium
                 android:id="@+id/tvStatreason"
                 android:padding="@dimen/mini_radius"
                 android:layout_width="match_parent"
@@ -94,7 +94,7 @@
             android:minHeight="@dimen/button_height"
             android:layout_height="wrap_content">
 
-            <com.ids.cloud9.custom.CustomTextViewBold
+            <com.ids.cloud9native.custom.CustomTextViewBold
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -104,7 +104,7 @@
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/normal_font" />
 
-            <com.ids.cloud9.custom.CustomTextViewMedium
+            <com.ids.cloud9native.custom.CustomTextViewMedium
                 android:layout_weight="1"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/normal_font"
@@ -127,7 +127,7 @@
         android:minHeight="@dimen/button_height"
         android:layout_height="wrap_content">
 
-        <com.ids.cloud9.custom.CustomTextViewBold
+        <com.ids.cloud9native.custom.CustomTextViewBold
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -137,7 +137,7 @@
             android:textColor="@color/text_color"
             android:textSize="@dimen/normal_font" />
 
-        <com.ids.cloud9.custom.CustomTextViewMedium
+        <com.ids.cloud9native.custom.CustomTextViewMedium
             android:layout_weight="1"
             android:layout_marginStart="@dimen/small_margin_padding"
             android:textColor="@color/text_color"
@@ -160,7 +160,7 @@
         android:minHeight="@dimen/button_height"
         android:layout_height="wrap_content">
 
-        <com.ids.cloud9.custom.CustomTextViewBold
+        <com.ids.cloud9native.custom.CustomTextViewBold
             android:layout_weight="1"
             android:textColor="@color/text_color"
             android:textSize="@dimen/normal_font"
@@ -170,7 +170,7 @@
             android:gravity="center_vertical"
             android:text="@string/to_time"/>
 
-        <com.ids.cloud9.custom.CustomTextViewMedium
+        <com.ids.cloud9native.custom.CustomTextViewMedium
             android:layout_weight="1"
             android:id="@+id/tvToTime"
             android:textColor="@color/text_color"
@@ -193,7 +193,7 @@
         android:minHeight="@dimen/button_height"
         android:layout_height="wrap_content">
 
-        <com.ids.cloud9.custom.CustomTextViewBold
+        <com.ids.cloud9native.custom.CustomTextViewBold
             android:layout_weight="1"
             android:textColor="@color/text_color"
             android:textSize="@dimen/normal_font"
@@ -202,7 +202,7 @@
             android:gravity="center_vertical"
             android:text="@string/duration"/>
 
-        <com.ids.cloud9.custom.CustomTextViewMedium
+        <com.ids.cloud9native.custom.CustomTextViewMedium
             android:layout_weight="1"
             android:id="@+id/tvDuration"
             android:textColor="@color/text_color"
@@ -224,7 +224,7 @@
         android:minHeight="@dimen/button_height"
         android:layout_height="wrap_content">
 
-        <com.ids.cloud9.custom.CustomTextViewBold
+        <com.ids.cloud9native.custom.CustomTextViewBold
             android:layout_weight="1"
             android:textColor="@color/text_color"
             android:textSize="@dimen/normal_font"
@@ -233,7 +233,7 @@
             android:gravity="center_vertical"
             android:text="@string/company_p"/>
 
-        <com.ids.cloud9.custom.CustomTextViewMedium
+        <com.ids.cloud9native.custom.CustomTextViewMedium
             android:layout_weight="1"
             android:id="@+id/tvCompany"
             android:textColor="@color/text_color"
@@ -255,7 +255,7 @@
         android:minHeight="@dimen/button_height"
         android:layout_height="wrap_content">
 
-        <com.ids.cloud9.custom.CustomTextViewBold
+        <com.ids.cloud9native.custom.CustomTextViewBold
             android:layout_weight="1"
             android:textColor="@color/text_color"
             android:textSize="@dimen/normal_font"
@@ -271,7 +271,7 @@
             android:layout_height="@dimen/height_40"
             android:layout_weight="1">
 
-            <com.ids.cloud9.custom.CustomTextViewMedium
+            <com.ids.cloud9native.custom.CustomTextViewMedium
                 android:id="@+id/tvActualArrivalTime"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -311,7 +311,7 @@
         android:minHeight="@dimen/button_height"
         android:layout_height="wrap_content">
 
-        <com.ids.cloud9.custom.CustomTextViewBold
+        <com.ids.cloud9native.custom.CustomTextViewBold
             android:layout_weight="1"
             android:textColor="@color/text_color"
             android:textSize="@dimen/normal_font"
@@ -326,7 +326,7 @@
             android:layout_height="@dimen/height_40"
             android:layout_weight="1">
 
-            <com.ids.cloud9.custom.CustomTextViewMedium
+            <com.ids.cloud9native.custom.CustomTextViewMedium
                 android:id="@+id/tvActualCompletedTime"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -365,7 +365,7 @@
         android:minHeight="@dimen/button_height"
         android:layout_height="wrap_content">
 
-        <com.ids.cloud9.custom.CustomTextViewBold
+        <com.ids.cloud9native.custom.CustomTextViewBold
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -374,7 +374,7 @@
             android:textColor="@color/text_color"
             android:textSize="@dimen/normal_font" />
 
-        <com.ids.cloud9.custom.CustomTextViewBold
+        <com.ids.cloud9native.custom.CustomTextViewBold
             android:layout_weight="1"
             android:id="@+id/tvActualDurtionTime"
             android:textColor="@color/text_color"
@@ -386,7 +386,7 @@
 
     </LinearLayout>
 
-        <com.ids.cloud9.custom.CustomTextViewBold
+        <com.ids.cloud9native.custom.CustomTextViewBold
             android:layout_weight="1"
             android:layout_marginStart="@dimen/margin_start_end"
             android:layout_marginEnd="@dimen/margin_start_end"
@@ -409,7 +409,7 @@
             android:background="@drawable/light_rounded_border"
             android:padding="@dimen/normal_margin_padding" />
 
-        <com.ids.cloud9.custom.CustomButton
+        <com.ids.cloud9native.custom.CustomButton
             android:layout_marginBottom="@dimen/small_margin"
             android:layout_marginStart="@dimen/margin_start_end"
             android:layout_marginEnd="@dimen/margin_start_end"
