@@ -8,7 +8,7 @@
     android:layout_height="@dimen/height_50">
 
 
-    <com.ids.cloud9.custom.CustomTextViewMedium
+    <com.ids.cloud9native.custom.CustomTextViewMedium
         android:id="@+id/tvReason"
         android:gravity="center"
         android:layout_width="match_parent"

@@ -4,14 +4,14 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.cloud9.mobile",
+  "applicationId": "com.ids.cloud9native",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 14,
+      "versionCode": 17,
       "versionName": "2.4",
       "outputFile": "app-release.apk"
     }

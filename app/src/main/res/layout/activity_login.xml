@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/edit_text_height">
 
-           <com.ids.cloud9.custom.CustomTextViewBold
+           <com.ids.cloud9native.custom.CustomTextViewBold
                android:layout_width="100dp"
                android:id="@+id/btTestUser1"
                android:layout_height="@dimen/edit_text_height"
@@ -37,7 +37,7 @@
                android:foreground="?android:attr/selectableItemBackground"
                android:gravity="center"/>
 
-            <com.ids.cloud9.custom.CustomTextViewBold
+            <com.ids.cloud9native.custom.CustomTextViewBold
                 android:layout_width="100dp"
                 android:id="@+id/btTestUser2"
                 android:layout_marginStart="@dimen/normal_margin"
@@ -148,7 +148,7 @@
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:layout_centerInParent="true" />
-            <com.ids.cloud9.custom.CustomButton
+            <com.ids.cloud9native.custom.CustomButton
                 android:text="@string/login"
                 android:textColor="@color/white"
                 android:id="@+id/btLogin"

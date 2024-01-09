@@ -29,7 +29,7 @@
                 android:layout_height="match_parent">
 
 
-                <com.ids.cloud9.custom.CustomTextViewBold
+                <com.ids.cloud9native.custom.CustomTextViewBold
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -44,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                <com.ids.cloud9.custom.CustomTextViewMedium
+                <com.ids.cloud9native.custom.CustomTextViewMedium
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/normal_margin_padding"
@@ -54,7 +54,7 @@
                     android:textColor="@color/otw_text"
                     android:text="desc"/>
 
-                    <com.ids.cloud9.custom.CustomTextViewMedium
+                    <com.ids.cloud9native.custom.CustomTextViewMedium
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/normal_margin_padding"

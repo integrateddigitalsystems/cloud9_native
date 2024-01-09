@@ -22,7 +22,7 @@
         android:background="@color/gray_app_bg">
 
 
-        <com.ids.cloud9.custom.CustomTextViewBold
+        <com.ids.cloud9native.custom.CustomTextViewBold
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/margin_start_end"
             android:layout_weight="1"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"/>
 
 
-        <com.ids.cloud9.custom.CustomTextViewBold
+        <com.ids.cloud9native.custom.CustomTextViewBold
             android:layout_width="0dp"
             android:layout_weight="1"
             android:id="@+id/tvDate"

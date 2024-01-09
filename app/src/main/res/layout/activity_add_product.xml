@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.ids.cloud9.custom.CustomTextViewBold
+                <com.ids.cloud9native.custom.CustomTextViewBold
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:textColor="@color/text_color"
@@ -57,7 +57,7 @@
                     android:layout_weight="1">
 
 
-                    <com.ids.cloud9.custom.CustomTextViewMedium
+                    <com.ids.cloud9native.custom.CustomTextViewMedium
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/normal_margin_padding"
@@ -111,7 +111,7 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <com.ids.cloud9.custom.CustomTextViewBold
+                            <com.ids.cloud9native.custom.CustomTextViewBold
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -142,7 +142,7 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
-                            <com.ids.cloud9.custom.CustomTextViewBold
+                            <com.ids.cloud9native.custom.CustomTextViewBold
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -177,7 +177,7 @@
                         android:gravity="center"
                         android:orientation="vertical">
 
-                        <com.ids.cloud9.custom.CustomTextViewBold
+                        <com.ids.cloud9native.custom.CustomTextViewBold
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -194,7 +194,7 @@
                             android:layout_marginTop="@dimen/small_margin_padding"
                             android:layout_weight="1">
 
-                            <com.ids.cloud9.custom.CustomTextViewMedium
+                            <com.ids.cloud9native.custom.CustomTextViewMedium
                                 android:id="@+id/tvUnitText"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -241,7 +241,7 @@
                         android:gravity="center"
                         android:orientation="vertical">
 
-                        <com.ids.cloud9.custom.CustomTextViewBold
+                        <com.ids.cloud9native.custom.CustomTextViewBold
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -276,7 +276,7 @@
                         android:gravity="center"
                         android:orientation="vertical">
 
-                        <com.ids.cloud9.custom.CustomTextViewBold
+                        <com.ids.cloud9native.custom.CustomTextViewBold
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -342,7 +342,7 @@
 
             </FrameLayout>
 
-            <com.ids.cloud9.custom.CustomButton
+            <com.ids.cloud9native.custom.CustomButton
                 android:layout_marginBottom="@dimen/small_margin"
                 android:layout_marginStart="@dimen/margin_start_end"
                 android:layout_marginEnd="@dimen/margin_start_end"
@@ -373,7 +373,7 @@
                     android:layout_height="@dimen/list_icon_width_height"
                     android:src="@drawable/trash_alt"/>
 
-                <com.ids.cloud9.custom.CustomTextViewMedium
+                <com.ids.cloud9native.custom.CustomTextViewMedium
                     android:layout_marginStart="@dimen/small_margin_padding"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

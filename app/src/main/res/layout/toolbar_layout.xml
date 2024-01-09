@@ -54,7 +54,7 @@
 
         </LinearLayout>
 
-        <com.ids.cloud9.custom.CustomTextViewMedium
+        <com.ids.cloud9native.custom.CustomTextViewMedium
             android:layout_width="250dp"
             android:paddingStart="@dimen/normal_margin"
             android:paddingEnd="@dimen/normal_margin"

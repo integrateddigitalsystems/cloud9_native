@@ -26,7 +26,7 @@
 
         </LinearLayout>
 
-        <com.ids.cloud9.custom.CustomTextViewMedium
+        <com.ids.cloud9native.custom.CustomTextViewMedium
             android:id="@+id/tvNoMedia"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -101,7 +101,7 @@
 
     </LinearLayout>
 
-    <com.ids.cloud9.custom.CustomTextViewMedium
+    <com.ids.cloud9native.custom.CustomTextViewMedium
         android:id="@+id/tvNoAttachments"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

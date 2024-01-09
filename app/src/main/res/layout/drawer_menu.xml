@@ -19,7 +19,7 @@
         android:src="@drawable/close_x"
         android:tint="@color/white" />
 
-    <com.ids.cloud9.custom.CustomTextViewMedium
+    <com.ids.cloud9native.custom.CustomTextViewMedium
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/normal_margin"
         android:layout_marginStart="@dimen/margin_30"
@@ -30,7 +30,7 @@
         android:text="Welcome, "/>
 
 
-    <com.ids.cloud9.custom.CustomTextViewMedium
+    <com.ids.cloud9native.custom.CustomTextViewMedium
         android:layout_width="match_parent"
         android:text="@string/home"
         android:layout_marginTop="@dimen/normal_margin_padding"
@@ -45,7 +45,7 @@
         android:layout_height="@dimen/edit_text_height"/>
 
 
-    <com.ids.cloud9.custom.CustomTextViewMedium
+    <com.ids.cloud9native.custom.CustomTextViewMedium
         android:id="@+id/tvAllTasks"
         android:paddingStart="@dimen/normal_margin_padding"
         android:layout_width="match_parent"
@@ -77,7 +77,7 @@
             android:layout_height="@dimen/list_icon_width_height"
             android:src="@drawable/power_off"/>
 
-        <com.ids.cloud9.custom.CustomTextViewMedium
+        <com.ids.cloud9native.custom.CustomTextViewMedium
             android:layout_width="match_parent"
             android:text="@string/log_out"
             android:gravity="center_vertical"
@@ -97,7 +97,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_50">
 
-        <com.ids.cloud9.custom.CustomTextViewBold
+        <com.ids.cloud9native.custom.CustomTextViewBold
             android:text="English"
             android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center"
@@ -111,7 +111,7 @@
             android:layout_height="@dimen/height_40"/>
 
 
-        <com.ids.cloud9.custom.CustomTextViewBold
+        <com.ids.cloud9native.custom.CustomTextViewBold
             android:text="عربي"
             android:id="@+id/btArabic"
             android:foreground="?android:attr/selectableItemBackground"

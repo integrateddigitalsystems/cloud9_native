@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.ids.cloud9.custom.CustomTextViewBold
+            <com.ids.cloud9native.custom.CustomTextViewBold
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:textSize="@dimen/normal_font"
@@ -56,7 +56,7 @@
         </LinearLayout>
 
 
-            <com.ids.cloud9.custom.CustomTextViewBold
+            <com.ids.cloud9native.custom.CustomTextViewBold
                 android:layout_marginStart="@dimen/normal_margin_padding"
                 android:layout_marginEnd="@dimen/normal_margin_padding"
 
@@ -76,7 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.ids.cloud9.custom.CustomTextViewBold
+            <com.ids.cloud9native.custom.CustomTextViewBold
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
@@ -84,7 +84,7 @@
                 android:textColor="@color/otw_text"
                 android:textSize="@dimen/normal_font" />
 
-            <com.ids.cloud9.custom.CustomTextViewMedium
+            <com.ids.cloud9native.custom.CustomTextViewMedium
                 android:layout_weight="1"
                 android:layout_marginStart="@dimen/small_margin_padding"
                 android:textColor="@color/otw_text"
@@ -106,7 +106,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.ids.cloud9.custom.CustomTextViewBold
+            <com.ids.cloud9native.custom.CustomTextViewBold
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
@@ -114,7 +114,7 @@
                 android:textColor="@color/otw_text"
                 android:textSize="@dimen/normal_font" />
 
-            <com.ids.cloud9.custom.CustomTextViewMedium
+            <com.ids.cloud9native.custom.CustomTextViewMedium
                 android:textColor="@color/otw_text"
                 android:textSize="@dimen/normal_font"
                 android:id="@+id/tvSN"
@@ -135,7 +135,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.ids.cloud9.custom.CustomTextViewBold
+            <com.ids.cloud9native.custom.CustomTextViewBold
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
@@ -143,7 +143,7 @@
                 android:textColor="@color/otw_text"
                 android:textSize="@dimen/normal_font" />
 
-            <com.ids.cloud9.custom.CustomTextViewMedium
+            <com.ids.cloud9native.custom.CustomTextViewMedium
                 android:layout_weight="1"
                 android:textColor="@color/otw_text"
                 android:textSize="@dimen/normal_font"
@@ -171,7 +171,7 @@
                     android:layout_height="@dimen/height_40"
                     android:layout_weight="1">
 
-                    <com.ids.cloud9.custom.CustomTextViewMedium
+                    <com.ids.cloud9native.custom.CustomTextViewMedium
                         android:id="@+id/tvReport"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
