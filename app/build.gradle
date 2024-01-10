@@ -122,6 +122,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     implementation 'com.google.android.gms:play-services-maps:18.2.0'
     implementation 'com.android.support:multidex:2.0.1'
+
+    //libary get location
+   // implementation 'com.github.BirjuVachhani:locus-android:5.0.0'
 }
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'

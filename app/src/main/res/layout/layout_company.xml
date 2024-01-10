@@ -469,6 +469,39 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/llSendDirection"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_50"
+                android:visibility="gone"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginTop="@dimen/bigger_margin_padding"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:layout_marginBottom="@dimen/bigger_margin_padding"
+                android:background="@drawable/rounded_primary_layout"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center">
+
+
+                <ImageView
+                    android:layout_width="@dimen/size_18"
+                    android:layout_height="@dimen/size_18"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/btBack"
+                    android:src="@drawable/map_pin"
+                    android:tint="@color/white" />
+
+                <com.ids.cloud9native.custom.CustomTextViewMedium
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/normal_margin_padding"
+                    android:gravity="center"
+                    android:text="SEND DIRECTIONS"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/normal_font" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
 

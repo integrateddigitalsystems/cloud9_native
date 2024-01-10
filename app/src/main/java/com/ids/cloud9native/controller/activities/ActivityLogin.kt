@@ -1,7 +1,6 @@
 package com.ids.cloud9native.controller.activities
 
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings

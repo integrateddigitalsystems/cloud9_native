@@ -1,12 +1,20 @@
 package com.ids.cloud9native.controller.base.Fragment
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.ids.cloud9native.R
@@ -20,8 +28,14 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class FragmentCompany : Fragment() {
+class FragmentCompany : Fragment(),ApiListener {
     var binding : LayoutCompanyBinding?=null
+    var mPermissionResult: ActivityResultLauncher<Array<String>>? = null
+    val BLOCKED = -1
+    val BLOCKED_OR_NEVER_ASKED = 2
+    val GRANTED = 0
+    val DENIED = 1
+    var firstLocation: Location? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,12 +48,64 @@ class FragmentCompany : Fragment() {
         setUpCompanyData()
         listenrs()
     }
+    fun setUpPermission() {
+        mPermissionResult =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions())
+            { result ->
+                var permission = true
+                for (item in result) {
+                    permission = item.value && permission
+                }
+                if (!permission) {
+                    requireActivity().toast(getString(R.string.location_updates_disabled_arr))
+                    for (item in result) {
+                        if (ContextCompat.checkSelfPermission(
+                                requireContext(),
+                                item.key
+                            ) == BLOCKED
+                        ) {
+
+                            if (getPermissionStatus(Manifest.permission.ACCESS_FINE_LOCATION) == BLOCKED_OR_NEVER_ASKED) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    getString(R.string.please_grant_permission),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                break
+                            }
+                        }
+                    }
+                }
+              else {
+                    changeLocation()
+                }
+            }
+    }
+    fun getPermissionStatus(androidPermissionName: String?): Int {
+        return if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                androidPermissionName!!
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(
+                    requireActivity(),
+                    androidPermissionName
+                )
+            ) {
+                BLOCKED_OR_NEVER_ASKED
+            } else DENIED
+        } else GRANTED
+    }
     fun listenrs(){
         binding!!.llGetDirection.setOnClickListener {
             val geoUri =
                 "http://maps.google.com/maps?q=loc:" + MyApplication.selectedVisit!!.company!!.lat + "," + MyApplication.selectedVisit!!.company!!.long + " (" + MyApplication.selectedVisit!!.company!!.companyName + ")"
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
             startActivity(intent)
+        }
+
+        binding!!.llSendDirection.setOnClickListener {
+            changeLocation()
         }
 
         if(MyApplication.selectedVisit!!.reasonId != AppHelper.getReasonID(AppConstants.REASON_ARRIVED))
@@ -85,6 +151,16 @@ class FragmentCompany : Fragment() {
             hideTexts()
             editCompany()
         }
+    }
+
+    fun changeLocation() {
+        firstLocation = GetLocation(requireActivity()).getLocation(this,this,null)
+
+        if (firstLocation!=null){
+            createDialog("sucess")
+           // editCompany()
+        }
+
     }
 
     fun editCompany(){
@@ -153,6 +229,9 @@ class FragmentCompany : Fragment() {
         binding!!.tvAddress.isEnabled = false
     }
     fun setUpCompanyData(){
+        if ( MyApplication.selectedVisit!!.reasonId==AppHelper.getReasonID(AppConstants.REASON_ARRIVED)){
+            binding!!.llSendDirection.show()
+        }
         if(MyApplication.selectedVisit!!.company!=null) {
             binding!!.tvCompanyName.setTextLang(
                 MyApplication.selectedVisit!!.company!!.companyName!!,
@@ -228,6 +307,16 @@ class FragmentCompany : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUpPermission()
         init()
+    }
+
+    override fun onDataRetrieved(success: Boolean, currLoc: Location?) {
+        if (success && currLoc!=null){
+            createDialog("sucess")
+        }
+        else {
+            firstLocation = GetLocation(requireActivity()).getLocation(this,this,null)
+        }
     }
 }

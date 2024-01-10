@@ -40,7 +40,7 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
+class FragmentVisitDetails : Fragment(), RVOnItemClickListener,ApiListener {
     var alertDialog: androidx.appcompat.app.AlertDialog? = null
     var edtitVisit: Visit? = null
     var adapter: AdapterDialog? = null
@@ -59,6 +59,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
     var simpOrgss: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH)
     var arrSpinner: ArrayList<ItemSpinner> = arrayListOf()
     var binding: LayoutVisitBinding? = null
+    var firstLocation: Location? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -247,93 +248,46 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
         binding!!.spStatusReason.setSelection(pos)
     }
 
-    fun changeLocation(id: Int) {
-        var firstLocation: Location? = null
-        var gps_enabled = false
-        var network_enabled = false
-        val mLocationManager =
-            requireActivity().getSystemService(Service.LOCATION_SERVICE) as LocationManager
-        safeCall {
-            gps_enabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        }
 
-        safeCall {
-            network_enabled =
-                mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-        }
-
-
-
-        if ((ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-                    ) && (gps_enabled || network_enabled)
-        ) {
-
-
-            if (gps_enabled && firstLocation == null)
-                firstLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-            if (network_enabled && firstLocation == null) {
-                firstLocation =
-                    mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-            }
-            if (firstLocation != null) {
-                val visitLocationRequest = VisitLocationRequest(
-                    MyApplication.userItem!!.applicationUserId!!.toInt(),
-                    0,
-                    true,
-                    firstLocation.latitude,
-                    firstLocation.longitude,
-                    id
-                )
-                Log.wtf("JAD_TEST_LOCATION", Gson().toJson(visitLocationRequest))
-                RetrofitClientSpecificAuth.client!!.create(
-                    RetrofitInterface::class.java
-                ).createVisitLocation(
-                    visitLocationRequest
-                ).enqueue(object : Callback<ResponseMessage> {
-                    override fun onResponse(
-                        call: Call<ResponseMessage>,
-                        response: Response<ResponseMessage>
-                    ) {
-                        try {
-                            wtf(response.body()!!.message!!)
-                        } catch (ex: Exception) {
-                            wtf(getString(R.string.error_getting_data))
-                        }
-                    }
-
-                    override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
-                        wtf(getString(R.string.failure))
-                    }
-
-                })
-            }else{
-                changeLocation(id)
-            }
-
-
-
-        } else {
-            if (gps_enabled && network_enabled)
-                openChooser()
-            else {
-                requireActivity().createActionDialog(
-                    getString(R.string.gps_settings), 0
-                ) {
-                    startActivity(
-                        Intent(
-                            Settings.ACTION_LOCATION_SOURCE_SETTINGS
-                        )
-                    )
+    fun createVisitLocation(id: Int,firstLocation: Location){
+        val visitLocationRequest = VisitLocationRequest(
+            MyApplication.userItem!!.applicationUserId!!.toInt(),
+            0,
+            true,
+            firstLocation.latitude,
+            firstLocation.longitude,
+            id
+        )
+        Log.wtf("JAD_TEST_LOCATION", Gson().toJson(visitLocationRequest))
+        RetrofitClientSpecificAuth.client!!.create(
+            RetrofitInterface::class.java
+        ).createVisitLocation(
+            visitLocationRequest
+        ).enqueue(object : Callback<ResponseMessage> {
+            override fun onResponse(
+                call: Call<ResponseMessage>,
+                response: Response<ResponseMessage>
+            ) {
+                try {
+                    wtf(response.body()!!.message!!)
+                } catch (ex: Exception) {
+                    wtf(getString(R.string.error_getting_data))
                 }
             }
 
+            override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
+                wtf(getString(R.string.failure))
+            }
+
+        })
+    }
+
+    fun changeLocation(id: Int) {
+        firstLocation = GetLocation(requireActivity()).getLocation(this,null,this)
+        if (firstLocation!=null){
+            createVisitLocation(id,firstLocation!!)
         }
+
     }
 
 
@@ -730,6 +684,15 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener {
                 binding!!.tvActualCompletedTime.text = ""
             }
             edtitVisit!!.reasonId = arrSpinner.get(position).id
+        }
+    }
+
+    override fun onDataRetrieved(success: Boolean, currLoc: Location?) {
+        if (success && currLoc!=null){
+            createVisitLocation(edtitVisit!!.id!!,currLoc)
+        }
+        else {
+            firstLocation = GetLocation(requireActivity()).getLocation(this,null,this)
         }
     }
     /* override fun onResume() {
