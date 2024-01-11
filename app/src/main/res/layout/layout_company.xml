@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_margin="@dimen/margin_start_end"
     android:background="@color/white"
     android:orientation="vertical">
@@ -484,11 +484,12 @@
 
 
                 <ImageView
-                    android:layout_width="@dimen/size_18"
-                    android:layout_height="@dimen/size_18"
+                    android:layout_width="@dimen/margin_start_end"
+                    android:layout_height="@dimen/margin_start_end"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/btBack"
-                    android:src="@drawable/map_pin"
+                    android:layout_marginStart="@dimen/margin_start_end"
+                    android:src="@drawable/icon_location"
                     android:tint="@color/white" />
 
                 <com.ids.cloud9native.custom.CustomTextViewMedium
@@ -496,7 +497,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/normal_margin_padding"
                     android:gravity="center"
-                    android:text="SEND DIRECTIONS"
+                    android:text="SENDING LOCATION"
                     android:textColor="@color/white"
                     android:textSize="@dimen/normal_font" />
 
@@ -506,6 +507,14 @@
         </LinearLayout>
 
     </ScrollView>
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/llLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <include
+            layout="@layout/loading" />
+    </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

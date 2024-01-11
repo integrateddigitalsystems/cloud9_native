@@ -13,6 +13,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
 import com.ids.cloud9native.R
+import com.ids.cloud9native.controller.MyApplication
 import com.ids.cloud9native.controller.base.Fragment.FragmentCompany
 import com.ids.cloud9native.controller.base.Fragment.FragmentVisitDetails
 
@@ -95,8 +96,12 @@ class GetLocation(activity:Activity){
             }
         }
         else {
-            if (gps_enabled && network_enabled)
-                openChooser()
+            if (gps_enabled && network_enabled){
+                context.createActionDialogCancel(context.getString(R.string.permission_background_android), 0,{  openChooser()},{
+                    context.toast(context.getString(R.string.location_updates_disabled))
+                })
+            }
+
             else {
                 context.createActionDialog(
                     context. getString(R.string.gps_settings), 0

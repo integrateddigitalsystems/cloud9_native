@@ -269,13 +269,16 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener,ApiListener {
                 response: Response<ResponseMessage>
             ) {
                 try {
+                    binding!!.llLoading.hide()
                     wtf(response.body()!!.message!!)
                 } catch (ex: Exception) {
+                    binding!!.llLoading.hide()
                     wtf(getString(R.string.error_getting_data))
                 }
             }
 
             override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
+                binding!!.llLoading.hide()
                 wtf(getString(R.string.failure))
             }
 
@@ -283,6 +286,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener,ApiListener {
     }
 
     fun changeLocation(id: Int) {
+        binding!!.llLoading.show()
         firstLocation = GetLocation(requireActivity()).getLocation(this,null,this)
         if (firstLocation!=null){
             createVisitLocation(id,firstLocation!!)
@@ -692,7 +696,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener,ApiListener {
             createVisitLocation(edtitVisit!!.id!!,currLoc)
         }
         else {
-            firstLocation = GetLocation(requireActivity()).getLocation(this,null,this)
+            changeLocation(edtitVisit!!.id!!)
         }
     }
     /* override fun onResume() {

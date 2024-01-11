@@ -154,9 +154,11 @@ class FragmentCompany : Fragment(),ApiListener {
     }
 
     fun changeLocation() {
+        binding!!.llLoading.show()
         firstLocation = GetLocation(requireActivity()).getLocation(this,this,null)
 
         if (firstLocation!=null){
+            binding!!.llLoading.hide()
             createDialog("sucess")
            // editCompany()
         }
@@ -313,10 +315,11 @@ class FragmentCompany : Fragment(),ApiListener {
 
     override fun onDataRetrieved(success: Boolean, currLoc: Location?) {
         if (success && currLoc!=null){
+            binding!!.llLoading.hide()
             createDialog("sucess")
         }
         else {
-            firstLocation = GetLocation(requireActivity()).getLocation(this,this,null)
+            changeLocation()
         }
     }
 }
