@@ -227,30 +227,38 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
         } else if (view.id == R.id.ivReport) {
             if (MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
                 MyApplication.selectedProduct = arrayProd.get(position)
-                val ct = arrayProd.get(position).reports.count {
-                    it.selected
-                }
-                if (ct > 0) {
-                    var url:String?=null
-                    safeCall {
-                        url =  arrayProd.get(position).reports.find {
-                            it.selected
-                        }!!.url
+                    val ct = arrayProd.get(position).reports.count {
+                        it.selected
                     }
-                    if (url==null) {
-                        createDialog(getString(R.string.empty_report))
-                    }
-                      else{
-                          startActivity(Intent(requireContext(), ActivityReportDetails::class.java).putExtra("RepId",
-                            arrayProd.get(position).reports.find {
+                    if (ct > 0) {
+                        var url:String?=null
+                        var id:Int?=null
+                        safeCall {
+                            url =  arrayProd.get(position).reports.find {
                                 it.selected
-                            }!!.id
-                          ).putExtra("url",  url)
-                        )
+                            }!!.url
+                        }
+                        safeCall {
+                                id =  arrayProd.get(position).reports.find {
+                                    it.selected
+                                }!!.id
+
+                            }
+
+                        if (url==null || id==null) {
+                            createDialog(getString(R.string.empty_report))
+                        }
+                        else{
+                            startActivity(Intent(requireContext(), ActivityReportDetails::class.java).putExtra("RepId",
+                                id
+                            ).putExtra("url",  url)
+                            )
+                        }
+
+
                     }
 
 
-                }
             }
         }
     }
