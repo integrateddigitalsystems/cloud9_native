@@ -1,8 +1,8 @@
 package com.ids.cloud9native.model
 
 data class FormsItem(
-    val id: Int?=0,
+    var id: Int?=0,
     val name: String?="",
-    val url: String?="",
+    var url: String?="",
     var selected : Boolean = false
 )

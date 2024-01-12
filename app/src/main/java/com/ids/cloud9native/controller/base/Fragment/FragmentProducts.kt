@@ -231,15 +231,25 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
                     it.selected
                 }
                 if (ct > 0) {
-                    startActivity(Intent(requireContext(), ActivityReportDetails::class.java).putExtra("RepId",
+                    var url:String?=null
+                    safeCall {
+                        url =  arrayProd.get(position).reports.find {
+                            it.selected
+                        }!!.url
+                    }
+                    if (url==null) {
+                        createDialog(getString(R.string.empty_report))
+                    }
+                      else{
+                          startActivity(Intent(requireContext(), ActivityReportDetails::class.java).putExtra("RepId",
                             arrayProd.get(position).reports.find {
                                 it.selected
                             }!!.id
+                          ).putExtra("url",  url)
+                        )
+                    }
 
-                        ).putExtra("url",   arrayProd.get(position).reports.find {
-                        it.selected
-                    }!!.url)
-                    )
+
                 }
             }
         }

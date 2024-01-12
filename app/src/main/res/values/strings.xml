@@ -105,4 +105,5 @@
     <string name="custom_product_name">Custom Product Name</string>
     <string name="custom_product_description">Custom Product Description</string>
     <string name="signature_completed">After saving the signature, the visit will be marked as complete, and you will not be able to edit it. Are you sure you want to continue?</string>
+    <string name="empty_report">Empty report</string>
 </resources>

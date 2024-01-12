@@ -22,5 +22,9 @@ data class CompanyRequest(
     @SerializedName("phoneNumberSecondary")
     val phoneNumberSecondary: String?="",
     @SerializedName("website")
-    val website: String?=""
+    val website: String?="",
+    @SerializedName("long")
+    val long: String?="",
+    @SerializedName("lat")
+    val lat: String?=""
 )

@@ -154,18 +154,20 @@ class FragmentCompany : Fragment(),ApiListener {
     }
 
     fun changeLocation() {
-        binding!!.llLoading.show()
         firstLocation = GetLocation(requireActivity()).getLocation(this,this,null)
 
         if (firstLocation!=null){
-            binding!!.llLoading.hide()
-            createDialog("sucess")
-           // editCompany()
+            editCompany()
         }
 
     }
 
     fun editCompany(){
+        binding!!.llLoading.show()
+        if (firstLocation!=null){
+            MyApplication.selectedVisit!!.company!!.lat = firstLocation!!.latitude.toString()
+            MyApplication.selectedVisit!!.company!!.long = firstLocation!!.longitude.toString()
+        }
         val editCompanyReq  = CompanyRequest(
             binding!!.tvAddress.text.toString().trim(),
             binding!!.tvAddress.text.toString().trim(),
@@ -176,7 +178,9 @@ class FragmentCompany : Fragment(),ApiListener {
             MyApplication.selectedVisit!!.company!!.id!!,
             binding!!.tvPhone.text.toString().trim(),
             binding!!.tvContactNumber.text.toString().trim(),
-            binding!!.tvWebite.text.toString()
+            binding!!.tvWebite.text.toString(),
+            MyApplication.selectedVisit!!.company!!.long,
+            MyApplication.selectedVisit!!.company!!.lat
         )
         Log.wtf("JAD_COMPANY",Gson().toJson(editCompanyReq))
         RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).editCompany(editCompanyReq)
@@ -186,19 +190,28 @@ class FragmentCompany : Fragment(),ApiListener {
                     response: Response<ResponseMessage>
                 ) {
                     if (response.isSuccessful){
-                        MyApplication.selectedVisit!!.company!!.email = binding!!.tvEmail.text.toString()
-                        MyApplication.selectedVisit!!.company!!.fax = binding!!.tvFax.text.toString()
-                        MyApplication.selectedVisit!!.company!!.website = binding!!.tvWebite.text.toString()
-                        MyApplication.selectedVisit!!.company!!.phoneNumber = binding!!.tvPhone.text.toString()
-                        MyApplication.selectedVisit!!.contact!!.personalPhoneNumber = binding!!.tvContactNumber.text.toString()
-                        MyApplication.selectedVisit!!.company!!.address = binding!!.tvAddress.text.toString()
-                        setUpCompanyData()
-                        binding!!.llButtons.hide()
-                        binding!!.ivEditCompany.show()
-                        wtf("Success")
+                        binding!!.llLoading.hide()
+                        if (response.body()!!.success=="true"){
+                            createDialog(response.body()!!.message!!)
+                            MyApplication.selectedVisit!!.company!!.email = binding!!.tvEmail.text.toString()
+                            MyApplication.selectedVisit!!.company!!.fax = binding!!.tvFax.text.toString()
+                            MyApplication.selectedVisit!!.company!!.website = binding!!.tvWebite.text.toString()
+                            MyApplication.selectedVisit!!.company!!.phoneNumber = binding!!.tvPhone.text.toString()
+                            MyApplication.selectedVisit!!.contact!!.personalPhoneNumber = binding!!.tvContactNumber.text.toString()
+                            MyApplication.selectedVisit!!.company!!.address = binding!!.tvAddress.text.toString()
+                            setUpCompanyData()
+                            binding!!.llButtons.hide()
+                            binding!!.ivEditCompany.show()
+                            wtf("Success")
+                        }
+                        else {
+                            createDialog(response.body()!!.message!!)
+                        }
+
                     }
                 }
                 override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
+                    binding!!.llLoading.hide()
                     wtf("Failure")
                 }
             })
@@ -315,8 +328,7 @@ class FragmentCompany : Fragment(),ApiListener {
 
     override fun onDataRetrieved(success: Boolean, currLoc: Location?) {
         if (success && currLoc!=null){
-            binding!!.llLoading.hide()
-            createDialog("sucess")
+            editCompany()
         }
         else {
             changeLocation()
