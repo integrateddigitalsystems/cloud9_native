@@ -205,9 +205,14 @@ class FragmentCompany : Fragment(),ApiListener {
                             wtf("Success")
                         }
                         else {
+                            binding!!.llLoading.hide()
                             createDialog(response.body()!!.message!!)
                         }
 
+                    }
+                    else{
+                        binding!!.llLoading.hide()
+                        createDialog(getString(R.string.failure))
                     }
                 }
                 override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
