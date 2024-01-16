@@ -32,6 +32,7 @@ object RetrofitClientSpecificAuth {
                 .create()
             Log.wtf("tokenJADtoken", token)
             /*if (retrofit == null) {*/
+            Log.wtf("BASE_URL", BASE_USER_URL)
             wtf(BASE_USER_URL)
             retrofit = Retrofit.Builder()
                 .baseUrl(MyApplication.BASE_USER_URL)
