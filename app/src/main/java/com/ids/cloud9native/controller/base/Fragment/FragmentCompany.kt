@@ -157,19 +157,19 @@ class FragmentCompany : Fragment(),ApiListener {
         firstLocation = GetLocation(requireActivity()).getLocation(this,this,null)
 
         if (firstLocation!=null){
-            editCompany()
+            editCompany(firstLocation)
         }
 
     }
 
-    fun editCompany(){
+    fun editCompany(location: Location? = null){
+        firstLocation = location
         binding!!.llLoading.show()
         if (firstLocation!=null){
             MyApplication.selectedVisit!!.company!!.lat = firstLocation!!.latitude.toString()
             MyApplication.selectedVisit!!.company!!.long = firstLocation!!.longitude.toString()
         }
         val editCompanyReq  = CompanyRequest(
-            binding!!.tvAddress.text.toString().trim(),
             binding!!.tvAddress.text.toString().trim(),
             binding!!.tvCompanyName.text.toString().trim(),
             binding!!.tvCompanyName.text.toString().trim(),
@@ -193,12 +193,12 @@ class FragmentCompany : Fragment(),ApiListener {
                         binding!!.llLoading.hide()
                         if (response.body()!!.success=="true"){
                             createDialog(response.body()!!.message!!)
-                            MyApplication.selectedVisit!!.company!!.email = binding!!.tvEmail.text.toString()
-                            MyApplication.selectedVisit!!.company!!.fax = binding!!.tvFax.text.toString()
-                            MyApplication.selectedVisit!!.company!!.website = binding!!.tvWebite.text.toString()
-                            MyApplication.selectedVisit!!.company!!.phoneNumber = binding!!.tvPhone.text.toString()
-                            MyApplication.selectedVisit!!.contact!!.personalPhoneNumber = binding!!.tvContactNumber.text.toString()
-                            MyApplication.selectedVisit!!.company!!.address = binding!!.tvAddress.text.toString()
+                            MyApplication.selectedVisit!!.company!!.email = binding!!.tvEmail.text.toString().trim()
+                            MyApplication.selectedVisit!!.company!!.fax = binding!!.tvFax.text.toString().trim()
+                            MyApplication.selectedVisit!!.company!!.website = binding!!.tvWebite.text.toString().trim()
+                            MyApplication.selectedVisit!!.company!!.phoneNumber = binding!!.tvPhone.text.toString().trim()
+                            MyApplication.selectedVisit!!.contact!!.personalPhoneNumber = binding!!.tvContactNumber.text.toString().trim()
+                            MyApplication.selectedVisit!!.company!!.address = binding!!.tvAddress.text.toString().trim()
                             setUpCompanyData()
                             binding!!.llButtons.hide()
                             binding!!.ivEditCompany.show()
@@ -333,7 +333,7 @@ class FragmentCompany : Fragment(),ApiListener {
 
     override fun onDataRetrieved(success: Boolean, currLoc: Location?) {
         if (success && currLoc!=null){
-            editCompany()
+            editCompany(currLoc)
         }
         else {
             changeLocation()

@@ -5,8 +5,6 @@ import com.google.gson.annotations.SerializedName
 data class CompanyRequest(
     @SerializedName("address")
     val address: String?="",
-    @SerializedName("address2")
-    val address2: String?="",
     @SerializedName("companyName")
     val companyName: String?="",
     @SerializedName("companyNameAr")

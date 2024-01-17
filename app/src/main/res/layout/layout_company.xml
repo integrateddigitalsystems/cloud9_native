@@ -56,7 +56,7 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:padding="@dimen/small_margin_padding"
-                    android:text="@string/status_reason"
+
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/normal_font" />
 
@@ -93,7 +93,7 @@
                     android:background="@color/transparent"
                     android:gravity="center_vertical"
                     android:padding="@dimen/small_margin_padding"
-                    android:text="@string/status_reason"
+
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/normal_font"/>
 
@@ -144,7 +144,7 @@
                     android:background="@color/transparent"
                     android:gravity="center_vertical"
                     android:padding="@dimen/small_margin_padding"
-                    android:text="@string/status_reason"
+
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/normal_font"/>
 
@@ -198,7 +198,7 @@
                     android:background="@color/transparent"
                     android:gravity="center_vertical"
                     android:padding="@dimen/small_margin_padding"
-                    android:text="@string/status_reason"
+
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/normal_font"/>
 
@@ -250,7 +250,7 @@
                     android:background="@color/transparent"
                     android:gravity="center_vertical"
                     android:padding="@dimen/small_margin_padding"
-                    android:text="@string/status_reason"
+
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/normal_font"/>
 
@@ -302,7 +302,7 @@
                     android:enabled="false"
                     android:gravity="center_vertical"
                     android:padding="@dimen/small_margin_padding"
-                    android:text="@string/status_reason"
+
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/normal_font" />
 
@@ -340,7 +340,6 @@
                     android:enabled="true"
                     android:gravity="center_vertical"
                     android:padding="@dimen/small_margin_padding"
-                    android:text="@string/status_reason"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/normal_font"/>
 
@@ -393,7 +392,6 @@
                     android:enabled="false"
                     android:gravity="center_vertical"
                     android:padding="@dimen/small_margin_padding"
-                    android:text="@string/status_reason"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/normal_font" />
 

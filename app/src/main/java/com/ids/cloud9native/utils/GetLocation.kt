@@ -66,10 +66,10 @@ class GetLocation(activity:Activity){
                     ) && (gps_enabled || network_enabled)
         ) {
 
-            if (gps_enabled && currLoc==null){
-                currLoc =getLastKnownLocation()
-                if (currLoc==null &&network_enabled){
-                    currLoc =getLastKnownLocation()
+//            if (gps_enabled && currLoc==null){
+//                currLoc =getLastKnownLocation()
+//                if (currLoc==null &&network_enabled){
+//                    currLoc =getLastKnownLocation()
                     if (currLoc==null){
                         safeCall {
                           val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
@@ -92,8 +92,8 @@ class GetLocation(activity:Activity){
                             }
                         }
                     }
-                }
-            }
+//                }
+//            }
         }
         else {
             if (gps_enabled && network_enabled){
