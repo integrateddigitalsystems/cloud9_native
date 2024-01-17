@@ -10,8 +10,8 @@ android {
         applicationId "com.ids.cloud9native"
         minSdk 26
         targetSdk 34
-        versionCode 18
-        versionName "2.4"
+        versionCode 19
+        versionName "2.5"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
