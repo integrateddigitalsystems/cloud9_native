@@ -1,9 +1,11 @@
 package com.ids.cloud9native.controller.base.Fragment
 
 import android.Manifest
+import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -154,11 +156,21 @@ class FragmentCompany : Fragment(),ApiListener {
     }
 
     fun changeLocation() {
-        firstLocation = GetLocation(requireActivity()).getLocation(this,this,null)
+        if (AppHelper.isNetworkAvailable(requireContext())){
+            if (AppHelper.isGpsAvailable(requireActivity()))
+                binding!!.llLoading.show()
+            firstLocation = GetLocation(requireActivity()).getLocation(this,this,null)
 
-        if (firstLocation!=null){
-            editCompany(firstLocation)
+            if (firstLocation!=null){
+                editCompany(firstLocation)
+            }
         }
+        else {
+            createDialog(getString(R.string.network_message))
+        }
+
+
+
 
     }
 

@@ -1,13 +1,18 @@
 package com.ids.cloud9native.utils
 
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityManager
+import android.app.Service
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Typeface
+import android.location.LocationManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.text.TextUtils
 import android.util.Base64
@@ -58,6 +63,26 @@ class AppHelper {
             }
 
         }
+
+        @SuppressLint("NewApi")
+        fun isNetworkAvailable(context: Context): Boolean {
+            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val capabilities = cm.getNetworkCapabilities(cm.activeNetwork)
+            return capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
+        }
+
+        fun isGpsAvailable(context: Activity): Boolean {
+            var gps =false
+            try {
+                val mLocationManager =
+                    context.getSystemService(Service.LOCATION_SERVICE) as LocationManager
+                gps = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                return gps
+            }catch (ex:Exception){
+                return gps
+            }
+        }
+
 
         fun handleCrashes(context: Activity) {
             releaseOnly {

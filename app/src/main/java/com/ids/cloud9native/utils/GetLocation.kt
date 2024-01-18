@@ -6,19 +6,22 @@ import android.app.Activity
 import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.provider.Settings
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
 import com.ids.cloud9native.R
 import com.ids.cloud9native.controller.MyApplication
 import com.ids.cloud9native.controller.base.Fragment.FragmentCompany
 import com.ids.cloud9native.controller.base.Fragment.FragmentVisitDetails
 
 
-class GetLocation(activity:Activity){
+class GetLocation(activity:Activity) {
     var context =activity
     var mPermissionResult: ActivityResultLauncher<Array<String>>? = null
     var mLocationManager: LocationManager? = null
@@ -41,8 +44,10 @@ class GetLocation(activity:Activity){
                     true,
                     currLoc,
                 )
+                mLocationManager!!.removeUpdates(locationListenerGps!!)
             }
         }
+
         safeCall {
             mLocationManager =
                 context.getSystemService(Service.LOCATION_SERVICE) as LocationManager
@@ -72,24 +77,37 @@ class GetLocation(activity:Activity){
 //                    currLoc =getLastKnownLocation()
                     if (currLoc==null){
                         safeCall {
-                          val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-                           fusedLocationClient.lastLocation.addOnSuccessListener { location: android.location.Location? ->
-                               currLoc =location
-                               if (currLoc != null) {
-                                   apiListener.onDataRetrieved(
-                                       true,
-                                        currLoc,
-                                   )
-                               }
-                               else {
-                                   safeCall {
-                                       mLocationManager!!.requestLocationUpdates(
-                                           LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME.toLong(),
-                                           LOCATION_REFRESH_DISTANCE.toFloat(), locationListenerGps!!
-                                       )
-                                   }
-                              }
+                            val locationResult = object : MyLocation.LocationResult() {
+                                @SuppressLint("MissingPermission")
+                                override fun gotLocation(location: Location?) {
+                                    currLoc =location
+                                    if (currLoc != null) {
+                                        apiListener.onDataRetrieved(
+                                            true,
+                                            currLoc,
+                                        )
+                                    } else {
+                                        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+                                        fusedLocationClient.lastLocation.addOnSuccessListener { location: android.location.Location? ->
+                                            currLoc = location
+                                            //  currLoc = null
+                                            if (currLoc != null) {
+                                                apiListener.onDataRetrieved(
+                                                    true,
+                                                    currLoc,
+                                                )
+                                            }
+                                        }
+                                    }
+
+
+                                }
+
                             }
+
+                            val myLocation = MyLocation()
+                            myLocation.getLocation(context, locationResult)
+
                         }
                     }
 //                }
@@ -106,6 +124,7 @@ class GetLocation(activity:Activity){
                 context.createActionDialog(
                     context. getString(R.string.gps_settings), 0
                 ) {
+                    MyApplication.toSettingsGps =false
                     context.startActivity(
                         Intent(
                             Settings.ACTION_LOCATION_SOURCE_SETTINGS
@@ -138,4 +157,5 @@ class GetLocation(activity:Activity){
         }
         return bestLocation
     }
+
 }
