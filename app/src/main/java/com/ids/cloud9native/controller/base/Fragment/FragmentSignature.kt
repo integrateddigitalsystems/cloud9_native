@@ -26,6 +26,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
 import com.ids.cloud9native.R
 import com.ids.cloud9native.controller.MyApplication
+import com.ids.cloud9native.controller.MyApplication.Companion.simpOrgss
 import com.ids.cloud9native.controller.activities.ActivtyVisitDetails
 import com.ids.cloud9native.custom.MyDrawView
 import com.ids.cloud9native.databinding.LayoutSignatureBinding
@@ -41,7 +42,7 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FragmentSignature : Fragment() {
+class FragmentSignature : Fragment(),ApiListener {
     var emEy: SignatureListItem? = null
     var emCl: SignatureListItem? = null
     var myDrawViewEmpl: MyDrawView? = null
@@ -57,6 +58,7 @@ class FragmentSignature : Fragment() {
     val BLOCKED_OR_NEVER_ASKED = 2
     val GRANTED = 0
     val DENIED = 1
+    var firstLocation: Location? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -410,10 +412,12 @@ class FragmentSignature : Fragment() {
     }
 
     fun updateVisit() {
+        val cal = Calendar.getInstance()
         for (item in MyApplication.onTheWayVisit!!.visitResources)
             item.id = 0
         val str = Gson().toJson(MyApplication.onTheWayVisit!!)
         MyApplication.onTheWayVisit!!.reasonId =AppHelper.getReasonID(AppConstants.REASON_COMPLETED)
+        MyApplication.onTheWayVisit!!.actualCompletedTime = simpOrgss.format(cal.time)
         wtf(str)
         RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .updateVisit(MyApplication.userItem!!.applicationUserId!!.toInt(),MyApplication.onTheWayVisit!!)
@@ -466,92 +470,47 @@ class FragmentSignature : Fragment() {
     }
 
     fun changeLocation(id: Int) {
-        var firstLocation: Location? = null
-        var gps_enabled = false
-        var network_enabled = false
-        val mLocationManager =
-            requireActivity().getSystemService(Service.LOCATION_SERVICE) as LocationManager
-        safeCall {
-            gps_enabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        binding!!.llLoading.show()
+        firstLocation = GetLocation(requireActivity()).getLocation(this,null,null,this)
+        if (firstLocation!=null){
+            createVisitLocation(id,firstLocation!!)
         }
+    }
 
-        safeCall {
-            network_enabled =
-                mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-        }
-
-
-
-        if ((ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-                    ) && (gps_enabled || network_enabled)
-        ) {
-
-
-            if (gps_enabled && firstLocation == null)
-                firstLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-            if (network_enabled && firstLocation == null) {
-                firstLocation =
-                    mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-            }
-            if (firstLocation != null) {
-                val visitLocationRequest = VisitLocationRequest(
-                    MyApplication.userItem!!.applicationUserId!!.toInt(),
-                    0,
-                    true,
-                    firstLocation.latitude,
-                    firstLocation.longitude,
-                    id
-                )
-                Log.wtf("JAD_TEST_LOCATION", Gson().toJson(visitLocationRequest))
-                RetrofitClientSpecificAuth.client!!.create(
-                    RetrofitInterface::class.java
-                ).createVisitLocation(
-                    visitLocationRequest
-                ).enqueue(object : Callback<ResponseMessage> {
-                    override fun onResponse(
-                        call: Call<ResponseMessage>,
-                        response: Response<ResponseMessage>
-                    ) {
-                        try {
-                            wtf(response.body()!!.message!!)
-                        } catch (ex: Exception) {
-                            wtf(getString(R.string.error_getting_data))
-                        }
-                    }
-
-                    override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
-                        wtf(getString(R.string.failure))
-                    }
-
-                })
-            }else{
-                changeLocation(id)
-            }
-
-
-
-        } else {
-            if (gps_enabled && network_enabled)
-                openChooser()
-            else {
-                requireActivity().createActionDialog(
-                    getString(R.string.gps_settings), 0
-                ) {
-                    startActivity(
-                        Intent(
-                            Settings.ACTION_LOCATION_SOURCE_SETTINGS
-                        )
-                    )
+    fun createVisitLocation(id: Int,firstLocation: Location){
+        val visitLocationRequest = VisitLocationRequest(
+            MyApplication.userItem!!.applicationUserId!!.toInt(),
+            0,
+            true,
+            firstLocation.latitude,
+            firstLocation.longitude,
+            id
+        )
+        Log.wtf("JAD_TEST_LOCATION", Gson().toJson(visitLocationRequest))
+        RetrofitClientSpecificAuth.client!!.create(
+            RetrofitInterface::class.java
+        ).createVisitLocation(
+            visitLocationRequest
+        ).enqueue(object : Callback<ResponseMessage> {
+            override fun onResponse(
+                call: Call<ResponseMessage>,
+                response: Response<ResponseMessage>
+            ) {
+                try {
+                    binding!!.llLoading.hide()
+                    wtf(response.body()!!.message!!)
+                } catch (ex: Exception) {
+                    binding!!.llLoading.hide()
+                    wtf(getString(R.string.error_getting_data))
                 }
             }
 
-        }
+            override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
+                binding!!.llLoading.hide()
+                wtf(getString(R.string.failure))
+            }
+
+        })
     }
     fun openChooser() {
         mPermissionResult!!.launch(
@@ -575,5 +534,14 @@ class FragmentSignature : Fragment() {
                 BLOCKED_OR_NEVER_ASKED
             } else DENIED
         } else GRANTED
+    }
+
+    override fun onDataRetrieved(success: Boolean, currLoc: Location?) {
+        if (success && currLoc!=null){
+            createVisitLocation(MyApplication.onTheWayVisit!!.id!!,currLoc)
+        }
+        else {
+            changeLocation(MyApplication.onTheWayVisit!!.id!!)
+        }
     }
 }

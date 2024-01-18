@@ -16,6 +16,7 @@ import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.ids.cloud9native.R
+import com.ids.cloud9native.controller.Fragment.FragmentSignature
 import com.ids.cloud9native.controller.MyApplication
 import com.ids.cloud9native.controller.base.Fragment.FragmentCompany
 import com.ids.cloud9native.controller.base.Fragment.FragmentVisitDetails
@@ -28,14 +29,15 @@ class GetLocation(activity:Activity) {
     var locationListenerGps: LocationListener? = null
     var LOCATION_REFRESH_DISTANCE = 5
     var LOCATION_REFRESH_TIME = 5000
-    fun getLocation(apiListener: ApiListener, fragmentCompany: FragmentCompany?,fragmentVisitDetails: FragmentVisitDetails?) : android.location.Location? {
+    fun getLocation(apiListener: ApiListener, fragmentCompany: FragmentCompany?,fragmentVisitDetails: FragmentVisitDetails?,fragmentSignature: FragmentSignature?) : android.location.Location? {
         var currLoc: android.location.Location?=null
         var gps_enabled = false
         var network_enabled = false
 
-        if (fragmentCompany!=null)
-        mPermissionResult =fragmentCompany.mPermissionResult
-        else   mPermissionResult =fragmentVisitDetails!!.mPermissionResult
+        mPermissionResult = if (fragmentCompany!=null)
+            fragmentCompany.mPermissionResult
+        else if (fragmentVisitDetails!=null) fragmentVisitDetails.mPermissionResult
+        else fragmentSignature!!.mPermissionResult
 
         locationListenerGps = LocationListener { location ->
             if (currLoc==null && location!=null){

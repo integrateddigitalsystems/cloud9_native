@@ -159,7 +159,7 @@ class FragmentCompany : Fragment(),ApiListener {
         if (AppHelper.isNetworkAvailable(requireContext())){
             if (AppHelper.isGpsAvailable(requireActivity()))
                 binding!!.llLoading.show()
-            firstLocation = GetLocation(requireActivity()).getLocation(this,this,null)
+            firstLocation = GetLocation(requireActivity()).getLocation(this,this,null,null)
 
             if (firstLocation!=null){
                 editCompany(firstLocation)

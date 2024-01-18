@@ -62,6 +62,7 @@ class MyApplication : Application() {
         @SuppressLint("StaticFieldLeak")
         lateinit var sharedPreferences : SharedPreferences
         lateinit var sharedPreferencesEditor : SharedPreferences.Editor
+        var simpOrgss: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssss", Locale.ENGLISH)
         var firebaseToken : String
             get() = sharedPreferences.getString(AppConstants.FIREBASE_TOKEN, "")!!
             set(value) { sharedPreferencesEditor.putString(AppConstants.FIREBASE_TOKEN, value).apply() }

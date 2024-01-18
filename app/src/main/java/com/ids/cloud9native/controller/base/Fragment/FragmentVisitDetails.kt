@@ -287,7 +287,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener,ApiListener {
 
     fun changeLocation(id: Int) {
         binding!!.llLoading.show()
-        firstLocation = GetLocation(requireActivity()).getLocation(this,null,this)
+        firstLocation = GetLocation(requireActivity()).getLocation(this,null,this,null)
         if (firstLocation!=null){
             createVisitLocation(id,firstLocation!!)
         }
