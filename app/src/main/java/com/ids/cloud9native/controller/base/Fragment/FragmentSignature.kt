@@ -233,6 +233,8 @@ class FragmentSignature : Fragment(),ApiListener {
         )
         val signs = arrayListOf<SignatureRequest>()
         signs.add(signatureRequest)
+
+        Log.wtf("SIGNATURE_REQUEST",Gson().toJson(signatureRequest))
         RetrofitClientSpecificAuth.client!!.create(
             RetrofitInterface::class.java
         ).saveSignature(
@@ -243,19 +245,25 @@ class FragmentSignature : Fragment(),ApiListener {
                     call: Call<ResponseMessage>,
                     response: Response<ResponseMessage>
                 ) {
-                    if (response.body()!!.success.equals("true")) {
-                        if(isClient) {
-                            clientSaved = true
-                            updateVisit()
-                        }
-                        else {
+                    if (response.isSuccessful){
+                        if (response.body()!!.success.equals("true")) {
+                            if(isClient) {
+                                clientSaved = true
+                                updateVisit()
+                            }
+                            else {
+                                binding!!.llLoading.hide()
+                                employeeSaved = true
+                                createDialog(response.body()!!.message!!)
+                            }
+                        } else {
                             binding!!.llLoading.hide()
-                            employeeSaved = true
                             createDialog(response.body()!!.message!!)
                         }
-                    } else {
+                    }
+                    else {
                         binding!!.llLoading.hide()
-                        createDialog(response.body()!!.message!!)
+                        createDialog(requireActivity().getString(R.string.failure))
                     }
                 }
 

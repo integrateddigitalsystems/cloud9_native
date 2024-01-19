@@ -333,6 +333,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvNames"
                         android:padding="1.5dp"
+                        android:scrollbars="vertical"
                         android:background="@drawable/rounded_gray_border"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
