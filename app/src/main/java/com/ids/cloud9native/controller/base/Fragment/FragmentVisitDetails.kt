@@ -1,6 +1,7 @@
 package com.ids.cloud9native.controller.base.Fragment
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -77,6 +78,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener,ApiListener {
         )
     }
 
+    @SuppressLint("SetTextI18n")
     fun setUpVisitDetails() {
         var date = ""
         safeCall {
@@ -132,7 +134,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener,ApiListener {
                 binding!!.etRemark.text = "".toEditable()
 
             (requireActivity() as ActivtyVisitDetails).binding!!.llTool.tvTitleTool.text =
-                edtitVisit!!.title!!
+                edtitVisit!!.title!! + "\n" + edtitVisit!!.number!!
 
 
         } catch (ex: Exception) {

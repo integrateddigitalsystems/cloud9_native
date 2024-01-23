@@ -55,16 +55,16 @@
         </LinearLayout>
 
         <com.ids.cloud9native.custom.CustomTextViewMedium
+            android:id="@+id/tvTitleTool"
             android:layout_width="250dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:maxLines="4"
             android:paddingStart="@dimen/normal_margin"
             android:paddingEnd="@dimen/normal_margin"
-            android:id="@+id/tvTitleTool"
-            android:textSize="@dimen/normal_font"
-            android:layout_centerInParent="true"
-            android:maxLines="4"
-            android:gravity="center"
             android:textColor="@color/white"
-            android:layout_height="match_parent" />
+            android:textSize="@dimen/normal_font" />
 
     </RelativeLayout>
 

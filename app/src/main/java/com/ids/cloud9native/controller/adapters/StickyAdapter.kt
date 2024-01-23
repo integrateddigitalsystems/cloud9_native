@@ -1,6 +1,7 @@
 package com.ids.cloud9native.controller.adapters
 
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
@@ -66,8 +67,9 @@ class StickyAdapter(context: Activity, private val mList: ArrayList<Visit>, var 
     ) : RecyclerView.ViewHolder(
         binding.root
     ), View.OnClickListener {
+        @SuppressLint("SetTextI18n")
         fun bind(child: Visit) {
-            binding.tvVisitName.text = child.title
+            binding.tvVisitName.text = child.title + "\n" + child.number
             binding.tvCompany.text = child.company!!.companyName
             binding.tvStatus.setBackgroundResource(child.showData!!.backg!!)
             AppHelper.setTextColor(mContext,binding.tvStatus,child.showData!!.textColor!!)

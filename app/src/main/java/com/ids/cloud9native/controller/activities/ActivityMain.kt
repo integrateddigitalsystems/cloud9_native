@@ -5,6 +5,7 @@ import android.location.Location
 import android.os.*
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.OnBackPressedCallback
@@ -602,6 +603,7 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
     }
     override fun onItemClicked(view: View, position: Int) {
         MyApplication.selectedVisit = tempArray.get(position)
+        Log.wtf("JSON_DATA",Gson().toJson(MyApplication.selectedVisit))
         startActivity(Intent(this, ActivtyVisitDetails::class.java))
     }
 
