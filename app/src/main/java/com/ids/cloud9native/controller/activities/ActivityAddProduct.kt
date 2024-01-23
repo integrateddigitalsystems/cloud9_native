@@ -64,7 +64,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
     fun init() {
         binding!!.llTool.ivDrawer.hide()
         binding!!.llTool.layoutFragment.show()
-        binding!!.llTool.tvTitleTool.text = MyApplication.selectedVisit!!.title
+        binding!!.llTool.tvTitleTool.text = MyApplication.selectedVisit!!.title + "\n" + MyApplication.selectedVisit!!.number
         getUnits()
         getProductNames()
         createProduct = CreateProduct()

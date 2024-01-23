@@ -1,5 +1,6 @@
 package com.ids.cloud9native.controller.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -25,10 +26,11 @@ class ActivityFullScreen : AppCompactBase() , IFragmentImages, ViewPager.OnPageC
         setContentView(binding!!.root)
         init()
     }
+    @SuppressLint("SetTextI18n")
     private fun init() {
         binding!!.llTool.ivDrawer.hide()
         binding!!.llTool.layoutFragment.show()
-        binding!!.llTool.tvTitleTool.text = MyApplication.selectedVisit!!.title
+        binding!!.llTool.tvTitleTool.text = MyApplication.selectedVisit!!.title + "\n" + MyApplication.selectedVisit!!.number
         binding!!.llTool.btBack.setOnClickListener {
            onBackPressedDispatcher.onBackPressed()
             try {
