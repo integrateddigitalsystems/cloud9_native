@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+
+      <LinearLayout
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+   <com.ids.cloud9native.custom.CustomTextViewMedium
+       android:layout_width="match_parent"
+       android:gravity="center"
+       android:id="@+id/tvNoData"
+       android:visibility="gone"
+       android:textColor="@color/text_gray"
+       android:text="@string/no_data"
+       android:layout_height="match_parent"/>
+
+
+         <androidx.recyclerview.widget.RecyclerView
+             android:id="@+id/rvContracts"
+             android:paddingBottom="@dimen/with_200"
+             android:clipToPadding="false"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_marginTop="@dimen/normal_margin" />
+
+      </LinearLayout>
+
+
+
+   <LinearLayout
+       android:visibility="gone"
+       android:id="@+id/llLoading"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+      <include
+          layout="@layout/loading" />
+
+   </LinearLayout>
+
+</RelativeLayout>

@@ -1,5 +1,6 @@
 package com.ids.cloud9native.controller.adapters
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
@@ -34,8 +35,9 @@ class AdapterRecords(
         binding.root
 
     ), View.OnClickListener {
+        @SuppressLint("SetTextI18n")
         fun bind(item: RecordListsItem) {
-            binding.tvSubject.text = item.formName
+            binding.tvSubject.text = (layoutPosition +1).toString() + " - " + item.formName
             binding.tvDate.text = simpTo.format(simpOrg.parse(item.creationDate!!)!!)
         }
         init {

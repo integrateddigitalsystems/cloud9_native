@@ -239,6 +239,49 @@
                 android:layout_height="match_parent"
                 android:background="@color/gray_border_item"/>
 
+
+            <LinearLayout
+                android:gravity="center"
+                android:minWidth="@dimen/scan_height"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:id="@+id/llContracts"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <com.ids.cloud9native.custom.CustomTextViewBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:id="@+id/tvContracts"
+                    android:layout_marginStart="@dimen/home_radius"
+                    android:layout_marginEnd="@dimen/home_radius"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:textColor="@color/text_gray"
+                    android:text="@string/related_visits"/>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/llBorderContracts"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray_border_item"/>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/llSelectedContractsBorder"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:visibility="gone"
+                    android:background="@color/medium_blue"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray_border_item"/>
+
             <LinearLayout
                 android:gravity="center"
                 android:minWidth="@dimen/scan_height"
@@ -274,6 +317,8 @@
                     android:background="@color/medium_blue"/>
 
             </LinearLayout>
+
+
 
         </LinearLayout>
 

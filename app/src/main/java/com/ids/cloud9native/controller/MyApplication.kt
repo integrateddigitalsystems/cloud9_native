@@ -30,6 +30,7 @@ class MyApplication : Application() {
         var url_contains = ""
         var arrayVid : ArrayList<ItemSpinner> = arrayListOf()
         var selectedVisit : Visit ?=null
+        var selectedVisitCurrent : Visit ?=null
         var allVisits : ArrayList<Visit> = arrayListOf()
         var serviceContext : Context ?=null
         var userItem : JWTResponse ?=null

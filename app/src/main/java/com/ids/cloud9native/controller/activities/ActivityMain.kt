@@ -603,9 +603,9 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
     }
     override fun onItemClicked(view: View, position: Int) {
         MyApplication.selectedVisit = tempArray.get(position)
+        MyApplication.selectedVisitCurrent = tempArray.get(position)
         Log.wtf("JSON_DATA",Gson().toJson(MyApplication.selectedVisit))
         startActivity(Intent(this, ActivtyVisitDetails::class.java))
     }
-
 
 }

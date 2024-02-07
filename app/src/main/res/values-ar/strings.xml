@@ -106,4 +106,5 @@
     <string name="signature_completed">After saving the signature, the visit will be marked as complete, and you will not be able to edit it. Are you sure you want to continue?</string>
     <string name="empty_report">Empty report</string>
     <string name="network_message">No network available, please check your WiFi or Data connection</string>
+    <string name="related_visits">Related Visits</string>
 </resources>
