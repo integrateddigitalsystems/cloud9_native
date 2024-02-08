@@ -23,9 +23,6 @@
         <action
             android:id="@+id/action_fragmentVisitDetails_to_fragmentMedia"
             app:destination="@id/fragmentMedia" />
-        <action
-            android:id="@+id/action_fragmentVisitDetails_to_fragmentContract"
-            app:destination="@id/fragmentContract" />
     </fragment>
     <fragment
         android:id="@+id/fragmentCompany"
@@ -57,8 +54,4 @@
             android:id="@+id/action_fragmentSignature_to_fragmentReccomendations"
             app:destination="@id/fragmentReccomendations" />
     </fragment>
-    <fragment
-        android:id="@+id/fragmentContract"
-        android:name="com.ids.cloud9native.controller.Fragment.FragmentContract"
-        android:label="FragmentContract" />
 </navigation>
