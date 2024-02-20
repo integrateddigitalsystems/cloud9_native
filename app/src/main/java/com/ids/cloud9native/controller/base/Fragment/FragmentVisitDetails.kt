@@ -540,7 +540,6 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener,ApiListener {
                 override fun onResponse(call: Call<Visit>, response: Response<Visit>) {
                     edtitVisit = response.body()
                     MyApplication.selectedVisit = response.body()
-                    MyApplication.selectedVisitCurrent = response.body()
                     MyApplication.selectedVisit!!.appearDuration =
                         AppHelper.durationToString(MyApplication.selectedVisit!!.duration!!.toFloat())
                     initialData()
