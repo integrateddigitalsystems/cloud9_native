@@ -261,6 +261,11 @@ class FragmentCompany : Fragment(),ApiListener {
         binding!!.tvAddress.isEnabled = false
     }
     fun setUpCompanyData(){
+        if (MyApplication.selectedVisit!!.companyAddress!=null){
+            binding!!.tvVistAddress.setText(MyApplication.selectedVisit!!.companyAddress!!.address)
+        }
+        else binding!!.tvVistAddress.setText(MyApplication.selectedVisit!!.company!!.address)
+
         if ( MyApplication.selectedVisit!!.reasonId==AppHelper.getReasonID(AppConstants.REASON_ARRIVED)){
             binding!!.llSendDirection.show()
         }

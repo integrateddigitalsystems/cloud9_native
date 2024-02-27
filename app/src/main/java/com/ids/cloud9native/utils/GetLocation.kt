@@ -146,18 +146,5 @@ class GetLocation(activity:Activity) {
             )
         )
     }
-    @SuppressLint("MissingPermission")
-    private fun getLastKnownLocation(): android.location.Location? {
-        val providers: List<String> = mLocationManager!!.getProviders(true)
-        var bestLocation: android.location.Location? = null
-        for (provider in providers) {
-            val l: android.location.Location = mLocationManager!!.getLastKnownLocation(provider)
-                ?: continue
-            if (bestLocation == null || l.accuracy < bestLocation.accuracy) {
-                bestLocation = l
-            }
-        }
-        return bestLocation
-    }
 
 }

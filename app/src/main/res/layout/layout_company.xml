@@ -398,6 +398,41 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginTop="@dimen/bigger_margin_padding"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:gravity="center"
+                android:id="@+id/llVitAddress"
+                android:minHeight="@dimen/icon_medium"
+                android:orientation="horizontal">
+
+                <com.ids.cloud9native.custom.CustomTextViewBold
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/small_margin_padding"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/vist_address"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font" />
+
+                <EditText
+                    android:id="@+id/tvVistAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/small_margin_padding"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:enabled="false"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/small_margin_padding"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/normal_font" />
+
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/llButtons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -461,7 +496,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/normal_margin_padding"
                     android:gravity="center"
-                    android:text="GET DIRECTIONS"
+                    android:text="@string/get_directions"
                     android:textColor="@color/white"
                     android:textSize="@dimen/normal_font" />
 
@@ -495,7 +530,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/normal_margin_padding"
                     android:gravity="center"
-                    android:text="SENDING LOCATION"
+                    android:id="@+id/tvSendingLocation"
+                    android:text="@string/sending_location_vist"
                     android:textColor="@color/white"
                     android:textSize="@dimen/normal_font" />
 

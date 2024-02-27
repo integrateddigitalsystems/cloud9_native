@@ -107,4 +107,8 @@
     <string name="empty_report">Empty report</string>
     <string name="network_message">No network available, please check your WiFi or Data connection</string>
     <string name="related_visits">Related Visits</string>
+    <string name="vist_address">Vist Address</string>
+    <string name="sending_location">SENDING LOCATION</string>
+    <string name="get_directions">GET DIRECTIONS</string>
+    <string name="sending_location_vist">SENDING VISIT LOCATION</string>
 </resources>
