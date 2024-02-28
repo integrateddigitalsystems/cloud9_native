@@ -213,7 +213,8 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
         }else if(view.id == R.id.btRecords){
             MyApplication.selectedProduct = arrayProd.get(position)
             startActivity(Intent(requireContext(),ActivityRecords::class.java))
-        } else if (view.id == R.id.llJobReport) {
+        }
+        else if (view.id == R.id.llJobReport) {
             if (arrayProd.get(position).reports.size > 0)
                 setUpDataVisit(position)
         } else if (view.id == R.id.llItemReason) {

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ids.cloud9native.R
 import com.ids.cloud9native.controller.MyApplication
@@ -15,6 +16,7 @@ import com.ids.cloud9native.utils.AppConstants
 import com.ids.cloud9native.utils.AppHelper
 import com.ids.cloud9native.utils.hide
 import com.ids.cloud9native.utils.setTintImage
+import com.ids.cloud9native.utils.show
 import com.ids.cloud9native.utils.toHTML
 import kotlin.collections.ArrayList
 
@@ -121,17 +123,26 @@ class AdapterProducts(
             }
             var SN = ""
             if (item.serialNumbers!!.size > 0) {
-               for(it in item.serialNumbers.indices){
-                   if(it == item.serialNumbers.size-1){
-                       SN = SN+item.serialNumbers.get(it)
-                   }else{
-                       SN = SN+item.serialNumbers.get(it)+"-"
-                   }
-               }
+                binding.rvSerialNumbers.show()
+                binding.tvNoData.hide()
+                val adapter = AdapterSerialNumber(item.serialNumbers,con,clickListener,
+                    item.productId!!, MyApplication.selectedVisit!!.contractId!!,item.product.name
+                )
+                binding.rvSerialNumbers.layoutManager = LinearLayoutManager(con)
+                binding.rvSerialNumbers.adapter = adapter
+//               for(it in item.serialNumbers.indices){
+//                   if(it == item.serialNumbers.size-1){
+//                       SN = SN+item.serialNumbers.get(it)
+//                   }else{
+//                       SN = SN+item.serialNumbers.get(it)+"\n"
+//                   }
+//               }
             } else {
+                binding.rvSerialNumbers.hide()
+                binding.tvNoData.show()
                 SN = "N/A"
             }
-            binding.tvSN.text = SN
+           // binding.tvSN.text = SN
             binding.tvQuantity.text = item.quantity.toString()
             if (items.get(layoutPosition).reports.size > 0 && MyApplication.selectedVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_ARRIVED)) {
                 setUpStatusReasonSpinner(layoutPosition, binding)

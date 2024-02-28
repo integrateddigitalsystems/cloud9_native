@@ -147,4 +147,16 @@ interface RetrofitInterface {
         @Query(ApiParameters.VISIT_ID) visitId: Int
     ):Call<ResponseMessage>
 
+    @POST("Companies/UpdateCompanyAddress")
+    fun updateCompanyAddress(
+        @Body reqCompany : CompanyAddressRequest
+    ):Call<ResponseMessage>
+
+    @GET("visit/GetVisitsByFilter")
+    fun getVisitsByFilter(
+        @Query(ApiParameters.CONTRACT_ID) contractId : Int,
+        @Query(ApiParameters.PRODUCT_ID) productId : Int,
+     //   @Query(ApiParameters.SERIAL_NUMBER) serialNumber : String,
+    ):Call<ResponseRelatedVisits>
+
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content">
+
+
+    <com.ids.cloud9native.custom.CustomTextViewMedium
+            android:layout_weight="1"
+            android:textColor="@color/otw_text"
+            android:textSize="@dimen/normal_font"
+            android:id="@+id/tvNa"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text=""/>
+
+    <ImageView
+        android:layout_marginStart="@dimen/small_margin_padding"
+        android:layout_marginEnd="@dimen/small_margin_padding"
+        android:padding="@dimen/small_margin_padding"
+        android:id="@+id/btVisitsRelated"
+        android:tint="@color/colorAccent"
+        android:layout_width="@dimen/height_toggle"
+        android:layout_height="@dimen/height_toggle"
+        android:src="@drawable/list"
+        tools:ignore="UseAppTint" />
+
+</LinearLayout>

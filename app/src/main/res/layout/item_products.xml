@@ -101,7 +101,7 @@
             android:layout_marginTop="@dimen/normal_margin_padding"
             android:layout_marginStart="@dimen/normal_margin_padding"
             android:layout_marginEnd="@dimen/normal_margin_padding"
-            android:gravity="center"
+            android:gravity="start"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -114,18 +114,33 @@
                 android:textColor="@color/otw_text"
                 android:textSize="@dimen/normal_font" />
 
-            <com.ids.cloud9native.custom.CustomTextViewMedium
-                android:textColor="@color/otw_text"
-                android:textSize="@dimen/normal_font"
-                android:id="@+id/tvSN"
-                android:layout_marginStart="@dimen/small_margin_padding"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text=""/>
+
 
         </LinearLayout>
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_marginStart="@dimen/normal_margin_padding"
+                android:layout_marginEnd="@dimen/normal_margin_padding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.ids.cloud9native.custom.CustomTextViewMedium
+                    android:layout_width="match_parent"
+                    android:gravity="start"
+                    android:id="@+id/tvNoData"
+                    android:visibility="gone"
+                    android:textColor="@color/text_gray"
+                    android:text="N/A"
+                    android:layout_height="wrap_content"/>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvSerialNumbers"
+                    android:clipToPadding="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
         <LinearLayout
             android:layout_marginTop="@dimen/normal_margin_padding"
             android:layout_marginStart="@dimen/normal_margin_padding"

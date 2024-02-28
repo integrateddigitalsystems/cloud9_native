@@ -22,6 +22,7 @@ import com.google.gson.Gson
 import com.ids.cloud9native.R
 import com.ids.cloud9native.controller.MyApplication
 import com.ids.cloud9native.databinding.LayoutCompanyBinding
+import com.ids.cloud9native.model.CompanyAddressRequest
 import com.ids.cloud9native.model.CompanyRequest
 import com.ids.cloud9native.model.ResponseMessage
 import com.ids.cloud9native.utils.*
@@ -100,8 +101,10 @@ class FragmentCompany : Fragment(),ApiListener {
     }
     fun listenrs(){
         binding!!.llGetDirection.setOnClickListener {
-            val geoUri =
-                "http://maps.google.com/maps?q=loc:" + MyApplication.selectedVisit!!.company!!.lat + "," + MyApplication.selectedVisit!!.company!!.long + " (" + MyApplication.selectedVisit!!.company!!.companyName + ")"
+            var geoUri =""
+            geoUri = if (MyApplication.selectedVisit!!.companyAddress!=null)
+                "http://maps.google.com/maps?q=loc:" + MyApplication.selectedVisit!!.companyAddress!!.lat + "," + MyApplication.selectedVisit!!.companyAddress!!.long + " (" + MyApplication.selectedVisit!!.company!!.companyName + ")"
+            else "http://maps.google.com/maps?q=loc:" + MyApplication.selectedVisit!!.company!!.lat + "," + MyApplication.selectedVisit!!.company!!.long + " (" + MyApplication.selectedVisit!!.company!!.companyName + ")"
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
             startActivity(intent)
         }
@@ -162,7 +165,9 @@ class FragmentCompany : Fragment(),ApiListener {
             firstLocation = GetLocation(requireActivity()).getLocation(this,this,null,null)
 
             if (firstLocation!=null){
-                editCompany(firstLocation)
+                if (MyApplication.selectedVisit!!.companyAddress!=null)
+                    updateVisitLocation(firstLocation)
+               else editCompany(firstLocation)
             }
         }
         else {
@@ -172,6 +177,59 @@ class FragmentCompany : Fragment(),ApiListener {
 
 
 
+    }
+
+    fun updateVisitLocation(location: Location? = null){
+        firstLocation = location
+        binding!!.llLoading.show()
+
+        MyApplication.selectedVisit!!.companyAddress!!.lat =firstLocation!!.latitude.toString()
+        MyApplication.selectedVisit!!.companyAddress!!.long =firstLocation!!.longitude.toString()
+
+        val companyAddressRequest = CompanyAddressRequest(
+            MyApplication.selectedVisit!!.companyAddress!!.address,
+            MyApplication.selectedVisit!!.companyAddress!!.fax,
+            MyApplication.selectedVisit!!.companyAddress!!.companyId,
+            MyApplication.selectedVisit!!.companyAddress!!.id,
+            MyApplication.selectedVisit!!.companyAddress!!.countryId,
+            MyApplication.selectedVisit!!.companyAddress!!.cityId!!.toInt(),
+            MyApplication.selectedVisit!!.companyAddress!!.phone,
+            MyApplication.selectedVisit!!.companyAddress!!.name,
+            MyApplication.selectedVisit!!.companyAddress!!.long,
+            MyApplication.selectedVisit!!.companyAddress!!.lat
+        )
+        Log.wtf("JAD_COMPANY",Gson().toJson(companyAddressRequest))
+        RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java).updateCompanyAddress(companyAddressRequest)
+            .enqueue(object : Callback<ResponseMessage> {
+                override fun onResponse(
+                    call: Call<ResponseMessage>,
+                    response: Response<ResponseMessage>
+                ) {
+                    if (response.isSuccessful){
+                        binding!!.llLoading.hide()
+                        if (response.body()!!.success=="true"){
+                            binding!!.llLoading.hide()
+                            createDialog(response.body()!!.message!!)
+                            MyApplication.selectedVisit!!.company!!.lat =firstLocation!!.latitude.toString()
+                            MyApplication.selectedVisit!!.company!!.long =firstLocation!!.longitude.toString()
+                            wtf("Success")
+                        }
+                        else {
+                            binding!!.llLoading.hide()
+                            createDialog(response.body()!!.message!!)
+                        }
+
+                    }
+                    else{
+                        binding!!.llLoading.hide()
+                        createDialog(getString(R.string.failure))
+                    }
+                }
+                override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
+                    binding!!.llLoading.hide()
+                    wtf("Failure")
+                }
+            })
     }
 
     fun editCompany(location: Location? = null){
@@ -350,7 +408,9 @@ class FragmentCompany : Fragment(),ApiListener {
 
     override fun onDataRetrieved(success: Boolean, currLoc: Location?) {
         if (success && currLoc!=null){
-            editCompany(currLoc)
+            if (MyApplication.selectedVisit!!.companyAddress!=null)
+                  updateVisitLocation(currLoc)
+            else  editCompany(currLoc)
         }
         else {
             changeLocation()

@@ -23,9 +23,9 @@ data class CompanyAddress(
     @SerializedName("id")
     val id: Int?=0,
     @SerializedName("lat")
-    val lat: String?="",
+    var lat: String?="",
     @SerializedName("long")
-    val long: String?="",
+    var long: String?="",
     @SerializedName("name")
     val name: String?="",
     @SerializedName("phone")

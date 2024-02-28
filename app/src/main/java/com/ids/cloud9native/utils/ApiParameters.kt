@@ -14,4 +14,7 @@ object ApiParameters {
     const val ID="id"
     const val ENTITY_TYPE_CODE = "entityTypeCode"
     const val VISIT_PRODUCT_ID = "visitProductId"
+    const val CONTRACT_ID="contractId"
+    const val PRODUCT_ID = "productId"
+    const val SERIAL_NUMBER = "serialNumber"
 }
