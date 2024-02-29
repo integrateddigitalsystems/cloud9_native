@@ -56,8 +56,8 @@ class ActivityVisitsRelated : AppCompactBase(), RVOnItemClickListener {
             .create(RetrofitInterface::class.java)
             .getVisitsByFilter(
                 contractId,
-                productId
-//                serialNumber,
+                productId,
+                serialNumber,
             ).enqueue(object : Callback<ResponseRelatedVisits>{
                 override fun onResponse(call: Call<ResponseRelatedVisits>, response: Response<ResponseRelatedVisits>) {
                     if (response.isSuccessful){
@@ -80,6 +80,9 @@ class ActivityVisitsRelated : AppCompactBase(), RVOnItemClickListener {
     }
     fun setUpVititsRelated(){
         binding!!.llLoading.hide()
+        val visitSelected =responseRelatedVisitsItem.find { it.id ==MyApplication.selectedVisit!!.id}
+        if (visitSelected!=null)
+            responseRelatedVisitsItem.remove(visitSelected)
         if(responseRelatedVisitsItem.size >0){
             val adapter = AdapterRelatedVisits(this,responseRelatedVisitsItem,this)
             binding!!.rvReccomendations.layoutManager = LinearLayoutManager(this)

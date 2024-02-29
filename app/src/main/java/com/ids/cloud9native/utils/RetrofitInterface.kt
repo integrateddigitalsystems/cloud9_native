@@ -156,7 +156,13 @@ interface RetrofitInterface {
     fun getVisitsByFilter(
         @Query(ApiParameters.CONTRACT_ID) contractId : Int,
         @Query(ApiParameters.PRODUCT_ID) productId : Int,
-     //   @Query(ApiParameters.SERIAL_NUMBER) serialNumber : String,
+        @Query(ApiParameters.SERIAL_NUMBER) serialNumber : String,
     ):Call<ResponseRelatedVisits>
+
+    @GET("visit/GetSerialsByProductIdAndContractId")
+    fun getSerialsByProductIdAndContractId(
+        @Query(ApiParameters.CONTRACT_ID) contractId : Int,
+        @Query(ApiParameters.PRODUCT_ID) productId : Int,
+    ):Call<ListSerialNumber>
 
 }
