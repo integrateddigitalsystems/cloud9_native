@@ -354,6 +354,7 @@ class ActivityMain : AppCompactBase(), RVOnItemClickListener {
             binding!!.llHomeMain.loading.hide()
             binding!!.llHomeMain.rvVisits.show()
             binding!!.llHomeMain.tvNoVisits.hide()
+
         } else {
             if (afterApi) {
                 binding!!.llHomeMain.loading.hide()

@@ -410,10 +410,14 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
                 else
                     editProduct()
             }else{
-                if(binding!!.etQuantity.text!!.toString().toInt()>0)
+                if(binding!!.etQuantity.text!!.toString().trim().isEmpty()){
                     createDialog(getString(R.string.fill_details))
-                else{
-                    createDialog(getString(R.string.quantity_more_0))
+                }
+                else {
+                    if(binding!!.etQuantity.text!!.toString().toInt()<=0)
+                        createDialog(getString(R.string.quantity_more_0))
+                    else if (!serialised_filled)
+                        createDialog(getString(R.string.fill_details))
                 }
             }
         }

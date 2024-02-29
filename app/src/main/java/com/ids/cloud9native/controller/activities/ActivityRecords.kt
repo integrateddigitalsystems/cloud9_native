@@ -103,6 +103,8 @@ class ActivityRecords : AppCompactBase(), RVOnItemClickListener {
     override fun onItemClicked(view: View, position: Int) {
             startActivity(Intent(this, ActivityReportDetails::class.java)
                 .putExtra("RepId", records.get(position).formId)
-                .putExtra("url",  records.get(position).url))
+                .putExtra("url",  records.get(position).url)
+                .putExtra("name",  records.get(position).formName))
+
     }
 }

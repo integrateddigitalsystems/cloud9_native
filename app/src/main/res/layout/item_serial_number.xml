@@ -24,7 +24,7 @@
         android:tint="@color/colorAccent"
         android:layout_width="@dimen/height_toggle"
         android:layout_height="@dimen/height_toggle"
-        android:src="@drawable/list"
+        android:src="@drawable/ic_arrow_right"
         tools:ignore="UseAppTint" />
 
 </LinearLayout>

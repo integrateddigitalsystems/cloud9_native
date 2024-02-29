@@ -121,7 +121,6 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_marginStart="@dimen/normal_margin_padding"
-                android:layout_marginEnd="@dimen/normal_margin_padding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.ids.cloud9native.custom.CustomTextViewMedium

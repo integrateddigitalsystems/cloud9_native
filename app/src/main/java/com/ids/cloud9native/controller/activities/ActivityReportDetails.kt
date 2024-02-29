@@ -100,6 +100,7 @@ class ActivityReportDetails : AppCompactBase() {
 
     fun setUpData() {
         reportId = intent.getIntExtra("RepId", 0)
+        val name = intent.getStringExtra("name")
         binding!!.llTool.ivDrawer.hide()
         binding!!.llTool.btBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
@@ -114,9 +115,9 @@ class ActivityReportDetails : AppCompactBase() {
             )
         }
         binding!!.llTool.layoutFragment.show()
-        binding!!.llTool.tvTitleTool.text = MyApplication.selectedProduct!!.reports.find {
-            it.id == reportId
-        }!!.name
+        binding!!.llTool.tvTitleTool.text = name
+
+
 //        binding!!.tvVisit.text = MyApplication.selectedVisit!!.title
 //        binding!!.tvProductName.text = MyApplication.selectedProduct!!.product.name
 //        binding!!.tvClientName.text =

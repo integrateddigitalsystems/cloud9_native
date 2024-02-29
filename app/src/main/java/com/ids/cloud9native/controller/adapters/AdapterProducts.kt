@@ -126,7 +126,8 @@ class AdapterProducts(
                 binding.rvSerialNumbers.show()
                 binding.tvNoData.hide()
                 val adapter = AdapterSerialNumber(item.serialNumbers,con,clickListener,
-                    item.productId!!, MyApplication.selectedVisit!!.contractId!!,item.product.name
+                    item.productId!!,
+                    (if (MyApplication.selectedVisit!!.contractId==null) 0 else MyApplication.selectedVisit!!.contractId)!!,item.product.name
                 )
                 binding.rvSerialNumbers.layoutManager = LinearLayoutManager(con)
                 binding.rvSerialNumbers.adapter = adapter
