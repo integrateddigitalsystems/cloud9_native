@@ -55,6 +55,7 @@ class MyApplication : Application() {
         var units : ArrayList<UnitListItem> = arrayListOf()
         var isSignatureEmptyEmp = false
         var isSignatureEmptyClient = false
+        var index =0
         var permissionAllow11  : Int?
             get() = sharedPreferences.getInt(AppConstants.PERMISSION,0)
             set(value) { sharedPreferencesEditor.putInt(AppConstants.PERMISSION, value!!).apply() }

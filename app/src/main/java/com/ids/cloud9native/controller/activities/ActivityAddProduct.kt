@@ -6,8 +6,10 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
+import android.widget.TextView
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ids.cloud9native.R
 import com.ids.cloud9native.controller.MyApplication
 import com.ids.cloud9native.controller.adapters.AdapterEdit
@@ -42,6 +44,8 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
     var arrSpinner : ArrayList<ItemSpinner> = arrayListOf()
     var adapter : AdapterText?=null
     var arr : ArrayList<ItemSpinner> = arrayListOf()
+    var arraySerialNumber : ArrayList<ItemSpinner> =arrayListOf()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,11 +81,14 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             for(i in 1..MyApplication.selectedProduct!!.quantity!!){
                 arraySer.add(SerialItem(""))
             }
-            for(item in MyApplication.selectedProduct!!.serialNumbers!!.indices)
+            for(item in MyApplication.selectedProduct!!.serialNumbers!!.indices){
                 arraySer.get(item).serial = MyApplication.selectedProduct!!.serialNumbers!!.get(item)
+                arraySer.get(item).serialSelected = true
+            }
             if(MyApplication.selectedProduct!!.product.unit!!.visitProducts.size>0)
                 unitId = MyApplication.selectedProduct!!.product.unit!!.visitProducts.get(0).unitId
             prodId = MyApplication.selectedProduct!!.productId
+            getSerialsByProductIdAndContractId(prodId!!)
             binding!!.btAddProduct.text = getString(R.string.update)
             if(MyApplication.selectedProduct!!.product.name!!.contains(AppConstants.OTHER_PRODUCT_NAME)){
                 binding!!.etCustomProductName.text = MyApplication.selectedProduct!!.customProductName!!.toEditable()
@@ -96,7 +103,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             arraySer.add(SerialItem(""))
         }
         binding!!.rvSerialised.layoutManager = LinearLayoutManager(this)
-        adapterSer = AdapterEdit(arraySer,this,this)
+        adapterSer = AdapterEdit(arraySer,this,this,arraySerialNumber)
         binding!!.rvSerialised.adapter = adapterSer
     }
 
@@ -410,7 +417,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
                 else
                     editProduct()
             }else{
-                if(binding!!.etQuantity.text!!.toString().trim().isEmpty()){
+                if(binding!!.etQuantity.text!!.toString().trim().isEmpty() || unitId==0){
                     createDialog(getString(R.string.fill_details))
                 }
                 else {
@@ -513,6 +520,55 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             }
 
             adapter!!.notifyDataSetChanged()
+
+            if (prodId!=0)
+                getSerialsByProductIdAndContractId(prodId!!)
         }
+
+        else   if (view.id == R.id.llItemTextSerial) {
+                arraySer.forEach { it.serialSelected =true }
+                val rvSerial = binding!!.rvSerialised.findViewHolderForAdapterPosition(MyApplication.index)!!.itemView.findViewById(R.id.rvSerial) as RecyclerView
+                val tvName = rvSerial.findViewHolderForAdapterPosition(position)!!.itemView.findViewById(R.id.tvName) as TextView
+                arraySer[MyApplication.index].serial =tvName.text.toString()
+                rvSerial.hide()
+                adapterSer!!.notifyDataSetChanged()
+        }
+    }
+
+    fun getSerialsByProductIdAndContractId(productId:Int){
+        RetrofitClientSpecificAuth.client!!
+            .create(RetrofitInterface::class.java)
+            .getSerialsByProductIdAndContractId(
+                MyApplication.selectedVisit!!.contractId!!,
+                productId,
+            ).enqueue(object : Callback<ListSerialNumber>{
+                override fun onResponse(call: Call<ListSerialNumber>, response: Response<ListSerialNumber>) {
+                    if (response.isSuccessful){
+                        binding!!.llLoading.hide()
+                        arraySerialNumber.clear()
+                        if (response.body()!!.isNotEmpty()){
+                            for (item in response.body()!!.indices){
+                                arraySerialNumber.add(ItemSpinner(item,response.body()!![item],false) )
+                            }
+                            if (MyApplication.selectedProduct!=null){
+                                for(item in MyApplication.selectedProduct!!.serialNumbers!!.indices){
+                                    arraySer.get(item).serialSelected = true
+                                }
+                            }
+                            adapterSer!!.notifyDataSetChanged()
+
+                        }
+
+                    }
+                    else {
+                       // createDialog(response.message())
+                        binding!!.llLoading.hide()
+                    }
+                }
+                override fun onFailure(call: Call<ListSerialNumber>, t: Throwable) {
+                    binding!!.llLoading.hide()
+                }
+
+            })
     }
 }

@@ -35,6 +35,15 @@
             android:textColor="@color/text_color"
             android:textSize="@dimen/normal_font" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSerial"
+            android:scrollbars="vertical"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:background="@drawable/rounded_gray_border"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </LinearLayout>
 
 </LinearLayout>
