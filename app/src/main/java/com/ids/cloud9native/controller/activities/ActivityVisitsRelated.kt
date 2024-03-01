@@ -117,8 +117,13 @@ class ActivityVisitsRelated : AppCompactBase(), RVOnItemClickListener {
         binding!!.btAddReccomend.hide()
     }
     override fun onItemClicked(view: View, position: Int) {
-//            startActivity(Intent(this, ActivityRecords::class.java)
-//                .putExtra("productId", records.get(position).formId)
-//                .putExtra("url",  records.get(position).url))
+        startActivity(Intent(this,ActivityRecords::class.java)
+            .putExtra("name",productName)
+            .putExtra("visitId",responseRelatedVisitsItem[position].id)
+            .putExtra("productId",productId)
+            .putExtra("serialNumber",serialNumber)
+            .putExtra("isVisitProduct",true))
+
+
     }
 }

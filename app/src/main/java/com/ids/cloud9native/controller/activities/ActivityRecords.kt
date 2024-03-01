@@ -21,6 +21,11 @@ class ActivityRecords : AppCompactBase(), RVOnItemClickListener {
 
     var binding : LayoutReccomendationsBinding?=null
     var records : ArrayList<RecordListsItem> = arrayListOf()
+    var productId = 0
+    var visitId = 0
+    var serialNumber =""
+    var isVisitProduct =false
+    var name =""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = LayoutReccomendationsBinding.inflate(layoutInflater)
@@ -30,7 +35,9 @@ class ActivityRecords : AppCompactBase(), RVOnItemClickListener {
     }
     override fun onResume() {
         super.onResume()
-        getRecords()
+        if (isVisitProduct)
+            getRecordsByVisit()
+        else  getRecords()
         MyApplication.activityResumed()
     }
 
@@ -39,9 +46,22 @@ class ActivityRecords : AppCompactBase(), RVOnItemClickListener {
         MyApplication.activityPaused()
     }
     fun init(){
+        val extras = intent.extras
+        safeCall {
+            if (extras!=null){
+                name =extras.getString("name","")
+                visitId = extras.getInt("visitId")
+                productId = extras.getInt("productId")
+                serialNumber = extras.getString("serialNumber","")
+                isVisitProduct = extras.getBoolean("isVisitProduct",false)
+            }
+        }
+
 
         binding!!.srReccomendations.setOnRefreshListener{
-            getRecords()
+            if (isVisitProduct)
+                getRecordsByVisit()
+            else  getRecords()
         }
     }
     fun getRecords(){
@@ -50,6 +70,27 @@ class ActivityRecords : AppCompactBase(), RVOnItemClickListener {
             .create(RetrofitInterface::class.java)
             .getProductRecords(
                 MyApplication.selectedProduct!!.id!!
+            ).enqueue(object : Callback<RecordLists>{
+                override fun onResponse(call: Call<RecordLists>, response: Response<RecordLists>) {
+                    if (response.isSuccessful){
+                        records.clear()
+                        records.addAll(response.body()!!)
+                        setUpRecord()
+                    }
+                    else  binding!!.llLoading.hide()
+                }
+                override fun onFailure(call: Call<RecordLists>, t: Throwable) {
+                    binding!!.llLoading.hide()
+                }
+
+            })
+    }
+    fun getRecordsByVisit(){
+        binding!!.llLoading.show()
+        RetrofitClientSpecificAuth.client!!
+            .create(RetrofitInterface::class.java)
+            .getProductRecordsByVisit(
+                visitId,productId,serialNumber
             ).enqueue(object : Callback<RecordLists>{
                 override fun onResponse(call: Call<RecordLists>, response: Response<RecordLists>) {
                     if (response.isSuccessful){
@@ -83,7 +124,7 @@ class ActivityRecords : AppCompactBase(), RVOnItemClickListener {
         binding!!.layoutTool.show()
         binding!!.llTool.ivDrawer.hide()
         binding!!.llTool.layoutFragment.show()
-        binding!!.llTool.tvTitleTool.text = MyApplication.selectedProduct!!.product.name
+        binding!!.llTool.tvTitleTool.text = name
         binding!!.tvNotasks.text = getString(R.string.no_records)
         binding!!.layoutAllTasks.setBackgroundResource(R.color.gray_app_bg)
         binding!!.llTool.btBack.setOnClickListener {

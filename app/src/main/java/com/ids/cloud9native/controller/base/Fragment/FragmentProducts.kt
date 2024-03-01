@@ -212,7 +212,7 @@ class FragmentProducts : Fragment(), RVOnItemClickListener {
             }
         }else if(view.id == R.id.btRecords){
             MyApplication.selectedProduct = arrayProd.get(position)
-            startActivity(Intent(requireContext(),ActivityRecords::class.java))
+            startActivity(Intent(requireContext(),ActivityRecords::class.java).putExtra("name",MyApplication.selectedProduct!!.product.name))
         }
         else if (view.id == R.id.llJobReport) {
             if (arrayProd.get(position).reports.size > 0)

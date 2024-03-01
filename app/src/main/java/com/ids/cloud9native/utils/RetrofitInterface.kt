@@ -165,4 +165,11 @@ interface RetrofitInterface {
         @Query(ApiParameters.PRODUCT_ID) productId : Int,
     ):Call<ListSerialNumber>
 
+    @GET("Record/GetRecordsByFilters")
+    fun getProductRecordsByVisit(
+        @Query(ApiParameters.VISIT_ID) visitId : Int,
+        @Query(ApiParameters.PRODUCT_ID) productId : Int,
+        @Query(ApiParameters.SERIAL_NUMBER) serialNumber : String,
+    ):Call<RecordLists>
+
 }
