@@ -88,7 +88,8 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             if(MyApplication.selectedProduct!!.product.unit!!.visitProducts.size>0)
                 unitId = MyApplication.selectedProduct!!.product.unit!!.visitProducts.get(0).unitId
             prodId = MyApplication.selectedProduct!!.productId
-            getSerialsByProductIdAndContractId(prodId!!)
+                if (MyApplication.selectedVisit!!.contractId!=null)
+                     getSerialsByProductIdAndContractId(prodId!!)
             binding!!.btAddProduct.text = getString(R.string.update)
             if(MyApplication.selectedProduct!!.product.name!!.contains(AppConstants.OTHER_PRODUCT_NAME)){
                 binding!!.etCustomProductName.text = MyApplication.selectedProduct!!.customProductName!!.toEditable()
@@ -521,7 +522,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
 
             adapter!!.notifyDataSetChanged()
 
-            if (prodId!=0)
+            if (prodId!=0 &&MyApplication.selectedVisit!!.contractId!=null)
                 getSerialsByProductIdAndContractId(prodId!!)
         }
 
