@@ -32,6 +32,7 @@ class ActivityReportDetails : AppCompactBase() {
         setUpData()
         url = intent.getStringExtra("url")!!
         if (url.isNotEmpty()) url += MyApplication.token
+        url ="http://78.47.192.120:40999/Builder/form-viewer.html?recordId=9"
         setUpWeb()
     }
 
@@ -118,58 +119,5 @@ class ActivityReportDetails : AppCompactBase() {
         binding!!.llTool.tvTitleTool.text = name
 
 
-//        binding!!.tvVisit.text = MyApplication.selectedVisit!!.title
-//        binding!!.tvProductName.text = MyApplication.selectedProduct!!.product.name
-//        binding!!.tvClientName.text =
-//            if (MyApplication.languageCode.equals(AppConstants.LANG_ENGLISH)) MyApplication.selectedVisit!!.company!!.companyName else MyApplication.selectedVisit!!.company!!.companyNameAr
-//
-//        if (MyApplication.selectedVisit!!.contact!=null){
-//            binding!!.tvContactName.text =
-//                if (MyApplication.languageCode.equals(AppConstants.LANG_ENGLISH)) {
-//                    MyApplication.selectedVisit!!.contact!!.firstName + " " + MyApplication.selectedVisit!!.contact!!.lastName
-//                } else {
-//                    MyApplication.selectedVisit!!.contact!!.firstNameAr + " " + MyApplication.selectedVisit!!.contact!!.lastNameAr
-//                }
-//            binding!!.tvContactNumber.text =
-//                if (!MyApplication.selectedVisit!!.contact!!.personalPhoneNumber.isNullOrEmpty()) MyApplication.selectedVisit!!.contact!!.personalPhoneNumber else getString(
-//                    R.string.n_a
-//                )
-//            binding!!.tvContractNumber.text =
-//                if (MyApplication.selectedVisit!!.contract != null) "contract" else getString(
-//                    R.string.n_a
-//                )
-//            binding!!.tvFax.text =
-//                if (!MyApplication.selectedVisit!!.contact!!.fax.isNullOrEmpty()) MyApplication.selectedVisit!!.contact!!.fax else getString(
-//                    R.string.n_a
-//                )
-//            binding!!.tvSiteLocation.text =
-//                if (!MyApplication.selectedVisit!!.contact!!.address.isNullOrEmpty()) MyApplication.selectedVisit!!.contact!!.address else getString(
-//                    R.string.n_a
-//                )
-//        }
-//        else {
-//            binding!!.tvContactName.text = getString(R.string.no_data)
-//            binding!!.tvContactNumber.text =getString(
-//                R.string.n_a
-//            )
-//            binding!!.tvContractNumber.text =getString(
-//                R.string.n_a
-//            )
-//            binding!!.tvFax.text =getString(
-//                R.string.n_a
-//            )
-//            binding!!.tvSiteLocation.text =getString(
-//                R.string.n_a
-//            )
-//        }
-//
-//        binding!!.tvDate.text =
-//            simpDMY.format(simp.parse(MyApplication.selectedProduct!!.creationDate)!!)
-//        binding!!.tvOpportunity.text =
-//            if (MyApplication.selectedVisit!!.opportunity != null) MyApplication.selectedVisit!!.opportunity!!.name else getString(
-//                R.string.n_a
-//            )
-//        binding!!.tvMatcoEng.text =
-//            MyApplication.userItem!!.firstName + " " + MyApplication.userItem!!.lastName
     }
 }

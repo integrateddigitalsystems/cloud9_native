@@ -89,6 +89,12 @@ class AdapterRelatedVisits(context: Activity, private val mList: ArrayList<Respo
             binding.tvDay.text =day
             binding.tvDate.text =date
 
+            if (child.visitResources.isNotEmpty()){
+                child.visitResources.forEachIndexed { index, categories ->
+                    binding.tvResource.text = binding.tvResource.text.toString() + child.visitResources[index].resource.fullName + if(index!= child.visitResources.size-1) " , " else ""
+                }
+            }
+
         }
         init {
             binding.root.setOnClickListener(this)

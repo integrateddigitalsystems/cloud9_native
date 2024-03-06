@@ -19,9 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -32,6 +30,7 @@
 
     <WebView
         android:id="@+id/wvReport"
+        android:visibility="visible"
         android:layout_marginStart="@dimen/margin_start_end"
         android:layout_marginEnd="@dimen/margin_start_end"
         android:layout_width="match_parent"
@@ -39,7 +38,7 @@
 
     </LinearLayout>
 
-    </ScrollView>
+
 
 
         <LinearLayout

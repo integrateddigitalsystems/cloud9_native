@@ -50,5 +50,7 @@ data class ResponseRelatedVisitsItem(
     @SerializedName("visitDate")
     val visitDate: String,
     @SerializedName("visitType")
-    val visitType: String
+    val visitType: String,
+    @SerializedName("visitResources")
+    var visitResources: ArrayList<VisitResource> = arrayListOf(),
 )

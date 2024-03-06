@@ -11,7 +11,7 @@ data class VisitResource(
     @SerializedName("id")
     var id: Int,
     @SerializedName("resource")
-    val resource: Any,
+    val resource: Resource,
     @SerializedName("resourceId")
     val resourceId: Int,
     @SerializedName("timeStamp")

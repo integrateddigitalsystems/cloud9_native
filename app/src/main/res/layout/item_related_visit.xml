@@ -66,21 +66,17 @@
         android:layout_height="wrap_content">
 
 
+
         <com.ids.cloud9native.custom.CustomTextViewMedium
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:id="@+id/tvCompany"
-            android:layout_marginEnd="@dimen/small_margin_padding"
+            android:layout_weight="2"
+            android:paddingTop="@dimen/mini_radius"
+            android:id="@+id/tvResource"
             android:textSize="@dimen/normal_font"
             android:layout_marginStart="@dimen/margin_start_end"
             android:layout_height="wrap_content" />
 
-        <com.ids.cloud9native.custom.CustomTextViewMedium
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:textSize="@dimen/normal_font"
-            android:id="@+id/tvDuration"
-            android:layout_height="wrap_content" />
+
 
         <LinearLayout
             android:paddingEnd="@dimen/normal_margin"
