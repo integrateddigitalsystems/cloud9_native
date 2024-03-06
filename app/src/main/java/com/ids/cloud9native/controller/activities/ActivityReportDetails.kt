@@ -32,7 +32,7 @@ class ActivityReportDetails : AppCompactBase() {
         setUpData()
         url = intent.getStringExtra("url")!!
         if (url.isNotEmpty()) url += MyApplication.token
-        url ="http://78.47.192.120:40999/Builder/form-viewer.html?recordId=9"
+       // url ="http://78.47.192.120:40999/Builder/form-viewer.html?recordId=9"
         setUpWeb()
     }
 
