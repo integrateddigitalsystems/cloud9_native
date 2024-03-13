@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.exoplayer2.Player
+import com.google.gson.Gson
 import com.ids.cloud9native.R
 import com.ids.cloud9native.controller.MyApplication
 import com.ids.cloud9native.controller.activities.ActivityFullScreen
@@ -495,6 +496,7 @@ class FragmentMedia : Fragment(), RVOnItemClickListener, Player.Listener {
         )
         val arr: ArrayList<SignatureRequest> = arrayListOf()
         arr.add(sigReq)
+        Log.wtf("ATTACHMENT_JSON", Gson().toJson(sigReq))
         RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .saveAttachment(arr)
             .enqueue(object : Callback<ResponseMessage> {
