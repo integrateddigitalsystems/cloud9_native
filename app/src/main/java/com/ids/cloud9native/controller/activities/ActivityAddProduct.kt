@@ -87,6 +87,7 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             }
             if(MyApplication.selectedProduct!!.product.unit!!.visitProducts.size>0)
                 unitId = MyApplication.selectedProduct!!.product.unit!!.visitProducts.get(0).unitId
+
             prodId = MyApplication.selectedProduct!!.productId
                 if (MyApplication.selectedVisit!!.contractId!=null)
                      getSerialsByProductIdAndContractId(prodId!!)
