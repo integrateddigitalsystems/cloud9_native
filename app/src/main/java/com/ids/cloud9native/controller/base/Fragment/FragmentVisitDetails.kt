@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
@@ -85,6 +86,15 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener,ApiListener {
             date = simp.format(simpOrg.parse(edtitVisit!!.visitDate!!)!!)
         }
         binding!!.tvVisitDate.text = date
+        if (edtitVisit!!.phoneNumber!=null){
+            binding!!.tvPhone.text =edtitVisit!!.phoneNumber
+            binding!!.tvPhone.underline()
+            binding!!.tvPhone.setOnClickListener {
+                val intent = Intent(Intent.ACTION_DIAL)
+                intent.data = Uri.parse("tel:"+binding!!.tvPhone.text)
+                startActivity(intent)
+            }
+        }
         try {
             binding!!.fromTime.text =
                 simpTime.format(simpOrg.parse(edtitVisit!!.fromTime!!)!!)

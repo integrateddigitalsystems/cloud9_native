@@ -49,8 +49,10 @@ class AdapterSerialNumber(
         binding.root
     ), View.OnClickListener {
         fun bind(item: String) {
-                binding.tvNa.text = item
-
+                binding.tvNa.text = item.ifEmpty { con.getString(R.string.n_a) }
+                if (item.isEmpty())
+                    binding.btVisitsRelated.hide()
+            else  binding.btVisitsRelated.show()
                 binding.btVisitsRelated.setOnClickListener {
                     con.startActivity(Intent(con, ActivityVisitsRelated::class.java)
                         .putExtra("serialNumber",item)

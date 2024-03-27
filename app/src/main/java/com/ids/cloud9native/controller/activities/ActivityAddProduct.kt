@@ -87,10 +87,10 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
             }
             if(MyApplication.selectedProduct!!.product.unit!!.visitProducts.size>0)
                 unitId = MyApplication.selectedProduct!!.product.unit!!.visitProducts.get(0).unitId
-
             prodId = MyApplication.selectedProduct!!.productId
-                if (MyApplication.selectedVisit!!.contractId!=null)
-                     getSerialsByProductIdAndContractId(prodId!!)
+
+            if (MyApplication.selectedVisit!!.contractId!=null)
+                getSerialsByProductIdAndContractId(prodId!!)
             binding!!.btAddProduct.text = getString(R.string.update)
             if(MyApplication.selectedProduct!!.product.name!!.contains(AppConstants.OTHER_PRODUCT_NAME)){
                 binding!!.etCustomProductName.text = MyApplication.selectedProduct!!.customProductName!!.toEditable()
@@ -331,11 +331,13 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
                     response: Response<ResponseMessage>
                 ) {
                     if(response.body()!!.success!!.equals("true")){
+                        binding!!.llLoading.hide()
                         createRetryDialog(
                             response.body()!!.message!!){
                             finish()
                         }
                     }else{
+                        binding!!.llLoading.hide()
                         createDialog(response.body()!!.message!!)
                     }
                 }
@@ -408,12 +410,12 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
 
 
         binding!!.btAddProduct.setOnClickListener {
-            var serialised_filled = true
+            /*var serialised_filled = true
             for(item in arraySer)
                 if(item.serial.isNullOrEmpty())
-                    serialised_filled = false
+                    serialised_filled = false*/
 
-            if(prodId!=0 && unitId!=0 && !binding!!.etQuantity.text.toString().isEmpty() && binding!!.etQuantity.text!!.toString().toInt() >0 && serialised_filled && binding!!.tvProduct.text.toString().trim() != getString(R.string.product) && !(arr.get(selectedPos).name!!.contains(AppConstants.OTHER_PRODUCT_NAME) && (binding!!.etCustomProductDesc.text.isNullOrEmpty() || binding!!.etCustomProductName.text.isNullOrEmpty()))) {
+            if(prodId!=0 && unitId!=0 && !binding!!.etQuantity.text.toString().isEmpty() && binding!!.etQuantity.text!!.toString().toInt() >0 /*&& serialised_filled */&& binding!!.tvProduct.text.toString().trim() != getString(R.string.product) && !(arr.get(selectedPos).name!!.contains(AppConstants.OTHER_PRODUCT_NAME) && (binding!!.etCustomProductDesc.text.isNullOrEmpty() || binding!!.etCustomProductName.text.isNullOrEmpty()))) {
                 if(MyApplication.selectedProduct==null)
                     addProduct()
                 else
@@ -425,8 +427,8 @@ class ActivityAddProduct : AppCompactBase() , RVOnItemClickListener {
                 else {
                     if(binding!!.etQuantity.text!!.toString().toInt()<=0)
                         createDialog(getString(R.string.quantity_more_0))
-                    else if (!serialised_filled)
-                        createDialog(getString(R.string.fill_details))
+                    /*else if (!serialised_filled)
+                        createDialog(getString(R.string.fill_details))*/
                 }
             }
         }

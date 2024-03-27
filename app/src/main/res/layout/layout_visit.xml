@@ -83,6 +83,39 @@
 
     </LinearLayout>
 
+        <LinearLayout
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginStart="@dimen/margin_start_end"
+            android:layout_marginEnd="@dimen/margin_start_end"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:minHeight="@dimen/button_height"
+            android:layout_height="wrap_content">
+
+            <com.ids.cloud9native.custom.CustomTextViewBold
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/small_margin_padding"
+                android:gravity="center_vertical"
+                android:text="@string/phone"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/normal_font" />
+
+            <com.ids.cloud9native.custom.CustomTextViewMedium
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/normal_font"
+                android:layout_marginStart="@dimen/small_margin_padding"
+                android:layout_width="match_parent"
+                android:id="@+id/tvPhone"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text=""/>
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_marginTop="@dimen/small_margin"

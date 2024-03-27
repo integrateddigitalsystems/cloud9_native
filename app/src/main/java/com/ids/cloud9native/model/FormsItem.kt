@@ -4,5 +4,6 @@ data class FormsItem(
     var id: Int?=0,
     val name: String?="",
     var url: String?="",
+    var tabURL: String?="",
     var selected : Boolean = false
 )
