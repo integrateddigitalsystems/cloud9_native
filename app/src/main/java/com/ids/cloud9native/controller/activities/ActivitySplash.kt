@@ -114,9 +114,16 @@ class ActivitySplash : AppCompactBase() {
             MyApplication.password
         ).enqueue(object : Callback<ResponseLogin> {
             override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
-                MyApplication.BASE_USER_URL = response.body()!!.apiURL!!
+                if (response.isSuccessful){
+                    MyApplication.BASE_USER_URL = response.body()!!.apiURL!!
+                    nextStep(response.body()!!)
+                }
+                else  createRetryDialog(
+                    getString(R.string.error_getting_data)
+                ) {
+                    startFirebase()
+                }
 
-                nextStep(response.body()!!)
             }
 
             override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {

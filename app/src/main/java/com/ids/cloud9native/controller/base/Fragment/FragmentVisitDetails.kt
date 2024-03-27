@@ -88,6 +88,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener,ApiListener {
         binding!!.tvVisitDate.text = date
         if (edtitVisit!!.phoneNumber!=null){
             binding!!.tvPhone.text =edtitVisit!!.phoneNumber
+            binding!!.etPhone.setText(binding!!.tvPhone.text.trim().toString())
             binding!!.tvPhone.underline()
             binding!!.tvPhone.setOnClickListener {
                 val intent = Intent(Intent.ACTION_DIAL)
@@ -163,6 +164,22 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener,ApiListener {
                 canUpdateVisit()
             else
                 updateVisit()
+        }
+
+        binding!!.ivEditPhone.setOnClickListener {
+            binding!!.etPhone.setText(binding!!.tvPhone.text.trim().toString())
+            binding!!.tvPhone.hide()
+            binding!!.etPhone.show()
+            binding!!.ivEditPhone.hide()
+            binding!!.ivCancelPhone.show()
+
+        }
+        binding!!.ivCancelPhone.setOnClickListener {
+            binding!!.tvPhone.text = binding!!.etPhone.text.toString().trim()
+            binding!!.tvPhone.show()
+            binding!!.etPhone.hide()
+            binding!!.ivEditPhone.show()
+            binding!!.ivCancelPhone.hide()
         }
     }
 
@@ -339,6 +356,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener,ApiListener {
             item.id = 0
         val str = Gson().toJson(edtitVisit)
         wtf(str)
+        edtitVisit!!.phoneNumber = binding!!.etPhone.text.toString().trim()
         RetrofitClientSpecificAuth.client!!.create(RetrofitInterface::class.java)
             .updateVisit(MyApplication.userItem!!.applicationUserId!!.toInt(),edtitVisit!!)
             .enqueue(object : Callback<ResponseMessage> {
@@ -348,6 +366,10 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener,ApiListener {
                 ) {
                     safeCall(binding!!.llLoading) {
                         binding!!.llLoading.hide()
+                        binding!!.tvPhone.show()
+                        binding!!.etPhone.hide()
+                        binding!!.ivEditPhone.show()
+                        binding!!.ivCancelPhone.hide()
                         MyApplication.selectedVisit = edtitVisit
                         if (response.code() != 500) {
                             FirebaseCrashlytics.getInstance().log("UPDATED:\n" + str)
@@ -360,7 +382,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener,ApiListener {
                                 )
                             ) {
                                 createDialog(response.body()!!.message!!)
-                            } else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED)) {
+                            } else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED) /*|| edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_PENDING)*/) {
                                 requireContext().createRetryDialog(
                                     response.body()!!.message!!
                                 ) {
@@ -388,6 +410,7 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener,ApiListener {
                             }
 
                         } else {
+                            binding!!.llLoading.hide()
                             FirebaseCrashlytics.getInstance().log("UPDATE ERROR 500+ITEM:\n" + str)
                             FirebaseCrashlytics.getInstance()
                                 .recordException(RuntimeException("UPDATE ERROR 500+ITEM:\n" + str))
@@ -623,7 +646,9 @@ class FragmentVisitDetails : Fragment(), RVOnItemClickListener,ApiListener {
             for (item in arrSpinner)
                 if (item.id != AppHelper.getReasonID(AppConstants.REASON_ARRIVED) && item.id != AppHelper.getReasonID(
                         AppConstants.REASON_COMPLETED
-                    )
+                    )/*&& item.id != AppHelper.getReasonID(
+                        AppConstants.REASON_PENDING
+                    )*/
                 )
                     item.selectable = false
         } else if (edtitVisit!!.reasonId == AppHelper.getReasonID(AppConstants.REASON_COMPLETED)) {

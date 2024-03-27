@@ -107,12 +107,51 @@
                 android:layout_weight="1"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/normal_font"
-                android:layout_marginStart="@dimen/small_margin_padding"
+                android:layout_marginStart="@dimen/small_margin"
                 android:layout_width="match_parent"
                 android:id="@+id/tvPhone"
+                android:visibility="visible"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text=""/>
+
+            <ImageView
+                android:id="@+id/ivEditPhone"
+                android:layout_width="@dimen/height_toggle"
+                android:layout_height="@dimen/height_toggle"
+                android:layout_gravity="end|center"
+                android:visibility="visible"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:padding="@dimen/medium_margin_padding"
+                android:src="@drawable/pen"
+                android:tint="@color/gray_border_tab" />
+
+
+
+            <com.ids.molilo.custom.CustomEditText
+                android:layout_weight="1"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/normal_font"
+                android:paddingStart="@dimen/mini_radius"
+                android:background="@drawable/light_rounded_border"
+                android:layout_width="match_parent"
+                android:id="@+id/etPhone"
+                android:layout_marginStart="@dimen/small_margin"
+                android:visibility="gone"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text=""/>
+
+            <ImageView
+                android:id="@+id/ivCancelPhone"
+                android:layout_width="@dimen/height_toggle"
+                android:layout_height="@dimen/height_toggle"
+                android:layout_gravity="end|center"
+                android:visibility="gone"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:padding="@dimen/medium_margin_padding"
+                android:src="@drawable/close_x"
+                android:tint="@color/gray_border_tab" />
 
         </LinearLayout>
 
